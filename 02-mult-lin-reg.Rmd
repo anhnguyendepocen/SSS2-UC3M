@@ -8,4 +8,4 @@
 
 ## Multicollinearity; model diagnostics.
 
-You can label chapter and section titles using `{#label}` after them
+TODO

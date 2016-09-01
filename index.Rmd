@@ -17,8 +17,9 @@ description: "Lab notes for *Statistics for Social Sciences II: Multivariate Tec
 
 ## What are these notes for? {-}
 
-These notes **are neither an exhaustive, rigorous nor comprehensive treatment** of the broad statiscal branch know as Multivariate Analysis. Instead, they are a compact description of the key points and insights of the theory throught the help of computer, providing t the same time an effective way of delivering
+These notes are a compact description of the key points and insights of the methods presented in the lessons throught the help of computer, providing at the same time an effective way of delivering statistical analysis.
 
+These notes **are neither an exhaustive, rigorous nor comprehensive treatment** of the broad statiscal branch know as Multivariate Analysis.
 
 ## Software required {-}
 

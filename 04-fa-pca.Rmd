@@ -6,5 +6,4 @@
 
 ## Exploratory factor analysis; design, analysis and interpretation; rotation of factors.
 
-
-You can label chapter and section titles using `{#label}` after them
+TODO
