@@ -1,0 +1,8 @@
+# Binomial logistic regression {#log}
+
+## Motivation; model formulation; examples; applications; assumptions. 
+
+## Parameter estimation; assessing model fit; significance testing; interpreting coefficients.
+
+
+You can label chapter and section titles using `{#label}` after them

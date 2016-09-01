@@ -1,0 +1,8 @@
+# Cluster analysis {#cluster}
+
+## Motivation; examples; applications; hierarchical agglomerative clustering; dendrogram. 
+
+## Choosing  the number of clusters; assessing fit; interpretation of clusters.
+
+
+You can label chapter and section titles using `{#label}` after them

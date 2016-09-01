@@ -1,0 +1,10 @@
+# Factor analysis and principal component analysis {#fapca}
+
+## Motivation; formulations; examples; applications; assumptions. 
+
+## Principal components analysis; choosing the number of factors; analysis and interpretation.
+
+## Exploratory factor analysis; design, analysis and interpretation; rotation of factors.
+
+
+You can label chapter and section titles using `{#label}` after them

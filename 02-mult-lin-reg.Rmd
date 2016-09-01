@@ -1,0 +1,11 @@
+# Multiple linear regression {#mult}
+
+## Motivation; model formulation; examples; applications; assumptions. 
+
+## Estimation of model parameters; least squares; inference for model parameters; forecasting.
+
+## Assessing model fit; ANOVA; model validation.
+
+## Multicollinearity; model diagnostics.
+
+You can label chapter and section titles using `{#label}` after them

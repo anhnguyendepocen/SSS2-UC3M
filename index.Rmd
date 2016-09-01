@@ -1,0 +1,34 @@
+--- 
+title: "Computer lab notes for *Statistics for social sciences II: multivariate techniques*"
+subtitle: "Bachelor's Degree in International Studies"
+author: "Eduardo García Portugués"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+github-repo: egarpor/SSS2-UC3M
+description: "Computer lab notes for *Statistics for social sciences II: multivariate techniques*"
+---
+
+# Some useful information {-}
+
+We will cover 
+
+## Software required {-}
+
+- [`R`](https://cran.r-project.org/), *a free software environment for statistical computing and graphics*.
+
+- [`Deducer`](http://www.deducer.org/), a *free easy to use alternative to proprietary data analysis software* that *provides an intuitive graphical user interface (GUI) for `R`, encouraging non-technical users to learn and perform analyses without programming getting in their way*. 
+
+
+## Logistics {-}
+
+- Lessons in Computer Lab
+- Doubts regarding theory -> Jose
+- Doubts regarding implementation -> Eduardo
+
+Regarding 
+

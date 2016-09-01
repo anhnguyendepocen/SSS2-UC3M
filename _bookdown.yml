@@ -1,0 +1,7 @@
+book_filename: "SSS2.Rmd"
+chapter_name: "Chapter "
+edit:
+  link: https://github.com/egarpor/SSS2/master/%s
+  text: "Edit"
+output_dir: "SSS2-output"
+clean: ["SSS2.bbl", "packages.bib"]
