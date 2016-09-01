@@ -5,27 +5,27 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Computer lab notes for Statistics for social sciences II: multivariate techniques</title>
+  <title>Lab notes for Statistics for Social Sciences II: Multivariate Techniques</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-  <meta name="description" content="Computer lab notes for <em>Statistics for social sciences II: multivariate techniques</em>">
+  <meta name="description" content="Lab notes for <em>Statistics for Social Sciences II: Multivariate Techniques</em>">
   <meta name="generator" content="bookdown 0.1.6 and GitBook 2.6.7">
 
-  <meta property="og:title" content="Computer lab notes for Statistics for social sciences II: multivariate techniques" />
+  <meta property="og:title" content="Lab notes for Statistics for Social Sciences II: Multivariate Techniques" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="Computer lab notes for <em>Statistics for social sciences II: multivariate techniques</em>" />
-  <meta name="github-repo" content="rstudio/bookdown-demo" />
+  <meta property="og:description" content="Lab notes for <em>Statistics for Social Sciences II: Multivariate Techniques</em>" />
+  <meta name="github-repo" content="egarpor/SSS2-UC3M" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Computer lab notes for Statistics for social sciences II: multivariate techniques" />
+  <meta name="twitter:title" content="Lab notes for Statistics for Social Sciences II: Multivariate Techniques" />
   
-  <meta name="twitter:description" content="Computer lab notes for <em>Statistics for social sciences II: multivariate techniques</em>" />
+  <meta name="twitter:description" content="Lab notes for <em>Statistics for Social Sciences II: Multivariate Techniques</em>" />
   
 
 <meta name="author" content="Eduardo García Portugués">
 
-<meta name="date" content="2016-09-01">
+<meta name="date" content="2016-09-02">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -38,8 +38,8 @@ MathJax.Hub.Config({
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="index.html">
-<link rel="next" href="mult.html">
+
+<link rel="next" href="simp.html">
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -106,10 +106,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">A Minimal Book Example</a></li>
+<li><a href="./">Statistics for Social Sciences II: Multivariate Techniques</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Some useful information</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#what-are-these-notes-for"><i class="fa fa-check"></i>What are these notes for?</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#software-required"><i class="fa fa-check"></i>Software required</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#logistics"><i class="fa fa-check"></i>Logistics</a></li>
 </ul></li>
@@ -139,7 +140,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
-<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+<li><a href="https://github.com/egarpor/SSS2-UC3M" target="blank">Published with bookdown</a></li>
 
 </ul>
 
@@ -150,7 +151,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Computer lab notes for <em>Statistics for social sciences II: multivariate techniques</em></a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Lab notes for <em>Statistics for Social Sciences II: Multivariate Techniques</em></a>
           </h1>
         </div>
 
@@ -158,201 +159,34 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="simp" class="section level1">
-<h1><span class="header-section-number">Chapter 1</span> Simple linear regression</h1>
-<div id="motivation-model-formulation-examples-applications-assumptions" class="section level2">
-<h2><span class="header-section-number">1.1</span> Motivation; model formulation; examples; applications; assumptions</h2>
+<div id="header">
+<h1 class="title">Lab notes for <em>Statistics for Social Sciences II: Multivariate Techniques</em></h1>
+<h3 class="subtitle"><em>Bachelor in International Studies, Carlos III University of Madrid</em></h3>
+<h4 class="author"><em>Eduardo García Portugués</em></h4>
+<h4 class="date"><em>2016-09-02</em></h4>
 </div>
-<div id="estimation-of-model-parameters-least-squares-inference-for-model-parameters-forecasting." class="section level2">
-<h2><span class="header-section-number">1.2</span> Estimation of model parameters; least squares; inference for model parameters; forecasting.</h2>
+<div id="preface" class="section level1 unnumbered">
+<h1>Preface</h1>
+<div id="what-are-these-notes-for" class="section level2 unnumbered">
+<h2>What are these notes for?</h2>
+<p>These notes <strong>are neither an exhaustive, rigorous nor comprehensive treatment</strong> of the broad statiscal branch know as Multivariate Analysis. Instead, they are a compact description of the key points and insights of the theory throught the help of computer, providing t the same time an effective way of delivering</p>
 </div>
-<div id="assessing-model-fit-anova-model-validation-model-diagnostics-handling-nonlinear-relationships." class="section level2">
-<h2><span class="header-section-number">1.3</span> Assessing model fit; ANOVA; model validation; model diagnostics; handling nonlinear relationships.</h2>
-<p>You can label chapter and section titles using <code>{#label}</code> after them, e.g., we can reference Chapter <a href="#intro"><strong>??</strong></a>. If you do not manually label them, there will be automatic labels anyway, e.g., Chapter <a href="#methods"><strong>??</strong></a>.</p>
-<p>Figures and tables with captions will be placed in <code>figure</code> and <code>table</code> environments, respectively.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, .<span class="dv">1</span>, .<span class="dv">1</span>))
-<span class="kw">plot</span>(pressure, <span class="dt">type =</span> <span class="st">&#39;b&#39;</span>, <span class="dt">pch =</span> <span class="dv">19</span>)</code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:nice-fig"></span>
-<img src="SSS2_files/figure-html/nice-fig-1.png" alt="Here is a nice figure!" width="80%" />
-<p class="caption">
-Figure 1.1: Here is a nice figure!
-</p>
+<div id="software-required" class="section level2 unnumbered">
+<h2>Software required</h2>
+<ul>
+<li><p><a href="https://cran.r-project.org/"><code>R</code></a>, <em>a free software environment for statistical computing and graphics</em>.</p></li>
+<li><p><a href="http://www.deducer.org/"><code>Deducer</code></a>, a <em>free easy to use alternative to proprietary data analysis software</em> that <em>provides an intuitive graphical user interface (GUI) for <code>R</code>, encouraging non-technical users to learn and perform analyses without programming getting in their way</em>.</p></li>
+</ul>
 </div>
-<p>Reference a figure by its code chunk label with the <code>fig:</code> prefix, e.g., see Figure <a href="simp.html#fig:nice-fig">1.1</a>. Similarly, you can reference tables generated from <code>knitr::kable()</code>, e.g., see Table <a href="simp.html#tab:nice-tab">1.1</a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr::<span class="kw">kable</span>(
-  <span class="kw">head</span>(iris, <span class="dv">20</span>), <span class="dt">caption =</span> <span class="st">&#39;Here is a nice table!&#39;</span>,
-  <span class="dt">booktabs =</span> <span class="ot">TRUE</span>
-)</code></pre></div>
-<table>
-<caption><span id="tab:nice-tab">Table 1.1: </span>Here is a nice table!</caption>
-<thead>
-<tr class="header">
-<th align="right">Sepal.Length</th>
-<th align="right">Sepal.Width</th>
-<th align="right">Petal.Length</th>
-<th align="right">Petal.Width</th>
-<th align="left">Species</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="right">5.1</td>
-<td align="right">3.5</td>
-<td align="right">1.4</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="even">
-<td align="right">4.9</td>
-<td align="right">3.0</td>
-<td align="right">1.4</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="odd">
-<td align="right">4.7</td>
-<td align="right">3.2</td>
-<td align="right">1.3</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="even">
-<td align="right">4.6</td>
-<td align="right">3.1</td>
-<td align="right">1.5</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="odd">
-<td align="right">5.0</td>
-<td align="right">3.6</td>
-<td align="right">1.4</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="even">
-<td align="right">5.4</td>
-<td align="right">3.9</td>
-<td align="right">1.7</td>
-<td align="right">0.4</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="odd">
-<td align="right">4.6</td>
-<td align="right">3.4</td>
-<td align="right">1.4</td>
-<td align="right">0.3</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="even">
-<td align="right">5.0</td>
-<td align="right">3.4</td>
-<td align="right">1.5</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="odd">
-<td align="right">4.4</td>
-<td align="right">2.9</td>
-<td align="right">1.4</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="even">
-<td align="right">4.9</td>
-<td align="right">3.1</td>
-<td align="right">1.5</td>
-<td align="right">0.1</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="odd">
-<td align="right">5.4</td>
-<td align="right">3.7</td>
-<td align="right">1.5</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="even">
-<td align="right">4.8</td>
-<td align="right">3.4</td>
-<td align="right">1.6</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="odd">
-<td align="right">4.8</td>
-<td align="right">3.0</td>
-<td align="right">1.4</td>
-<td align="right">0.1</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="even">
-<td align="right">4.3</td>
-<td align="right">3.0</td>
-<td align="right">1.1</td>
-<td align="right">0.1</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="odd">
-<td align="right">5.8</td>
-<td align="right">4.0</td>
-<td align="right">1.2</td>
-<td align="right">0.2</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="even">
-<td align="right">5.7</td>
-<td align="right">4.4</td>
-<td align="right">1.5</td>
-<td align="right">0.4</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="odd">
-<td align="right">5.4</td>
-<td align="right">3.9</td>
-<td align="right">1.3</td>
-<td align="right">0.4</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="even">
-<td align="right">5.1</td>
-<td align="right">3.5</td>
-<td align="right">1.4</td>
-<td align="right">0.3</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="odd">
-<td align="right">5.7</td>
-<td align="right">3.8</td>
-<td align="right">1.7</td>
-<td align="right">0.3</td>
-<td align="left">setosa</td>
-</tr>
-<tr class="even">
-<td align="right">5.1</td>
-<td align="right">3.8</td>
-<td align="right">1.5</td>
-<td align="right">0.3</td>
-<td align="left">setosa</td>
-</tr>
-</tbody>
-</table>
-<p>You can write citations, too. For example, we are using the <strong>bookdown</strong> package <span class="citation">(Xie <a href="#ref-R-bookdown">2016</a>)</span> in this sample book, which was built on top of R Markdown and <strong>knitr</strong> <span class="citation">(Xie <a href="#ref-xie2015">2015</a>)</span>.</p>
-<p>This is a <em>sample</em> book written in <strong>Markdown</strong>. You can use anything that Pandoc’s Markdown supports, e.g., a math equation <span class="math inline">\(a^2 + b^2 = c^2\)</span>.</p>
-<p>For now, you have to install the development versions of <strong>bookdown</strong> from Github:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools::<span class="kw">install_github</span>(<span class="st">&quot;rstudio/bookdown&quot;</span>)</code></pre></div>
-<p>Remember each Rmd file contains one and only one chapter, and a chapter is defined by the first-level heading <code>#</code>.</p>
-<p>To compile this example to PDF, you need to install XeLaTeX.</p>
+<div id="logistics" class="section level2 unnumbered">
+<h2>Logistics</h2>
+<ul>
+<li>Lessons in Computer Lab</li>
+<li>Doubts regarding theory -&gt; Jose</li>
+<li>Doubts regarding implementation -&gt; Eduardo</li>
+</ul>
+<p>Regarding</p>
 
-</div>
-</div>
-<h3>References</h3>
-<div id="refs" class="references">
-<div id="ref-R-bookdown">
-<p>Xie, Yihui. 2016. <em>Bookdown: Authoring Books with R Markdown</em>. <a href="https://github.com/rstudio/bookdown" class="uri">https://github.com/rstudio/bookdown</a>.</p>
-</div>
-<div id="ref-xie2015">
-<p>Xie, Yihui. 2015. <em>Dynamic Documents with R and Knitr</em>. 2nd ed. Boca Raton, Florida: Chapman; Hall/CRC. <a href="http://yihui.name/knitr/" class="uri">http://yihui.name/knitr/</a>.</p>
 </div>
 </div>
             </section>
@@ -360,8 +194,8 @@ Figure 1.1: Here is a nice figure!
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="mult.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+
+<a href="simp.html" class="navigation navigation-next navigation-unique" aria-label="Next page""><i class="fa fa-angle-right"></i></a>
 
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
@@ -388,10 +222,10 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/egarpor/SSS2/master/01-simp-lin-reg.Rmd",
+"link": "https://github.com/egarpor/SSS2-UC3M/edit/master/index.Rmd",
 "text": "Edit"
 },
-"download": ["SSS2.pdf", "SSS2.epub"],
+"download": ["SSS2-UC3M.pdf", "SSS2-UC3M.epub"],
 "toc": {
 "collapse": "subsection"
 }

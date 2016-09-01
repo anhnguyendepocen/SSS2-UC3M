@@ -5,27 +5,27 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Computer lab notes for Statistics for social sciences II: multivariate techniques</title>
+  <title>Lab notes for Statistics for Social Sciences II: Multivariate Techniques</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-  <meta name="description" content="Computer lab notes for <em>Statistics for social sciences II: multivariate techniques</em>">
+  <meta name="description" content="Lab notes for <em>Statistics for Social Sciences II: Multivariate Techniques</em>">
   <meta name="generator" content="bookdown 0.1.6 and GitBook 2.6.7">
 
-  <meta property="og:title" content="Computer lab notes for Statistics for social sciences II: multivariate techniques" />
+  <meta property="og:title" content="Lab notes for Statistics for Social Sciences II: Multivariate Techniques" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="Computer lab notes for <em>Statistics for social sciences II: multivariate techniques</em>" />
-  <meta name="github-repo" content="rstudio/bookdown-demo" />
+  <meta property="og:description" content="Lab notes for <em>Statistics for Social Sciences II: Multivariate Techniques</em>" />
+  <meta name="github-repo" content="egarpor/SSS2-UC3M" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Computer lab notes for Statistics for social sciences II: multivariate techniques" />
+  <meta name="twitter:title" content="Lab notes for Statistics for Social Sciences II: Multivariate Techniques" />
   
-  <meta name="twitter:description" content="Computer lab notes for <em>Statistics for social sciences II: multivariate techniques</em>" />
+  <meta name="twitter:description" content="Lab notes for <em>Statistics for Social Sciences II: Multivariate Techniques</em>" />
   
 
 <meta name="author" content="Eduardo García Portugués">
 
-<meta name="date" content="2016-09-01">
+<meta name="date" content="2016-09-02">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -38,8 +38,8 @@ MathJax.Hub.Config({
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="fapca.html">
-<link rel="next" href="references.html">
+<link rel="prev" href="simp.html">
+<link rel="next" href="log.html">
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -106,10 +106,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">A Minimal Book Example</a></li>
+<li><a href="./">Statistics for Social Sciences II: Multivariate Techniques</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Some useful information</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#what-are-these-notes-for"><i class="fa fa-check"></i>What are these notes for?</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#software-required"><i class="fa fa-check"></i>Software required</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#logistics"><i class="fa fa-check"></i>Logistics</a></li>
 </ul></li>
@@ -139,7 +140,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
-<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+<li><a href="https://github.com/egarpor/SSS2-UC3M" target="blank">Published with bookdown</a></li>
 
 </ul>
 
@@ -150,7 +151,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Computer lab notes for <em>Statistics for social sciences II: multivariate techniques</em></a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Lab notes for <em>Statistics for Social Sciences II: Multivariate Techniques</em></a>
           </h1>
         </div>
 
@@ -158,13 +159,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="cluster" class="section level1">
-<h1><span class="header-section-number">Chapter 5</span> Cluster analysis</h1>
-<div id="motivation-examples-applications-hierarchical-agglomerative-clustering-dendrogram." class="section level2">
-<h2><span class="header-section-number">5.1</span> Motivation; examples; applications; hierarchical agglomerative clustering; dendrogram.</h2>
+<div id="mult" class="section level1">
+<h1><span class="header-section-number">Chapter 2</span> Multiple linear regression</h1>
+<div id="motivation-model-formulation-examples-applications-assumptions." class="section level2">
+<h2><span class="header-section-number">2.1</span> Motivation; model formulation; examples; applications; assumptions.</h2>
 </div>
-<div id="choosing-the-number-of-clusters-assessing-fit-interpretation-of-clusters." class="section level2">
-<h2><span class="header-section-number">5.2</span> Choosing the number of clusters; assessing fit; interpretation of clusters.</h2>
+<div id="estimation-of-model-parameters-least-squares-inference-for-model-parameters-forecasting.-1" class="section level2">
+<h2><span class="header-section-number">2.2</span> Estimation of model parameters; least squares; inference for model parameters; forecasting.</h2>
+</div>
+<div id="assessing-model-fit-anova-model-validation." class="section level2">
+<h2><span class="header-section-number">2.3</span> Assessing model fit; ANOVA; model validation.</h2>
+</div>
+<div id="multicollinearity-model-diagnostics." class="section level2">
+<h2><span class="header-section-number">2.4</span> Multicollinearity; model diagnostics.</h2>
 <p>You can label chapter and section titles using <code>{#label}</code> after them</p>
 
 </div>
@@ -174,8 +181,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           </div>
         </div>
       </div>
-<a href="fapca.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="references.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+<a href="simp.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="log.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
 
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
@@ -202,10 +209,10 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/egarpor/SSS2/master/05-cluster.Rmd",
+"link": "https://github.com/egarpor/SSS2-UC3M/edit/master/02-mult-lin-reg.Rmd",
 "text": "Edit"
 },
-"download": ["SSS2.pdf", "SSS2.epub"],
+"download": ["SSS2-UC3M.pdf", "SSS2-UC3M.epub"],
 "toc": {
 "collapse": "subsection"
 }

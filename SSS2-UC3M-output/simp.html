@@ -5,27 +5,27 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Computer lab notes for Statistics for social sciences II: multivariate techniques</title>
+  <title>Lab notes for Statistics for Social Sciences II: Multivariate Techniques</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-  <meta name="description" content="Computer lab notes for <em>Statistics for social sciences II: multivariate techniques</em>">
+  <meta name="description" content="Lab notes for <em>Statistics for Social Sciences II: Multivariate Techniques</em>">
   <meta name="generator" content="bookdown 0.1.6 and GitBook 2.6.7">
 
-  <meta property="og:title" content="Computer lab notes for Statistics for social sciences II: multivariate techniques" />
+  <meta property="og:title" content="Lab notes for Statistics for Social Sciences II: Multivariate Techniques" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="Computer lab notes for <em>Statistics for social sciences II: multivariate techniques</em>" />
-  <meta name="github-repo" content="rstudio/bookdown-demo" />
+  <meta property="og:description" content="Lab notes for <em>Statistics for Social Sciences II: Multivariate Techniques</em>" />
+  <meta name="github-repo" content="egarpor/SSS2-UC3M" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Computer lab notes for Statistics for social sciences II: multivariate techniques" />
+  <meta name="twitter:title" content="Lab notes for Statistics for Social Sciences II: Multivariate Techniques" />
   
-  <meta name="twitter:description" content="Computer lab notes for <em>Statistics for social sciences II: multivariate techniques</em>" />
+  <meta name="twitter:description" content="Lab notes for <em>Statistics for Social Sciences II: Multivariate Techniques</em>" />
   
 
 <meta name="author" content="Eduardo García Portugués">
 
-<meta name="date" content="2016-09-01">
+<meta name="date" content="2016-09-02">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -39,7 +39,7 @@ MathJax.Hub.Config({
   
   
 <link rel="prev" href="index.html">
-<link rel="next" href="literature.html">
+<link rel="next" href="mult.html">
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -106,25 +106,41 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">A Minimal Book Example</a></li>
+<li><a href="./">Statistics for Social Sciences II: Multivariate Techniques</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#what-are-these-notes-for"><i class="fa fa-check"></i>What are these notes for?</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#software-required"><i class="fa fa-check"></i>Software required</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#logistics"><i class="fa fa-check"></i>Logistics</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#doubtsquestions"><i class="fa fa-check"></i>Doubts/questions</a></li>
 </ul></li>
-<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
-<li class="chapter" data-level="2" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i><b>2</b> Literature</a></li>
-<li class="chapter" data-level="3" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>3</b> Methods</a></li>
-<li class="chapter" data-level="4" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>4</b> Applications</a><ul>
-<li class="chapter" data-level="4.1" data-path="applications.html"><a href="applications.html#example-one"><i class="fa fa-check"></i><b>4.1</b> Example one</a></li>
-<li class="chapter" data-level="4.2" data-path="applications.html"><a href="applications.html#example-two"><i class="fa fa-check"></i><b>4.2</b> Example two</a></li>
+<li class="chapter" data-level="1" data-path="simp.html"><a href="simp.html"><i class="fa fa-check"></i><b>1</b> Simple linear regression</a><ul>
+<li class="chapter" data-level="1.1" data-path="simp.html"><a href="simp.html#motivation-model-formulation-examples-applications-assumptions"><i class="fa fa-check"></i><b>1.1</b> Motivation; model formulation; examples; applications; assumptions</a></li>
+<li class="chapter" data-level="1.2" data-path="simp.html"><a href="simp.html#estimation-of-model-parameters-least-squares-inference-for-model-parameters-forecasting."><i class="fa fa-check"></i><b>1.2</b> Estimation of model parameters; least squares; inference for model parameters; forecasting.</a></li>
+<li class="chapter" data-level="1.3" data-path="simp.html"><a href="simp.html#assessing-model-fit-anova-model-validation-model-diagnostics-handling-nonlinear-relationships."><i class="fa fa-check"></i><b>1.3</b> Assessing model fit; ANOVA; model validation; model diagnostics; handling nonlinear relationships.</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>5</b> Final Words</a></li>
+<li class="chapter" data-level="2" data-path="mult.html"><a href="mult.html"><i class="fa fa-check"></i><b>2</b> Multiple linear regression</a><ul>
+<li class="chapter" data-level="2.1" data-path="mult.html"><a href="mult.html#motivation-model-formulation-examples-applications-assumptions."><i class="fa fa-check"></i><b>2.1</b> Motivation; model formulation; examples; applications; assumptions.</a></li>
+<li class="chapter" data-level="2.2" data-path="mult.html"><a href="mult.html#estimation-of-model-parameters-least-squares-inference-for-model-parameters-forecasting.-1"><i class="fa fa-check"></i><b>2.2</b> Estimation of model parameters; least squares; inference for model parameters; forecasting.</a></li>
+<li class="chapter" data-level="2.3" data-path="mult.html"><a href="mult.html#assessing-model-fit-anova-model-validation."><i class="fa fa-check"></i><b>2.3</b> Assessing model fit; ANOVA; model validation.</a></li>
+<li class="chapter" data-level="2.4" data-path="mult.html"><a href="mult.html#multicollinearity-model-diagnostics."><i class="fa fa-check"></i><b>2.4</b> Multicollinearity; model diagnostics.</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="log.html"><a href="log.html"><i class="fa fa-check"></i><b>3</b> Binomial logistic regression</a><ul>
+<li class="chapter" data-level="3.1" data-path="log.html"><a href="log.html#motivation-model-formulation-examples-applications-assumptions.-1"><i class="fa fa-check"></i><b>3.1</b> Motivation; model formulation; examples; applications; assumptions.</a></li>
+<li class="chapter" data-level="3.2" data-path="log.html"><a href="log.html#parameter-estimation-assessing-model-fit-significance-testing-interpreting-coefficients."><i class="fa fa-check"></i><b>3.2</b> Parameter estimation; assessing model fit; significance testing; interpreting coefficients.</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="fapca.html"><a href="fapca.html"><i class="fa fa-check"></i><b>4</b> Factor analysis and principal component analysis</a><ul>
+<li class="chapter" data-level="4.1" data-path="fapca.html"><a href="fapca.html#motivation-formulations-examples-applications-assumptions."><i class="fa fa-check"></i><b>4.1</b> Motivation; formulations; examples; applications; assumptions.</a></li>
+<li class="chapter" data-level="4.2" data-path="fapca.html"><a href="fapca.html#principal-components-analysis-choosing-the-number-of-factors-analysis-and-interpretation."><i class="fa fa-check"></i><b>4.2</b> Principal components analysis; choosing the number of factors; analysis and interpretation.</a></li>
+<li class="chapter" data-level="4.3" data-path="fapca.html"><a href="fapca.html#exploratory-factor-analysis-design-analysis-and-interpretation-rotation-of-factors."><i class="fa fa-check"></i><b>4.3</b> Exploratory factor analysis; design, analysis and interpretation; rotation of factors.</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="cluster.html"><a href="cluster.html"><i class="fa fa-check"></i><b>5</b> Cluster analysis</a><ul>
+<li class="chapter" data-level="5.1" data-path="cluster.html"><a href="cluster.html#motivation-examples-applications-hierarchical-agglomerative-clustering-dendrogram."><i class="fa fa-check"></i><b>5.1</b> Motivation; examples; applications; hierarchical agglomerative clustering; dendrogram.</a></li>
+<li class="chapter" data-level="5.2" data-path="cluster.html"><a href="cluster.html#choosing-the-number-of-clusters-assessing-fit-interpretation-of-clusters."><i class="fa fa-check"></i><b>5.2</b> Choosing the number of clusters; assessing fit; interpretation of clusters.</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
-<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+<li><a href="https://github.com/egarpor/SSS2-UC3M" target="blank">Published with bookdown</a></li>
 
 </ul>
 
@@ -135,7 +151,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Computer lab notes for <em>Statistics for social sciences II: multivariate techniques</em></a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Lab notes for <em>Statistics for Social Sciences II: Multivariate Techniques</em></a>
           </h1>
         </div>
 
@@ -143,19 +159,29 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="intro" class="section level1">
-<h1><span class="header-section-number">Chapter 1</span> Introduction</h1>
-<p>You can label chapter and section titles using <code>{#label}</code> after them, e.g., we can reference Chapter <a href="intro.html#intro">1</a>. If you do not manually label them, there will be automatic labels anyway, e.g., Chapter <a href="methods.html#methods">3</a>.</p>
+<div id="simp" class="section level1">
+<h1><span class="header-section-number">Chapter 1</span> Simple linear regression</h1>
+<div id="motivation-model-formulation-examples-applications-assumptions" class="section level2">
+<h2><span class="header-section-number">1.1</span> Motivation; model formulation; examples; applications; assumptions</h2>
+<p>Simple linear regression</p>
+<p><span class="math display">\[Y_i=a+bX_i+\varepsilon,\quad i=1,\ldots,n.\]</span></p>
+</div>
+<div id="estimation-of-model-parameters-least-squares-inference-for-model-parameters-forecasting." class="section level2">
+<h2><span class="header-section-number">1.2</span> Estimation of model parameters; least squares; inference for model parameters; forecasting.</h2>
+</div>
+<div id="assessing-model-fit-anova-model-validation-model-diagnostics-handling-nonlinear-relationships." class="section level2">
+<h2><span class="header-section-number">1.3</span> Assessing model fit; ANOVA; model validation; model diagnostics; handling nonlinear relationships.</h2>
+<p>You can label chapter and section titles using <code>{#label}</code> after them, e.g., we can reference Chapter <a href="#intro"><strong>??</strong></a>. If you do not manually label them, there will be automatic labels anyway, e.g., Chapter <a href="#methods"><strong>??</strong></a>.</p>
 <p>Figures and tables with captions will be placed in <code>figure</code> and <code>table</code> environments, respectively.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, .<span class="dv">1</span>, .<span class="dv">1</span>))
 <span class="kw">plot</span>(pressure, <span class="dt">type =</span> <span class="st">&#39;b&#39;</span>, <span class="dt">pch =</span> <span class="dv">19</span>)</code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:nice-fig"></span>
-<img src="SSS2_files/figure-html/nice-fig-1.png" alt="Here is a nice figure!" width="80%" />
+<img src="SSS2-UC3M_files/figure-html/nice-fig-1.png" alt="Here is a nice figure!" width="80%" />
 <p class="caption">
 Figure 1.1: Here is a nice figure!
 </p>
 </div>
-<p>Reference a figure by its code chunk label with the <code>fig:</code> prefix, e.g., see Figure <a href="intro.html#fig:nice-fig">1.1</a>. Similarly, you can reference tables generated from <code>knitr::kable()</code>, e.g., see Table <a href="intro.html#tab:nice-tab">1.1</a>.</p>
+<p>Reference a figure by its code chunk label with the <code>fig:</code> prefix, e.g., see Figure <a href="simp.html#fig:nice-fig">1.1</a>. Similarly, you can reference tables generated from <code>knitr::kable()</code>, e.g., see Table <a href="simp.html#tab:nice-tab">1.1</a>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr::<span class="kw">kable</span>(
   <span class="kw">head</span>(iris, <span class="dv">20</span>), <span class="dt">caption =</span> <span class="st">&#39;Here is a nice table!&#39;</span>,
   <span class="dt">booktabs =</span> <span class="ot">TRUE</span>
@@ -315,7 +341,13 @@ Figure 1.1: Here is a nice figure!
 </tbody>
 </table>
 <p>You can write citations, too. For example, we are using the <strong>bookdown</strong> package <span class="citation">(Xie <a href="#ref-R-bookdown">2016</a>)</span> in this sample book, which was built on top of R Markdown and <strong>knitr</strong> <span class="citation">(Xie <a href="#ref-xie2015">2015</a>)</span>.</p>
+<p>This is a <em>sample</em> book written in <strong>Markdown</strong>. You can use anything that Pandoc’s Markdown supports, e.g., a math equation <span class="math inline">\(a^2 + b^2 = c^2\)</span>.</p>
+<p>For now, you have to install the development versions of <strong>bookdown</strong> from Github:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools::<span class="kw">install_github</span>(<span class="st">&quot;rstudio/bookdown&quot;</span>)</code></pre></div>
+<p>Remember each Rmd file contains one and only one chapter, and a chapter is defined by the first-level heading <code>#</code>.</p>
+<p>To compile this example to PDF, you need to install XeLaTeX.</p>
 
+</div>
 </div>
 <h3>References</h3>
 <div id="refs" class="references">
@@ -332,7 +364,7 @@ Figure 1.1: Here is a nice figure!
         </div>
       </div>
 <a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="literature.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+<a href="mult.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
 
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
@@ -359,10 +391,10 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/egarpor/SSS2/master/01-intro.Rmd",
+"link": "https://github.com/egarpor/SSS2-UC3M/edit/master/01-simp-lin-reg.Rmd",
 "text": "Edit"
 },
-"download": null,
+"download": ["SSS2-UC3M.pdf", "SSS2-UC3M.epub"],
 "toc": {
 "collapse": "subsection"
 }

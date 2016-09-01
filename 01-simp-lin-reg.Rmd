@@ -2,6 +2,10 @@
 
 ## Motivation; model formulation; examples; applications; assumptions
 
+Simple linear regression
+
+$$Y_i=a+bX_i+\varepsilon,\quad i=1,\ldots,n.$$
+
 ## Estimation of model parameters; least squares; inference for model parameters; forecasting.
 
 ## Assessing model fit; ANOVA; model validation; model diagnostics; handling nonlinear relationships.
