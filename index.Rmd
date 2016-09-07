@@ -37,7 +37,7 @@ The software required is available in all UC3M computer labs, including INF-15.S
 
 - [`R`](https://www.r-project.org/). A free open-source software environment for statistical computing and graphics. Virtually all statistical analyisis you can think of is availabe in `R`.
 
-- [`R commander`](http://socserv.mcmaster.ca/jfox/Misc/Rcmdr/). A Graphical User Interface (GUI) designed to make `R` accessible to non-specialists through friendly menus. Essentially, it acts as a translator from 'human' to `R` code.
+- [`R Commander`](http://socserv.mcmaster.ca/jfox/Misc/Rcmdr/). A Graphical User Interface (GUI) designed to make `R` accessible to non-specialists through friendly menus. Essentially, it acts as a translator from 'human' to `R` code.
 
 The only thing you need to do to run `R Commander` in any UC3M computer is:
 
