@@ -1,16 +1,22 @@
 bookdown::gitbook:
-  css: style.css
+  css: css/style.css
   config:
     toc:
+      collapse: subsection
       before: |
         <li><a href="./">Statistics for Social Sciences II: Multivariate Techniques</a></li>
       after: |
         <li><a href="https://github.com/egarpor/SSS2-UC3M" target="blank">Published with bookdown</a></li>
+    download: [pdf, epub, mobi]
     edit:
       link: https://github.com/egarpor/SSS2-UC3M/edit/master/%s
+bookdown::html_chapters:
+  css: [css/style.css, css/toc.css]
 bookdown::pdf_book:
   includes:
     in_header: preamble.tex
+  keep_tex: yes
   latex_engine: xelatex
   citation_package: natbib
-bookdown::epub_book: default
+bookdown::epub_book:
+  stylesheet: css/style.css

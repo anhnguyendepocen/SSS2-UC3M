@@ -1,7 +1,4 @@
-book_filename: "SSS2-UC3M.Rmd"
+book_filename: "SSS2-UC3M"
 chapter_name: "Chapter "
-edit:
-  link: https://github.com/egarpor/SSS2-UC3M/edit/master/%s
-  text: "Edit"
-output_dir: "SSS2-UC3M-output"
-clean: ["SSS2-UC3M.bbl", "packages.bib"]
+output_dir: _book
+clean: ["packages.bib", "SSS2-UC3M.bbl"]

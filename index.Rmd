@@ -3,14 +3,14 @@ title: "Lab notes for *Statistics for Social Sciences II: Multivariate Technique
 subtitle: "BSc in International Studies, BSc in International	Studies	&	Political	Science, Carlos III University of Madrid"
 author: "Eduardo García Portugués"
 date: "`r Sys.Date()`"
-site: bookdown::bookdown_site
-output: bookdown::gitbook
+knit: "bookdown::render_book"
 documentclass: book
 bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
-github-repo: egarpor/SSS2-UC3M
+site: bookdown::bookdown_site
 description: "Lab notes for *Statistics for Social Sciences II: Multivariate Techniques*"
+github-repo: egarpor/SSS2-UC3M
 ---
 
 # Introduction {-}
@@ -41,24 +41,29 @@ The software required is available in all UC3M computer labs, including INF-15.S
 
 The only thing you need to do to run `R Commander` in any UC3M computer is:
 
-1. Run 'Start' -> 'R3.3.1' -> 'R3.3.1 (consola)'.  A black console will open. Do not panic!
+1. Run `'Start' -> 'R3.3.1' -> 'R3.3.1 (consola)'`.  A black console will open. Do not panic!
 2. Type inside
 
-    ``
+    ```{r, eval = FALSE}
     library(Rcmdr)
-    ``
+    ```
 
 If `Rcmdr` is installed, then `R Commander` will open automatically and you are ready to go. If it is not, then type
 
-``
+```{r, eval = FALSE}
 install.packages("Rcmdr", dep = TRUE)
-``
+```
 
-and say 'Yes' to the next pop-ups. Choose a CRAN mirror, e.g. 'Spain (*) [https]', which usually work well. Wait for the downloading and installation of the packages. When it is done, type `library(Rcmdr)`.
+and say 'Yes' to the next pop-ups. Choose a CRAN mirror (`'Spain (*) [https]'` usually work OK). Wait for the downloading and installation of the packages. When it is done, just type 
+```{r, eval = FALSE}
+library(Rcmdr)
+```
 
 An **important** warning about UC3M computer labs:
 
-> Every file you save locally in the computer  (including downloaded packages) will be wiped out after you close your session! So be sure to save your worth files in a pendrive or in a your `Google Drive` account. 
+```{block, type = 'rmdimportant'}
+Every file you save locally in the computer  (including downloaded packages) will be wiped out after you close your session! So be sure to save your worth files in a pendrive or in a your `Google Drive` account. 
+```
 
 Alternatively, you can bring your own laptop, see below.
 
@@ -69,7 +74,7 @@ There are many advanced commercial statistical packages, such as `SPSS`, `Excel`
 1. **Free and open-source**. (Free as in beer, free as in speech.) No software licenses are needed. This means that you can readily use it outside UC3M computer labs.
 2. **Scalable complexity and extensibility**. `R Commander` creates `R` code that you can see, and eventually understand. Once you begin to get a feeling of the code, you will realize it is faster to type the right commands than to navigate through menus. `R Commander` has a good number of high-quality and user-friendly plugins.
 3. **`R` is the leading computer language in data science/statistics**. Any statistical analyisis you can imagine is already available in `R` through its almost 9000 free packages (September, 2016). Some of them contain a good number of ready-to-use datasets. Albeit the methodological contents covered in this course are standard, bear in mind that you will be trained on how to implement them in a top-valued statistical tool.
-4. **`R Commander` produces high-quality graphs easily**. `R Commander`, through the plugin `KMggplot2`, uses the [`ggplot2`](http://www.r-graph-gallery.com/portfolio/ggplot2-package/) library. `ggplot2` delivers publication-level graphs and is considered as one of the best and more elegant graphing packages nowadays. 
+4. **`R Commander` produces high-quality graphs easily**. `R Commander`, through the plugin `KMggplot2`, uses the [`ggplot2`](http://www.r-graph-gallery.com/portfolio/ggplot2-package/) library, which delivers publication-level graphs. It is considered as one of the best and more elegant graphing packages nowadays. 
 5. **Great report integration**. `R Commander` integrates with `R Markdown`, which is a package able to create dynamic `.html`, `.pdf` and `.docx` reports directly from the outputs of `R Commander`.
 
 In summary, with `R` + `R Commander` you will be trained in a highly-valued software that allows you to produce  statistical reports efficiently. Mastering this surely will make an **important distinction in your graduate profile** (social scientists *used* to lack this kind of formation). So I encourage you to take full advantage of this opportuity!
@@ -78,24 +83,30 @@ In summary, with `R` + `R Commander` you will be trained in a highly-valued soft
 
 You are allowed to bring your own laptop to the labs. This may have a series of benefits, such as admin privileges and the option to save all your files locally. But keep in mind:
 
-> If you plan to use your personal laptop, **you** are responsible for the right setup of the software and laptop prior to the lab lesson.
+```{block, type = 'rmdimportant'}
+If you plan to use your personal laptop, **you** are responsible for the right setup of the software and laptop prior to the lab lesson.
+```
 
 At some point you will probably need to run the software outside UC3M computer labs. This is what you have to do to install everything:
 
-1. Download `R` ( [Windows](https://cran.r-project.org/bin/windows/base/R-3.3.1-win.exe), [Mac](https://cran.r-project.org/bin/macosx/R-3.3.1.pkg)). 
-2. Install `R`. In Windows, be sure to select 'Startup options' and then choose the 'SDI' mode in the 'Display Mode'. Leave the rest of the options as default.
-3. Open `R` and copy and paste:
+1. Download `R` ([Windows](https://cran.r-project.org/bin/windows/base/R-3.3.1-win.exe), [Mac](https://cran.r-project.org/bin/macosx/R-3.3.1.pkg)). 
+2. Install `R`. In Windows, be sure to select `'Startup options'` and then choose the `'SDI'` in the `'Display Mode'`. Leave the rest of the options as default.
+3. Open `R` (`'R x64 3.3.1'` in 64-bit Windows, `'R i386 3.3.1'` in 32-bit Windows, `'R'` in Mac) and copy and paste:
 
-    ``
+    ```{r, eval = FALSE}
     install.packages(c("Rcmdr", "RcmdrPlugin.TeachingDemos", "RcmdrPlugin.FactoMineR", "RcmdrPlugin.KMggplot2"), dep = TRUE)
-    ``
+    ```
     
     Say 'Yes' to pop-ups and choose the CRAN mirror.
 
-4. To launch the software, run `R` ('R x64 3.3.1' in Windows, 'R' in Mac) and then 
+4. To launch the software, run `R` and then 
 
-    ``
+    ```{r, eval = FALSE}
     library(Rcmdr)
-    ``
+    ```
 
 If there is any Linux user, follow [this](https://cran.r-project.org/) and [this]( http://socserv.mcmaster.ca/jfox/Misc/Rcmdr/installation-notes.html).
+
+## Hands in `R Commander` {-r}
+
+

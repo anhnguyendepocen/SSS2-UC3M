@@ -1,7 +1,24 @@
 # Simple linear regression {#simp}
 
-## Motivation; model formulation; examples; applications; assumptions
+Data
 
+## Examples and applications
+
+## Model formulation and assumptions
+
+## Estimation of model parameters by least squares
+
+## Inference for model parameters
+
+## Forecasting
+
+## Assesing model fit and ANOVA
+
+## Model diagnostics
+
+## Nonlinear relationships
+
+## Nottingham 
 
 ### Motivating example
 
@@ -189,9 +206,7 @@ Simple linear regression
 
 $$Y_i=a+bX_i+\varepsilon,\quad i=1,\ldots,n.$$
 
-## Estimation of model parameters; least squares; inference for model parameters; forecasting.
-
-## Assessing model fit; ANOVA; model validation; model diagnostics; handling nonlinear relationships.
+## Bookdown help
 
 You can label chapter and section titles using `{#label}` after them, e.g., we can reference Chapter \@ref(intro). If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \@ref(methods).
 
@@ -212,22 +227,3 @@ knitr::kable(
 ```
 
 You can write citations, too. For example, we are using the **bookdown** package [@R-bookdown] in this sample book, which was built on top of R Markdown and **knitr** [@xie2015].
-
-This is a _sample_ book written in **Markdown**. You can use anything that Pandoc's Markdown supports, e.g., a math equation $a^2 + b^2 = c^2$.
-
-For now, you have to install the development versions of **bookdown** from Github:
-
-```{r eval=FALSE}
-devtools::install_github("rstudio/bookdown")
-```
-
-Remember each Rmd file contains one and only one chapter, and a chapter is defined by the first-level heading `#`.
-
-To compile this example to PDF, you need to install XeLaTeX.
-
-```{r include=FALSE}
-# automatically create a bib database for R packages
-knitr::write_bib(c(
-  .packages(), 'bookdown', 'knitr', 'rmarkdown'
-), 'packages.bib')
-```
