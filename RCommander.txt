@@ -1,0 +1,41 @@
+
+> pisa <- read.table("/Users/Eduardo/GitHub/SSS2-UC3M/datasets/PISA2012-GDP.csv", header=TRUE, 
++   sep=",", na.strings="NA", dec=".", strip.white=TRUE)
+
+> pisa <- read.table("/Users/Eduardo/GitHub/SSS2-UC3M/PISA2012-GDPp.csv", header=TRUE,
++    sep=",", na.strings="NA", dec=".", strip.white=TRUE)
+
+> scatterplot(MathMean~GDPp | HighIncomeEconomy, reg.line=lm, smooth=FALSE, 
++   spread=FALSE, boxplots=FALSE, span=0.5, ellipse=FALSE, levels=c(.5, .9), 
++   by.groups=TRUE, data=pisa, subset=)
+
+> names(pisa)
+[1] "Country"           "MathMean"          "MathShareLow"      "MathShareTop"     
+[5] "ReadingMean"       "ScienceMean"       "GDPp"              "HighIncomeEconomy"
+
+> partdata <- subset(pisa, subset=HighIncomeEconomy)
+
+> scatterplot(GDPp~MathMean, reg.line=FALSE, smooth=FALSE, spread=FALSE, boxplots=FALSE, 
++   span=0.5, ellipse=FALSE, levels=c(.5, .9), data=partdata)
+
+> scatterplot(GDPp~MathMean, reg.line=FALSE, smooth=FALSE, spread=FALSE, boxplots=FALSE, 
++   span=0.5, ellipse=FALSE, levels=c(.5, .9), data=partdata)
+
+> scatterplot(MathMean~GDPp, reg.line=FALSE, smooth=FALSE, spread=FALSE, boxplots=FALSE, 
++   span=0.5, ellipse=FALSE, levels=c(.5, .9), data=partdata)
+
+> Dataset <- read.table("/Users/Eduardo/GitHub/SSS2-UC3M/PISA2012-GDPp.csv", header=TRUE, 
++   sep=",", na.strings="NA", dec=".", strip.white=TRUE)
+
+> scatterplot(logGDPp~MathMean, reg.line=FALSE, smooth=FALSE, spread=FALSE, 
++   boxplots=FALSE, span=0.5, ellipse=FALSE, levels=c(.5, .9), data=Dataset)
+
+> scatterplot(logGDPp~MathMean, reg.line=FALSE, smooth=TRUE, spread=FALSE, 
++   boxplots=FALSE, span=0.5, ellipse=FALSE, levels=c(.5, .9), data=Dataset)
+
+> scatterplot(logGDPp~MathMean, reg.line=lm, smooth=FALSE, spread=FALSE, boxplots=FALSE, 
++   span=0.5, ellipse=FALSE, levels=c(.5, .9), data=Dataset)
+
+> scatterplot(logGDPp~MathMean, reg.line=lm, smooth=FALSE, spread=FALSE, boxplots=FALSE, 
++   span=0.5, ellipse=FALSE, levels=c(.5, .9), data=Dataset)
+

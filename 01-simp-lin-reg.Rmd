@@ -1,8 +1,98 @@
 # Simple linear regression {#simp}
 
-Data
+The simple linear regression is a *simple* but useful statistical tool. It allows us to quantify the linear relation between two variables in a proper way. Let's see what it can do in real-case scenarios!
 
 ## Examples and applications
+
+### PISA scores and GDPp
+
+The Programme for International Student Assessment (PISA) is a study carried out in 65 countries with the purpose of evaluating the performance of 15-year-old pupils on mathematics, science, and reading.
+
+A phenomena observed over years is that ''wealthy countries tend to achieve larger average scores''. The purpose of this case study is to answer these two questions:
+
+- *Is the educational level of a country influenced by its economic wealth?*
+- *If so, up to what precise extent?*
+
+The `pisa.csv` file contains the 65 rows corresponding to the countries that took part on the PISA study. Each row has the variables `Country`, `MeanMath`, `MathShareLow`, `MathShareTop`, `ReadingMean`, `ScienceMean`, `GDPp`, `logGDPp` and `HighIncome`. A small subset of the data is shown in Table \@ref(tab:pisatable). 
+
+```{r pisatable, echo = FALSE}
+pisa <- read.csv(file = "datasets/pisa.csv", header = TRUE, row.names = 1)
+knitr::kable(
+  head(pisa[, c(1, 4, 5, 7, 8)], 10),
+  booktabs = TRUE,
+  longtable = TRUE,
+  caption = 'First 10 rows of the `pisa` dataset for a selection of variables.'
+)
+```
+
+We definitely need a way of summarizing this ammount of information! What we are going to do is:
+
+1. **Import the data into `R Commander`**.
+
+    1.1. Go to `'Data' -> 'Import data' -> 'from text file, clipboard, or URL...'`. The following window will pop-up:
+    
+    ```{r read, echo = FALSE, out.width = '90%', fig.cap = 'Screenshot '}
+    knitr::include_graphics("images/screenshots/read.png")
+    ```
+
+    1.2. Select the appropaite options given the kind file (open it in a text editor helps). 
+    
+    1.3. Click on `'View data set'` to see if the importation was fine.
+    
+2. **Fit a linear model**.
+
+    2.1. XXX
+    
+    ```{r lm, echo = FALSE, out.width = '90%', fig.cap = 'Screenshot '}
+    knitr::include_graphics("images/screenshots/lm.png")
+    ```
+    
+    2.2. XXX
+    
+    2.3. XXX
+    
+    ```{r}
+    pisaLinearModel <- lm(MathMean ~ logGDPp, data = pisa)
+    summary(pisaLinearModel)
+    ```
+
+3. **Visualize the fitted regression line**.
+
+    2.1. XXX
+    
+    ```{r scatter, echo = FALSE, out.width = '45%', fig.cap = 'Screenshot '}
+    knitr::include_graphics(c("images/screenshots/scatterplot1.png", "images/screenshots/scatterplot2.png"))
+    ```
+
+    2.2. XXX
+    
+    2.3. XXX
+    
+    ```{r echo = FALSE, warning = FALSE}
+    library(splines)
+    library(car)
+    library(sandwich)
+    ```
+    ```{r}
+    scatterplot(MathMean ~ logGDPp, reg.line = lm, smooth = FALSE, spread = FALSE, id.method = 'mahal', id.n = 3, boxplots = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9), main = "Average Math score vs. GDPp", pch = c(16), data = pisa)
+    ```
+
+
+```{block, type = 'rmdnote'}
+Repeat the regression analysis for:
+- `MeanReading` on `logGDPp`. 
+- `MeanScience` on `logGDPp`. 
+- `MeanReading` on `MeanMath`. 
+```
+
+
+<!-- 
+### Sustained increasing of tuition fees in the US
+
+> **Exercise**
+### Approportion 
+- Escaños por provincia vs población Europa y US
+- Incremento tasas universitarias
 
 ## Model formulation and assumptions
 
@@ -17,6 +107,9 @@ Data
 ## Model diagnostics
 
 ## Nonlinear relationships
+
+- Exponential growth
+- High order terms
 
 ## Nottingham 
 
@@ -227,3 +320,4 @@ knitr::kable(
 ```
 
 You can write citations, too. For example, we are using the **bookdown** package [@R-bookdown] in this sample book, which was built on top of R Markdown and **knitr** [@xie2015].
+ --> 
