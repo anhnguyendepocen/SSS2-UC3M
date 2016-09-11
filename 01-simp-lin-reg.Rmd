@@ -1,73 +1,104 @@
 # Simple linear regression {#simp}
 
-The simple linear regression is a *simple* but useful statistical tool. It allows us to quantify the linear relation between two variables in a proper way. Let's see what it can do in real-case scenarios!
+The simple linear regression is a *simple* but useful statistical model. In short, it allows to analyse the (assumed) linear relation between two variables in a proper way. To convince you why is useful, let's see what it can do in real-case scenarios!
 
 ## Examples and applications
 
 ### PISA scores and GDPp
 
-The Programme for International Student Assessment (PISA) is a study carried out in 65 countries with the purpose of evaluating the performance of 15-year-old pupils on mathematics, science, and reading.
-
-A phenomena observed over years is that ''wealthy countries tend to achieve larger average scores''. The purpose of this case study is to answer these two questions:
+The Programme for International Student Assessment (PISA) is a study carried out in 65 countries with the purpose of evaluating the performance of 15-year-old pupils on mathematics, science, and reading. A phenomena observed over years is that *wealthy countries tend to achieve larger average scores*. The purpose of this case study, motivated by the @PISA inform, is to answer these two questions:
 
 - *Is the educational level of a country influenced by its economic wealth?*
 - *If so, up to what precise extent?*
 
-The `pisa.csv` file contains the 65 rows corresponding to the countries that took part on the PISA study. Each row has the variables `Country`, `MeanMath`, `MathShareLow`, `MathShareTop`, `ReadingMean`, `ScienceMean`, `GDPp`, `logGDPp` and `HighIncome`. A small subset of the data is shown in Table \@ref(tab:pisatable). 
+The `pisa.csv` file contains 65 rows corresponding to the countries that took part on the PISA study. Each row has the variables `Country`, `MeanMath`, `MathShareLow`, `MathShareTop`, `ReadingMean`, `ScienceMean`, `GDPp`, `logGDPp` and `HighIncome`. A small subset of the data is shown in Table \@ref(tab:pisatable). 
 
 ```{r pisatable, echo = FALSE}
-pisa <- read.csv(file = "datasets/pisa.csv", header = TRUE, row.names = 1)
+pisa <- read.csv(file = "datasets/pisa.csv", header = TRUE)
 knitr::kable(
   head(pisa[, c(1, 4, 5, 7, 8)], 10),
   booktabs = TRUE,
   longtable = TRUE,
-  caption = 'First 10 rows of the `pisa` dataset for a selection of variables.'
+  caption = 'First 10 rows of the `pisa` dataset for a selection of variables. Note the `NA` (*Not Available*) in Chinese Taipei (or Taiwan).'
 )
 ```
 
 We definitely need a way of summarizing this ammount of information! What we are going to do is:
 
-1. **Import the data into `R Commander`**.
+1. **Import the data into `R Commander`**:
 
-    1.1. Go to `'Data' -> 'Import data' -> 'from text file, clipboard, or URL...'`. The following window will pop-up:
+    1.1. Go to `'Data' -> 'Import data' -> 'from text file, clipboard, or URL...'`. A window like Figure \@ref(fig:read) will pop-up. 
     
-    ```{r read, echo = FALSE, out.width = '40%', fig.cap = 'Screenshot '}
+    ```{r read, echo = FALSE, out.width = '45%', fig.cap = 'Data importation options.'}
+    row.names(pisa) <- as.character(pisa$Country)
+    pisa$Country <- NULL
     knitr::include_graphics("images/screenshots/read.png")
     ```
 
-    1.2. Select the appropaite options given the kind file (open it in a text editor helps). 
+    1.2. Select the appropiate formatting options of the data file: whether the first row contains the name of the variables, what is the indicator for missing data, the field separator, and the decimal point character. Then click `'OK'`. (Inspecting the file first in a separate text editor will give you the right choices.) 
     
-    1.3. Click on `'View data set'` to see if the importation was fine.
+    1.3. Click on `'View data set'` to check that the importation was fine. If the data looks weird, then recheck the structure of the data file and restart from 1.1. 
+    
+    1.4. Since each row corresponds to a different country, we are going to name the rows as the value of the variable `Country`. To that end, go to `'Data' -> 'Active data set' -> 'Set case names...'` and select the variable `Country` and click `'OK'`. At the end, you should get something like Figure \@ref(fig:view).
+
+    ```{r view, echo = FALSE, out.width = '90%', fig.cap = 'Correct importation of the `pisa` dataset.'}
+    knitr::include_graphics("images/screenshots/view.png")
+    ```
     
 2. **Fit a linear model**.
 
-    2.1. XXX
+    2.1. Go to `'Statistics' -> 'Fit models' -> 'Linear regression...'`. A window like Figure \@ref(fig:lm) will pop-up. 
     
-    ```{r lm, echo = FALSE, out.width = '70%', fig.cap = 'Screenshot '}
+    ```{r lm, echo = FALSE, out.width = '70%', fig.cap = 'Window for performing linear regression.'}
     knitr::include_graphics("images/screenshots/lm.png")
     ```
     
-    2.2. XXX
+    Select the *response variable*. This is the variable denoned by $Y$ that we want to predict/explain. Then select the *explanatory variable* (also known as the *predictor*). It is denoted by $X$ and is the variable used to predict/explain $Y$. Remember the form of the linear model:
+    $$
+    Y=\beta_0+\beta_1X+\varepsilon
+    $$
     
-    2.3. XXX
+    In our case $Y=$`MeanMath` and  $X=$`logGDPp`, so select them and click `'OK'`^[In principle, you could pick more than one explanatory variables uisng the `'Control'` or `'Shift'` keys, but that corresponds to the *multiple linear regression* (covered in Chapter 2).]. 
+
+    ```{block, type = 'rmdtip'}
+    If you want to unselect an option in an `R Commander` menu, use `'Control'` + `'Mouse click'`.
+    ```
+    
+    ```{block, type = 'rmdtip'}
+    Four buttoms are common on the menus of `R Commander`:
+    
+    - `'OK'`: executes the selected action, then closes the window.
+    - `'Apply'`: executes the selected action but leaves the window open. Useful if you are experimenting with different options.
+    - `'Reset'`: resets the fields and boxes of the window to their defaults.
+    - `'Cancel'`: exits the window without performing any action.
+    ```
+    
+    2.2. If you enter you should get this output:
     
     ```{r}
     pisaLinearModel <- lm(MathMean ~ logGDPp, data = pisa)
     summary(pisaLinearModel)
     ```
 
+    This is the linear model of `MathMean` regressed on `logGDPp` (first line) and its summary. The summary gives the coefficients of the line and the $R^2$, which you regard as a *rough indicator of the degree of linear relation between the variables* ($1$ is perfect linearity, $0$ means no linearity). 
+    
+    **TODO: The fitted line is `MathMean` $= 185.16 + 28.79\times$ `logGDPp`.**
+    
 3. **Visualize the fitted regression line**.
 
-    2.1. XXX
+    3.1. Go to `'Graphs' -> 'Scatterplot...'`. A window with two panels will pop-up (Figures \@ref(fig:scatter1) and \@ref(fig:scatter2)).
     
-    ```{r scatter, echo = FALSE, out.width = '45%', fig.cap = 'Screenshot ', multiplot = TRUE}
-    knitr::include_graphics(c("images/screenshots/scatterplot1.png", "images/screenshots/scatterplot2.png"))
+    ```{r scatter1, echo = FALSE, out.width = '90%', fig.cap = 'Scatterplot window, `\'Data\'` panel.'}
+    knitr::include_graphics("images/screenshots/scatterplot1.png")
+    ```
+    ```{r scatter2, echo = FALSE, out.width = '90%', fig.cap = 'Scatterplot window, `\'Options\'` panel. Be sure to tick the `\'Least-squares line\'` box in order to display the fitted regression line.'}
+    knitr::include_graphics("images/screenshots/scatterplot2.png")
     ```
 
-    2.2. XXX
-    
-    2.3. XXX
-    
+    On the `'Data'` panel, select the $X$ and $Y$ variables to be displayed in the scatterplot. On the `
+'Options'` panel, check the `'Least-squares line'` box and choose to identify `'3'` points `'Automatically'`. This will identify the $3$ points that are the most different compared with the rest of the data.
+
+    3.2. The following `R` code will be generated. It produces a scatterplot of `MathMean` vs `logGDPp` with its scorresponding regression line:
     ```{r echo = FALSE, warning = FALSE}
     library(splines)
     library(car)
@@ -76,248 +107,17 @@ We definitely need a way of summarizing this ammount of information! What we are
     ```{r}
     scatterplot(MathMean ~ logGDPp, reg.line = lm, smooth = FALSE, spread = FALSE, id.method = 'mahal', id.n = 3, boxplots = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9), main = "Average Math score vs. GDPp", pch = c(16), data = pisa)
     ```
-
+  
+    **TODO There is evidence for the *wealthy countries tend to achieve larger average scores*, *Is the educational level of a country influenced by its economic wealth?*, *If so, up to what precise extent?* Countries that are above and below the trend. So that they are performing comparatively better or worse according to their economic status.**
+    
+    There are three clear *outliers*^[The outliers have a considerable impact on the regression line, as we will see later.]: Vietnam, Shangai-China and Qatar. The first two are non high-income economies that perform exceptionally well (although Shangai-China is a cherry-picked region of China). On the other hand, Qatar is a high-income economy that performs really poor.
 
 ```{block, type = 'rmdnote'}
-Repeat the regression analysis for:
-- `MeanReading` on `logGDPp`. 
-- `MeanScience` on `logGDPp`. 
-- `MeanReading` on `MeanMath`. 
+Repeat the regression analysis (steps 2-3) for:
+
+- `MeanReading` regressed on `logGDPp`. Are the results similar to `MeanMath` on `logGDPp`?
+- `MeanMath` regressed on `MeanReading`. Compare it with `MeanMath` on `MeanScience`. Which pair of variables has the most linear relation? Is that something expected?
+
+Be sure to save the models with a different name in order to avoid overwriting the previous!
 ```
 
-
-<!-- 
-### Sustained increasing of tuition fees in the US
-
-> **Exercise**
-### Approportion 
-- Escaños por provincia vs población Europa y US
-- Incremento tasas universitarias
-
-## Model formulation and assumptions
-
-## Estimation of model parameters by least squares
-
-## Inference for model parameters
-
-## Forecasting
-
-## Assesing model fit and ANOVA
-
-## Model diagnostics
-
-## Nonlinear relationships
-
-- Exponential growth
-- High order terms
-
-## Nottingham 
-
-### Motivating example
-
-Suppose we have a production line where we measured the time (in minutes) required to produce a number of solicited items. There are two random variables: `y` = "time required to produce an order" and `x` = "number of items in the order". We want to explain/predict `y` from `x` from a linear model.
-
-```{r}
-
-# Production time
-y <- c(175, 189, 344, 88, 114, 338, 271, 173, 284, 277, 337, 58, 146, 277, 123, 227, 63, 337, 146, 68)
-
-# Number of units in the order
-x <- c(195, 215, 243, 162, 185, 231, 234, 166, 253, 196, 220, 168, 207, 225, 169, 215, 147, 230, 208, 172)
-
-# Data scatterplot (pch = 16 for filled points)
-plot(y ~ x, pch = 16)
-
-```
-
-### The `lm` function
-
-The linear fit in `R` is done by the `lm` function and the formula `y ~ x`, used to denote that we are interested in regressing `y` over `x`. 
-
-```{r}
-
-# Fit a linear model y = beta0 + beta1 * x
-reg <- lm(y ~ x)
-
-# The result is a list with several objects
-names(reg)
-
-# The fitted coefficients beta0 (intercept) and beta1 (slope)
-reg$coefficients
-
-# The regression line with the minimized distances
-plot(y ~ x, pch = 16)
-abline(reg, col = 2)
-segments(x0 = x, y0 = y, x1 = x, y1 = reg$fitted.values)
-
-```
-
-### The least squares estimate
-
-We can check and visualize that `reg$coefficients` indeed contains the least squares estimates and that they minimize the Residual Sum of Squares (RSS).
-
-```{r}
-
-# Create the design matrix
-X <- cbind(1, x)
-
-# The analytical solution
-betahat <- solve(t(X) %*% X) %*% t(X) %*% y
-betahat
-
-# Minimal RSS
-sum((y - X %*% betahat)^2)
-```
-
-You can try to get a better RSS. Good luck! :)
-
-```{r, echo = FALSE}
-
-# # Define input
-# inputPanel(
-#   
-#   sliderInput("beta0", label = "Intercept:",
-#               min = -500, max = 300, value = reg$coefficients[1] + 600, step = 5),
-#   sliderInput("beta1", label = "Slope:",
-#               min = -3, max = 8, value = 0, step = 0.01)
-#   
-# )
-# 
-# # Create plot
-# renderPlot({
-#   plot(y ~ x, main = paste("RSS:", round(sum((input$beta0 + input$beta1 * x - y)^2), 1)), pch = 16, xlim = c(100, 300), ylim = c(0, 400))
-#   abline(a = input$beta0, b = input$beta1, col = 2)
-#   segments(x0 = x, y0 = y, x1 = x, y1 = input$beta0 + input$beta1 * x)
-# })
-  
-```
-
-```{r, echo = FALSE}
-# 
-#  ### Define a line
-#   data_line <- data.frame(
-#     x_rng = c(0, 1), 
-#     y_rng = c(reg$coefficients[1], reg$coefficients[1] + reg$coefficients[2])
-#   )     
-#   
-# p <- ggvis(data.frame("x" = x, "y" = y), x = ~x, y = ~y)
-# layer_points(p) %>%
-# layer_model_predictions(model = "lm", stroke := "red") %>%
-#     layer_paths(x = ~x_rng, y = ~y_rng, stroke := "blue", data = data_line) %>% 
-#   scale_numeric("x", domain = c(140, 270), nice = FALSE, clamp = TRUE) %>% 
-#   scale_numeric("y", domain = c(0, 400), nice = FALSE, clamp = TRUE)
-# 
-```
-
-
-### Summary of the model
-
-The `summary` function applied to a `lm` object gives the fitted coefficients and its significances ("Pr(>|t|)"), the $R^2$ ("Multiple R-squared") and the fitted error variance ("Residual standard error").
- 
-```{r}
-
-# Summary of the fit
-summary(reg)
-
-```
-
-### Prediction
-
-Prediction of a new observation can be done via the function `predict`, which also provides conficence intervals. The `newdata` argument of `predict` needs a `data.frame`.
-
-```{r}
-
-# Point in which we want a prediction for y
-newx <- data.frame(x = 200)
-
-# Prediction with 95% confidence interval
-predict(reg, newdata = newx, interval = "prediction", level = 0.95)
-
-# The same prediction
-reg$coefficients %*% c(1, 200)
-
-```
-
-### Some words of caution with $R^2$
-
-$R^2$ does not measure the correctness of a linear model but the **usefulness assuming the model is correct**. 
-
-```{r}
-
-# Fixed design
-xf <- seq(0, 1, l = 50)
-
-# Errors with different variance
-set.seed(123456)
-eps1 <- rnorm(50, sd = 0.1)
-eps2 <- rnorm(50, sd = 1)
-
-# Responses generated following a linear model
-y1 <- 1 + 2 * xf + eps1
-y2 <- 1 + 2 * xf + eps2
-
-# Fits
-reg1 <- lm(y1 ~ xf)
-reg2 <- lm(y2 ~ xf)
-
-# R^2 depends on the 
-summary(reg1)
-summary(reg2)
-
-# Plot
-par(mfrow = c(1, 2))
-plot(y1 ~ xf, pch = 16, ylim = c(-1, 5))
-abline(a = 1, b = 2, col = 2)
-abline(a = reg1$coefficients[1], b = reg1$coefficients[2], col = 3)
-plot(y2 ~ xf, pch = 16, ylim = c(-1, 5))
-abline(a = 1, b = 2, col = 2)
-abline(a = reg2$coefficients[1], b = reg2$coefficients[2], col = 3)
-
-```
-
-A large $R^2$ means *nothing* if the **assumptions of the model do not hold**.
-
-```{r}
-
-# Create data that: 
-# 1) does NOT follow a linear model
-# 2) the error is heteroskedastic
-xf <- seq(0.15, 1, l = 100)
-y3 <- 0.2 * sin(2 * pi * xf) + rnorm(n = 100, sd = 0.1 * xf^2)
-
-# Great R^2!?
-reg3 <- lm(y3 ~ xf)
-summary(reg3)
-
-# But predicting is obviously problematic
-plot(y3 ~ xf, pch = 16)
-lines(0.2 * sin(2 * pi * xf) ~ xf, col = 2)
-abline(reg3, col = 3)
-
-```
-Simple linear regression
-
-$$Y_i=a+bX_i+\varepsilon,\quad i=1,\ldots,n.$$
-
-## Bookdown help
-
-You can label chapter and section titles using `{#label}` after them, e.g., we can reference Chapter \@ref(intro). If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \@ref(methods).
-
-Figures and tables with captions will be placed in `figure` and `table` environments, respectively.
-
-```{r nice-fig, fig.cap='Here is a nice figure!', out.width='80%', fig.asp=.75, fig.align='center'}
-par(mar = c(4, 4, .1, .1))
-plot(pressure, type = 'b', pch = 19)
-```
-
-Reference a figure by its code chunk label with the `fig:` prefix, e.g., see Figure \@ref(fig:nice-fig). Similarly, you can reference tables generated from `knitr::kable()`, e.g., see Table \@ref(tab:nice-tab).
-
-```{r nice-tab, tidy=FALSE}
-knitr::kable(
-  head(iris, 20), caption = 'Here is a nice table!',
-  booktabs = TRUE
-)
-```
-
-You can write citations, too. For example, we are using the **bookdown** package [@R-bookdown] in this sample book, which was built on top of R Markdown and **knitr** [@xie2015].
- --> 

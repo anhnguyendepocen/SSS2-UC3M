@@ -5,7 +5,7 @@ author: "Eduardo García Portugués"
 date: "`r Sys.Date()`"
 knit: "bookdown::render_book"
 documentclass: book
-bibliography: [book.bib, packages.bib]
+bibliography: SSS2-UC3M.bib
 biblio-style: apalike
 link-citations: yes
 site: bookdown::bookdown_site
@@ -94,7 +94,7 @@ There are many advanced commercial statistical softwares, such as `SPSS`, `Excel
 
 4. `R Commander` produces **high-quality graphs easily**. `R Commander`, through the plug-in `KMggplot2`, uses the `ggplot2` library, which delivers high-quality publication-level graphs ([sample gallery](http://www.r-graph-gallery.com/portfolio/ggplot2-package/)). It is considered as one of the best and more elegant graphing packages nowadays. 
 
-5. **Great report generation**. `R Commander` integrates `R Markdown` [@R-rmarkdown], which is a framework able to create `.html`, `.pdf` and `.docx` reports directly from the outputs of `R`. That means you can deliver high-quality, reproducible and beautiful reports with a little ammount of effort.
+5. **Great report generation**. `R Commander` integrates `R Markdown`, which is a framework able to create `.html`, `.pdf` and `.docx` reports directly from the outputs of `R`. That means you can deliver high-quality, reproducible and beautiful reports with a little ammount of effort.
 
 In summary, `R Commander` eases the learning curve of `R` and provides a powerful way of producing and reporting statistical analyses. An intermediate knowledge in `R Commander` + `R` will improve notably your quantitative skills, hence making an **important distinction in your graduate profile** (many social scientists tend to lack a proper quantitative formation). So I encourage you to take full advantage of this opportuity!
 
@@ -128,7 +128,7 @@ By default both `R` and `R Commander` will have menus and messages in the same l
 
 ## Basics of `R Commander`
 
-```{r ScreenshotRcmdr, echo = FALSE, out.width = '90%', fig.cap = 'Screenshot of `R Commander` with the plug-ins `RcmdrPlugin.FactoMineR`, `RcmdrPlugin.KMggplot2` and `RcmdrPlugin.Demos` loaded.'}
+```{r ScreenshotRcmdr, echo = FALSE, out.width = '90%', fig.cap = 'Main window of `R Commander`, with the plug-ins `RcmdrPlugin.FactoMineR`, `RcmdrPlugin.KMggplot2` and `RcmdrPlugin.Demos` loaded.'}
 knitr::include_graphics("images/screenshots/Rcmdr.png")
 ```
 

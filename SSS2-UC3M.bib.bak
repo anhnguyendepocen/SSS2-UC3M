@@ -2,16 +2,6 @@
 % Encoding: MacRoman
 
 
-@Manual{R-KMggplot2,
-  Title                    = {{RcmdrPlugin.KMggplot2}: An {R}cmdr Plug-in for {K}aplan-{M}eier Plots and Other Plots by Using
-the ggplot2 Package},
-  Author                   = {Triad sou. and Kengo NAGASHIMA},
-  Note                     = {R package version 0.2-3},
-  Year                     = {2015},
-
-  Url                      = {https://CRAN.R-project.org/package=RcmdrPlugin.KMggplot2}
-}
-
 @Manual{R-rmarkdown,
   Title                    = {rmarkdown: Dynamic Documents for R},
   Author                   = {JJ Allaire and Joe Cheng and Yihui Xie and Jonathan McPherson and Winston Chang and Jeff Allen and Hadley Wickham and Aron Atkins and Rob Hyndman},
@@ -33,6 +23,20 @@ the ggplot2 Package},
   Url                      = {http://www.jstatsoft.org/v14/i09}
 }
 
+@Article{PISA,
+  Title                    = {Does Money Buy Strong Performance in PISA?},
+  Author                   = {OCDE},
+  Journal                  = {PISA in Focus},
+  Year                     = {2012},
+  Note                     = {OECD Publishing, Paris},
+  Number                   = {13},
+  Pages                    = {1-4},
+
+  Doi                      = {http://dx.doi.org/10.1787/5k9fhmfzc4xx-en},
+  Owner                    = {Eduardo},
+  Timestamp                = {2016.09.11}
+}
+
 @Manual{R-base,
   Title                    = {R: A Language and Environment for Statistical Computing},
 
@@ -44,8 +48,18 @@ the ggplot2 Package},
   Url                      = {https://www.R-project.org/}
 }
 
+@Manual{R-KMggplot2,
+  Title                    = {{RcmdrPlugin.KMggplot2}: An {R}cmdr Plug-in for {K}aplan-{M}eier Plots and Other Plots by Using
+the ggplot2 Package},
+  Author                   = {Triad Sou and Kengo Nagashima},
+  Note                     = {R package version 0.2-3},
+  Year                     = {2015},
+
+  Url                      = {https://CRAN.R-project.org/package=RcmdrPlugin.KMggplot2}
+}
+
 @Book{Wickham2009,
-  Title                    = {ggplot2: Elegant Graphics for Data Analysis},
+  Title                    = {{ggplot2}: Elegant Graphics for Data Analysis},
   Author                   = {Hadley Wickham},
   Publisher                = {Springer-Verlag New York},
   Year                     = {2009},
