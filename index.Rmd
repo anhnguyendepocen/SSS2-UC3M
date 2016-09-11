@@ -84,19 +84,19 @@ Alternatively, you can bring your own laptop, see Section \@ref(computer).
 
 ## Why this software?
 
-There are many advanced commercial statistical softwares, such as `SPSS`, `Excel` (with commercial add-ons), `Minitab`, `Stata`, `SAS`, etc. We will rely on the combo `R` + `R Commander` due its noteworthy advantages:
+There are many advanced commercial statistical softwares, such as `SPSS`, `Excel` (with commercial add-ons), `Minitab`, `Stata`, `SAS`, etc. We will rely on the combo `R` + `R Commander` (@R-base; @R-Rcmdr) due its noteworthy advantages:
 
 1. **Free and open-source**. (Free as in beer, free as in speech.) No software licenses are needed. This means that you can readily use it outside UC3M computer labs and for any purpose.
 
-2. **Scalable complexity and extensibility**. `R Commander` creates `R` code that you can see, and eventually understand. Once you begin to get a feeling of it, you will realize that is faster to type the right commands than to navigate through menus. In addition, `R Commander` has a good number of high-quality plug-ins, so the menus will not fall short easily.
+2. **Scalable complexity and extensibility**. `R Commander` creates `R` code that you can see, and eventually understand. Once you begin to get a feeling of it, you will realize that is faster to type the right commands than to navigate through menus. In addition, `R Commander` has 39 high-quality plug-ins (September, 2016), so the procedures available through menus will not fall short easily.
 
-3. **`R` is the leading computer language in statistics**. Any statistical analyisis you can imagine is already available in `R` through its almost 9000 free packages (September, 2016). Some of them contain a good number of ready-to-use datasets or methods for downloading of data from accredited sources.
+3. **`R` is the leading computer language in statistics**. Any statistical analyisis you can imagine is already available in `R` through its almost 9000 free packages (September, 2016). Some of them contain a good number of ready-to-use datasets or methods for data downloading from accredited sources.
 
-4. `R Commander` produces **high-quality graphs easily**. `R Commander`, through the plug-in `KMggplot2`, uses the [`ggplot2`](http://www.r-graph-gallery.com/portfolio/ggplot2-package/) library, which delivers publication-level graphs. It is considered as one of the best and more elegant graphing packages nowadays. 
+4. `R Commander` produces **high-quality graphs easily**. `R Commander`, through the plug-in `KMggplot2`, uses the `ggplot2` library, which delivers high-quality publication-level graphs ([sample gallery](http://www.r-graph-gallery.com/portfolio/ggplot2-package/)). It is considered as one of the best and more elegant graphing packages nowadays. 
 
-5. **Great report generation**. `R Commander` integrates `R Markdown`, which is a framework able to create `.html`, `.pdf` and `.docx` reports directly from the outputs of `R`. That means you can deliver high-quality, reproducible and beautiful reports with a little ammount of effort.
+5. **Great report generation**. `R Commander` integrates `R Markdown` [@R-rmarkdown], which is a framework able to create `.html`, `.pdf` and `.docx` reports directly from the outputs of `R`. That means you can deliver high-quality, reproducible and beautiful reports with a little ammount of effort.
 
-In summary, with `R` + `R Commander` you will be trained in a recognised software that allows you to produce  statistical reports efficiently. Mastering this combo will improve notably your quantitative skills, hence making an **important distinction in your graduate profile** (many social scientists tend to lack a strong quantitative formation). So I encourage you to take full advantage of this opportuity!
+In summary, `R Commander` eases the learning curve of `R` and provides a powerful way of producing and reporting statistical analyses. An intermediate knowledge in `R Commander` + `R` will improve notably your quantitative skills, hence making an **important distinction in your graduate profile** (many social scientists tend to lack a proper quantitative formation). So I encourage you to take full advantage of this opportuity!
 
 ## Installation in your own computer {#computer}
 
@@ -134,25 +134,25 @@ knitr::include_graphics("images/screenshots/Rcmdr.png")
 
 When you launch `R Commander` you will see a window similar to Figure \@ref(fig:ScreenshotRcmdr). The GUI has the following items:
 
-1. **Drop-down menus**. They are pretty self-explicative:
-    - `'File'`. Several save options for different files. The option `'Change working directory...'` is here, which is used very often.
-    - `'Edit'`. Options for basic edition of documents.
+1. **Drop-down menus**. They are pretty self-explicative. Here is a quick summary:
+    - `'File'`. Saving options for different files (`R` script, `R Markdown`, output and workspace).
+    - `'Edit'`. Basic edition within the GUI text boxes.
     - `'Data'`. Manage and manipulate datasets. 
     - `'Statistics'`. Perform statistical analyses, such as `'Fit models'`.
-    - `'Graphs'`. Compute the possible graphs for the active dataset.
-    - `'Models'`. Analyses related with the active model.
-    - `'Distributions'`. Sample, compute probabilities/quantiles and plot a variety of continuous/discrete distributions.
-    - `'Tools'`. Options for `R Commander`. Here you can `'Load Rcmdr plug-in(s)...'`, which enables to expand the number of menus available via plug-ins^[For example, `'FactoMineR'` (collection of multivariate techniques), `'KMggplot2'` (produces elegant graphs using `ggplot2`) and `'Demos'` (set of pedagogical demos; `'Simple linear regression'` is specially insightful).]. 
+    - `'Graphs'`. Compute the available graphs for the active dataset.
+    - `'Models'`. Analyses for the active model, selected with buttom 3.
+    - `'Distributions'`. Operations for continuous/discrete distributions: sampling, computation of probabilities and quantiles, and plotting of density and distribution functions.
+    - `'Tools'`. Options for `R Commander`. Here you can `'Load Rcmdr plug-in(s)...'`, which enables to expand the number of menus available via plug-ins^[For example, `'FactoMineR'` (collection of multivariate techniques), `'KMggplot2'` (produces elegant graphs using `ggplot2`) and `'Demos'` (set of pedagogical demos; `'Simple linear regression'` is specially relevant for us).]. `R Commander` will need to restart prior to loading a plug-in^[A minor inconvenience is that the text boxes in the GUI will be wiped out after restarting. The workspace is kept after restarting, so the models and datasets will be availiable but not selected as 'active'.].
     - `'Help'`. Several help resources.
-2. **Dataset manipulation**. Select, edit (very basic) and view the active dataset.
+2. **Dataset manipulation**. Select the active dataset among the list of loaded datasets. Edit (very basic) and view the active dataset.
 3. **Model selector**. Select an active model among the available ones.
 4. **Switch script or report mode**. Switch between the generated `R` code and the associated `R Markdown` code.
 5. **Input panel**. The `R` code generated by the drop-down menus appears here and is passed to the output console. You can type code here and then send it to the output without using the drop-down menus.
 6. **Submit/Generate report buttom**. Allows to pass and run *selected* `R` code to the output console (keyboard shortcut: `Control + R`). 
-7. **Output console**. Shows the commands that were run (red) and the visible result (blue).
+7. **Output console**. Shows the commands that were run (red) and their visible result (blue).
 8. **Messages**. Displays possible error messages, warnings and notes.
 
-When you close `R Commander` you will be asked on what files to save: `'script file'` and `'R Markdown file'` (contents in panel 5), and `'output file'` (panel 7).
+When you close `R Commander` you will be asked on what files to save: `'script file'` and `'R Markdown file'` (contents in panel 5), and `'output file'` (panel 7). 
 
 ```{block, type = 'rmdtip'}
 Focus on **understanding the purpose of each element in the GUI**. When performing the real-case studies we will take care of explaining the many features of `R Commander`.

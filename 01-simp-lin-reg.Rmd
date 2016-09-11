@@ -31,7 +31,7 @@ We definitely need a way of summarizing this ammount of information! What we are
 
     1.1. Go to `'Data' -> 'Import data' -> 'from text file, clipboard, or URL...'`. The following window will pop-up:
     
-    ```{r read, echo = FALSE, out.width = '90%', fig.cap = 'Screenshot '}
+    ```{r read, echo = FALSE, out.width = '40%', fig.cap = 'Screenshot '}
     knitr::include_graphics("images/screenshots/read.png")
     ```
 
@@ -43,7 +43,7 @@ We definitely need a way of summarizing this ammount of information! What we are
 
     2.1. XXX
     
-    ```{r lm, echo = FALSE, out.width = '90%', fig.cap = 'Screenshot '}
+    ```{r lm, echo = FALSE, out.width = '70%', fig.cap = 'Screenshot '}
     knitr::include_graphics("images/screenshots/lm.png")
     ```
     
@@ -60,7 +60,7 @@ We definitely need a way of summarizing this ammount of information! What we are
 
     2.1. XXX
     
-    ```{r scatter, echo = FALSE, out.width = '45%', fig.cap = 'Screenshot '}
+    ```{r scatter, echo = FALSE, out.width = '45%', fig.cap = 'Screenshot ', multiplot = TRUE}
     knitr::include_graphics(c("images/screenshots/scatterplot1.png", "images/screenshots/scatterplot2.png"))
     ```
 
