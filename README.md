@@ -1,3 +1,3 @@
-This is a minimal example of a book based on R Markdown and **bookdown** (https://github.com/rstudio/bookdown). Please see the page "Get Started" at https://bookdown.org/ for how to compile this example.
+These are the lab notes for *Statistics for Social Sciences II: Multivariate Techniques* for the course 2016/2017. The subject is part of the BSc in International Studies and the BSc in International Studies & Political	Science, both from Carlos III University of Madrid.
 
-You can find the preview of this example at https://bookdown.org/yihui/bookdown-demo/
+The notes are available at https://bookdown.org/egarpor/SSS2-UC3M. Feedback on them is welcome.
