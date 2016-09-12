@@ -26,19 +26,19 @@ favicon: "favicon.ico"
 
 Welcome to the lab notes for *Statistics for Social Sciences II: Multivariate Techniques*. Along these notes we will see how to effectively implement the statistical methods presented in the lectures. The exposition we will follow is based on learning by analyzing datasets and **real case studies**, always with the help of **statistical software**. While doing so, we will illustrate the key insights of some multivariate techniques and the adequate use of advanced statistical software.
 
-Be advised that these notes are *neither an exhaustive, rigorous nor comprehensive treatment* of the broad statistical branch know as *Multivariate Analysis*. They are just a helpful resource to implement the very specific topics covered in this short course.
+Be advised that these notes are *neither an exhaustive, rigorous nor comprehensive treatment* of the broad statistical branch know as *Multivariate Analysis*. They are just a helpful resource to implement the specific topics covered in this limited course.
 
 ## Some course logistics
 
 - Lessons. **Mondays** at *López Aranguren* building:
     - International Studies. **16:15-17:45 at INF-15.S.06**.
     - International Studies & Political Science. **18:00-19:30 at INF-15.S.04**.
-- Office hours. **Tuesdays 16:00-18:00 at office 10.0.10** (access through 10.0.7 in *Campomanes* building). If they are incompatible with your schedule, send me an email to get an alternative appointment (preferable) or drop by my office to see if I am available (but I will remove this option if I get overwhelmed with queries).
+- Office hours. **Tuesdays 16:00-18:00 at office 10.0.10** (access through 10.0.7 in *Campomanes* building). If they are incompatible with your schedule, send me an email to get an alternative appointment (preferable) or just drop by my office to see if I am available (I will remove this option if I get overwhelmed with queries).
 - Grading. 
     - Continuous evaluation is 60% of the final grade. Scored by 2 partial exams and 1 group project, each accounting for a 20%.
-    - Final exam is 40%, covers mostly contents from the lectures.
+    - Final exam is 40%, covers contents mostly from the theoretical lectures.
 - Partials. Cover contents from labs and lectures. The first will (likely) cover Topics 1-2. The second, Topics 3-5.
-- Group project. Students must team up in groups of 4 ($\pm1$) to apply the statistical methodology taught to a dataset of their choice and produce a report. As a rule of thumb, all students in a group will be graded evenly, so bear in mind it when choosing coworkers. Specific details will be disclosed near the end of the course.
+- Group project. The students must team up in groups of 4 ($\pm$1) in order to produce a report. This report must apply the methodology presented to a dataset of their choice. As a rule of thumb, all students in a group will be graded evenly, so bear in mind it when choosing coworkers. Specific details will be disclosed near the end of the course.
 
 ## Software employed
 
@@ -57,7 +57,7 @@ The only thing you need to do to run `R Commander` in any UC3M computer is:
     library(Rcmdr)
     ```
     
-    Congratulations on your first piece of `R` code! You have just loaded a package.
+    Congratulations on your first piece of `R` code, you have just loaded a package!
 
 3. If `Rcmdr` is installed, then `R Commander` will open automatically and you are ready to go. In case you accidentally close `R Commander`, type
     
@@ -71,7 +71,7 @@ The only thing you need to do to run `R Commander` in any UC3M computer is:
     install.packages("Rcmdr", dep = TRUE)
     ```
     
-    and say 'Yes' to the next pop-ups. This will download and install `Rcmdr` and all the related packages from a CRAN mirror (choose `'Spain (*) [https]'`). Wait for the downloading and installation of the packages. When it is done, just type 
+    and say 'Yes' to the next pop-ups regarding the installation of the personal library. This will download and install `Rcmdr` and all the related packages from a CRAN mirror (choose `'Spain (*) [https]'`, usually works OK). Wait for the downloading and installation of the packages. When it is done, just type 
     ```{r eval = FALSE}
     library(Rcmdr)
     ```
@@ -79,26 +79,26 @@ The only thing you need to do to run `R Commander` in any UC3M computer is:
 An important warning about UC3M computer labs:
 
 ```{block, type = 'rmdimportant'}
-Every file you save locally (including installed packages) will be wiped out after you close your session. So be sure to save your worth files. 
+Every file you save locally (including installed packages) will be wiped out after you close your session. So be sure to save your valuable files at the end of the lesson.
 ```
 
-Alternatively, you can bring your own laptop, see Section \@ref(computer).
+Alternatively, you can bring your own laptop and save all your files in it. See Section \@ref(computer).
 
 ## Why this software?
 
-There are many advanced commercial statistical softwares, such as `SPSS`, `Excel` (with commercial add-ons), `Minitab`, `Stata`, `SAS`, etc. We will rely on the combo `R` + `R Commander` (@R-base; @R-Rcmdr) due its noteworthy advantages:
+There are many advanced commercial statistical softwares, such as `SPSS`, `Excel` (with commercial add-ons), `Minitab`, `Stata`, `SAS`, etc. We will rely on the combo `R` [@R-base] + `R Commander` [@R-Rcmdr] due to some noteworthy advantages:
 
-1. **Free and open-source**. (Free as in beer, free as in speech.) No software licenses are needed. This means that you can readily use it outside UC3M computer labs and for any purpose.
+1. **Free and open-source**. (Free as in beer, free as in speech.) No software licenses are needed. This means that you can readily use it outside UC3M computer labs, without limitations on the period or purpose of use.
 
-2. **Scalable complexity and extensibility**. `R Commander` creates `R` code that you can see, and eventually understand. Once you begin to get a feeling of it, you will realize that is faster to type the right commands than to navigate through menus. In addition, `R Commander` has 39 high-quality plug-ins (September, 2016), so the procedures available through menus will not fall short easily.
+2. **Scalable complexity and extensibility**. `R Commander` creates `R` code that you can see, and eventually understand. Once you begin to get a feeling of it, you will realize that is faster to type the right commands than to navigate through menus. In addition, `R Commander` has 39 high-quality plug-ins (September, 2016), so the procedures available through menus do not fall short easily.
 
-3. **`R` is the leading computer language in statistics**. Any statistical analyisis you can imagine is already available in `R` through its almost 9000 free packages (September, 2016). Some of them contain a good number of ready-to-use datasets or methods for data downloading from accredited sources.
+3. **`R` is the leading computer language in statistics**. Any statistical analyisis that you can imagine is already available in `R` through its almost 9000 free packages (September, 2016). Some of them contain a good number of ready-to-use datasets or methods for data downloading from accredited sources.
 
-4. `R Commander` produces **high-quality graphs easily**. `R Commander`, through the plug-in `KMggplot2`, uses the `ggplot2` library, which delivers high-quality publication-level graphs ([sample gallery](http://www.r-graph-gallery.com/portfolio/ggplot2-package/)). It is considered as one of the best and more elegant graphing packages nowadays. 
+4. `R Commander` produces **high-quality graphs easily**. `R Commander`, through the plug-in `KMggplot2`, interfaces the `ggplot2` library, which delivers high-quality, publication-level graphs ([sample gallery](http://www.r-graph-gallery.com/portfolio/ggplot2-package/)). It is considered as one of the best and more elegant graphing packages nowadays. 
 
-5. **Great report generation**. `R Commander` integrates `R Markdown`, which is a framework able to create `.html`, `.pdf` and `.docx` reports directly from the outputs of `R`. That means you can deliver high-quality, reproducible and beautiful reports with a little ammount of effort.
+5. **Great report generation**. `R Commander` integrates `R Markdown`, which is a framework able to create `.html`, `.pdf` and `.docx` reports directly from the outputs of `R`. That means you can deliver high-quality, reproducible and beautiful reports with a little ammount of effort. For example, these notes have been created with an extension of `R Markdown`.
 
-In summary, `R Commander` eases the learning curve of `R` and provides a powerful way of producing and reporting statistical analyses. An intermediate knowledge in `R Commander` + `R` will improve notably your quantitative skills, hence making an **important distinction in your graduate profile** (many social scientists tend to lack a proper quantitative formation). So I encourage you to take full advantage of this opportuity!
+In summary, `R Commander` eases the learning curve of `R` and provides a powerful way of creating and reporting statistical analyses. An intermediate knowledge in `R Commander` + `R` will improve notably your quantitative skills, therefore making an **important distinction in your graduate profile** (it is a fact that many social scientists tend to lack a proper quantitative formation). So I encourage you to take full advantage of this great opportuity!
 
 ## Installation in your own computer {#computer}
 
@@ -108,17 +108,17 @@ You are allowed to bring your own laptop to the labs. This may have a series of 
 If you plan to use your personal laptop, **you** are responsible for the right setup of the software and laptop *prior* to the lab lesson.
 ```
 
-At some point you will probably need to run the software outside UC3M computer labs. This is what you have to do in order to install `R` + `R Commander`^[If there is any Linux user, kindly follow the corresponding instructions [here](https://cran.r-project.org/) and [here](http://socserv.mcmaster.ca/jfox/Misc/Rcmdr/installation-notes.html).]:
+At some point you will probably need to run the software outside UC3M computer labs. This is what you have to do in order to install `R` + `R Commander` in your own computer^[If there is any Linux user, kindly follow the corresponding instructions [here](https://cran.r-project.org/) and [here](http://socserv.mcmaster.ca/jfox/Misc/Rcmdr/installation-notes.html).]:
 
-1. Download `R` for [Windows](https://cran.r-project.org/bin/windows/base/release.html) or [Mac OS X](https://cran.r-project.org/bin/macosx/R-3.3.1.pkg). For the latter you will need also to install [`XQuartz`](https://www.xquartz.org/).
-2. Install `R`. In Windows, be sure to select `'Startup options'` and then choose `'SDI'` in the `'Display Mode'` options. Leave the rest of installation options as default.
+1. Download `R` for [Windows](https://cran.r-project.org/bin/windows/base/release.html) or [Mac OS X](https://cran.r-project.org/bin/macosx/R-3.3.1.pkg). For the latter you will need to install [`XQuartz`](https://www.xquartz.org/) too.
+2. Install `R`. In Windows, be sure to select the `'Startup options'` and then choose `'SDI'` in the `'Display Mode'` options. Leave the rest of installation options as default.
 3. Open `R` (`'R x64 X.X.X'` in 64-bit Windows, `'R i386 X.X.X'` in 32-bit Windows and `'R.app'` in Mac OS X) and type:
 
     ```{r eval = FALSE}
     install.packages(c("Rcmdr", "RcmdrPlugin.TeachingDemos", "RcmdrPlugin.FactoMineR", "RcmdrPlugin.KMggplot2"), dep = TRUE)
     ```
     
-    Say 'Yes' to pop-ups and choose the CRAN mirror (the server from which you will download packages).
+    Say `'Yes'` to the pop-ups regarding the installation of the personal library and choose the CRAN mirror (the server from which you will download packages).
 
 4. To launch the `R Commander`, run `R` and then 
 
@@ -134,7 +134,7 @@ By default both `R` and `R Commander` will have menus and messages in the same l
 knitr::include_graphics("images/screenshots/Rcmdr.png")
 ```
 
-When you launch `R Commander` you will see a window similar to Figure \@ref(fig:ScreenshotRcmdr). The GUI has the following items:
+When you launch `R Commander` you will see a GUI window similar to Figure \@ref(fig:ScreenshotRcmdr). This GUI has the following items:
 
 1. **Drop-down menus**. They are pretty self-explicative. Here is a quick summary:
     - `'File'`. Saving options for different files (`R` script, `R Markdown`, output and workspace).
