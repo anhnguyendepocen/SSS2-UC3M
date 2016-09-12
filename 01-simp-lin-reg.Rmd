@@ -12,7 +12,7 @@ Q1. *Is the educational level of a country influenced by its economic wealth?*
 
 Q2. *If so, up to what precise extent?*
 
-The `pisa.csv` file contains 65 rows corresponding to the countries that took part on the PISA study. The data was obtained from the [statlink](http://dx.doi.org/10.1787/888932937035) in @PISA2012 and from @WB. Each row has the variables `Country`, `MeanMath`, `MathShareLow`, `MathShareTop`, `ReadingMean`, `ScienceMean`, `GDPp`, `logGDPp` and `HighIncome`. The Gross Domestic Product per capita (GDPp) of a country is a measure of how many economic resources are availiable per citizen. The `logGDPp` is just the logarithm of the GDPp, which is taken in order to avoid scale distortions. A small subset of the data is shown in Table \@ref(tab:pisatable). 
+The `pisa.csv` file (download it [here](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/pisa.csv)) contains 65 rows corresponding to the countries that took part on the PISA study. The data was obtained merging [statlink](http://dx.doi.org/10.1787/888932937035) in @PISA2012 and @WB. Each row has the variables `Country`, `MeanMath`, `MathShareLow`, `MathShareTop`, `ReadingMean`, `ScienceMean`, `GDPp`, `logGDPp` and `HighIncome`. The Gross Domestic Product per capita (GDPp) of a country is a measure of how many economic resources are availiable per citizen. The `logGDPp` is just the logarithm of the GDPp, which is taken in order to avoid scale distortions. A small subset of the data is shown in Table \@ref(tab:pisatable). 
 
 ```{r pisatable, echo = FALSE}
 pisa <- read.csv(file = "datasets/pisa.csv", header = TRUE)
@@ -46,6 +46,15 @@ We definitely need a way of **summarizing this ammount of information**! What we
     knitr::include_graphics("images/screenshots/view.png")
     ```
     
+    ```{block, type = 'rmdimportant'}
+    Apparently, in UC3M computers, **altering the location of a downloaded file  may cause errors the importation to `R Commander`**!
+    
+    Example:
+    
+    - Default download path: '`C:/Users/g15s4021/Downloads/pisa.csv`'. Importation from that path works **OK**.
+    - If you move the file another location (e.g. to `'C:/Users/g15s4021/Desktop/pisa.csv`'). Importation generates an **error**.
+    ```
+
     ***
 
 2. **Fit a simple linear regression**.
@@ -105,7 +114,7 @@ We definitely need a way of **summarizing this ammount of information**! What we
     ```
 
     On the `'Data'` panel, select the $X$ and $Y$ variables to be displayed in the scatterplot. On the `
-'Options'` panel, check the `'Least-squares line'` box and choose to identify `'3'` points `'Automatically'`^[The decision of which points are the most *different* from the rest is done automatically by a method known as the *Mahalanobis depth*.]. This will identify^[The default GUI option is set to identify `'2'` points. However, we know after a preliminar plot that there are 3 vey different points in the dataset, hence this particular choice.] are the most different compared with the rest of the data.
+'Options'` panel, check the `'Least-squares line'` box and choose to identify `'3'` points `'Automatically'`^[The decision of which points are the most *different* from the rest is done automatically by a method known as the *Mahalanobis depth*.]. This will identify^[The default GUI option is set to identify `'2'` points. However, we know after a preliminar plot that there are 3 very different points in the dataset, hence this particular choice.] are the most different compared with the rest of the data.
 
     3.2. The following `R` code will be generated. It produces a scatterplot of `MathMean` vs `logGDPp` with its scorresponding regression line.
     ```{r echo = FALSE, warning = FALSE}
@@ -119,7 +128,7 @@ We definitely need a way of **summarizing this ammount of information**! What we
     
     There are three clear *outliers*^[The outliers have a considerable impact on the regression line, as we will see later.]: Vietnam, Shangai-China and Qatar. The first two are non high-income economies that perform exceptionally well in the test (although Shangai-China is a cherry-picked region of China). On the other hand, Qatar is a high-income economy that has really poor scores.
 
-    We can identify countries that are above and below the linear trend in the previous plot. This is particularly interesting: we can assess whether a country is performing better or worse with respect to its *expected PISA score according to its economic status* (this adds more insight into Q2). To do so, we want to display the text labels in the points of the scatterplot. We can take a shortcut: copy and run in the input panel the next piece of code. It is a sligtly modified version of the code in 3.2.
+    We can identify countries that are above and below the linear trend in the previous plot. This is particularly interesting: we can assess whether a country is performing better or worse with respect to its *expected PISA score according to its economic status* (this adds more insight into Q2). To do so, we want to display the text labels in the points of the scatterplot. We can take a shortcut: copy and run in the input panel the next piece of code. It is a slightly modified version of the code in 3.2.
 
     ```{r, out.width = '90%', fig.align = 'center', results = 'hide'}
     scatterplot(MathMean ~ logGDPp, reg.line = lm, smooth = FALSE, spread = FALSE, id.method = 'mahal', id.n = 65, id.cex = 0.75, boxplots = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9), main = "Average Math score vs. GDPp", pch = c(16), cex = 0.75, data = pisa)
@@ -132,8 +141,8 @@ If you understood the previous analysis, then you should be able to perform the 
 ```{block, type = 'rmdnote'}
 Repeat the regression analysis (steps 2-3) for:
 
-- `MeanReading` regressed on `logGDPp`. Are the results similar to `MeanMath` on `logGDPp`?
-- `MeanMath` regressed on `MeanReading`. Compare it with `MeanMath` on `MeanScience`. Which pair of variables has the highest linear relation? Is that something expected?
+- `ReadingMean` regressed on `logGDPp`. Are the results similar to `MathMean` on `logGDPp`?
+- `MathMean` regressed on `ReadingMean`. Compare it with `MathMean` on `ScienceMean`. Which pair of variables has the highest linear relation? Is that something expected?
 
 Save the new models with different names to avoid overwriting the previous models!
 ```
