@@ -6,15 +6,13 @@ The simple linear regression is a *simple* but useful statistical model. In shor
 
 ### PISA scores and GDPp
 
-The Programme for International Student Assessment (PISA) is a study carried out by the Organisation for Economic Co-operation and Development (OECD) in 65 countries with the purpose of evaluating the performance of 15-year-old pupils on mathematics, science, and reading. A phenomena observed over years is that *wealthy countries tend to achieve larger average scores*. The purpose of this case study, motivated by the @PISA inform, is to answer these two questions:
+The Programme for International Student Assessment (PISA) is a study carried out by the Organisation for Economic Co-operation and Development (OECD) in 65 countries with the purpose of evaluating the performance of 15-year-old pupils on mathematics, science, and reading. A phenomena observed over years is that *wealthy countries tend to achieve larger average scores*. The purpose of this case study, motivated by the @PISA inform, is to answer two questions related with the previous statement:
 
 Q1. *Is the educational level of a country influenced by its economic wealth?*
 
 Q2. *If so, up to what precise extent?*
 
-The `pisa.csv` file contains 65 rows corresponding to the countries that took part on the PISA study. The data was merged from the [statlink](http://dx.doi.org/10.1787/888932937035) in @PISA2012 and from @WB. Each row has the variables `Country`, `MeanMath`, `MathShareLow`, `MathShareTop`, `ReadingMean`, `ScienceMean`, `GDPp`, `logGDPp` and `HighIncome`. The Gross Domestic Product per capita (GDPp) of a country is a measure of how many economic resources are availiable per citizen. The `logGDPp` is just the logarithm of the GDPp, which is taken in order to avoid scale distortions. 
-
-A small subset of the data is shown in Table \@ref(tab:pisatable). 
+The `pisa.csv` file contains 65 rows corresponding to the countries that took part on the PISA study. The data was obtained from the [statlink](http://dx.doi.org/10.1787/888932937035) in @PISA2012 and from @WB. Each row has the variables `Country`, `MeanMath`, `MathShareLow`, `MathShareTop`, `ReadingMean`, `ScienceMean`, `GDPp`, `logGDPp` and `HighIncome`. The Gross Domestic Product per capita (GDPp) of a country is a measure of how many economic resources are availiable per citizen. The `logGDPp` is just the logarithm of the GDPp, which is taken in order to avoid scale distortions. A small subset of the data is shown in Table \@ref(tab:pisatable). 
 
 ```{r pisatable, echo = FALSE}
 pisa <- read.csv(file = "datasets/pisa.csv", header = TRUE)
@@ -26,13 +24,13 @@ knitr::kable(
 )
 ```
 
-We definitely need a way of summarizing this ammount of information! What we are going to do is:
+We definitely need a way of **summarizing this ammount of information**! What we are going to do is the following. First, we import the data into `R Commander` and do a basic manipulation of it. Second, we fit a linear regression and interpret its output. Finally, we visualize the fitted line and the data.
 
 1. **Import the data into `R Commander`**.
 
     ***
 
-    1.1. Go to `'Data' -> 'Import data' -> 'from text file, clipboard, or URL...'`. A window like Figure \@ref(fig:read) will pop-up. 
+    1.1. Go to `'Data' -> 'Import data' -> 'from text file, clipboard, or URL...'`. A window like Figure \@ref(fig:read) will pop-up. Select the appropiate formatting options of the data file: whether the first row contains the name of the variables, what is the indicator for missing data, the field separator, and the decimal point character. Then click `'OK'`. (Inspecting the file first in a separate text editor will give you the right choices!) 
     
     ```{r read, echo = FALSE, out.width = '45%', fig.align = 'center', fig.cap = 'Data importation options.'}
     row.names(pisa) <- as.character(pisa$Country)
@@ -40,11 +38,9 @@ We definitely need a way of summarizing this ammount of information! What we are
     knitr::include_graphics("images/screenshots/read.png")
     ```
 
-    1.2. Select the appropiate formatting options of the data file: whether the first row contains the name of the variables, what is the indicator for missing data, the field separator, and the decimal point character. Then click `'OK'`. (Inspecting the file first in a separate text editor will give you the right choices.) 
+    1.2. Click on `'View data set'` to check that the importation was fine. If the data looks weird, then recheck the structure of the data file and restart from 1.1. 
     
-    1.3. Click on `'View data set'` to check that the importation was fine. If the data looks weird, then recheck the structure of the data file and restart from 1.1. 
-    
-    1.4. Since each row corresponds to a different country, we are going to name the rows as the value of the variable `Country`. To that end, go to `'Data' -> 'Active data set' -> 'Set case names...'` and select the variable `Country` and click `'OK'`. At the end, you should get something like Figure \@ref(fig:view).
+    1.3. Since each row corresponds to a different country, we are going to name the rows as the value of the variable `Country`. To that end, go to `'Data' -> 'Active data set' -> 'Set case names...'` and select the variable `Country` and click `'OK'`. The dataset should look like Figure \@ref(fig:view).
 
     ```{r view, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Correct importation of the `pisa` dataset.'}
     knitr::include_graphics("images/screenshots/view.png")
@@ -52,7 +48,7 @@ We definitely need a way of summarizing this ammount of information! What we are
     
     ***
 
-2. **Fit a linear model**.
+2. **Fit a simple linear regression**.
 
     ***
 
@@ -82,16 +78,16 @@ We definitely need a way of summarizing this ammount of information! What we are
     - `'Cancel'`: exits the window without performing any action.
     ```
     
-    2.2. If you enter you should get this output:
+    2.2. The window in Figure \@ref(fig:lm) generates this code and output:
     
     ```{r}
     pisaLinearModel <- lm(MathMean ~ logGDPp, data = pisa)
     summary(pisaLinearModel)
     ```
 
-    This is the linear model of `MathMean` regressed on `logGDPp` (first line) and its summary. The summary gives the coefficients of the line and the $R^2$, which you regard as a *rough indicator of the degree of linear relation between the variables* ($1$ is perfect linearity, $0$ means no linearity). 
+    This is the linear model of `MathMean` regressed on `logGDPp` (first line) and its summary (second line). The summary gives the coefficients of the line and the $R^2$, which you may regard as an *indicator of the strength of the linear relation between the variables*. $R^2=1$ is a perfect linear fit -- all the points lay in a line -- and $R^2=0$ is the poorest fit.
     
-    The fitted line is `MathMean` $= 185.16 + 28.79\,\times$ `logGDPp`. The slope coefficient is positive, which indicates that there is a positive correlation between the weatlh of a country and its performance in the PISA Mathematics test (answers Q1). Hence, the evidence that *wealthy countries tend to achieve larger average scores* is indeed true (at least for the Mathematics test). We can be more precise on the effect of the wealth of a country. According to the linear model, an increase of $1$ unit in the `logGDPp` a country is associated with achieving, on average, $28.79$ additional points in the test (Q2).
+    The fitted line is `MathMean` $= 185.16 + 28.79\,\times$ `logGDPp`. The slope coefficient is positive, which indicates that there is a positive correlation between the weatlh of a country and its performance in the PISA Mathematics test (this answers Q1). Hence, the evidence that *wealthy countries tend to achieve larger average scores* is indeed true (at least for the Mathematics test). We can be more precise on the effect of the wealth of a country. According to the linear model, an increase of 1 unit in the `logGDPp` a country is associated with achieving, on average, 28.79 additional points in the test (Q2).
     
     ***
 
@@ -109,7 +105,7 @@ We definitely need a way of summarizing this ammount of information! What we are
     ```
 
     On the `'Data'` panel, select the $X$ and $Y$ variables to be displayed in the scatterplot. On the `
-'Options'` panel, check the `'Least-squares line'` box and choose to identify `'3'` points `'Automatically'`. This will identify the $3$ points that are the most different compared with the rest of the data.
+'Options'` panel, check the `'Least-squares line'` box and choose to identify `'3'` points `'Automatically'`^[The decision of which points are the most *different* from the rest is done automatically by a method known as the *Mahalanobis depth*.]. This will identify^[The default GUI option is set to identify `'2'` points. However, we know after a preliminar plot that there are 3 vey different points in the dataset, hence this particular choice.] are the most different compared with the rest of the data.
 
     3.2. The following `R` code will be generated. It produces a scatterplot of `MathMean` vs `logGDPp` with its scorresponding regression line.
     ```{r echo = FALSE, warning = FALSE}
@@ -121,9 +117,9 @@ We definitely need a way of summarizing this ammount of information! What we are
     scatterplot(MathMean ~ logGDPp, reg.line = lm, smooth = FALSE, spread = FALSE, id.method = 'mahal', id.n = 3, boxplots = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9), main = "Average Math score vs. GDPp", pch = c(16), data = pisa)
     ```
     
-    There are three clear *outliers*^[The outliers have a considerable impact on the regression line, as we will see later.]: Vietnam, Shangai-China and Qatar. The first two are non high-income economies that perform exceptionally well (although Shangai-China is a cherry-picked region of China). On the other hand, Qatar is a high-income economy that performs really poor.
+    There are three clear *outliers*^[The outliers have a considerable impact on the regression line, as we will see later.]: Vietnam, Shangai-China and Qatar. The first two are non high-income economies that perform exceptionally well in the test (although Shangai-China is a cherry-picked region of China). On the other hand, Qatar is a high-income economy that has really poor scores.
 
-    In the previous plot we can identify countries that are above and below the linear trend. This is particularly interesting: we can assess whether a country is performing better or worse with respect to its expected PISA score according to its economic status (adds more insight into Q2). In order to display the text labels in the scatterplot, we can take a shortcut: copy and run the following code in the input panel.
+    We can identify countries that are above and below the linear trend in the previous plot. This is particularly interesting: we can assess whether a country is performing better or worse with respect to its *expected PISA score according to its economic status* (this adds more insight into Q2). To do so, we want to display the text labels in the points of the scatterplot. We can take a shortcut: copy and run in the input panel the next piece of code. It is a sligtly modified version of the code in 3.2.
 
     ```{r, out.width = '90%', fig.align = 'center', results = 'hide'}
     scatterplot(MathMean ~ logGDPp, reg.line = lm, smooth = FALSE, spread = FALSE, id.method = 'mahal', id.n = 65, id.cex = 0.75, boxplots = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9), main = "Average Math score vs. GDPp", pch = c(16), cex = 0.75, data = pisa)
@@ -131,13 +127,13 @@ We definitely need a way of summarizing this ammount of information! What we are
 
   ***
 
-Having understood the previous analysis, you should be able to perform the next ones on your own.
+If you understood the previous analysis, then you should be able to perform the next ones on your own.
 
 ```{block, type = 'rmdnote'}
 Repeat the regression analysis (steps 2-3) for:
 
 - `MeanReading` regressed on `logGDPp`. Are the results similar to `MeanMath` on `logGDPp`?
-- `MeanMath` regressed on `MeanReading`. Compare it with `MeanMath` on `MeanScience`. Which pair of variables has the most linear relation? Is that something expected?
+- `MeanMath` regressed on `MeanReading`. Compare it with `MeanMath` on `MeanScience`. Which pair of variables has the highest linear relation? Is that something expected?
 
 Save the new models with different names to avoid overwriting the previous models!
 ```
