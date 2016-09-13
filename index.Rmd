@@ -126,8 +126,22 @@ At some point you will probably need to run the software outside UC3M computer l
     library(Rcmdr)
     ```
 
-By default both `R` and `R Commander` will have menus and messages in the same language of your OS.
+By default `R` and `R Commander` will have menus and messages in the same language of your OS. If you want them in English, a simple option is to change the OS language to English and reboot. If you want to stick with your OS language, another options are:
 
+- Windows: create a shortcut in your desktop, either to `'R x64 X.X.X'` or to `'R i386 X.X.X'`. Add a distinctive descriptor of the language to the end of its name, for example `'R x64 X.X.X ENGLISH'`. Then `'Right mouse click'` on it, select `'Properties'` and **append** to the `'Target'` field the text `Language=en` (sepatated by a space, see Figure \@ref(fig:lang). Analogously, use `Language=es` for Spanish, `Language=it` for Italian, etc. Use this shortcut to launch `R` (and hence `R Commander`) in the chosen language.
+
+    ```{r lang, echo = FALSE, out.width = '45%', fig.align = 'center', fig.cap = 'Modification of the shortcut properties.'}
+  knitr::include_graphics("images/screenshots/lang.png")
+    ```
+
+- Mac OS X. Open `R.app` and simply run
+
+    ```{r, eval = FALSE}
+    system("defaults write org.R-project.R force.LANG en_GB.UTF-8")
+    ```
+  
+  Then close `'R.app'` and relaunch it. Analogously, replace `en_GB` above by `es_ES` or `it_IT` if you want to switch back to Spanish or Italian.
+  
 ## Basics of `R Commander`
 
 ```{r ScreenshotRcmdr, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Main window of `R Commander`, with the plug-ins `RcmdrPlugin.FactoMineR`, `RcmdrPlugin.KMggplot2` and `RcmdrPlugin.Demos` loaded.'}

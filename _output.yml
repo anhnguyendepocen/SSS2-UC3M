@@ -18,14 +18,7 @@ bookdown::gitbook:
       theme: white
       family: sans
       size: 2
-    sharing:
-      facebook: yes
-      twitter: yes
-      google: no
-      weibo: no
-      instapper: no
-      vk: no
-      all: ['facebook', 'google', 'twitter', 'weibo', 'instapaper']
+    sharing: no
 bookdown::html_chapters:
   css: [css/style.css, css/toc.css]
 bookdown::pdf_book:
