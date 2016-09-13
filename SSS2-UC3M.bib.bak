@@ -25,7 +25,7 @@
 
 @Article{PISA,
   Title                    = {Does Money Buy Strong Performance in PISA?},
-  Author                   = {OCDE},
+  Author                   = {OECD},
   Journal                  = {PISA in Focus},
   Year                     = {2012},
   Number                   = {13},
@@ -34,6 +34,19 @@
   Doi                      = {http://dx.doi.org/10.1787/5k9fhmfzc4xx-en},
   Owner                    = {Eduardo},
   Timestamp                = {2016.09.11}
+}
+
+@Book{PISA2012,
+  Title                    = {PISA 2012 Results: What Students Know and Can Do (Volume I, Revised edition, February 2014): Student Performance in Mathematics, Reading and Science},
+  Author                   = {OECD},
+  Publisher                = {OECD Publishing},
+  Year                     = {2012},
+
+  Address                  = {Paris},
+
+  Doi                      = {10.1787/9789264208780-en},
+  Owner                    = {Eduardo},
+  Timestamp                = {2016.09.12}
 }
 
 @Manual{R-base,
@@ -55,6 +68,16 @@ the ggplot2 Package},
   Year                     = {2015},
 
   Url                      = {https://CRAN.R-project.org/package=RcmdrPlugin.KMggplot2}
+}
+
+@Electronic{WB,
+  Title                    = {GDP per capita},
+  Author                   = {The World Bank, World Development Indicators},
+  Note                     = {Retrieved from http://data.worldbank.org/indicator/NY.GDP.PCAP.CD},
+  Year                     = {2012},
+
+  Owner                    = {Eduardo},
+  Timestamp                = {2016.09.12}
 }
 
 @Book{Wickham2009,

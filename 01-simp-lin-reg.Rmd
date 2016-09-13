@@ -12,7 +12,7 @@ Q1. *Is the educational level of a country influenced by its economic wealth?*
 
 Q2. *If so, up to what precise extent?*
 
-The `pisa.csv` file (download it [here](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/pisa.csv)) contains 65 rows corresponding to the countries that took part on the PISA study. The data was obtained merging [statlink](http://dx.doi.org/10.1787/888932937035) in @PISA2012 and @WB. Each row has the variables `Country`, `MeanMath`, `MathShareLow`, `MathShareTop`, `ReadingMean`, `ScienceMean`, `GDPp`, `logGDPp` and `HighIncome`. The Gross Domestic Product per capita (GDPp) of a country is a measure of how many economic resources are availiable per citizen. The `logGDPp` is just the logarithm of the GDPp, which is taken in order to avoid scale distortions. A small subset of the data is shown in Table \@ref(tab:pisatable). 
+The `pisa.csv` file (download it [here](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/pisa.csv)) contains 65 rows corresponding to the countries that took part on the PISA study. The data was obtained merging [statlink](http://dx.doi.org/10.1787/888932937035) in @PISA2012 and @WB. Each row has the variables `Country`, `MathMean`, `MathShareLow`, `MathShareTop`, `ReadingMean`, `ScienceMean`, `GDPp`, `logGDPp` and `HighIncome`. The Gross Domestic Product per capita (GDPp) of a country is a measure of how many economic resources are availiable per citizen. The `logGDPp` is just the logarithm of the GDPp, which is taken in order to avoid scale distortions. A small subset of the data is shown in Table \@ref(tab:pisatable). 
 
 ```{r pisatable, echo = FALSE}
 pisa <- read.csv(file = "datasets/pisa.csv", header = TRUE)
@@ -72,7 +72,7 @@ We definitely need a way of **summarizing this ammount of information**! What we
     Y=\beta_0+\beta_1X+\varepsilon
     $$
     
-    In our case $Y=$`MeanMath` and  $X=$`logGDPp`, so select them and click `'OK'`^[In principle, you could pick more than one explanatory variables uisng the `'Control'` or `'Shift'` keys, but that corresponds to the *multiple linear regression* (covered in Chapter 3).]. 
+    In our case $Y=$`MathMean` and  $X=$`logGDPp`, so select them and click `'OK'`^[In principle, you could pick more than one explanatory variables uisng the `'Control'` or `'Shift'` keys, but that corresponds to the *multiple linear regression* (covered in Chapter 3).]. 
 
     ```{block, type = 'rmdtip'}
     If you want to unselect an option in an `R Commander` menu, use `'Control'` + `'Mouse click'`.
