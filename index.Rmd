@@ -2,7 +2,7 @@
 title: "Lab notes for *Statistics for Social Sciences II: Multivariate Techniques*"
 subtitle: "BSc in International Studies and BSc in International Studies	&	Political	Science, Carlos III University of Madrid"
 author: "Eduardo García Portugués"
-date: "`r Sys.Date()`, v1.0.1"
+date: "`r Sys.Date()`, v1.0.2"
 knit: "bookdown::render_book"
 documentclass: book
 bibliography: SSS2-UC3M.bib
@@ -71,7 +71,7 @@ The only thing you need to do to run `R Commander` in any UC3M computer is:
     install.packages("Rcmdr", dep = TRUE)
     ```
     
-    and say 'Yes' to the next pop-ups regarding the installation of the personal library. This will download and install `Rcmdr` and all the related packages from a CRAN mirror (choose `'Spain (*) [https]'`, usually works OK). Wait for the downloading and installation of the packages. When it is done, just type 
+    and say 'Yes' to the next pop-ups regarding the installation of the personal library. This will download and install `Rcmdr` and all the related packages from a CRAN mirror (`'Spain (A Coruña) [https]'`, usually works OK - try a different one if you experience problems). Wait for the downloading and installation of the packages. When it is done, just type 
     ```{r eval = FALSE}
     library(Rcmdr)
     ```
@@ -110,17 +110,18 @@ If you plan to use your personal laptop, **you** are responsible for the right s
 
 At some point you will probably need to run the software outside UC3M computer labs. This is what you have to do in order to install `R` + `R Commander` in your own computer^[If there is any Linux user, kindly follow the corresponding instructions [here](https://cran.r-project.org/) and [here](http://socserv.mcmaster.ca/jfox/Misc/Rcmdr/installation-notes.html).]:
 
-1. Download `R` for [Windows](https://cran.r-project.org/bin/windows/base/release.html) or [Mac OS X](https://cran.r-project.org/bin/macosx/R-3.3.1.pkg). For the latter you will need to install [`XQuartz`](https://www.xquartz.org/) too.
-2. Install `R`. In Windows, be sure to select the `'Startup options'` and then choose `'SDI'` in the `'Display Mode'` options. Leave the rest of installation options as default.
-3. Open `R` (`'R x64 X.X.X'` in 64-bit Windows, `'R i386 X.X.X'` in 32-bit Windows and `'R.app'` in Mac OS X) and type:
+1. In Mac OS X, download and install first [`XQuartz`](https://www.xquartz.org/) and log out and back on your Mac OS X account (**important**). Be sure that your Mac OS X system is up-to-date.
+2. Download `R` for [Windows](https://cran.r-project.org/bin/windows/base/release.html) or [Mac OS X](https://cran.r-project.org/bin/macosx/R-3.3.1.pkg). 
+3. Install `R`. In Windows, be sure to select the `'Startup options'` and then choose `'SDI'` in the `'Display Mode'` options. Leave the rest of installation options as default.
+4. Open `R` (`'R x64 X.X.X'` in 64-bit Windows, `'R i386 X.X.X'` in 32-bit Windows and `'R.app'` in Mac OS X) and type:
 
     ```{r eval = FALSE}
     install.packages(c("Rcmdr", "RcmdrPlugin.TeachingDemos", "RcmdrPlugin.FactoMineR", "RcmdrPlugin.KMggplot2"), dep = TRUE)
     ```
     
-    Say `'Yes'` to the pop-ups regarding the installation of the personal library and choose the CRAN mirror (the server from which you will download packages).
+    Say `'Yes'` to the pop-ups regarding the installation of the personal library and choose the CRAN mirror (the server from which you will download packages). `'Spain (A Coruña) [https]'`, usually works OK - try a different one if you experience problems.
 
-4. To launch the `R Commander`, run `R` and then 
+5. To launch the `R Commander`, run `R` and then 
 
     ```{r eval = FALSE}
     library(Rcmdr)
