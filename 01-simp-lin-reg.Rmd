@@ -12,7 +12,7 @@ Q1. *Is the educational level of a country influenced by its economic wealth?*
 
 Q2. *If so, up to what precise extent?*
 
-The `pisa.csv` file (download it [here](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/pisa.csv)) contains 65 rows corresponding to the countries that took part on the PISA study. The data was obtained merging [statlink](http://dx.doi.org/10.1787/888932937035) in @PISA2012 and @WB. Each row has the variables `Country`, `MathMean`, `MathShareLow`, `MathShareTop`, `ReadingMean`, `ScienceMean`, `GDPp`, `logGDPp` and `HighIncome`. The Gross Domestic Product per capita (GDPp) of a country is a measure of how many economic resources are availiable per citizen. The `logGDPp` is just the logarithm of the GDPp, which is taken in order to avoid scale distortions. A small subset of the data is shown in Table \@ref(tab:pisatable). 
+The `pisa.csv` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/pisa.csv)) contains 65 rows corresponding to the countries that took part on the PISA study. The data was obtained merging [statlink](http://dx.doi.org/10.1787/888932937035) in @PISA2012 and @WB. Each row has the variables `Country`, `MathMean`, `MathShareLow`, `MathShareTop`, `ReadingMean`, `ScienceMean`, `GDPp`, `logGDPp` and `HighIncome`. The Gross Domestic Product per capita (GDPp) of a country is a measure of how many economic resources are availiable per citizen. The `logGDPp` is just the logarithm of the GDPp, which is taken in order to avoid scale distortions. A small subset of the data is shown in Table \@ref(tab:pisatable). 
 
 ```{r pisatable, echo = FALSE}
 pisa <- read.csv(file = "datasets/pisa.csv", header = TRUE)
@@ -147,3 +147,363 @@ Repeat the regression analysis (steps 2-3) for:
 Save the new models with different names to avoid overwriting the previous models!
 ```
 
+### Apportionment in the EU and US
+
+> Apportionment is the process by which seats in a legislative body are distributed among administrative divisions entitled to representation.
+>
+> --- Wikipedia article on [Apportionment (politics)](https://en.wikipedia.org/wiki/Apportionment_(politics))
+
+The *European Parliament* and the *US House of Representatives* are two of the most important macro legislative bodies in the world. The distribution of seats in both cameras is designed in order to give make a *compromise* in the representation of the different states that conform the federation (US) or union (EU). Both chambers were created under very different historical circumstances, which affected the apportionment that they present. More specifically:
+
+- US. The apportionment is neatly *fixed by the US Constitution*. Each of the 50 states is apportioned a number of seats that corresponds to its share of the total population of the 50 states, according to the most recent decennial census. Every state is guaranteed at least one seat.
+
+- EU. The apportionment is set by *treaties* (Nice, Lisbon), in which *negotiations* between countries take place. The [last accepted composition](http://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32013D0312) gives an allocation of seats based on *degressive proportionality*^[Less populated states are given more weight than its proportional share.] and somehow vague guidelines. It concludes
+with a commitment to establish a system to ''allocate the seats between Member States in an objective, fair, durable and transparent way, translating the principle of degressive proportionality''.
+
+We know the qualitative differences between both chambers. Now let's quantify and visualize what are the differences between their respective apportionments, and how the linear regression can add insights on what is actually going on with the EU apportionment. The questions we want to answer are:
+
+- Q1. Can we quantify which chamber is more proportional? 
+- Q2. Which states are over-represented and which are under-represented in both chambers?
+- Q3. What can we say about the EU approportionment system? Were the changes proposed favouring proportionality or not?
+
+The `US_apportionment.xls` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/US_apportionment.xls)) file contains the 50 US states entitled to representation. The variables are `State`, `Population2010` (last census), `Seats2013–2023` and	`PopulationPerSeat2010`. This is an Excel file that we can read using `'Data' -> 'Import data' -> 'from Excel file...'`. A window like will pop-up, asking for the right options. We set them as in Figure \@ref(fig:excel), since we want the variable `State` to be the case names. After clicking in `'View dataset'`, the data should look like Figure \@ref(fig:US).
+
+    ```{r excel, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Importation of an Excel file.'}
+    #knitr::include_graphics("images/screenshots/excel.png")
+    ```
+
+    ```{r US, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Correct importation of the `US` dataset.'}
+    #knitr::include_graphics("images/screenshots/US.png")
+    ```
+
+The `EU_apportionment.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/EU_apportionment.txt)) contains the variables `State`, `Population2013` and `PopulationPerSeat2013`, the number of seats assigned under different years (`Seats2007`, `Seats2009`	`Seats2011`, `Seats2013`, `Seats2014`) and four different proposals of apportionment by parliamentarian Andrew Duff (`ADuff1_2014`,	`ADuff2_2014`, `ADuff2_2019`,	`ADuff2_2024`). Andrew Duff proposed changes in the   
+
+```{block, type = 'rmdnote'}
+For this file, you should know how to:
+
+1. Inspect the file in a text editor and determine its formatting.
+2. Decide the right importation options and load it with the name `EU`.
+3. Set the case names as the variable `State`.
+```
+
+```{r echo = FALSE}
+US <- RcmdrMisc::readXL("datasets/US_apportionment.xlsx", rownames = TRUE, header = TRUE, na = "", sheet = "Hoja1", stringsAsFactors = TRUE)
+EU <- read.table("datasets/EU_apportionment.txt", header = TRUE, na = "-", sep = "\t")
+```
+
+We now have two datasets loaded, but only one can be active. We will switch between them while we perform compute the percentages of population and seats.
+
+Suppose we exit the `R Commander` and we want to come back to it. Then we can save the data and models in a `.RData` file (useful). We can save also the `R` file. Save and close `.R`. Before that, we are going to take the opportunity to load `ggplot2`. Reopen both.
+
+The `EU` dataset is not so easy to visualize. A nice multivariate technique to do so is a *matrix scatterplot*. Essentially all the options in the scatterplot, but for pairs of them. And what about the central panel? histogram/density, boxplot? A quick way of **visualizing multivariate data** (up to a moderate number of dimensions) is to use a *matrix scatterplot*
+
+    ```{r mscatter1, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Scatterplot window, `\'Data\'` panel.'}
+    #knitr::include_graphics("images/screenshots/matrixscatterplot1.png")
+    ```
+    ```{r mscatter2, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Scatterplot window, `\'Options\'` panel. Be sure to tick the `\'Least-squares line\'` box in order to display the fitted regression line.'}
+    #knitr::include_graphics("images/screenshots/matrixscatterplot2.png")
+    ```
+
+    ```{block, type = 'rmdnote'}
+    Experience with histograms, boxplots, density estimates.
+    ```
+
+Let's compute the linear models. Switch
+two linear models.
+
+```{r}
+mod <- lm(Seats2014 ~ Population2013, data = EU)
+mod 
+summary(mod)
+mod2 <- lm(ADuff2_2014 ~ Population2013, data = EU)
+mod2 
+summary(mod2)
+anova(mod)
+plot(mod)
+plot(Population2013 ~ Seats2014, data = EU)
+```
+
+```{r}
+mod <- lm(Population2010 ~ Seats2013.2023, data = US)
+mod 
+summary(mod)
+anova(mod)
+```
+
+## Some `R` code
+
+At the end of the example:
+
+
+```r
+# Some simple operations
+1 + 1
+2 * 2
+2^3
+```
+
+```r
+# These are vectors
+c(1, 2, 3)
+c(1, 0)
+1:5 # Sequence from 1 to 5
+```
+
+```r
+# Assignation
+myData <- c(1, 2) # Save vector (1, 2) as the variable myData
+myData
+
+# Careful with capitalization!
+mydata
+```
+
+```r
+# The functions are take some arguments between parenthesis and transform them into an output
+sum(myData)
+
+# lm is a function: lm(formula, data)
+mod <- lm(formula = Seats2014 ~ Population2013, data = UE)
+mod
+
+# Summary is also a function: it takes as argument a model
+summary(mod)
+```
+
+```r
+data
+```
+
+```r
+# The outputs of a model are lists
+
+# What are the elements of the list?
+names(mod)
+
+# Access the elements by dollars
+mod$coefficients
+```
+
+
+
+<!--
+
+## Model formulation and estimation by least squares
+
+PISA back. Do matrix scatterplot. Go to  
+
+Suppose we have a production line where we measured the time (in minutes) required to produce a number of solicited items. There are two random variables: `y` = "time required to produce an order" and `x` = "number of items in the order". We want to explain/predict `y` from `x` from a linear model.
+
+```{r}
+
+# Production time
+y <- c(175, 189, 344, 88, 114, 338, 271, 173, 284, 277, 337, 58, 146, 277, 123, 227, 63, 337, 146, 68)
+
+# Number of units in the order
+x <- c(195, 215, 243, 162, 185, 231, 234, 166, 253, 196, 220, 168, 207, 225, 169, 215, 147, 230, 208, 172)
+
+# Data scatterplot (pch = 16 for filled points)
+plot(y ~ x, pch = 16)
+
+```
+
+### The `lm` function
+
+The linear fit in `R` is done by the `lm` function and the formula `y ~ x`, used to denote that we are interested in regressing `y` over `x`. 
+
+```{r}
+
+# Fit a linear model y = beta0 + beta1 * x
+reg <- lm(y ~ x)
+
+# The result is a list with several objects
+names(reg)
+
+# The fitted coefficients beta0 (intercept) and beta1 (slope)
+reg$coefficients
+
+# The regression line with the minimized distances
+plot(y ~ x, pch = 16)
+abline(reg, col = 2)
+segments(x0 = x, y0 = y, x1 = x, y1 = reg$fitted.values)
+
+```
+
+### The least squares estimate
+
+We can check and visualize that `reg$coefficients` indeed contains the least squares estimates and that they minimize the Residual Sum of Squares (RSS).
+
+```{r}
+
+# Create the design matrix
+X <- cbind(1, x)
+
+# The analytical solution
+betahat <- solve(t(X) %*% X) %*% t(X) %*% y
+betahat
+
+# Minimal RSS
+sum((y - X %*% betahat)^2)
+```
+
+You can try to get a better RSS. Good luck! :)
+Vertical/horizontal or perpendicular?
+Derivatives, recompute coeffs
+
+
+
+```{r, echo = FALSE}
+
+# # Define input
+# inputPanel(
+#   
+#   sliderInput("beta0", label = "Intercept:",
+#               min = -500, max = 300, value = reg$coefficients[1] + 600, step = 5),
+#   sliderInput("beta1", label = "Slope:",
+#               min = -3, max = 8, value = 0, step = 0.01)
+#   
+# )
+# 
+# # Create plot
+# renderPlot({
+#   plot(y ~ x, main = paste("RSS:", round(sum((input$beta0 + input$beta1 * x - y)^2), 1)), pch = 16, xlim = c(100, 300), ylim = c(0, 400))
+#   abline(a = input$beta0, b = input$beta1, col = 2)
+#   segments(x0 = x, y0 = y, x1 = x, y1 = input$beta0 + input$beta1 * x)
+# })
+  
+```
+
+```{r, echo = FALSE}
+# 
+#  ### Define a line
+#   data_line <- data.frame(
+#     x_rng = c(0, 1), 
+#     y_rng = c(reg$coefficients[1], reg$coefficients[1] + reg$coefficients[2])
+#   )     
+#   
+# p <- ggvis(data.frame("x" = x, "y" = y), x = ~x, y = ~y)
+# layer_points(p) %>%
+# layer_model_predictions(model = "lm", stroke := "red") %>%
+#     layer_paths(x = ~x_rng, y = ~y_rng, stroke := "blue", data = data_line) %>% 
+#   scale_numeric("x", domain = c(140, 270), nice = FALSE, clamp = TRUE) %>% 
+#   scale_numeric("y", domain = c(0, 400), nice = FALSE, clamp = TRUE)
+# 
+```
+
+Formulation in a nutshell
+Check that indeed the estimates minimize the RSS
+
+## Assumptions of the model
+
+Why do we need assumptions? Meaning of each assumption
+Theory in a nutshell
+Nothing is said for the randomness of $X$! $Y$ must be continuous, but $X$ can be discrete or factorial (as we will see in the next chapter)
+
+## Inference for the model coefficients
+
+Normality, null hypothesis, tests on the coefficients
+
+## Prediction of the mean and individual
+
+Confidence intervals - different if `x` is random or non-random.
+ was observed or not, or if is random or nor.
+Prediction of a new observation can be done via the function `predict`, which also provides conficence intervals. The `newdata` argument of `predict` needs a `data.frame`.
+
+```{r}
+
+# Point in which we want a prediction for y
+newx <- data.frame(x = 200)
+
+# Prediction with 95% confidence interval
+predict(reg, newdata = newx, interval = "prediction", level = 0.95)
+```
+
+-->
+<!-- 
+
+----------------------------------------------
+---------------- END LESSON 2 ----------------
+----------------------------------------------
+
+
+## Assesing model fit and ANOVA
+
+$R^2$ does not measure the correctness of a linear model but the **usefulness assuming the model is correct**. 
+
+```{r}
+# Fixed design
+xf <- seq(0, 1, l = 50)
+
+# Errors with different variance
+set.seed(123456)
+eps1 <- rnorm(50, sd = 0.1)
+eps2 <- rnorm(50, sd = 1)
+
+# Responses generated following a linear model
+y1 <- 1 + 2 * xf + eps1
+y2 <- 1 + 2 * xf + eps2
+
+# Fits
+reg1 <- lm(y1 ~ xf)
+reg2 <- lm(y2 ~ xf)
+
+# R^2 depends on the 
+summary(reg1)
+summary(reg2)
+
+# Plot
+par(mfrow = c(1, 2))
+plot(y1 ~ xf, pch = 16, ylim = c(-1, 5))
+abline(a = 1, b = 2, col = 2)
+abline(a = reg1$coefficients[1], b = reg1$coefficients[2], col = 3)
+plot(y2 ~ xf, pch = 16, ylim = c(-1, 5))
+abline(a = 1, b = 2, col = 2)
+abline(a = reg2$coefficients[1], b = reg2$coefficients[2], col = 3)
+
+```
+ 
+  ```{block, type = 'rmdimportant'}
+  A large $R^2$ means *nothing* if the **assumptions of the model do not hold**.
+  ```
+
+Counterexample:
+```{r}
+# Create data that: 
+# 1) does NOT follow a linear model
+# 2) the error is heteroskedastic
+xf <- seq(0.15, 1, l = 100)
+y3 <- 0.2 * sin(2 * pi * xf) + rnorm(n = 100, sd = 0.1 * xf^2)
+
+# Great R^2!?
+reg3 <- lm(y3 ~ xf)
+summary(reg3)
+
+# But prediction is obviously problematic
+plot(y3 ~ xf, pch = 16)
+lines(0.2 * sin(2 * pi * xf) ~ xf, col = 2)
+abline(reg3, col = 3)
+```
+
+
+## Model diagnostics
+
+leverage points
+outliers
+`TeachingDemos`
+transformations: box-cox
+correlation on the residuals
+
+## Nonlinear relationships
+
+cpus
+Do the same analysis for gpus.
+polynomials
+
+## Full analyses involving the linear model
+
+### Sustained increasing of tuition fees
+
+### 'Growth in a time of debt'
+
+
+-->

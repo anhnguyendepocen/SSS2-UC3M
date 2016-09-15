@@ -181,6 +181,7 @@ This is a handy list with all datasets used in the course. To download them, sim
 
 - `pisa.csv` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/pisa.csv)). Contains 65 rows corresponding to the countries that took part on the PISA study. Each row has the variables `Country`, `MeanMath`,` MathShareLow`, `MathShareTop`, `ReadingMean`, `ScienceMean`, `GDPp`, `logGDPp` and `HighIncome`. The `logGDPp` is the logarithm of the `GDPp`, which is taken in order to avoid scale distortions. 
 
+- `US_apportionment.xls` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/US_apportionment.xls)). Contains the 50 US states entitled to representation in the House of Representatives. The recorded variables are `State`, `Population2010`, `Seats2013–2023` and	`PopulationPerSeat2010`.
 
-
+- `EU_apportionment.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/EU_apportionment.txt)). Contains 28 rows with the member states for the EU. The variables are `State`, the number of seats assigned under different years (`Seats2007`, `Seats2009`	`Seats2011`, `Seats2013`, `Seats2014`), the different proposals of apportionment by parliamentarian Andrew Duff (`ADuff1_2014`,	`ADuff2_2014`, `ADuff2_2019`,	`ADuff2_2024`), `Population2013` and`PopulationPerSeat2013`.
 
