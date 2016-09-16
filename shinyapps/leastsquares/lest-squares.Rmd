@@ -1,0 +1,79 @@
+---
+output: html_document
+author: Eduardo García-Portugués
+runtime: shiny
+---
+
+```{r, echo = FALSE, message = FALSE}
+library(ggplot2)
+set.seed(34567)
+x <- rnorm(50)
+e <- rnorm(50, sd = 0.5)
+yL <- -0.5 + 1.5 * x + e
+yQ <- -0.5 + 1.5 * x^2 + e
+yE <- -0.5 + 1.5 * 2^x + e
+```
+
+
+```{r, echo = FALSE}
+
+# Define input
+inputPanel(
+  
+  selectInput(inputId = "dataType", label = "Data:", choices = c("linear", "quadratic", "exponential")),
+  selectInput(inputId = "distType", label = "Distance:", choices = c("vertical", "horizontal", "perpendicular")),
+  sliderInput(inputId = "beta0", label = "Intercept:",
+              min = -3, max = 3, value = 0, step = 0.1),
+  sliderInput(inputId = "beta1", label = "Slope:",
+              min = -3, max = 3, value = 0, step = 0.1)
+  
+)
+
+# Create plot
+renderPlot({
+  
+  # Response  
+  if (input$dataType == "linear") {
+    
+    y <- yL
+      
+  } else if (input$dataType == "quadratic") {
+    
+    y <- yQ
+    
+  } else {
+    
+    y <- yE
+    
+  }
+  
+  # Projection into a * x + b * y + c = 0
+  a <- input$beta1
+  b <- -1
+  c <- input$beta0
+  proj <- cbind(b * (b * x - a * y) - a * c, a * (-b * x + a * y) - b * c) / (a^2 + b^2)
+
+  # Plot
+  plot(x, y, xlim = c(-5, 5), ylim = c(-5, 5), pch = 16)
+  if (input$distType == "vertical") {
+    
+    segments(x0 = x, y0 = y, x1 = x, y1 = input$beta0 + input$beta1 * x, col = rgb(1, 0, 0, alpha = 0.5))
+    title(main = paste("RSS:", round(sum((input$beta0 + input$beta1 * x - y)^2), 1)))
+    
+  } else if (input$distType == "horizontal") {
+    
+    segments(x0 = x, y0 = y, x1 = (y - input$beta0) / input$beta1, y1 = y, col = rgb(1, 0, 0, alpha = 0.5))
+    title(main = paste("RSS:", round(sum(((y - input$beta0) / input$beta1 - x)^2), 1)))
+    
+  } else {
+    
+    segments(x0 = x, y0 = y, x1 = proj[, 1], y1 = proj[, 2], col = rgb(1, 0, 0, alpha = 0.5))
+    title(main = paste("RSS:", round(sum((proj[, 1] - x)^2 + (proj[, 2] - y)^2), 1)))
+    
+  }
+  abline(a = input$beta0, b = input$beta1, col = 2, lwd = 2)
+  
+}, width = 700, height = 700)
+  
+```
+
