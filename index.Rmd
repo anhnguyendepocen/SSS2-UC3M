@@ -2,7 +2,7 @@
 title: "Lab notes for *Statistics for Social Sciences II: Multivariate Techniques*"
 subtitle: "BSc in International Studies and BSc in International Studies	&	Political	Science, Carlos III University of Madrid"
 author: "Eduardo García Portugués"
-date: "`r Sys.Date()`, v1.0.4"
+date: "`r Sys.Date()`, v2.0.0"
 knit: "bookdown::render_book"
 documentclass: book
 bibliography: SSS2-UC3M.bib
@@ -13,9 +13,6 @@ description: "Lab notes for *Statistics for Social Sciences II: Multivariate Tec
 github-repo: egarpor/SSS2-UC3M
 ---
 
-
-# Introduction
-
 <!--
 (Move up once decided what options)
 cover-image: no
@@ -24,7 +21,9 @@ apple-touch-icon-size: 120
 favicon: "favicon.ico"
 -->
 
-Welcome to the lab notes for *Statistics for Social Sciences II: Multivariate Techniques*. Along these notes we will see how to effectively implement the statistical methods presented in the lectures. The exposition we will follow is based on learning by analyzing datasets and **real case studies**, always with the help of **statistical software**. While doing so, we will illustrate the key insights of some multivariate techniques and the adequate use of advanced statistical software.
+# Introduction
+
+Welcome to the lab notes for *Statistics for Social Sciences II: Multivariate Techniques*. Along these notes we will see how to effectively implement the statistical methods presented in the lectures. The exposition we will follow is based on learning by analyzing datasets and **real-case studies**, always with the help of **statistical software**. While doing so, we will illustrate the key insights of some multivariate techniques and the adequate use of advanced statistical software.
 
 Be advised that these notes are *neither an exhaustive, rigorous nor comprehensive treatment* of the broad statistical branch know as *Multivariate Analysis*. They are just a helpful resource to implement the specific topics covered in this limited course.
 
@@ -72,7 +71,7 @@ The only thing you need to do to run `R Commander` in any UC3M computer is:
     install.packages("Rcmdr", dep = TRUE)
     ```
     
-    and say `'Yes'` to the next pop-ups regarding the installation of the personal library. This will download and install `Rcmdr` and all the related packages from a CRAN mirror (`'Spain (A Coruña) [https]'`, usually works fine --- try a different one if you experience problems). Wait for the downloading and installation of the packages. When it is done, just type 
+    and say `'Yes'` to the next pop-ups regarding the installation of the personal library. This will download and install `Rcmdr` and all the related packages from a CRAN mirror (`'Spain (A Coruña) [https]'`, usually works fine -- try a different one if you experience problems). Wait for the downloading and installation of the packages. When it is done, just type 
     ```{r, eval = FALSE}
     library(Rcmdr)
     ```
@@ -124,7 +123,7 @@ Regardless of your choice, at some point you will probably need to run the softw
                        "RcmdrPlugin.KMggplot2"), dep = TRUE)
     ```
     
-    Say `'Yes'` to the pop-ups regarding the installation of the personal library and choose the CRAN mirror (the server from which you will download packages). `'Spain (A Coruña) [https]'`, usually works fine --- try a different one if you experience problems.
+    Say `'Yes'` to the pop-ups regarding the installation of the personal library and choose the CRAN mirror (the server from which you will download packages). `'Spain (A Coruña) [https]'`, usually works fine -- try a different one if you experience problems.
 
 5. To launch the `R Commander`, run `R` and then 
 
@@ -164,7 +163,7 @@ When you start `R Commander` you will see a window similar to Figure \@ref(fig:S
     - `'Graphs'`. Compute the available graphs (depending on the kind of variables) for the active dataset.
     - `'Models'`. Graphical, numerical and inferential analyses for the active model.
     - `'Distributions'`. Operations for continuous/discrete distributions: sampling, computation of probabilities and quantiles, and plotting of density and distribution functions.
-    - `'Tools'`. Options for `R Commander`. Here you can `'Load Rcmdr plug-in(s)...'`, which enables to expand the number of menus available via plug-ins^[For example, `'FactoMineR'` (collection of multivariate techniques), `'KMggplot2'` (produces elegant graphs using `ggplot2`) and `'Demos'` (set of pedagogical demos; `'Simple linear regression'` is specially relevant for Chapter \@ref(simp)).]. `R Commander` will need to restart prior to loading a plug-in^[A minor inconvenience is that the text boxes in the GUI will be wiped out after restarting. The workspace is kept after restarting, so the models and datasets will be available --- but not selected as 'active'.].
+    - `'Tools'`. Options for `R Commander`. Here you can `'Load Rcmdr plug-in(s)...'`, which enables to expand the number of menus available via plug-ins^[For example, `'FactoMineR'` (collection of multivariate techniques), `'KMggplot2'` (produces elegant graphs using `ggplot2`) and `'Demos'` (set of pedagogical demos; `'Simple linear regression'` is specially relevant for Chapter \@ref(simp)).]. `R Commander` will need to restart prior to loading a plug-in^[A minor inconvenience is that the text boxes in the GUI will be wiped out after restarting. The workspace is kept after restarting, so the models and datasets will be available -- but not selected as 'active'.].
     - `'Help'`. Several help resources.
 2. **Dataset manipulation**. Select the active dataset among the list of loaded datasets. Edit (very basic) and view the active dataset.
 3. **Model selector**. Select an active model among the available ones to work with.
@@ -191,5 +190,4 @@ This is a handy list with a small description and download link for all the data
 - `EU_apportionment.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/EU_apportionment.txt)). Contains 28 rows with the member states for the EU (`Country`), the number of seats assigned under different years (`Seats2011`, `Seats2014`), the Cambridge Compromise apportionment (`CamCom2011`), and the states population (`Population2010`.`Population2013`).
 
 - `leastSquares.RData` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/leastSquares.RData)). Contains a single `data.frame`, named `leastSquares`, with 50 observations of the variables `x`, `yLin`, `yQua` and `yExp`. These are generated as $X\sim\mathcal{N}(0,1)$, $Y_\mathrm{lin}=-0.5+1.5X+\varepsilon$, $Y_\mathrm{qua}=-0.5+1.5X^2+\varepsilon$ and $Y_\mathrm{exp}=-0.5+1.5\cdot2^X+\varepsilon$, with $\varepsilon\sim\mathcal{N}(0,0.5^2)$. The purpose of the dataset is to illustrate the least squares fitting.
-
 

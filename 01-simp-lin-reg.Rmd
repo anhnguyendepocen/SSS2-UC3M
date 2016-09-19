@@ -1,3 +1,4 @@
+
 # Simple linear regression {#simp}
 
 The simple linear regression is a *simple* but useful statistical model. In short, it allows to analyse the (assumed) linear relation between two variables in a proper way. To convince you why is useful, let's see what it can do in real-case scenarios!
@@ -8,13 +9,12 @@ The simple linear regression is a *simple* but useful statistical model. In shor
 
 The Programme for International Student Assessment (PISA) is a study carried out by the Organisation for Economic Co-operation and Development (OECD) in 65 countries with the purpose of evaluating the performance of 15-year-old pupils on mathematics, science, and reading. A phenomena observed over years is that *wealthy countries tend to achieve larger average scores*. The purpose of this case study, motivated by the @PISA inform, is to answer two questions related with the previous statement:
 
-Q1. *Is the educational level of a country influenced by its economic wealth?*
+- Q1. *Is the educational level of a country influenced by its economic wealth?*
+- Q2. *If so, up to what precise extent?*
 
-Q2. *If so, up to what precise extent?*
+The `pisa.csv` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/pisa.csv)) contains 65 rows corresponding to the countries that took part on the PISA study. The data was obtained merging the [statlink](http://dx.doi.org/10.1787/888932937035) in @PISA2012 with @WB data. Each row has the following variables: `Country`; `MathMean`, `ReadingMean` and `ScienceMean` (the average performance of the students in mathematics, reading and science); `MathShareLow` and `MathShareTop` (percentages of students with a low and top performance in mathematics); `GDPp` and `logGDPp` (the Gross Domestic Product per capita and its logarithm); `HighIncome` (whether the country has a GDPp larger than 20000\$ or not). The GDPp of a country is a measure of how many economic resources are available per citizen. The `logGDPp` is the logarithm of the GDPp, taken in order to avoid scale distortions. A small subset of the data is shown in Table \@ref(tab:pisatable). 
 
-The `pisa.csv` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/pisa.csv)) contains 65 rows corresponding to the countries that took part on the PISA study. The data was obtained merging [statlink](http://dx.doi.org/10.1787/888932937035) in @PISA2012 and @WB. Each row has the variables `Country`, `MathMean`, `MathShareLow`, `MathShareTop`, `ReadingMean`, `ScienceMean`, `GDPp`, `logGDPp` and `HighIncome`. The Gross Domestic Product per capita (GDPp) of a country is a measure of how many economic resources are availiable per citizen. The `logGDPp` is just the logarithm of the GDPp, which is taken in order to avoid scale distortions. A small subset of the data is shown in Table \@ref(tab:pisatable). 
-
-```{r pisatable, echo = FALSE}
+```{r, pisatable, echo = FALSE, out.width = '90%', fig.align = 'center'}
 pisa <- read.csv(file = "datasets/pisa.csv", header = TRUE)
 knitr::kable(
   head(pisa[, c(1, 2, 5, 6, 8, 9)], 10),
@@ -24,122 +24,119 @@ knitr::kable(
 )
 ```
 
-We definitely need a way of **summarizing this ammount of information**! What we are going to do is the following. First, we import the data into `R Commander` and do a basic manipulation of it. Second, we fit a linear regression and interpret its output. Finally, we visualize the fitted line and the data.
+We definitely need a way of **summarizing this ammount of information**!
+
+We are going to do the following. First, import the data into `R Commander` and do a basic manipulation of it. Second, fit a linear model and interpret its output. Finally, visualize the fitted line and the data.
 
 1. **Import the data into `R Commander`**.
 
-    ***
+    * Go to `'Data' -> 'Import data' -> 'from text file, clipboard, or URL...'`. A window like Figure \@ref(fig:read) will pop-up. Select the appropiate formatting options of the data file: whether the first row contains the name of the variables, what is the indicator for missing data, what is the field separator, and what is the decimal point character. Then click `'OK'`. 
+      
+        ```{block, type = 'rmdtip'}
+        Inspecting the data file in a text editor will give you the right formatting choices for importing the data.
+        ```
+      
+        ```{r, read, echo = FALSE, out.width = '45%', fig.align = 'center', fig.cap = 'Data importation options.'}
+        row.names(pisa) <- as.character(pisa$Country)
+        pisa$Country <- NULL
+        knitr::include_graphics("images/screenshots/read.png")
+        ```
 
-    1.1. Go to `'Data' -> 'Import data' -> 'from text file, clipboard, or URL...'`. A window like Figure \@ref(fig:read) will pop-up. Select the appropiate formatting options of the data file: whether the first row contains the name of the variables, what is the indicator for missing data, the field separator, and the decimal point character. Then click `'OK'`. (Inspecting the file first in a separate text editor will give you the right choices!) 
+    * Click on `'View data set'` to check that the importation was fine. If the data looks weird, then recheck the structure of the data file and restart from the above point. 
     
-    ```{r read, echo = FALSE, out.width = '45%', fig.align = 'center', fig.cap = 'Data importation options.'}
-    row.names(pisa) <- as.character(pisa$Country)
-    pisa$Country <- NULL
-    knitr::include_graphics("images/screenshots/read.png")
-    ```
+    * Since each row corresponds to a different country, we are going to name the rows as the value of the variable `Country`. To that end, go to `'Data' -> 'Active data set' -> 'Set case names...'` and select the variable `Country` and click `'OK'`. The dataset should look like Figure \@ref(fig:view).
 
-    1.2. Click on `'View data set'` to check that the importation was fine. If the data looks weird, then recheck the structure of the data file and restart from 1.1. 
+        ```{r, view, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Correct importation of the `pisa` dataset.'}
+        knitr::include_graphics("images/screenshots/view.png")
+        ```
     
-    1.3. Since each row corresponds to a different country, we are going to name the rows as the value of the variable `Country`. To that end, go to `'Data' -> 'Active data set' -> 'Set case names...'` and select the variable `Country` and click `'OK'`. The dataset should look like Figure \@ref(fig:view).
-
-    ```{r view, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Correct importation of the `pisa` dataset.'}
-    knitr::include_graphics("images/screenshots/view.png")
-    ```
-    
-    ```{block, type = 'rmdimportant'}
-    Apparently, in UC3M computers, **altering the location of a downloaded file  may cause errors the importation to `R Commander`**!
-    
-    Example:
-    
-    - Default download path: '`C:/Users/g15s4021/Downloads/pisa.csv`'. Importation from that path works **OK**.
-    - If you move the file another location (e.g. to `'C:/Users/g15s4021/Desktop/pisa.csv`'). Importation generates an **error**.
-    ```
-
-    ***
+        ```{block, type = 'rmdimportant'}
+        In UC3M computers, **altering the location of a downloaded file may cause errors** in its importation to `R Commander`!
+        
+        Example:
+        
+        - Default download path: `'C:/Users/g15s4021/Downloads/pisa.csv'`. Importation from that path works fine.
+        - If you **move the file another location** (e.g. to `'C:/Users/g15s4021/Desktop/pisa.csv'`). Importation generates an **error**.
+        ```
 
 2. **Fit a simple linear regression**.
 
-    ***
-
-    2.1. Go to `'Statistics' -> 'Fit models' -> 'Linear regression...'`. A window like Figure \@ref(fig:lm) will pop-up. 
+    * Go to `'Statistics' -> 'Fit models' -> 'Linear regression...'`. A window like Figure \@ref(fig:lm) will pop-up. 
     
-    ```{r lm, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Window for performing linear regression.'}
-    knitr::include_graphics("images/screenshots/lm.png")
-    ```
+        ```{r, lm, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Window for performing linear regression.'}
+        knitr::include_graphics("images/screenshots/lm.png")
+        ```
+        
+        Select the *response variable*. This is the variable denoted by $Y$ that we want to predict/explain. Then select the *explanatory variable* (also known as the *predictor*). It is denoted by $X$ and is the variable used to predict/explain $Y$. Recall the form of the linear model:
+        $$
+        Y=\beta_0+\beta_1X+\varepsilon
+        $$
+        
+        In our case $Y=$`MathMean` and  $X=$`logGDPp`, so select them and click `'OK'`^[In principle, you could pick more than one explanatory variables using the `'Control'` or `'Shift'` keys, but that corresponds to the *multiple linear regression* (covered in Chapter 3).]. 
     
-    Select the *response variable*. This is the variable denoned by $Y$ that we want to predict/explain. Then select the *explanatory variable* (also known as the *predictor*). It is denoted by $X$ and is the variable used to predict/explain $Y$. Remember the form of the linear model:
-    $$
-    Y=\beta_0+\beta_1X+\varepsilon
-    $$
+        ```{block, type = 'rmdtip'}
+        If you want to deselect an option in an `R Commander` menu, use `'Control' + 'Mouse click'`.
+        ```
+        
+        ```{block, type = 'rmdtip'}
+        Four buttons are common in the menus of `R Commander`:
+        
+        - `'OK'`: executes the selected action, then closes the window.
+        - `'Apply'`: executes the selected action but leaves the window open. Useful if you are experimenting with different options.
+        - `'Reset'`: resets the fields and boxes of the window to their defaults.
+        - `'Cancel'`: exits the window without performing any action.
+        ```
     
-    In our case $Y=$`MathMean` and  $X=$`logGDPp`, so select them and click `'OK'`^[In principle, you could pick more than one explanatory variables uisng the `'Control'` or `'Shift'` keys, but that corresponds to the *multiple linear regression* (covered in Chapter 3).]. 
-
-    ```{block, type = 'rmdtip'}
-    If you want to unselect an option in an `R Commander` menu, use `'Control'` + `'Mouse click'`.
-    ```
+    * The window in Figure \@ref(fig:lm) generates this code and output:
     
-    ```{block, type = 'rmdtip'}
-    Four buttoms are common on the menus of `R Commander`:
+        ```{r}
+        pisaLinearModel <- lm(MathMean ~ logGDPp, data = pisa)
+        summary(pisaLinearModel)
+        ```
     
-    - `'OK'`: executes the selected action, then closes the window.
-    - `'Apply'`: executes the selected action but leaves the window open. Useful if you are experimenting with different options.
-    - `'Reset'`: resets the fields and boxes of the window to their defaults.
-    - `'Cancel'`: exits the window without performing any action.
-    ```
+        This is the linear model of `MathMean` regressed on `logGDPp` (first line) and its summary (second line). The summary gives the coefficients of the line and the $R^2$ (`'Multiple R-squared'`), which -- as we will see in Section \@ref(fit) -- it can be regarded as an *indicator of the strength of the linear relation between the variables*. ($R^2=1$ is a perfect linear fit -- all the points lay in a line -- and $R^2=0$ is the poorest fit.)
+        
+        The fitted regression line is `MathMean` $= 185.16 + 28.79\,\times$ `logGDPp`. The slope coefficient is positive, which indicates that there is a positive correlation between the wealth of a country and its performance in the PISA Mathematics test (this answers Q1). Hence, the evidence that *wealthy countries tend to achieve larger average scores* is indeed true (at least for the Mathematics test). We can be more precise on the effect of the wealth of a country. According to the fitted linear model, an increase of 1 unit in the `logGDPp` of a country is associated with achieving, on average, 28.79 additional points in the test (Q2).
     
-    2.2. The window in Figure \@ref(fig:lm) generates this code and output:
-    
-    ```{r}
-    pisaLinearModel <- lm(MathMean ~ logGDPp, data = pisa)
-    summary(pisaLinearModel)
-    ```
-
-    This is the linear model of `MathMean` regressed on `logGDPp` (first line) and its summary (second line). The summary gives the coefficients of the line and the $R^2$, which you may regard as an *indicator of the strength of the linear relation between the variables*. $R^2=1$ is a perfect linear fit -- all the points lay in a line -- and $R^2=0$ is the poorest fit.
-    
-    The fitted line is `MathMean` $= 185.16 + 28.79\,\times$ `logGDPp`. The slope coefficient is positive, which indicates that there is a positive correlation between the weatlh of a country and its performance in the PISA Mathematics test (this answers Q1). Hence, the evidence that *wealthy countries tend to achieve larger average scores* is indeed true (at least for the Mathematics test). We can be more precise on the effect of the wealth of a country. According to the linear model, an increase of 1 unit in the `logGDPp` a country is associated with achieving, on average, 28.79 additional points in the test (Q2).
-    
-    ***
-
 3. **Visualize the fitted regression line**.
 
-    ***
-
-    3.1. Go to `'Graphs' -> 'Scatterplot...'`. A window with two panels will pop-up (Figures \@ref(fig:scatter1) and \@ref(fig:scatter2)).
+    * Go to `'Graphs' -> 'Scatterplot...'`. A window with two panels will pop-up (Figures \@ref(fig:scatter1) and \@ref(fig:scatter2)).
     
-    ```{r scatter1, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Scatterplot window, `\'Data\'` panel.'}
-    knitr::include_graphics("images/screenshots/scatterplot1.png")
-    ```
-    ```{r scatter2, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Scatterplot window, `\'Options\'` panel. Be sure to tick the `\'Least-squares line\'` box in order to display the fitted regression line.'}
-    knitr::include_graphics("images/screenshots/scatterplot2.png")
-    ```
-
-    On the `'Data'` panel, select the $X$ and $Y$ variables to be displayed in the scatterplot. On the `
-'Options'` panel, check the `'Least-squares line'` box and choose to identify `'3'` points `'Automatically'`^[The decision of which points are the most *different* from the rest is done automatically by a method known as the *Mahalanobis depth*.]. This will identify^[The default GUI option is set to identify `'2'` points. However, we know after a preliminar plot that there are 3 very different points in the dataset, hence this particular choice.] are the most different compared with the rest of the data.
-
-    3.2. The following `R` code will be generated. It produces a scatterplot of `MathMean` vs `logGDPp` with its scorresponding regression line.
-    ```{r echo = FALSE, warning = FALSE}
-    library(splines)
-    library(car)
-    library(sandwich)
-    ```
-    ```{r, out.width = '90%', fig.align = 'center'}
-    scatterplot(MathMean ~ logGDPp, reg.line = lm, smooth = FALSE, spread = FALSE, id.method = 'mahal', id.n = 3, boxplots = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9), main = "Average Math score vs. GDPp", pch = c(16), data = pisa)
-    ```
+        ```{r, scatter1, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Scatterplot window, `\'Data\'` panel.'}
+        knitr::include_graphics("images/screenshots/scatterplot1.png")
+        ```
+        ```{r, scatter2, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Scatterplot window, `\'Options\'` panel. Remember to tick the `\'Least-squares line\'` box in order to display the fitted regression line.'}
+        knitr::include_graphics("images/screenshots/scatterplot2.png")
+        ```
     
-    There are three clear *outliers*^[The outliers have a considerable impact on the regression line, as we will see later.]: Vietnam, Shangai-China and Qatar. The first two are non high-income economies that perform exceptionally well in the test (although Shangai-China is a cherry-picked region of China). On the other hand, Qatar is a high-income economy that has really poor scores.
+        On the `'Data'` panel, select the $X$ and $Y$ variables to be displayed in the scatterplot. On the `'Options'` panel, check the `'Least-squares line'` box and choose to identify `'3'` points `'Automatically'`^[The decision of which points are the most *different* from the rest is done automatically by a method known as the *Mahalanobis depth*.]. This will identify what are the three^[The default GUI option is set to identify `'2'` points. However, we know after a preliminary plot that there are three very different points in the dataset, hence this particular choice.] most different observations of the data.
 
-    We can identify countries that are above and below the linear trend in the previous plot. This is particularly interesting: we can assess whether a country is performing better or worse with respect to its *expected PISA score according to its economic status* (this adds more insight into Q2). To do so, we want to display the text labels in the points of the scatterplot. We can take a shortcut: copy and run in the input panel the next piece of code. It is a slightly modified version of the code in 3.2.
-
-    ```{r, out.width = '90%', fig.align = 'center', results = 'hide'}
-    scatterplot(MathMean ~ logGDPp, reg.line = lm, smooth = FALSE, spread = FALSE, id.method = 'mahal', id.n = 65, id.cex = 0.75, boxplots = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9), main = "Average Math score vs. GDPp", pch = c(16), cex = 0.75, data = pisa)
-    ```
-
-  ***
-
+    * The following `R` code will be generated. It produces a scatterplot of `MathMean` vs `logGDPp`, with its scorresponding regression line.
+        ```{r, echo = FALSE, warning = FALSE}
+        library(splines)
+        library(car)
+        library(sandwich)
+        ```
+        ```{r, out.width = '90%', fig.asp = 1, fig.align = 'center'}
+        scatterplot(MathMean ~ logGDPp, reg.line = lm, smooth = FALSE, spread = FALSE, id.method = 'mahal', 
+                    id.n = 3, boxplots = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9),
+                    main = "Average Math score vs. logGDPp", pch = c(16), data = pisa)
+        ```
+        
+        There are three clear *outliers*^[The outliers have a considerable impact on the regression line, as we will see later.]: Vietnam, Shanghai-China and Qatar. The first two are non high-income economies that perform exceptionally well in the test (although Shanghai-China is a cherry-picked region of China). On the other hand, Qatar is a high-income economy that has really poor scores.
+    
+        We can identify countries that are above and below the linear trend in the plot. This is particularly interesting: we can assess whether a country is performing better or worse with respect to its *expected PISA score according to its economic status* (this adds more insight into Q2). To do so, we want to display the text labels in the points of the scatterplot. We can take a shortcut: copy and run in the input panel the next piece of code. It is a slightly modified version of the previous code (what are the differences?).
+    
+        ```{r, out.width = '90%', fig.asp = 1, fig.align = 'center', results = 'hide'}
+        scatterplot(MathMean ~ logGDPp, reg.line = lm, smooth = FALSE, spread = FALSE, id.method = 'mahal', 
+                    id.n = 65, id.cex = 0.75, boxplots = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9), 
+                    main = "Average Math score vs. logGDPp", pch = c(16), cex = 0.75, data = pisa)
+        ```
+    
 If you understood the previous analysis, then you should be able to perform the next ones on your own.
 
-```{block, type = 'rmdnote'}
-Repeat the regression analysis (steps 2-3) for:
+```{block, type = 'rmdnote', out.width = '90%'}
+Repeat the regression analysis (steps 2--3) for:
 
 - `ReadingMean` regressed on `logGDPp`. Are the results similar to `MathMean` on `logGDPp`?
 - `MathMean` regressed on `ReadingMean`. Compare it with `MathMean` on `ScienceMean`. Which pair of variables has the highest linear relation? Is that something expected?
@@ -153,167 +150,564 @@ Save the new models with different names to avoid overwriting the previous model
 >
 > --- Wikipedia article on [Apportionment (politics)](https://en.wikipedia.org/wiki/Apportionment_(politics))
 
-The *European Parliament* and the *US House of Representatives* are two of the most important macro legislative bodies in the world. The distribution of seats in both cameras is designed in order to give make a *compromise* in the representation of the different states that conform the federation (US) or union (EU). Both chambers were created under very different historical circumstances, which affected the apportionment that they present. More specifically:
+The *European Parliament* and the *US House of Representatives* are two of the most important macro legislative bodies in the world. The distribution of seats in both cameras is designed to represent the different states that conform the federation (US) or union (EU). Both chambers were created under very different historical and political circumstances, which is reflected in the kinds of apportionment that they present. More specifically:
 
-- US. The apportionment is neatly *fixed by the US Constitution*. Each of the 50 states is apportioned a number of seats that corresponds to its share of the total population of the 50 states, according to the most recent decennial census. Every state is guaranteed at least one seat.
+- In the **US**, the apportionment is neatly *fixed by the US Constitution*. Each of the 50 states is apportioned a number of seats that corresponds to its share of the total population of the 50 states, according to the most recent decennial census. Every state is guaranteed *at least 1 seat*. There are 435 seats.
 
-- EU. The apportionment is set by *treaties* (Nice, Lisbon), in which *negotiations* between countries take place. The [last accepted composition](http://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32013D0312) gives an allocation of seats based on *degressive proportionality*^[Less populated states are given more weight than its proportional share.] and somehow vague guidelines. It concludes
-with a commitment to establish a system to ''allocate the seats between Member States in an objective, fair, durable and transparent way, translating the principle of degressive proportionality''.
+- Until now, the apportionment in the **EU** was set by *treaties* (Nice, Lisbon), in which *negotiations* between countries took place. The [last accepted composition](http://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32013D0312) gives an allocation of seats based on the principle of 'degressive proportionality'^[Less populated states are given more weight than its corresponding proportional share.] and somehow vague guidelines. It concludes with a commitment to establish a system to 'allocate the seats between Member States in an objective, fair, durable and transparent way, translating the principle of degressive proportionality'. The Cambridge Compromise [@CamCom] was a proposal in that direction that was not effectively implemented. Currently, every state is guaranteed a *minimum of 6 seats* and a *maximum of 96* for a grand total of 750 seats.
 
-We know the qualitative differences between both chambers. Now let's quantify and visualize what are the differences between their respective apportionments, and how the linear regression can add insights on what is actually going on with the EU apportionment. The questions we want to answer are:
+We know that there exist qualitative dissimilarities between both chambers, but we can not be more specific with the description at hand. The purpose of this case study is to quantify and visualize what are the differences between the apportionments of the two chambers, and how the linear regression can add insights on what is actually going on with the EU apportionment. The questions we want to answer are:
 
-- Q1. Can we quantify which chamber is more proportional? 
-- Q2. Which states are over-represented and which are under-represented in both chambers?
-- Q3. What can we say about the EU approportionment system? Were the changes proposed favouring proportionality or not?
+- Q1. *Can we quantify which chamber is more proportional?*
+- Q2. *What are the over-represented and under-represented states in both chambers?*
+- Q3. *How can we quantify the 'degressive proportionality' in the EU approportionment system? Was the Cambridge Compromise proposing a fairer representation?*
 
-The `US_apportionment.xls` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/US_apportionment.xls)) file contains the 50 US states entitled to representation. The variables are `State`, `Population2010` (last census), `Seats2013–2023` and	`PopulationPerSeat2010`. This is an Excel file that we can read using `'Data' -> 'Import data' -> 'from Excel file...'`. A window like will pop-up, asking for the right options. We set them as in Figure \@ref(fig:excel), since we want the variable `State` to be the case names. After clicking in `'View dataset'`, the data should look like Figure \@ref(fig:US).
+Let's begin by reading the data:
 
-    ```{r excel, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Importation of an Excel file.'}
-    #knitr::include_graphics("images/screenshots/excel.png")
+1. The `US_apportionment.xls` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/US_apportionment.xls)) contains the 50 US states entitled to representation. The variables are `State`, `Population2010` (from the last census) and `Seats2013–2023`. This is an Excel file that we can read using `'Data' -> 'Import data' -> 'from Excel file...'`. A window will pop-up, asking for the right options. We set them as in Figure \@ref(fig:excel), since we want the variable `State` to be the case names. After clicking in `'View dataset'`, the data should look like Figure \@ref(fig:US).
+
+    ```{r, excel, echo = FALSE, out.width = '45%', fig.align = 'center', fig.cap = 'Importation of an Excel file.'}
+    knitr::include_graphics("images/screenshots/excel.png")
     ```
 
-    ```{r US, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Correct importation of the `US` dataset.'}
-    #knitr::include_graphics("images/screenshots/US.png")
+    ```{r, US, echo = FALSE, out.width = '45%', fig.align = 'center', fig.cap = 'Correct importation of the `US` dataset.'}
+    knitr::include_graphics("images/screenshots/US.png")
     ```
 
-The `EU_apportionment.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/EU_apportionment.txt)) contains the variables `State`, `Population2013` and `PopulationPerSeat2013`, the number of seats assigned under different years (`Seats2007`, `Seats2009`	`Seats2011`, `Seats2013`, `Seats2014`) and four different proposals of apportionment by parliamentarian Andrew Duff (`ADuff1_2014`,	`ADuff2_2014`, `ADuff2_2019`,	`ADuff2_2024`). Andrew Duff proposed changes in the   
-
-```{block, type = 'rmdnote'}
-For this file, you should know how to:
-
-1. Inspect the file in a text editor and determine its formatting.
-2. Decide the right importation options and load it with the name `EU`.
-3. Set the case names as the variable `State`.
-```
-
-```{r echo = FALSE}
-US <- RcmdrMisc::readXL("datasets/US_apportionment.xlsx", rownames = TRUE, header = TRUE, na = "", sheet = "Hoja1", stringsAsFactors = TRUE)
-EU <- read.table("datasets/EU_apportionment.txt", header = TRUE, na = "-", sep = "\t")
-```
-
-We now have two datasets loaded, but only one can be active. We will switch between them while we perform compute the percentages of population and seats.
-
-Suppose we exit the `R Commander` and we want to come back to it. Then we can save the data and models in a `.RData` file (useful). We can save also the `R` file. Save and close `.R`. Before that, we are going to take the opportunity to load `ggplot2`. Reopen both.
-
-The `EU` dataset is not so easy to visualize. A nice multivariate technique to do so is a *matrix scatterplot*. Essentially all the options in the scatterplot, but for pairs of them. And what about the central panel? histogram/density, boxplot? A quick way of **visualizing multivariate data** (up to a moderate number of dimensions) is to use a *matrix scatterplot*
-
-    ```{r mscatter1, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Scatterplot window, `\'Data\'` panel.'}
-    #knitr::include_graphics("images/screenshots/matrixscatterplot1.png")
-    ```
-    ```{r mscatter2, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Scatterplot window, `\'Options\'` panel. Be sure to tick the `\'Least-squares line\'` box in order to display the fitted regression line.'}
-    #knitr::include_graphics("images/screenshots/matrixscatterplot2.png")
-    ```
+2. The `EU_apportionment.txt` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/EU_apportionment.txt)) contains 28 rows with the member states of the EU (`Country`), the number of seats assigned under different years (`Seats2011`, `Seats2014`), the Cambridge Compromise apportionment (`CamCom2011`), and the countries population^[According to [EuroStat](http://ec.europa.eu/eurostat/tgm/table.do?tab=table&init=1&language=en&pcode=tps00001) and the population stated in the Cambridge Compromise report.] (`Population2010`,`Population2013`). 
 
     ```{block, type = 'rmdnote'}
-    Experience with histograms, boxplots, density estimates.
+    For this file, you should know how to:
+    
+    1. Inspect the file in a text editor and determine its formatting.
+    2. Decide the right importation options and load it with the name `EU`.
+    3. Set the case names as the variable `Country`.
+    ```
+    
+    ```{r, EU, echo = FALSE}
+    US <- RcmdrMisc::readXL("datasets/US_apportionment.xlsx", rownames = TRUE, header = TRUE, na = "", sheet = "Hoja1", stringsAsFactors = TRUE)
+    EU <- read.table("datasets/EU_apportionment.txt", header = TRUE, na = "-", sep = "\t")
+    row.names(EU) <- EU$Country
+    EU$Country <- NULL
+    knitr::kable(
+      EU,
+      booktabs = TRUE,
+      longtable = TRUE,
+      caption = 'The `EU` dataset with `Country` set as the case names.'
+    )
     ```
 
-Let's compute the linear models. Switch
-two linear models.
+We start by analyzing the `US` dataset. If there is indeed a direct proportionality in the apportionment, we would expect a direct, $1:1$, relation between the *ratios of seats* and the *population per state*. Let's start by constructing these variables:
 
-```{r}
-mod <- lm(Seats2014 ~ Population2013, data = EU)
-mod 
-summary(mod)
-mod2 <- lm(ADuff2_2014 ~ Population2013, data = EU)
-mod2 
-summary(mod2)
-anova(mod)
-plot(mod)
-plot(Population2013 ~ Seats2014, data = EU)
+1. Switch the active dataset to `US`. An alternative way to do so is by `'Data' -> 'Active data set' -> 'Select active data set...'`.
+2. Go to `'Data' -> 'Manage variables in active dataset...' -> 'Compute new variables'`. 
+3. Create the the variable `RatioSeats2013.2023` as shown in Figure \@ref(fig:newvar). Be **careful to not overwrite** the variable `Seats2013.2023`.
+
+    ```{r, newvar, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Creation of the new variable `RatioSeats2013.2023`. The expression to compute is `Seats2013.2023/sum(Seats2013.2023)`.'}
+    knitr::include_graphics("images/screenshots/newvar.png")
+    ```
+
+4. `'View dataset'` to check that the new variable is available.
+
+```{block, type = 'rmdnote'}
+Repeat steps 1--3, conveniently adapted, to create the new variable `RatioPopulation2010`.
+```
+```{r, echo = FALSE}
+US$RatioSeats2013.2023 <- US$Seats2013.2023 / sum(US$Seats2013.2023)
+US$RatioPopulation2010 <- US$Population2010 / sum(US$Population2010)
 ```
 
+Let's fit a regression line to the `US` data, with `RatioSeats2013.2023` as the response and `RatioPopulation2010` as the explanatory variable. If we name the model as `appUS`, you should get the following code and output:
 ```{r}
-mod <- lm(Population2010 ~ Seats2013.2023, data = US)
-mod 
-summary(mod)
-anova(mod)
+appUS <- lm(RatioSeats2013.2023 ~ RatioPopulation2010, data = US)
+summary(appUS)
+```
+The fitted regression line is `RatioSeats2013.2023`$=0.000+1.005\,\times$`RatioPopulation2010` and has an $R^2=0.9991$ (`'Multiple R-squared'`), which means that the data is almost perfectly linearly distributed. Furthermore, the *intercept coefficient is not significant*. This is seen in the column `'Pr(>|t|)'`, which gives the $p$-values for the null hypotheses $H_0:\beta_0=0$ and $H_0:\beta_1=0$, respectively. The null hypothesis $H_0:\beta_0=0$ is *not rejected* ($p$-value$=0.407$; non-significant) whereas $H_0:\beta_1=0$ is rejected ($p$-value$=0$; significant)^[We will be able to say more about how these test are performed after Section \@ref(sec:inference).]. Hence, we can conclude that the appropriation of seats in the US House of Representatives is indeed directly proportional to the population of each state (partially answers Q1).
+
+If we make the scatterplot for the `US` dataset, we can see the almost perfect (up to integer rounding) $1:1$ relation between the ratios State seats$/$Total seats and State population$/$Aggregated population. We can set the scatterplot to automatically label the `'25'` most different points (select the numeric box with the mouse and type `'25'` -- the arrow buttons are limited to `'10'`) with their case names. As it is seen in Figure \@ref(fig:ratios), there is no state clearly over- or under-represented (Q2).
+
+```{r, ratios, echo = FALSE, out.width = '90%', fig.asp = 1, results = 'hide', fig.align = 'center', fig.cap = 'The apportionment in the US House of Representatives compared with a linear fit.'}
+scatterplot(RatioSeats2013.2023 ~ RatioPopulation2010, reg.line = lm, smooth = FALSE, spread = FALSE, id.method = 'mahal', 
+            id.n = 25, id.cex = 0.75, boxplots = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9), 
+            main = "Approportionment in the US House of Representatives", pch = c(16), cex = 0.75, data = US)
 ```
 
-## Some `R` code
+Let's switch to the `EU` dataset, for which we will focus on the 2011 variables. A quick way of visualizing this dataset and, in general, of **visualizing multivariate data** (up to a moderate number of dimensions) is to use a *matrix scatterplot*. Essentially, it displays the scatterplots between all the pairs of variables. To do it, go to `'Graphs' -> 'Scatterplot matrix...'` and select the number of variables to be displayed. If you select them as in Figures \@ref(fig:mscatter1a) and \@ref(fig:mscatter1b), you should get an output like Figure \@ref(fig:mscatter2). 
 
-At the end of the example:
+```{r, mscatter1a, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Scatterplot matrix window, `\'Data\'` panel.'}
+knitr::include_graphics("images/screenshots/mscatter1a.png")
+```
+```{r, mscatter1b, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Scatterplot matrix window, `\'Options\'` panel. Be sure to tick the `\'Least-squares line\'` box in order to display the fitted regression line.'}
+knitr::include_graphics("images/screenshots/mscatter1b.png")
+```
+```{r, mscatter2, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Scatterplot matrix for the variables `CamCom2011`, `Population2010` and `Seats2011` of `EU` dataset with boxplots in the central panels.'}
+knitr::include_graphics("images/screenshots/mscatter2.png")
+```
 
+```{block, type = 'rmdnote'}
+The scatterplot matrix has a central panel displaying one-variable summary plots: histogram, density estimate, boxplot and QQ-plot. Experiment and understand them.
+```
 
-```r
-# Some simple operations
-1 + 1
+The most interesting panels in Figure \@ref(fig:mscatter2) for our study are `CamCom2011` vs `Population2010` -- panel (1,2) -- and `Seats2011` vs `Population2010` -- panel (3,2). At first sight, it seems that the Cambridge Compromise was favoring a fairer allocation of seats than what it was actually being used in the EU parliament in 2011 (recall the step-wise patterns in (3,2)). Let's explore in depth the scatterplot `Seats2011` vs `Population2010`.
+
+```{r, echo = FALSE, results = 'hide', out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = '`Seats2011` vs `Population2010` in the `EU` dataset.'}
+scatterplot(Seats2011 ~ Population2010, reg.line = lm, smooth = FALSE, spread = FALSE, id.method = 'mahal', 
+            id.n = 25, id.cex = 0.75, boxplots = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9), 
+            main = "Approportionment in the EU parliament in 2011", pch = c(16), cex = 0.75, data = EU)
+```
+
+There are some countries clearly detrimented and benefited by this apportionment. For example, France and Spain are under-represented and, on the other hand, Germany, Hungary and Czech Republic are over-represented (Q2). 
+
+Let's compute the regression line of `Seats2011` on `Population2010`, which we save in the model `appEU2011`.
+
+```{r}
+appEU2011 <- lm(Seats2011 ~ Population2010, data = EU)
+summary(appEU2011)
+```
+
+The fitted line is `Seats2011`$=7.91+1.078\,\times10^{-6}\,\times$`Population2010`. The intercept is not zero and, indeed, the fitted intercept is significantly different from zero. Therefore, **there is no proportionality** in the apportionment. Recall that the fitted slope, despite being very small (why?), is also significantly different from zero. The $R^2$ is slightly smaller than in the `US` dataset, but definitely very high. Two conclusions stem from this analysis:
+
+- The US House of Representatives is a proportional chamber whereas the EU parliament is definitely not, but is close to perfect linearity (completes Q1). 
+
+- The principle of **digressive proportionality**, in practice, means an almost **linear allocation** of seats with respect to population (Q3). The main point is the presence of a **non-zero intercept** -- that is, a minimum number of seats corresponding to a country -- in order to over-represent smaller countries with respect to its corresponding proportional share.
+
+The question that remains to be answered is whether the Cambridge Compromise was favoring a fairer allocation of seats than the 2011 official agreement. In Figure \@ref(fig:mscatter2) we can see that indeed it seems like that, but there is an outlier outside the linear pattern: Germany. There is an explanation for that: the EU commission imposed a cap to the maximum number of seats per country, 96, to the development of the Cambridge Compromise. With this rule, Germany is notably under-represented.
+
+In order to avoid this distortion, we will exclude Germany from our comparison. To do so, we specify in the `'Subset expression'` field, of either 'Linear regression...' or 'Scatterplot...', a `'-1'`. This tells `R` to exclude the first row of `EU` dataset, corresponding to Germany. Then, we compare the linear models for the official allocation, `appEUNoGer2011`, and the Cambridge Compromise, `appCamComNoGer2011`. The outputs are the following.
+
+```{r}
+appEUNoGer2011 <- lm(Seats2011 ~ Population2010, data = EU, subset = -1)
+summary(appEUNoGer2011)
+```
+```{r}
+appCamComNoGer2011 <- lm(CamCom2011 ~ Population2010, data = EU, subset = -1)
+summary(appCamComNoGer2011)
+```
+
+We see that the Cambridge Compromise has a larger $R^2$ and a lower intercept than the official allocation of seats. This means that it favors a more proportional allocation, which is fairer in the sense that the deviations from the linear trend are smaller (Q3). We conclude the case study by illustrating both fits.
+
+```{r, echo = FALSE, results = 'hide', out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = '`Seats2011` vs `Population2010` in the `EU` dataset, Germany excluded.'}
+scatterplot(Seats2011 ~ Population2010, reg.line = lm, smooth = FALSE, spread = FALSE, id.method = 'mahal', 
+            id.n = 25, id.cex = 0.75, boxplots = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9), 
+            main = "Approportionment in the EU parliament (Germany excl.)", pch = c(16), cex = 0.75, data = EU, subset = -1)
+```
+
+```{r, echo = FALSE, results = 'hide', out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = '`CamCom2011` vs `Population2010` in the `EU` dataset, Germany excluded.'}
+scatterplot(CamCom2011 ~ Population2010, reg.line = lm, smooth = FALSE, spread = FALSE, id.method = 'mahal', 
+            id.n = 25, id.cex = 0.75, boxplots = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9), 
+            main = "Proposal for approportionment in the EU parliament (Germany excl.)", pch = c(16), cex = 0.75, data = EU, subset = -1)
+```
+
+***
+
+We have performed a decent number of operations in `R Commander`. If we have to exit the session, we can save the data and models in a `.RData` file, which contains all the objects we have computed so far (but **not** the code -- this has to be saved differently). 
+
+```{block, type = 'rmdtip'}
+To exit `R Commander`, save all your progress and reload it later, do:
+
+1. Save `.RData` file. Go to `'File' -> 'Save R workspace as...'`.
+2. Save `.R` file. Go to `'File' -> 'Save script as...'`.
+3. Exit `R Commander` + `R`. Go to `'File' -> 'Exit' -> 'From Commander and R'`. Choose to not save any file.
+4. Start `R Commander` and load your files:
+
+    - `.RData` file in `'Data' -> 'Load data set...'`,
+    - `.R` file in `'File' -> 'Open script file...'`.
+
+```
+
+```{block, type = 'rmdtip'}
+If you just want to save a dataset, you have two options:
+
+- `'Data' -> 'Active data set' -> 'Save active data set...'`: it will be saved as an `.RData` file. The easiest way of importing it back to `R`.
+- `'Data' -> 'Active data set' -> 'Export active data set...'`: it will be saved as a text file with the format that you choose. Useful for exporting data to other programs.
+
+```
+
+```{block, type = 'rmdnote'}
+In 2014 it was negotiated a new EU apportionment, collected in `Seats2014`, according to the population of 2013, `Population2013`, and due to the inclusion of Croatia in the EU. Answer these questions:
+
+- Which countries were the most favored and unfavored by such apportionment?
+- Was the apportionment proportional?
+- Was the degree of linearity higher or lower than the 2011 apportionment? (Exclude Germany.)
+- Was the degree of linearity higher or lower than the Cambridge Compromise for 2011? (Exclude Germany.)
+
+```
+
+## Some `R` basics
+
+By this time you probably had realized that some pieces of `R` code are repeated over and over, and that it is simpler to just modify them than to navigate the menus. For example, the codes `lm` and `scatterplot` always appear related with linear models and scatterplots. It is important to know some of the `R` basics in order to understand what are these pieces of text actually doing. Do not worry, the menus will always be there...
+
+In the following sections, **type** -- not copy and paste systematically -- the code in the `'R Script'` panel and send it to the output panel (on the selected expression, either with the `'Submit'` button or with `'Control' + 'R'`). You should get the same outputs (which are preceded by `## [1]`).
+
+### Simple computations
+
+```{r, echo = TRUE, error = TRUE, collapse = TRUE}
+# This is a comment - it is always initiated by a hashtag
+# Its purpose is to annotate the code and it does nothing else
+
+# These are some simple operations
+# The console can act as a simple calculator
+1.0 + 1.1
 2 * 2
+3/2
 2^3
+1/0
+0/0
 ```
 
-```r
-# These are vectors
-c(1, 2, 3)
-c(1, 0)
-1:5 # Sequence from 1 to 5
+```{r, echo = TRUE, error = TRUE, collapse = TRUE}
+# Use ; for performing several operations in the same line
+(1 + 3) * 2 - 1; 1 + 3 * 2 - 1
+
+# Mathematical functions
+sqrt(2); 2^0.5
+sqrt(-1)
+exp(1)
+log(10); log10(10); log2(10)
+sin(pi); cos(0); asin(0)
 ```
 
-```r
-# Assignation
-myData <- c(1, 2) # Save vector (1, 2) as the variable myData
+```{r, echo = TRUE, error = TRUE, collapse = TRUE}
+# Remember to complete the expressions
+1 + 
+(1 + 3
+```
+
+### Variables and assignment
+
+```{r, echo = TRUE, error = TRUE, collapse = TRUE}
+# Any operation that you perform in R can be stored in a variable (or object)
+# with the assignment operator "<-"
+a <- 1
+
+# To see the value of a variable, we simply type it
+a
+
+# A variable can be overwritten
+a <- 1 + 1
+
+# Now the value of a is 2 and not 1, as before. There is no history of values for a variable.
+a 
+
+# Careful with capitalization
+A
+
+# Different
+A <- 3
+a; A
+
+# The variables are stored in your workspace (.RData file)
+# A handy tip to see what variables are in the workspace
+ls()
+# Now you know which variables can be accessed!
+```
+
+### Vectors
+
+```{r, echo = TRUE, collapse = TRUE, error = TRUE}
+
+# These are vectors - arrays of numbers
+# We combine numbers with the function c
+c(1, 3)
+c(1.5, 0, 5, -3.4)
+
+# A handy way of creating sequences is the operator :
+# Sequence from 1 to 5
+1:5 
+
+# Storing some vectors
+myData <- c(1, 2)
+myData2 <- c(-4.12, 0, 1.1, 1, 3, 4)
+
+# Entry-wise operations
+myData + 1 
+myData^2
+
+# If you want to access a position of a vector, use [position]
+myData[1]
+myData2[6]
+
+# You also can change elements
+myData[1] <- 0
 myData
 
-# Careful with capitalization!
-mydata
+# Think on what you want to access...
+myData2[7]
+myData2[0]
+
+# If you want to access all the elements except a position, use [-position]
+myData2[-1]
+myData2[-2]
+
+# Also with vectors as indexes
+myData2[1:2]
+myData2[myData]
+
+# And also
+myData2[-c(1, 2)]
+
+# But do not mix positive and negative indexes!
+myData2[c(-1, 2)]
 ```
 
-```r
-# The functions are take some arguments between parenthesis and transform them into an output
+```{block, type = 'rmdnote'}
+- Create the vector $x=(1, 7, 3, 4)$. 
+- Create the vector $y=(100, 99, 98, ..., 2, 1)$.
+- Compute $x_2+y_4$ and $\cos(x_3) + \sin(x_2) e^{y_2}$.
+- Set $x_3=0$ and $y_58=-1$. Recompute the previous expressions.
+- Index $y$ by $x$. What is the output?
+```
+
+### Functions
+
+```{r, echo = TRUE, collapse = TRUE, error = TRUE}
+# Data
+myData <- c(1.04, 0.53, 4.91, 5.53, -1.50, 5.17, 6.35)
+
+# Functions take arguments between parenthesis and transform them into an output
 sum(myData)
 
-# lm is a function: lm(formula, data)
-mod <- lm(formula = Seats2014 ~ Population2013, data = UE)
+# Summary of an object
+summary(myData)
+
+# Length of the vector
+length(myData)
+
+# Mean, standard deviation, variance, covariance
+mean(myData)
+var(myData)
+cov(myData, myData^2)
+quantile(myData)
+
+# Maximum and minimum of vectors
+min(myData)
+which.min(myData)
+
+# Usually the functions have several arguments, which are set by "argument = value"
+# In this case, the second argument is a logical flag to indicate the kind of sorting
+sort(myData)
+sort(myData, decreasing = TRUE)
+
+# Don't know what are the arguments of a function? Use args and help!
+args(sort)
+?sort
+```
+
+```{block, type = 'rmdnote'}
+- Compute the mean, median and variance of $y$. 
+- Do the same for $y+1$. What are the differences?
+- What is the maximum of $y$? Where is it placed?
+```
+
+### Matrices, data frames and lists
+
+```{r, collapse = TRUE, error = TRUE}
+# A matrix is an array of vectors
+A <- matrix(1:4, nrow = 2, ncol = 2)
+A
+B <- matrix(1:4, nrow = 2, ncol = 2, byrow = TRUE)
+B
+
+# Binding by rows or columns
+rbind(1:3, 4:6)
+cbind(1:3, 4:6)
+
+# Entry-wise operations
+A + 1
+A * B
+
+# Accessing elements
+A[2, 1] # Element (2, 1)
+A[1, ] # First row
+A[, 2] # First column
+
+# A data frame is a matrix with column names
+myDf <- data.frame(var1 = 1:2, var2 = 3:4)
+myDf
+
+# You can change names
+names(myDf) <- c("newname1", "newname2")
+
+# The nice thing is that you can access variables by its name with the $ operator
+myDf$newname1
+
+# A list is a collection of arbitrary variables
+myList <- list(myData = myData, A = A, myDf = myDf) 
+
+# Access elements by names
+myList$myData
+myList$A
+myList$myDf
+
+# Reveal the structure of an object
+str(myList)
+str(myDf)
+
+# A less lengthy output
+names(myList)
+```
+
+```{block, type = 'rmdnote'}
+- Create a matrix, called $M$, with rows given by $y$, $y^2$ and $\log(y)$.
+- Name the columns of $M$ as `"y"`, `"y2"` and `"logy"`.
+- Create a list, called `l`, with entries for $x$ and $M$. Access the elements by their names.
+- Use the function `as.data.frame()` to convert $M$ into a data frame, called `df`.
+```
+
+```{r, collapse = TRUE, error = TRUE}
+# lm has the syntax: lm(formula = y ~ x, data = data)
+mod <- lm(formula = Seats2011 ~ Population2010, data = EU)
 mod
 
-# Summary is also a function: it takes as argument a model
-summary(mod)
-```
-
-```r
-data
-```
-
-```r
-# The outputs of a model are lists
-
-# What are the elements of the list?
+# The output of lm is a list
 names(mod)
+
+# Summary of the model (also a list)
+sumMod <- summary(mod)
+sumMod
+
+# We use max.level = 1 to avoid lengthy outputs
+names(sumMod)
 
 # Access the elements by dollars
 mod$coefficients
 ```
 
+```{block, type = 'rmdnote'}
+For `mod`, check that:
 
+- The sum of residuals is zero.
+- The sum of the squared residuals divided by the degrees of freedom equals `summary(mod)$sigma^2`. 
+- What are the 5 largest residuals? What are the 5 lowest? What is the interpretation in terms of the `UE` dataset?
+```
 
-<!--
 
 ## Model formulation and estimation by least squares
 
-PISA back. Do matrix scatterplot. Go to  
+The simple linear model is a statistical tool for describing the relation between two random variables, $X$ and $Y$. For example, in the `pisa` dataset, $X$ could be `ReadingMean` and $Y=$ `MathMean`. The linear model is *constructed by assuming* that the linear relation
+\begin{equation}
+Y = \beta_0 + \beta_1 X + \varepsilon \label{eq:1}
+\end{equation}
+holds between $X$ and $Y$. In (\@ref(eq:1)), $\beta_0$ and $\beta_1$ are known as the *intercept* and *slope*, respectively. $\varepsilon$ is a random variable with mean zero and independent from $X$. It describes the *error* around the mean, or the effect of other variables that we do not model. Another way of looking at (\@ref(eq:1)) is
+\begin{equation}
+\mathbb{E}(Y|X=x)=\beta_0+\beta_1x, \label{eq:2}
+\end{equation}
+since $\mathbb{E}(\varepsilon|X=x)=0$. The Left Hand Side (LHS) of (\@ref(eq:2)) is the *conditional expectation* of $Y$ given $X$. It represents how the mean of the random variable $Y$ is changing according to a particular value, denoted by $x$, of the random variable $X$. With the RHS, what we are saying is that the mean of $Y$ is changing in a *linear* fashion with respect to the value of $X$. Hence the interpretation of the coefficients:
 
-Suppose we have a production line where we measured the time (in minutes) required to produce a number of solicited items. There are two random variables: `y` = "time required to produce an order" and `x` = "number of items in the order". We want to explain/predict `y` from `x` from a linear model.
+- $\beta_0$: is the mean of $Y$ when $X=0$.
+- $\beta_1$: is the increment in mean of $Y$ for an increment of one unit in $X=x$.
 
-```{r}
+If we have a sample $(X_1,Y_1),\ldots,(X_n,Y_n)$ for our random variables $X$ and $Y$, we can estimate the unknown coefficients $\beta_0$ and $\beta_1$. In the `pisa` dataset, the sample are the observations for `ReadingMean` and `MathMean`. A possible way of estimating $(\beta_0,\beta_1)$ is by minimizing the *Residual Sum of Squares* (RSS):
+$$
+\text{RSS}(\beta_0,\beta_1)=\sum_{i=1}^n(Y_i-\beta_0-\beta_1X_i)^2.
+$$
+In other words, we look fot the estimators $(\hat\beta_0,\hat\beta_1)$ such that
+$$
+(\hat\beta_0,\hat\beta_1)=\arg\min_{(\beta_0,\beta_1)\in\mathbb{R}^2} \text{RSS}(\beta_0,\beta_1).
+$$
 
-# Production time
-y <- c(175, 189, 344, 88, 114, 338, 271, 173, 284, 277, 337, 58, 146, 277, 123, 227, 63, 337, 146, 68)
+It can be seen that *the minimizers of the RSS*^[They are unique and always exist. They can be obtained by solving $\frac{\partial}{\partial \beta_0}\text{RSS}(\beta_0,\beta_1)=0$ and $\frac{\partial}{\partial \beta_1}\text{RSS}(\beta_0,\beta_1)=0$.] are
+\begin{equation}
+\hat\beta_0=\bar{Y}-\hat\beta_1\bar{X},\quad \hat\beta_1=\frac{S_{xy}}{S_x^2},\label{eq:3}
+\end{equation}
+where:
 
-# Number of units in the order
-x <- c(195, 215, 243, 162, 185, 231, 234, 166, 253, 196, 220, 168, 207, 225, 169, 215, 147, 230, 208, 172)
+- $\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$ is the *sample mean*.
+- $S_x^2=\frac{1}{n}\sum_{i=1}^n(X_i-\bar{X})^2$ is the *sample variance*. The sample standard deviation is $S_x=\sqrt{S_x^2}$.
+- $S_{xy}=\frac{1}{n}\sum_{i=1}^n(X_i-\bar{X})(Y_i-\bar{Y})$ is the *sample covariance*. It measures the degree of linear association between $X_1,\ldots,X_n$ and $Y_1,\ldots,Y_n$. Once scaled by $S_xS_y$, it gives the *sample correlation coefficient*, $r=\frac{S_{xy}}{S_xS_y}$.
 
-# Data scatterplot (pch = 16 for filled points)
-plot(y ~ x, pch = 16)
+There are some important points hidden behind the election of RSS as the error criterion for obtaining $(\hat\beta_0,\hat\beta_1)$:
 
+- *Why the vertical distances and not horizontal or perpendicular?* Because we want to minimize the error in the *prediction* of $Y$! Note that the treatment of the variables is *not symmetrical*^[In Chapter 5 we will consider perpendicular distances.].
+- *Why the squares in the distances and not the absolute value?* Due to mathematical convenience. Squares are nice to differentiate and are closely related with the Normal distribution.
+
+Figure \@ref(fig:leastsquares) illustrates the influence of the distance employed in the sum of squares. Try to minimize the sum of squares for the different datasets. Is the best choice of intercept and slope independent of the type of distance?  
+
+```{r, leastsquares, echo = FALSE, fig.cap = 'Least squares illustration.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+knitr::include_app('https://egarpor.shinyapps.io/least-squares/', height = '900px')
 ```
 
-### The `lm` function
-
-The linear fit in `R` is done by the `lm` function and the formula `y ~ x`, used to denote that we are interested in regressing `y` over `x`. 
-
+The data of the figure has been generated with the following code.
 ```{r}
+set.seed(34567) # Fixes the seed for the random generator
+x <- rnorm(n = 50) # Generates 50 points from a N(0, 1)
+eps <- rnorm(n = 50, sd = 0.5) # Generates 50 points from a N(0, 0.5^2)
+yLin <- -0.5 + 1.5 * x + eps
+yQua <- -0.5 + 1.5 * x^2 + eps
+yExp <- -0.5 + 1.5 * 2^x + eps
+leastSquares <- data.frame(x = x, yLin = yLin, yQua = yQua, yExp = yExp)
+```
 
+```{block, type = 'rmdnote'}
+The minimizers of the error in the above illustration are indeed the coefficients given by the `lm` function. Check this for the three types of responses: `yLin`, `yQua` and `yExp`.
+```
+
+```{block, type = 'rmdimportant'}
+The *population regression coefficients*, $(\beta_0,\beta_1)$, **are not the same** as the *estimated regression coefficients*, $(\hat\beta_0,\hat\beta_1)$. $(\beta_0,\beta_1)$ are the theoretical and **always** unknown quantities (except under controlled scenarios). $(\hat\beta_0,\hat\beta_1)$ are computed from the data, in particular, they are the output of `lm`. In an abuse of notation, the term *regression line* is often used to denote both the *theoretical* ($y=\beta_0+\beta_1x$) and the *estimated* ($y=\hat\beta_0+\hat\beta_1x$) regression lines.
+```
+
+To conclude this section, we check that the regression coefficients given by `lm` are indeed the ones given in (\@ref(eq:3)).
+
+```{r, echo = TRUE, collapse = TRUE}
+# Covariance
+Sxy <- cov(x, yLin)
+
+# Variance
+Sx2 <- var(x)
+
+# Coefficients
+beta1 <- Sxy / Sx2
+beta0 <- mean(yLin) - beta1 * mean(x) 
+c(beta0, beta1)
+
+# Output from lm
+mod <- lm(yLin ~ x, data = leastSquares)
+mod$coefficients
+```
+
+```{block, type = 'rmdnote'}
+Do the same checkings for $X=$`ReadingMean` and $Y=$ `MathMean` from the `pisa` dataset.
+```
+
+<!--
+## Assumptions of the model
+
+Why do we need assumptions? 
+
+
+Nothing is said about the randomness of $X$. The linear model assumes that $Y$ is continuous, but $X$ can be discrete, factorial (as we will see in the next chapter).
+
+vs random design
+(fixed design)
+
+```{r, linearmodel, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The key concepts of the linear model.'}
+knitr::include_graphics("images/linearmodel.png")
+```
+
+The assumptions of the linear model are:
+
+1. **Linearity**: $\mathbb{E}(Y|X=x)=\beta_0+\beta_1x$
+2. **Homocedasticity**: $\varepsilon_i\sim\mathcal{N}(0,\sigma^2)$ $\sigma^2$ is constant, it does not depend on $X$.
+3. **Normality**: $\varepsilon\sim
+4. **Independence**:
+
+A good one-line summary of the model is
+$$
+Y|X=x\sim \mathcal{N}(\beta_0+\beta_1x,\sigma^2) \text{ (independence is implicit)}
+$$
+
+Note that there is nothing assumed about the distribution of $X$! So $X$ could be discrete or continuous, with any kind of distribution. But $Y|X$ has to be normal!
+
+
+<!--
+PISA back! Say something about variability
+
+Do matrix scatterplot. Go to  
+Theory in a nutshell
+```{r}
 # Fit a linear model y = beta0 + beta1 * x
+y <- pisa$MathMean
+x <- pisa$ScienceMean
 reg <- lm(y ~ x)
 
 # The result is a list with several objects
@@ -326,88 +720,27 @@ reg$coefficients
 plot(y ~ x, pch = 16)
 abline(reg, col = 2)
 segments(x0 = x, y0 = y, x1 = x, y1 = reg$fitted.values)
-
 ```
 
-### The least squares estimate
 
-We can check and visualize that `reg$coefficients` indeed contains the least squares estimates and that they minimize the Residual Sum of Squares (RSS).
+<!--
+## Inference for the model coefficients {#inference}
 
-```{r}
-
-# Create the design matrix
-X <- cbind(1, x)
-
-# The analytical solution
-betahat <- solve(t(X) %*% X) %*% t(X) %*% y
-betahat
-
-# Minimal RSS
-sum((y - X %*% betahat)^2)
-```
-
-You can try to get a better RSS. Good luck! :)
-Vertical/horizontal or perpendicular?
-Derivatives, recompute coeffs
+Normality, null hypothesis, test on the coefficients
 
 
-
-```{r, echo = FALSE}
-
-# # Define input
-# inputPanel(
-#   
-#   sliderInput("beta0", label = "Intercept:",
-#               min = -500, max = 300, value = reg$coefficients[1] + 600, step = 5),
-#   sliderInput("beta1", label = "Slope:",
-#               min = -3, max = 8, value = 0, step = 0.01)
-#   
-# )
-# 
-# # Create plot
-# renderPlot({
-#   plot(y ~ x, main = paste("RSS:", round(sum((input$beta0 + input$beta1 * x - y)^2), 1)), pch = 16, xlim = c(100, 300), ylim = c(0, 400))
-#   abline(a = input$beta0, b = input$beta1, col = 2)
-#   segments(x0 = x, y0 = y, x1 = x, y1 = input$beta0 + input$beta1 * x)
-# })
-  
-```
-
-```{r, echo = FALSE}
-# 
-#  ### Define a line
-#   data_line <- data.frame(
-#     x_rng = c(0, 1), 
-#     y_rng = c(reg$coefficients[1], reg$coefficients[1] + reg$coefficients[2])
-#   )     
-#   
-# p <- ggvis(data.frame("x" = x, "y" = y), x = ~x, y = ~y)
-# layer_points(p) %>%
-# layer_model_predictions(model = "lm", stroke := "red") %>%
-#     layer_paths(x = ~x_rng, y = ~y_rng, stroke := "blue", data = data_line) %>% 
-#   scale_numeric("x", domain = c(140, 270), nice = FALSE, clamp = TRUE) %>% 
-#   scale_numeric("y", domain = c(0, 400), nice = FALSE, clamp = TRUE)
-# 
-```
-
-Formulation in a nutshell
-Check that indeed the estimates minimize the RSS
-
-## Assumptions of the model
-
-Why do we need assumptions? Meaning of each assumption
-Theory in a nutshell
-Nothing is said for the randomness of $X$! $Y$ must be continuous, but $X$ can be discrete or factorial (as we will see in the next chapter)
-
-## Inference for the model coefficients
-
-Normality, null hypothesis, tests on the coefficients
+----------------------------------------------
+---------------- END LESSON 2 ----------------
+----------------------------------------------
 
 ## Prediction of the mean and individual
 
+Germany exlcluded, prediction with it
+Ratios and prediction of Seats2014 according to CamCom2011
+
 Confidence intervals - different if `x` is random or non-random.
  was observed or not, or if is random or nor.
-Prediction of a new observation can be done via the function `predict`, which also provides conficence intervals. The `newdata` argument of `predict` needs a `data.frame`.
+Prediction of a new observation can be done via the function `predict`, which also provides confidence intervals. The `newdata` argument of `predict` needs a `data.frame`.
 
 ```{r}
 
@@ -418,15 +751,7 @@ newx <- data.frame(x = 200)
 predict(reg, newdata = newx, interval = "prediction", level = 0.95)
 ```
 
--->
-<!-- 
-
-----------------------------------------------
----------------- END LESSON 2 ----------------
-----------------------------------------------
-
-
-## Assesing model fit and ANOVA
+## Assesing model fit and ANOVA {#fit}
 
 $R^2$ does not measure the correctness of a linear model but the **usefulness assuming the model is correct**. 
 
@@ -484,7 +809,6 @@ lines(0.2 * sin(2 * pi * xf) ~ xf, col = 2)
 abline(reg3, col = 3)
 ```
 
-
 ## Model diagnostics
 
 leverage points
@@ -499,11 +823,7 @@ cpus
 Do the same analysis for gpus.
 polynomials
 
-## Full analyses involving the linear model
-
-### Sustained increasing of tuition fees
-
-### 'Growth in a time of debt'
+## Full analysis: 'Growth in a time of debt'
 
 
 -->
