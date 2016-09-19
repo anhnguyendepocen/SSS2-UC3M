@@ -164,7 +164,7 @@ We know that there exist qualitative dissimilarities between both chambers, but 
 
 Let's begin by reading the data:
 
-1. The `US_apportionment.xls` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/US_apportionment.xls)) contains the 50 US states entitled to representation. The variables are `State`, `Population2010` (from the last census) and `Seats2013–2023`. This is an Excel file that we can read using `'Data' -> 'Import data' -> 'from Excel file...'`. A window will pop-up, asking for the right options. We set them as in Figure \@ref(fig:excel), since we want the variable `State` to be the case names. After clicking in `'View dataset'`, the data should look like Figure \@ref(fig:US).
+1. The `US_apportionment.xlsx` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/US_apportionment.xlsx)) contains the 50 US states entitled to representation. The variables are `State`, `Population2010` (from the last census) and `Seats2013–2023`. This is an Excel file that we can read using `'Data' -> 'Import data' -> 'from Excel file...'`. A window will pop-up, asking for the right options. We set them as in Figure \@ref(fig:excel), since we want the variable `State` to be the case names. After clicking in `'View dataset'`, the data should look like Figure \@ref(fig:US).
 
     ```{r, excel, echo = FALSE, out.width = '45%', fig.align = 'center', fig.cap = 'Importation of an Excel file.'}
     knitr::include_graphics("images/screenshots/excel.png")
@@ -273,7 +273,7 @@ The fitted line is `Seats2011`$=7.91+1.078\,\times10^{-6}\,\times$`Population201
 
 The question that remains to be answered is whether the Cambridge Compromise was favoring a fairer allocation of seats than the 2011 official agreement. In Figure \@ref(fig:mscatter2) we can see that indeed it seems like that, but there is an outlier outside the linear pattern: Germany. There is an explanation for that: the EU commission imposed a cap to the maximum number of seats per country, 96, to the development of the Cambridge Compromise. With this rule, Germany is notably under-represented.
 
-In order to avoid this distortion, we will exclude Germany from our comparison. To do so, we specify in the `'Subset expression'` field, of either 'Linear regression...' or 'Scatterplot...', a `'-1'`. This tells `R` to exclude the first row of `EU` dataset, corresponding to Germany. Then, we compare the linear models for the official allocation, `appEUNoGer2011`, and the Cambridge Compromise, `appCamComNoGer2011`. The outputs are the following.
+In order to avoid this distortion, we will exclude Germany from our comparison. To do so, we specify in the `'Subset expression'` field, of either `'Linear regression...'` or `'Scatterplot...'`, a `'-1'`. This tells `R` to exclude the first row of `EU` dataset, corresponding to Germany. Then, we compare the linear models for the official allocation, `appEUNoGer2011`, and the Cambridge Compromise, `appCamComNoGer2011`. The outputs are the following.
 
 ```{r}
 appEUNoGer2011 <- lm(Seats2011 ~ Population2010, data = EU, subset = -1)
@@ -296,6 +296,16 @@ scatterplot(Seats2011 ~ Population2010, reg.line = lm, smooth = FALSE, spread = 
 scatterplot(CamCom2011 ~ Population2010, reg.line = lm, smooth = FALSE, spread = FALSE, id.method = 'mahal', 
             id.n = 25, id.cex = 0.75, boxplots = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9), 
             main = "Proposal for approportionment in the EU parliament (Germany excl.)", pch = c(16), cex = 0.75, data = EU, subset = -1)
+```
+
+```{block, type = 'rmdnote'}
+In 2014 it was negotiated a new EU apportionment, collected in `Seats2014`, according to the population of 2013, `Population2013`, and due to the inclusion of Croatia in the EU. Answer these questions:
+
+- Which countries were the most favored and unfavored by such apportionment?
+- Was the apportionment proportional?
+- Was the degree of linearity higher or lower than the 2011 apportionment? (Exclude Germany.)
+- Was the degree of linearity higher or lower than the Cambridge Compromise for 2011? (Exclude Germany.)
+
 ```
 
 ***
@@ -323,19 +333,9 @@ If you just want to save a dataset, you have two options:
 
 ```
 
-```{block, type = 'rmdnote'}
-In 2014 it was negotiated a new EU apportionment, collected in `Seats2014`, according to the population of 2013, `Population2013`, and due to the inclusion of Croatia in the EU. Answer these questions:
-
-- Which countries were the most favored and unfavored by such apportionment?
-- Was the apportionment proportional?
-- Was the degree of linearity higher or lower than the 2011 apportionment? (Exclude Germany.)
-- Was the degree of linearity higher or lower than the Cambridge Compromise for 2011? (Exclude Germany.)
-
-```
-
 ## Some `R` basics
 
-By this time you probably had realized that some pieces of `R` code are repeated over and over, and that it is simpler to just modify them than to navigate the menus. For example, the codes `lm` and `scatterplot` always appear related with linear models and scatterplots. It is important to know some of the `R` basics in order to understand what are these pieces of text actually doing. Do not worry, the menus will always be there...
+By this time you probably had realized that some pieces of `R` code are repeated over and over, and that it is simpler to just modify them than to navigate the menus. For example, the codes `lm` and `scatterplot` always appear related with linear models and scatterplots. It is important to know some of the `R` basics in order to understand what are these pieces of text actually doing. Do not worry, the menus will always be there.
 
 In the following sections, **type** -- not copy and paste systematically -- the code in the `'R Script'` panel and send it to the output panel (on the selected expression, either with the `'Submit'` button or with `'Control' + 'R'`). You should get the same outputs (which are preceded by `## [1]`).
 
@@ -353,9 +353,7 @@ In the following sections, **type** -- not copy and paste systematically -- the 
 2^3
 1/0
 0/0
-```
 
-```{r, echo = TRUE, error = TRUE, collapse = TRUE}
 # Use ; for performing several operations in the same line
 (1 + 3) * 2 - 1; 1 + 3 * 2 - 1
 
@@ -365,9 +363,7 @@ sqrt(-1)
 exp(1)
 log(10); log10(10); log2(10)
 sin(pi); cos(0); asin(0)
-```
 
-```{r, echo = TRUE, error = TRUE, collapse = TRUE}
 # Remember to complete the expressions
 1 + 
 (1 + 3
@@ -643,7 +639,10 @@ The minimizers of the error in the above illustration are indeed the coefficient
 ```
 
 ```{block, type = 'rmdimportant'}
-The *population regression coefficients*, $(\beta_0,\beta_1)$, **are not the same** as the *estimated regression coefficients*, $(\hat\beta_0,\hat\beta_1)$. $(\beta_0,\beta_1)$ are the theoretical and **always** unknown quantities (except under controlled scenarios). $(\hat\beta_0,\hat\beta_1)$ are computed from the data, in particular, they are the output of `lm`. In an abuse of notation, the term *regression line* is often used to denote both the *theoretical* ($y=\beta_0+\beta_1x$) and the *estimated* ($y=\hat\beta_0+\hat\beta_1x$) regression lines.
+The *population regression coefficients*, $(\beta_0,\beta_1)$, **are not the same** as the *estimated regression coefficients*, $(\hat\beta_0,\hat\beta_1)$:
+
+- $(\beta_0,\beta_1)$ are the theoretical and **always** unknown quantities (except under controlled scenarios). 
+- $(\hat\beta_0,\hat\beta_1)$ are computed from the data, in particular, they are the output of `lm`. In an abuse of notation, the term *regression line* is often used to denote both the *theoretical* ($y=\beta_0+\beta_1x$) and the *estimated* ($y=\hat\beta_0+\hat\beta_1x$) regression lines.
 ```
 
 To conclude this section, we check that the regression coefficients given by `lm` are indeed the ones given in (\@ref(eq:3)).
@@ -666,7 +665,7 @@ mod$coefficients
 ```
 
 ```{block, type = 'rmdnote'}
-Do the same checkings for $X=$`ReadingMean` and $Y=$ `MathMean` from the `pisa` dataset.
+Do the same checking for $X=$`ReadingMean` and $Y=$ `MathMean` from the `pisa` dataset. Then with $X=$`logGDPp`. 
 ```
 
 <!--
