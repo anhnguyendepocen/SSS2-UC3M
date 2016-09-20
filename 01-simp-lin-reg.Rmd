@@ -388,7 +388,7 @@ sumMod
 |`sumMod$coefficients`|$R^2$
 -->
 
-Now you know how to fit and sumamrize a linear model with a few keystrokes. Let's see more of the basics of `R` -- it will be useful for the next sections.
+Now you know how to fit and summarize a linear model with a few keystrokes. Let's see more of the basics of `R` -- it will be useful for the next sections.
 
 ### Simple computations
 
@@ -641,7 +641,7 @@ If we have a sample $(X_1,Y_1),\ldots,(X_n,Y_n)$ for our random variables $X$ an
 $$
 \text{RSS}(\beta_0,\beta_1)=\sum_{i=1}^n(Y_i-\beta_0-\beta_1X_i)^2.
 $$
-In other words, we look fot the estimators $(\hat\beta_0,\hat\beta_1)$ such that
+In other words, we look for the estimators $(\hat\beta_0,\hat\beta_1)$ such that
 $$
 (\hat\beta_0,\hat\beta_1)=\arg\min_{(\beta_0,\beta_1)\in\mathbb{R}^2} \text{RSS}(\beta_0,\beta_1).
 $$
@@ -731,7 +731,7 @@ The assumptions of the linear model are:
 i. **Linearity**: $\mathbb{E}(Y|X=x)=\beta_0+\beta_1x$.
 ii. **Homocedasticity**: $\mathbb{V}\text{ar}(\varepsilon_i)=\sigma^2$, with $\sigma^2$ constant for $i=1,\ldots,n$.
 iii. **Normality**: $\varepsilon_i\sim\mathcal{N}(0,\sigma^2)$.
-iv. **Independence of the errors**: $\varepsilon_1,\ldots,\varepsilon_n$ are independent (or incorrelated, $\mathbb{E}(\varepsilon_i\varepsilon_j)=0$, $i\neq j$, since they are assumed to be Normal by iii).
+iv. **Independence of the errors**: $\varepsilon_1,\ldots,\varepsilon_n$ are independent (or uncorrelated, $\mathbb{E}(\varepsilon_i\varepsilon_j)=0$, $i\neq j$, since they are assumed to be Normal by iii).
 
 A good one-line summary of the linear model is
 $$
@@ -746,7 +746,7 @@ Recall:
 - The linear model assumes that $Y$ is continuous due to iii, but $X$ can be discrete.
 ```
 
-```{r, linearmodelgood, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Perfectly valid linear models (all the assumptios verified).'}
+```{r, linearmodelgood, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Perfectly valid linear models (all the assumptions are verified).'}
 knitr::include_graphics("images/linearmodelgood.png")
 ```
 
