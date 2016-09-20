@@ -3,9 +3,7 @@
 
 The simple linear regression is a *simple* but useful statistical model. In short, it allows to analyse the (assumed) linear relation between two variables in a proper way. To convince you why is useful, let's see what it can do in real-case scenarios!
 
-## Examples and applications
-
-### PISA scores and GDPp
+## Case study I: PISA scores and GDPp
 
 The Programme for International Student Assessment (PISA) is a study carried out by the Organisation for Economic Co-operation and Development (OECD) in 65 countries with the purpose of evaluating the performance of 15-year-old pupils on mathematics, science, and reading. A phenomena observed over years is that *wealthy countries tend to achieve larger average scores*. The purpose of this case study, motivated by the @PISA inform, is to answer two questions related with the previous statement:
 
@@ -144,7 +142,7 @@ Repeat the regression analysis (steps 2--3) for:
 Save the new models with different names to avoid overwriting the previous models!
 ```
 
-### Apportionment in the EU and US
+## Case study II: Apportionment in the EU and US
 
 > Apportionment is the process by which seats in a legislative body are distributed among administrative divisions entitled to representation.
 >
@@ -197,10 +195,10 @@ Let's begin by reading the data:
     )
     ```
 
-We start by analyzing the `US` dataset. If there is indeed a direct proportionality in the apportionment, we would expect a direct, $1:1$, relation between the *ratios of seats* and the *population per state*. Let's start by constructing these variables:
+We start by analyzing the `US` dataset. If there is indeed a direct proportionality in the apportionment, we would expect a direct, 1:1, relation between the *ratios of seats* and the *population per state*. Let's start by constructing these variables:
 
 1. Switch the active dataset to `US`. An alternative way to do so is by `'Data' -> 'Active data set' -> 'Select active data set...'`.
-2. Go to `'Data' -> 'Manage variables in active dataset...' -> 'Compute new variables'`. 
+2. Go to `'Data' -> 'Manage variables in active dataset...' -> 'Compute new variable...'`. 
 3. Create the the variable `RatioSeats2013.2023` as shown in Figure \@ref(fig:newvar). Be **careful to not overwrite** the variable `Seats2013.2023`.
 
     ```{r, newvar, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Creation of the new variable `RatioSeats2013.2023`. The expression to compute is `Seats2013.2023/sum(Seats2013.2023)`.'}
@@ -222,9 +220,9 @@ Let's fit a regression line to the `US` data, with `RatioSeats2013.2023` as the 
 appUS <- lm(RatioSeats2013.2023 ~ RatioPopulation2010, data = US)
 summary(appUS)
 ```
-The fitted regression line is `RatioSeats2013.2023`$=0.000+1.005\,\times$`RatioPopulation2010` and has an $R^2=0.9991$ (`'Multiple R-squared'`), which means that the data is almost perfectly linearly distributed. Furthermore, the *intercept coefficient is not significant*. This is seen in the column `'Pr(>|t|)'`, which gives the $p$-values for the null hypotheses $H_0:\beta_0=0$ and $H_0:\beta_1=0$, respectively. The null hypothesis $H_0:\beta_0=0$ is *not rejected* ($p$-value$=0.407$; non-significant) whereas $H_0:\beta_1=0$ is rejected ($p$-value$=0$; significant)^[We will be able to say more about how these test are performed after Section \@ref(sec:inference).]. Hence, we can conclude that the appropriation of seats in the US House of Representatives is indeed directly proportional to the population of each state (partially answers Q1).
+The fitted regression line is `RatioSeats2013.2023`$=0.000+1.005\,\times$`RatioPopulation2010` and has an $R^2=0.9991$ (`'Multiple R-squared'`), which means that the data is almost perfectly linearly distributed. Furthermore, the *intercept coefficient is not significant*. This is seen in the column `'Pr(>|t|)'`, which gives the $p$-values for the null hypotheses $H_0:\beta_0=0$ and $H_0:\beta_1=0$, respectively. The null hypothesis $H_0:\beta_0=0$ is *not rejected* ($p$-value$=0.407$; non-significant) whereas $H_0:\beta_1=0$ is rejected ($p$-value$=0$; significant)^[We will be able to say more about how these test are performed after Section \@ref(inference).]. Hence, we can conclude that the appropriation of seats in the US House of Representatives is indeed directly proportional to the population of each state (partially answers Q1).
 
-If we make the scatterplot for the `US` dataset, we can see the almost perfect (up to integer rounding) $1:1$ relation between the ratios State seats$/$Total seats and State population$/$Aggregated population. We can set the scatterplot to automatically label the `'25'` most different points (select the numeric box with the mouse and type `'25'` -- the arrow buttons are limited to `'10'`) with their case names. As it is seen in Figure \@ref(fig:ratios), there is no state clearly over- or under-represented (Q2).
+If we make the scatterplot for the `US` dataset, we can see the almost perfect (up to integer rounding) 1:1 relation between the ratios "state seats"/"total seats" and "state population"/"aggregated population". We can set the scatterplot to automatically label the `'25'` most different points (select the numeric box with the mouse and type `'25'` -- the arrow buttons are limited to `'10'`) with their case names. As it is seen in Figure \@ref(fig:ratios), there is no state clearly over- or under-represented (Q2).
 
 ```{r, ratios, echo = FALSE, out.width = '90%', fig.asp = 1, results = 'hide', fig.align = 'center', fig.cap = 'The apportionment in the US House of Representatives compared with a linear fit.'}
 scatterplot(RatioSeats2013.2023 ~ RatioPopulation2010, reg.line = lm, smooth = FALSE, spread = FALSE, id.method = 'mahal', 
@@ -335,16 +333,66 @@ If you just want to save a dataset, you have two options:
 
 ## Some `R` basics
 
-By this time you probably had realized that some pieces of `R` code are repeated over and over, and that it is simpler to just modify them than to navigate the menus. For example, the codes `lm` and `scatterplot` always appear related with linear models and scatterplots. It is important to know some of the `R` basics in order to understand what are these pieces of text actually doing. Do not worry, the menus will always be there.
+By this time you probably had realized that some pieces of `R` code are repeated over and over, and that it is simpler to just modify them than to navigate the menus. For example, the codes `lm` and `scatterplot` always appear related with linear models and scatterplots. It is important to know some of the `R` basics in order to understand what are these pieces of text actually doing. Do not worry, the menus will always be there to generate the proper code for you -- but you need to have a *general idea* of the code.
 
-In the following sections, **type** -- not copy and paste systematically -- the code in the `'R Script'` panel and send it to the output panel (on the selected expression, either with the `'Submit'` button or with `'Control' + 'R'`). You should get the same outputs (which are preceded by `## [1]`).
+In the following sections, **type** -- not copy and paste systematically -- the code in the `'R Script'` panel and send it to the output panel (on the selected expression, either with the `'Submit'` button or with `'Control' + 'R'`). 
+
+We begin with the `lm` function, since it is the one you are more used to. In the following, you should get the same outputs (which are preceded by `## [1]`).
+
+### The `lm` function
+
+```{r, collapse = TRUE, error = TRUE}
+# First of all, this is a comment. Its purpose is to explain what the code is doing
+# Comments are preceeded by a #
+
+# lm has the syntax: lm(formula = response ~ explanatory, data = data)
+# For example (you need to load first the EU dataset)
+mod <- lm(formula = Seats2011 ~ Population2010, data = EU)
+
+# We have saved the linear model into mod, which now contains all the output of lm
+# You can see it by typing
+mod
+
+# mod is indeed a list of objects whose names are
+names(mod)
+
+# We can access these elements by $
+# For example
+mod$coefficients
+
+# The residuals
+mod$residuals
+
+# The fitted values
+mod$fitted.values
+
+# Summary of the model
+sumMod <- summary(mod)
+sumMod
+```
+
+<!--
+| `R` | Statistics          |
+| `x` | $X_1,\ldots,X_n$    | 
+| `y` | $Y_1,\ldots,Y_n$    |
+| `data <- data.frame(x = x, y = y)` | $(X_1,Y_1),\ldots,(X_n,Y_n)$    | 
+| `mod <- lm(y ~ x, data = data)` | "Linear model" |
+| `mod$coefficients` | $\hat\beta_0,\hat\beta_1$ |
+| `mod$residuals` | $\hat\varepsilon_1,\ldots,\hat\varepsilon_n$ |
+| `mod$fitted.values` | $\hat Y_1,\ldots,\hat Y_n$ |
+| `mod$df.residual` | Degrees of freedom: $n-2$ |
+
+
+|`sumMod$sigma`|$\hat\sigma$|
+|`sumMod$r.squared`|$R^2$
+|`sumMod$coefficients`|$R^2$
+-->
+
+Now you know how to fit and sumamrize a linear model with a few keystrokes. Let's see more of the basics of `R` -- it will be useful for the next sections.
 
 ### Simple computations
 
 ```{r, echo = TRUE, error = TRUE, collapse = TRUE}
-# This is a comment - it is always initiated by a hashtag
-# Its purpose is to annotate the code and it does nothing else
-
 # These are some simple operations
 # The console can act as a simple calculator
 1.0 + 1.1
@@ -382,7 +430,7 @@ a
 # A variable can be overwritten
 a <- 1 + 1
 
-# Now the value of a is 2 and not 1, as before. There is no history of values for a variable.
+# Now the value of a is 2 and not 1, as before
 a 
 
 # Careful with capitalization
@@ -396,6 +444,16 @@ a; A
 # A handy tip to see what variables are in the workspace
 ls()
 # Now you know which variables can be accessed!
+
+# Remove variables
+rm(a)
+a
+```
+
+```{block, type = 'rmdnote'}
+- Store $-123$ in the variable `b`.
+- Get the log of the square of `b`. (Answer: `9.624369`)
+- Remove variable `b`.
 ```
 
 ### Vectors
@@ -414,6 +472,8 @@ c(1.5, 0, 5, -3.4)
 # Storing some vectors
 myData <- c(1, 2)
 myData2 <- c(-4.12, 0, 1.1, 1, 3, 4)
+myData
+myData2
 
 # Entry-wise operations
 myData + 1 
@@ -449,19 +509,18 @@ myData2[c(-1, 2)]
 ```{block, type = 'rmdnote'}
 - Create the vector $x=(1, 7, 3, 4)$. 
 - Create the vector $y=(100, 99, 98, ..., 2, 1)$.
-- Compute $x_2+y_4$ and $\cos(x_3) + \sin(x_2) e^{y_2}$.
-- Set $x_3=0$ and $y_58=-1$. Recompute the previous expressions.
-- Index $y$ by $x$. What is the output?
+- Compute $x_2+y_4$ and $\cos(x_3) + \sin(x_2) e^{-y_2}$. (Answers: `104`, `-0.9899925`)
+- Set $x_{2}=0$ and $y_{2}=-1$. Recompute the previous expressions. (Answers: `97`, `2.785875`)
+- Index $y$ by $x+1$ and store it as `z`. What is the output? (Answer: `z` is `c(-1, 100, 97, 96)`)
+
 ```
 
 ### Functions
 
 ```{r, echo = TRUE, collapse = TRUE, error = TRUE}
-# Data
-myData <- c(1.04, 0.53, 4.91, 5.53, -1.50, 5.17, 6.35)
-
 # Functions take arguments between parenthesis and transform them into an output
 sum(myData)
+prod(myData)
 
 # Summary of an object
 summary(myData)
@@ -493,6 +552,8 @@ args(sort)
 - Compute the mean, median and variance of $y$. 
 - Do the same for $y+1$. What are the differences?
 - What is the maximum of $y$? Where is it placed?
+- Sort $y$ increasingly and obtain the 5th and 76th positions.
+- Compute the covariance between $y$ and $y$. Compute the variance of $y$. Why do you get the same result?
 ```
 
 ### Matrices, data frames and lists
@@ -550,31 +611,12 @@ names(myList)
 - Use the function `as.data.frame()` to convert $M$ into a data frame, called `df`.
 ```
 
-```{r, collapse = TRUE, error = TRUE}
-# lm has the syntax: lm(formula = y ~ x, data = data)
-mod <- lm(formula = Seats2011 ~ Population2010, data = EU)
-mod
-
-# The output of lm is a list
-names(mod)
-
-# Summary of the model (also a list)
-sumMod <- summary(mod)
-sumMod
-
-# We use max.level = 1 to avoid lengthy outputs
-names(sumMod)
-
-# Access the elements by dollars
-mod$coefficients
-```
-
 ```{block, type = 'rmdnote'}
 For `mod`, check that:
 
 - The sum of residuals is zero.
 - The sum of the squared residuals divided by the degrees of freedom equals `summary(mod)$sigma^2`. 
-- What are the 5 largest residuals? What are the 5 lowest? What is the interpretation in terms of the `UE` dataset?
+- What are the 5 largest residuals? What are the 5 lowest? What is the interpretation in terms of the `EU` dataset?
 ```
 
 
@@ -588,7 +630,9 @@ holds between $X$ and $Y$. In (\@ref(eq:1)), $\beta_0$ and $\beta_1$ are known a
 \begin{equation}
 \mathbb{E}(Y|X=x)=\beta_0+\beta_1x, \label{eq:2}
 \end{equation}
-since $\mathbb{E}(\varepsilon|X=x)=0$. The Left Hand Side (LHS) of (\@ref(eq:2)) is the *conditional expectation* of $Y$ given $X$. It represents how the mean of the random variable $Y$ is changing according to a particular value, denoted by $x$, of the random variable $X$. With the RHS, what we are saying is that the mean of $Y$ is changing in a *linear* fashion with respect to the value of $X$. Hence the interpretation of the coefficients:
+since $\mathbb{E}(\varepsilon|X=x)=0$. 
+
+The Left Hand Side (LHS) of (\@ref(eq:2)) is the *conditional expectation* of $Y$ given $X$. It represents how the mean of the random variable $Y$ is changing according to a particular value, denoted by $x$, of the random variable $X$. With the RHS, what we are saying is that the mean of $Y$ is changing in a *linear* fashion with respect to the value of $X$. Hence the interpretation of the coefficients:
 
 - $\beta_0$: is the mean of $Y$ when $X=0$.
 - $\beta_1$: is the increment in mean of $Y$ for an increment of one unit in $X=x$.
@@ -642,7 +686,9 @@ The minimizers of the error in the above illustration are indeed the coefficient
 The *population regression coefficients*, $(\beta_0,\beta_1)$, **are not the same** as the *estimated regression coefficients*, $(\hat\beta_0,\hat\beta_1)$:
 
 - $(\beta_0,\beta_1)$ are the theoretical and **always** unknown quantities (except under controlled scenarios). 
-- $(\hat\beta_0,\hat\beta_1)$ are computed from the data, in particular, they are the output of `lm`. In an abuse of notation, the term *regression line* is often used to denote both the *theoretical* ($y=\beta_0+\beta_1x$) and the *estimated* ($y=\hat\beta_0+\hat\beta_1x$) regression lines.
+- $(\hat\beta_0,\hat\beta_1)$ are the estimates computed from the data, in particular, they are the output of `lm`. They are random variables, since they are computed from the sample $(X_1,Y_1),\ldots,(X_n,Y_n)$.
+
+In an abuse of notation, the term *regression line* is often used to denote both the *theoretical* ($y=\beta_0+\beta_1x$) and the *estimated* ($y=\hat\beta_0+\hat\beta_1x$) regression lines.
 ```
 
 To conclude this section, we check that the regression coefficients given by `lm` are indeed the ones given in (\@ref(eq:3)).
@@ -665,19 +711,16 @@ mod$coefficients
 ```
 
 ```{block, type = 'rmdnote'}
-Do the same checking for $X=$`ReadingMean` and $Y=$ `MathMean` from the `pisa` dataset. Then with $X=$`logGDPp`. 
+Adapt the code conveniently for doing the same checking with
+- $X=$`ReadingMean` and $Y=$`MathMean` from the `pisa` dataset. 
+- $X=$`logGDPp` and $Y=$`MathMean`.
+- $X=$`Population2010` and $Y=$`Seats2013.2023` from the `US` dataset.
+- $X=$`Population2010` and $Y=$`Seats2011` from the `EU` dataset. 
 ```
 
-<!--
 ## Assumptions of the model
 
-Why do we need assumptions? 
-
-
-Nothing is said about the randomness of $X$. The linear model assumes that $Y$ is continuous, but $X$ can be discrete, factorial (as we will see in the next chapter).
-
-vs random design
-(fixed design)
+Why do we need assumptions? To make **inference** on the model parameters. In other words, to infer properties about a the *unknown* coefficients $\beta_0$ and $\beta_1$ from the sample $(X_1,Y_1),\ldots,(X_n,Y_n)$ and the *estimated* coefficients $\hat\beta_0$ and $\hat\beta_1$.
 
 ```{r, linearmodel, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The key concepts of the linear model.'}
 knitr::include_graphics("images/linearmodel.png")
@@ -685,144 +728,28 @@ knitr::include_graphics("images/linearmodel.png")
 
 The assumptions of the linear model are:
 
-1. **Linearity**: $\mathbb{E}(Y|X=x)=\beta_0+\beta_1x$
-2. **Homocedasticity**: $\varepsilon_i\sim\mathcal{N}(0,\sigma^2)$ $\sigma^2$ is constant, it does not depend on $X$.
-3. **Normality**: $\varepsilon\sim
-4. **Independence**:
+i. **Linearity**: $\mathbb{E}(Y|X=x)=\beta_0+\beta_1x$.
+ii. **Homocedasticity**: $\mathbb{V}\text{ar}(\varepsilon_i)=\sigma^2$, with $\sigma^2$ constant for $i=1,\ldots,n$.
+iii. **Normality**: $\varepsilon_i\sim\mathcal{N}(0,\sigma^2)$.
+iv. **Independence of the errors**: $\varepsilon_1,\ldots,\varepsilon_n$ are independent (or incorrelated, $\mathbb{E}(\varepsilon_i\varepsilon_j)=0$, $i\neq j$, since they are assumed to be Normal by iii).
 
-A good one-line summary of the model is
+A good one-line summary of the linear model is
 $$
-Y|X=x\sim \mathcal{N}(\beta_0+\beta_1x,\sigma^2) \text{ (independence is implicit)}
+Y_i|X=X_i\sim \mathcal{N}(\beta_0+\beta_1X_i,\sigma^2),\quad i=1,\ldots,n\quad  \text{(independence is implicit).}
 $$
 
-Note that there is nothing assumed about the distribution of $X$! So $X$ could be discrete or continuous, with any kind of distribution. But $Y|X$ has to be normal!
+```{block, type = 'rmdtip'}
+Recall:
 
+- Nothing is said about the randomness of $X$. $X$ could be deterministic (called *fixed design*) or random (*random design*). 
 
-<!--
-PISA back! Say something about variability
-
-Do matrix scatterplot. Go to  
-Theory in a nutshell
-```{r}
-# Fit a linear model y = beta0 + beta1 * x
-y <- pisa$MathMean
-x <- pisa$ScienceMean
-reg <- lm(y ~ x)
-
-# The result is a list with several objects
-names(reg)
-
-# The fitted coefficients beta0 (intercept) and beta1 (slope)
-reg$coefficients
-
-# The regression line with the minimized distances
-plot(y ~ x, pch = 16)
-abline(reg, col = 2)
-segments(x0 = x, y0 = y, x1 = x, y1 = reg$fitted.values)
+- The linear model assumes that $Y$ is continuous due to iii, but $X$ can be discrete.
 ```
 
-
-<!--
-## Inference for the model coefficients {#inference}
-
-Normality, null hypothesis, test on the coefficients
-
-
-----------------------------------------------
----------------- END LESSON 2 ----------------
-----------------------------------------------
-
-## Prediction of the mean and individual
-
-Germany exlcluded, prediction with it
-Ratios and prediction of Seats2014 according to CamCom2011
-
-Confidence intervals - different if `x` is random or non-random.
- was observed or not, or if is random or nor.
-Prediction of a new observation can be done via the function `predict`, which also provides confidence intervals. The `newdata` argument of `predict` needs a `data.frame`.
-
-```{r}
-
-# Point in which we want a prediction for y
-newx <- data.frame(x = 200)
-
-# Prediction with 95% confidence interval
-predict(reg, newdata = newx, interval = "prediction", level = 0.95)
+```{r, linearmodelgood, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Perfectly valid linear models (all the assumptios verified).'}
+knitr::include_graphics("images/linearmodelgood.png")
 ```
 
-## Assesing model fit and ANOVA {#fit}
-
-$R^2$ does not measure the correctness of a linear model but the **usefulness assuming the model is correct**. 
-
-```{r}
-# Fixed design
-xf <- seq(0, 1, l = 50)
-
-# Errors with different variance
-set.seed(123456)
-eps1 <- rnorm(50, sd = 0.1)
-eps2 <- rnorm(50, sd = 1)
-
-# Responses generated following a linear model
-y1 <- 1 + 2 * xf + eps1
-y2 <- 1 + 2 * xf + eps2
-
-# Fits
-reg1 <- lm(y1 ~ xf)
-reg2 <- lm(y2 ~ xf)
-
-# R^2 depends on the 
-summary(reg1)
-summary(reg2)
-
-# Plot
-par(mfrow = c(1, 2))
-plot(y1 ~ xf, pch = 16, ylim = c(-1, 5))
-abline(a = 1, b = 2, col = 2)
-abline(a = reg1$coefficients[1], b = reg1$coefficients[2], col = 3)
-plot(y2 ~ xf, pch = 16, ylim = c(-1, 5))
-abline(a = 1, b = 2, col = 2)
-abline(a = reg2$coefficients[1], b = reg2$coefficients[2], col = 3)
-
+```{r, linearmodelbad, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Problematic linear models (a single assumption does not hold).'}
+knitr::include_graphics("images/linearmodelbad.png")
 ```
- 
-  ```{block, type = 'rmdimportant'}
-  A large $R^2$ means *nothing* if the **assumptions of the model do not hold**.
-  ```
-
-Counterexample:
-```{r}
-# Create data that: 
-# 1) does NOT follow a linear model
-# 2) the error is heteroskedastic
-xf <- seq(0.15, 1, l = 100)
-y3 <- 0.2 * sin(2 * pi * xf) + rnorm(n = 100, sd = 0.1 * xf^2)
-
-# Great R^2!?
-reg3 <- lm(y3 ~ xf)
-summary(reg3)
-
-# But prediction is obviously problematic
-plot(y3 ~ xf, pch = 16)
-lines(0.2 * sin(2 * pi * xf) ~ xf, col = 2)
-abline(reg3, col = 3)
-```
-
-## Model diagnostics
-
-leverage points
-outliers
-`TeachingDemos`
-transformations: box-cox
-correlation on the residuals
-
-## Nonlinear relationships
-
-cpus
-Do the same analysis for gpus.
-polynomials
-
-## Full analysis: 'Growth in a time of debt'
-
-
--->

@@ -2,7 +2,7 @@
 title: "Lab notes for *Statistics for Social Sciences II: Multivariate Techniques*"
 subtitle: "BSc in International Studies and BSc in International Studies	&	Political	Science, Carlos III University of Madrid"
 author: "Eduardo García Portugués"
-date: "`r Sys.Date()`, v2.0.0"
+date: "`r Sys.Date()`, v2.0.1"
 knit: "bookdown::render_book"
 documentclass: book
 bibliography: SSS2-UC3M.bib
@@ -13,6 +13,8 @@ description: "Lab notes for *Statistics for Social Sciences II: Multivariate Tec
 github-repo: egarpor/SSS2-UC3M
 ---
 
+# Introduction
+
 <!--
 (Move up once decided what options)
 cover-image: no
@@ -20,8 +22,6 @@ apple-touch-icon: "touch-icon.png"
 apple-touch-icon-size: 120
 favicon: "favicon.ico"
 -->
-
-# Introduction
 
 Welcome to the lab notes for *Statistics for Social Sciences II: Multivariate Techniques*. Along these notes we will see how to effectively implement the statistical methods presented in the lectures. The exposition we will follow is based on learning by analyzing datasets and **real-case studies**, always with the help of **statistical software**. While doing so, we will illustrate the key insights of some multivariate techniques and the adequate use of advanced statistical software.
 
@@ -38,7 +38,7 @@ Be advised that these notes are *neither an exhaustive, rigorous nor comprehensi
     - Continuous evaluation is 60% of the final grade. Scored by 2 partial exams and 1 group project, each accounting for a 20%.
     - Final exam is 40%, covers contents mostly from the theoretical lectures.
 - Partials. Cover contents from labs and lectures. The first will (likely) cover Topics 1-2. The second, Topics 3-5.
-- Group project. The students must team up in groups of 4 ($\pm1$) in order to produce a report. This report must apply the methodology presented to a dataset of their choice. As a rule of thumb, all students in a group will be graded evenly and according to the ratio $\frac{\text{quality project}}{\text{group size}}$. Bear in mind it when choosing coworkers. Specific details will be disclosed near the end of the course.
+- Group project. The students must team up in groups of 4 ($\pm1$) in order to produce a report. This report must apply the methodology presented to a dataset of their choice. As a rule of thumb, all students in a group will be graded evenly and according to the ratio "quality project"/"group size". Bear in mind it when choosing coworkers. Specific details will be disclosed near the end of the course.
 
 ## Software employed
 
