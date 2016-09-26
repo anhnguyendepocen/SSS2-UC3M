@@ -2,7 +2,7 @@
 title: "Lab notes for *Statistics for Social Sciences II: Multivariate Techniques*"
 subtitle: "BSc in International Studies and BSc in International Studies	&	Political	Science, Carlos III University of Madrid"
 author: "Eduardo García Portugués"
-date: "`r Sys.Date()`, v2.0.1"
+date: "`r Sys.Date()`, v3.0"
 knit: "bookdown::render_book"
 documentclass: book
 bibliography: SSS2-UC3M.bib
@@ -190,4 +190,6 @@ This is a handy list with a small description and download link for all the data
 - `EU_apportionment.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/EU_apportionment.txt)). Contains 28 rows with the member states for the EU (`Country`), the number of seats assigned under different years (`Seats2011`, `Seats2014`), the Cambridge Compromise apportionment (`CamCom2011`), and the states population (`Population2010`.`Population2013`).
 
 - `leastSquares.RData` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/leastSquares.RData)). Contains a single `data.frame`, named `leastSquares`, with 50 observations of the variables `x`, `yLin`, `yQua` and `yExp`. These are generated as $X\sim\mathcal{N}(0,1)$, $Y_\mathrm{lin}=-0.5+1.5X+\varepsilon$, $Y_\mathrm{qua}=-0.5+1.5X^2+\varepsilon$ and $Y_\mathrm{exp}=-0.5+1.5\cdot2^X+\varepsilon$, with $\varepsilon\sim\mathcal{N}(0,0.5^2)$. The purpose of the dataset is to illustrate the least squares fitting.
+
+- `assumptions.RData` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/assumptions.RData)). Contains the data frame `assumptions`. with 200 observations of the variables `x1`, ..., `x9` and `y1`, ..., `y9`. The purpose of the dataset is to identify which regression `y1 ~ x1`, ..., `y9 ~ x9` fulfills the assumptions of the linear model. 
 
