@@ -24,11 +24,24 @@
 }
 
 @TechReport{CamCom,
-  Title                    = {The allocation between the EU member states of the seats in the European Parliament Cambridge Compromise},
+  Title                    = {The allocation between the {EU} member states of the seats in the European Parliament - Cambridge Compromise},
   Author                   = {Grimmett, Geoffrey and Laslier, Jean-François and Pukelsheim, Friedrich and Ramirez Gonzalez, Victoriano and Rose, Richard and Slomczynski, Wojciech and Zachariasen, Martin and Życzkowski, Karol},
   Year                     = {2011},
 
   Url                      = {http://www.europarl.europa.eu/thinktank/en/document.html?reference=IPOL-AFCO_NT(2011)432760}
+}
+
+@Article{Moore1965,
+  Title                    = {Cramming more components onto integrated circuits},
+  Author                   = {Moore, Gordon E.},
+  Journal                  = {Electronics Magazine},
+  Year                     = {1965},
+  Number                   = {8},
+  Pages                    = {4},
+  Volume                   = {38},
+
+  Owner                    = {Eduardo},
+  Timestamp                = {2016.09.25}
 }
 
 @Article{PISA,
