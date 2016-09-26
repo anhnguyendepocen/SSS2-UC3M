@@ -3,7 +3,7 @@
 
 The simple linear regression is a *simple* but useful statistical model. In short, it allows to analyse the (assumed) linear relation between two variables in a proper way. To convince you why is useful, let's see what it can do in real-case scenarios!
 
-## Case study I: PISA scores and GDPp
+## Case study I: PISA scores and GDPp {#pisa}
 
 The Programme for International Student Assessment (PISA) is a study carried out by the Organisation for Economic Co-operation and Development (OECD) in 65 countries with the purpose of evaluating the performance of 15-year-old pupils on mathematics, science, and reading. A phenomena observed over years is that *wealthy countries tend to achieve larger average scores*. The purpose of this case study, motivated by the @PISA inform, is to answer two questions related with the previous statement:
 
@@ -371,22 +371,25 @@ sumMod <- summary(mod)
 sumMod
 ```
 
-<!--
-| `R` | Statistics          |
-| `x` | $X_1,\ldots,X_n$    | 
-| `y` | $Y_1,\ldots,Y_n$    |
-| `data <- data.frame(x = x, y = y)` | $(X_1,Y_1),\ldots,(X_n,Y_n)$    | 
-| `mod <- lm(y ~ x, data = data)` | "Linear model" |
-| `mod$coefficients` | $\hat\beta_0,\hat\beta_1$ |
-| `mod$residuals` | $\hat\varepsilon_1,\ldots,\hat\varepsilon_n$ |
-| `mod$fitted.values` | $\hat Y_1,\ldots,\hat Y_n$ |
-| `mod$df.residual` | Degrees of freedom: $n-2$ |
 
+The following table contains a handy cheat sheet of equivalences between `R` code and some of the statistical concepts associated to linear regression.
 
-|`sumMod$sigma`|$\hat\sigma$|
-|`sumMod$r.squared`|$R^2$
-|`sumMod$coefficients`|$R^2$
--->
+|              `R`                       |        Statistical concept          |
+|----------------------------------------|-------------------------------------|
+| `x` | Predictor $X_1,\ldots,X_n$    | 
+| `y` | Response $Y_1,\ldots,Y_n$    |
+| `data <- data.frame(x = x, y = y)` | Sample $(X_1,Y_1),\ldots,(X_n,Y_n)$    | 
+| `model <- lm(y ~ x, data = data)` | Fitted linear model |
+| `model$coefficients` | Fitted coefficients $\hat\beta_0,\hat\beta_1$ |
+| `model$residuals` | Fitted residuals $\hat\varepsilon_1,\ldots,\hat\varepsilon_n$ |
+| `model$fitted.values` | Fitted values $\hat Y_1,\ldots,\hat Y_n$ |
+| `model$df.residual` | Degrees of freedom $n-2$ |
+| `summaryModel <- summary(model)` | Summary of the fitted linear model |
+| `summaryModel$sigma` | Fitted residual standard deviation $\hat\sigma$ |
+| `summaryModel$r.squared` | Coefficient of determination $R^2$ |
+| `summaryModel$fstatistic` | $F$-test |
+| `anova(model)` | ANOVA table |
+
 
 Now you know how to fit and summarize a linear model with a few keystrokes. Let's see more of the basics of `R` -- it will be useful for the next sections.
 
@@ -667,7 +670,7 @@ Figure \@ref(fig:leastsquares) illustrates the influence of the distance employe
 knitr::include_app('https://egarpor.shinyapps.io/least-squares/', height = '900px')
 ```
 
-The data of the figure has been generated with the following code.
+The data of the figure has been generated with the following code:
 ```{r}
 set.seed(34567) # Fixes the seed for the random generator
 x <- rnorm(n = 50) # Generates 50 points from a N(0, 1)
@@ -685,11 +688,25 @@ The minimizers of the error in the above illustration are indeed the coefficient
 ```{block, type = 'rmdimportant'}
 The *population regression coefficients*, $(\beta_0,\beta_1)$, **are not the same** as the *estimated regression coefficients*, $(\hat\beta_0,\hat\beta_1)$:
 
-- $(\beta_0,\beta_1)$ are the theoretical and **always** unknown quantities (except under controlled scenarios). 
-- $(\hat\beta_0,\hat\beta_1)$ are the estimates computed from the data, in particular, they are the output of `lm`. They are random variables, since they are computed from the sample $(X_1,Y_1),\ldots,(X_n,Y_n)$.
+- $(\beta_0,\beta_1)$ are the theoretical and **always** unknown quantities (except under controlled scenarios).
+- $(\hat\beta_0,\hat\beta_1)$ are the estimates computed from the data. In particular, they are the output of `lm`. They are *random variables*, since they are computed from the random sample $(X_1,Y_1),\ldots,(X_n,Y_n)$.
 
 In an abuse of notation, the term *regression line* is often used to denote both the *theoretical* ($y=\beta_0+\beta_1x$) and the *estimated* ($y=\hat\beta_0+\hat\beta_1x$) regression lines.
 ```
+
+Once we have the least squares estimates $(\beta_0,\beta_1)$, we can define the next two concepts:
+
+- The *fitted values* $\hat Y_1,\ldots,\hat Y_n$, where 
+$$
+\hat Y_i=\hat\beta_0+\hat\beta_1X_i,\quad i=1,\ldots,n.
+$$
+They are the vertical projections of $Y_1,\ldots,Y_n$ into the fitted line (see Figure \@ref(fig:leastsquares)).
+
+- The *estimated residuals* $\hat \varepsilon_1,\ldots,\hat \varepsilon_n$, where 
+$$
+\hat\varepsilon_i=Y_i-\hat Y_i,\quad i=1,\ldots,n.
+$$
+They are the vertical distances between actual data and fitted data. Hence, another way of writing the minimum RSS is $\sum_{i=1}^n(Y_i-\hat\beta_0-\hat\beta_1Y_i)^2=\sum_{i=1}^n\hat\varepsilon_i^2$.
 
 To conclude this section, we check that the regression coefficients given by `lm` are indeed the ones given in (\@ref(eq:3)).
 
@@ -712,6 +729,7 @@ mod$coefficients
 
 ```{block, type = 'rmdnote'}
 Adapt the code conveniently for doing the same checking with
+
 - $X=$`ReadingMean` and $Y=$`MathMean` from the `pisa` dataset. 
 - $X=$`logGDPp` and $Y=$`MathMean`.
 - $X=$`Population2010` and $Y=$`Seats2013.2023` from the `US` dataset.
@@ -720,7 +738,7 @@ Adapt the code conveniently for doing the same checking with
 
 ## Assumptions of the model
 
-Why do we need assumptions? To make **inference** on the model parameters. In other words, to infer properties about a the *unknown* coefficients $\beta_0$ and $\beta_1$ from the sample $(X_1,Y_1),\ldots,(X_n,Y_n)$ and the *estimated* coefficients $\hat\beta_0$ and $\hat\beta_1$.
+Why do we need assumptions? To make **inference** on the model parameters. In other words, to infer properties about a the *unknown* population coefficients $\beta_0$ and $\beta_1$ from the sample $(X_1,Y_1),\ldots,(X_n,Y_n)$.
 
 ```{r, linearmodel, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The key concepts of the linear model.'}
 knitr::include_graphics("images/linearmodel.png")
@@ -733,9 +751,9 @@ ii. **Homocedasticity**: $\mathbb{V}\text{ar}(\varepsilon_i)=\sigma^2$, with $\s
 iii. **Normality**: $\varepsilon_i\sim\mathcal{N}(0,\sigma^2)$.
 iv. **Independence of the errors**: $\varepsilon_1,\ldots,\varepsilon_n$ are independent (or uncorrelated, $\mathbb{E}(\varepsilon_i\varepsilon_j)=0$, $i\neq j$, since they are assumed to be Normal by iii).
 
-A good one-line summary of the linear model is
+A good one-line summary of the linear model is (independence is assumed)
 $$
-Y_i|X=X_i\sim \mathcal{N}(\beta_0+\beta_1X_i,\sigma^2),\quad i=1,\ldots,n\quad  \text{(independence is implicit).}
+Y|X=x\sim \mathcal{N}(\beta_0+\beta_1x,\sigma^2)
 $$
 
 ```{block, type = 'rmdtip'}
@@ -746,6 +764,8 @@ Recall:
 - The linear model assumes that $Y$ is continuous due to iii, but $X$ can be discrete.
 ```
 
+Figures \@ref(fig:linearmodelgood) and \@ref(fig:linearmodelbad) represent situations where the assumptions of the model are respected and violated, respectively. For the moment, we will focus on building the intuition for checking the assumptions visually. In the next chapter we will see more sophisticated detection methods and the alternatives to their failure.
+
 ```{r, linearmodelgood, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Perfectly valid linear models (all the assumptions are verified).'}
 knitr::include_graphics("images/linearmodelgood.png")
 ```
@@ -753,3 +773,161 @@ knitr::include_graphics("images/linearmodelgood.png")
 ```{r, linearmodelbad, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Problematic linear models (a single assumption does not hold).'}
 knitr::include_graphics("images/linearmodelbad.png")
 ```
+
+```{block, type = 'rmdnote'}
+The dataset `assumptions.RData` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/assumptions.RData)) contains the variables `x1`, ..., `x9` and `y1`, ..., `y9`. For each regression `y1 ~ x1`, ..., `y9 ~ x9`:
+
+- Check whether the assumptions of the linear model are being satisfied. 
+- State which assumption(s) are violated and justify your answer.
+```
+
+
+
+## Inference for the model coefficients {#inference}
+
+
+The assumptions introduced in the previous section allow to specify what is the distribution of the random variables $\hat\beta_0$ and $\hat\beta_1$. 
+
+These distributions are derived conditionally on the sample predictors $X_1,\ldots,X_n$. In other words, we assume that the randomness of $Y_i=\beta_0+\beta_1X_i+\varepsilon_i$, $i=1,\ldots,n$, comes only from the error terms and not from the predictors. To denote this, we employ lowercases for the sample predictors $x_1,\ldots,x_n$.
+
+The distributions of $\hat\beta_0$ and $\hat\beta_1$ are:
+\begin{equation}
+\hat\beta_0\sim\mathcal{N}\left(\beta_0,\mathrm{SE}(\hat\beta_0)^2\right),\quad\hat\beta_1\sim\mathcal{N}\left(\beta_1,\mathrm{SE}(\hat\beta_1)^2\right)\label{eq:norm1}
+\end{equation}
+where
+\begin{equation}
+\mathrm{SE}(\hat\beta_0)^2=\frac{\sigma^2}{n}\left[1+\frac{\bar X^2}{S_x^2}\right],\quad \mathrm{SE}(\hat\beta_1)^2=\frac{\sigma^2}{nS_x^2}.\label{eq:se1}
+\end{equation}
+Recall that an equivalent form for (\@ref(eq:norm1)) is (why?)
+$$
+\frac{\hat\beta_0-\beta_0}{\mathrm{SE}(\hat\beta_0)}\sim\mathcal{N}(0,1),\quad\frac{\hat\beta_1-\beta_1}{\mathrm{SE}(\hat\beta_1)}\sim\mathcal{N}(0,1).
+$$
+
+Some important remarks on (\@ref(eq:norm1)--\@ref(eq:se1)) are
+
+- **Bias**. Both estimates are unbiased. That means that their expectations are the true coefficients.
+- **Variance**. The variances $\mathrm{SE}(\hat\beta_0)^2$ and $\mathrm{SE}(\hat\beta_1)^2$ have an interesting interpretation:
+
+    - *Sample size $n$*. As the sample size grows, the precision of the estimators increases, since both variances decrease.
+    - *Error variance $\sigma^2$*. The more disperse the $Y$'s are, the less precise are the estimates are.
+    - *Predictor variance $S_x^2$*. If the predictor is spread out (large $S_x^2$), then it is easier to "anchor" the slope. 
+    - *Mean $\bar X$*. It has influence only on the precision of $\hat\beta_0$. The larger $\bar X$ is, the less precise $\hat\beta_0$ is.
+
+The problem with (\@ref(eq:norm1)) and (\@ref(eq:se1)) is that $\sigma^2$ is unknown in practice! We need to estimate $\sigma^2$ from the data, and we can do it by computing the variance of the fitted residuals:
+$$
+\hat\sigma^2=\frac{\sum_{i=1}^n\hat\varepsilon_i^2}{n-2}.
+$$
+Why the $n-2$ in the denominator? These are called the *degrees of freedom* and is the number of data points minus the number of already fitted parameters. We have "spent" $2$ parameters on fitting $\hat\beta_0$ and $\hat\beta_1$.
+
+If we use the estimate $\hat\sigma^2$ instead of $\sigma^2$, we get different (and more useful) distributions for $\beta_0$ and $\beta_1$:
+\begin{equation}
+\frac{\hat\beta_0-\beta_0}{\hat{\mathrm{SE}}(\hat\beta_0)}\sim t_{n-2},\quad\frac{\hat\beta_1-\beta_1}{\hat{\mathrm{SE}}(\hat\beta_1)}\sim t_{n-2}\label{eq:norm3}
+\end{equation}
+where $t_{n-2}$ represents the *Student's $t$ distribution*^[The Student's $t$ distribution converges to a $\mathcal{N}(0,1)$ when $n$ is large. With $n$ larger than $30$ the normal is a good approximation.] with $n-2$ degrees of freedom and
+\begin{equation}
+\hat{\mathrm{SE}}(\hat\beta_0)^2=\frac{\hat\sigma^2}{n}\left[1+\frac{\bar X^2}{S_x^2}\right],\quad \hat{\mathrm{SE}}(\hat\beta_1)^2=\frac{\hat\sigma^2}{nS_x^2}.\label{eq:se2}
+\end{equation}
+The LHSs of \@ref(eq:norm3) are called *$t$-statistics*.
+
+Thanks to this, we can have the $100(1-\alpha)$ Confidence Intervals (CI) for the coefficients:
+$$
+\left(\hat\beta_j-\hat{\mathrm{SE}}(\hat\beta_j)t_{n-2;\alpha/2},\hat\beta_j+\hat{\mathrm{SE}}(\hat\beta_j)t_{n-2;\alpha/2}\right),\quad j=0,1,
+$$
+where $t_{n-2;\alpha/2}$ is the *$\alpha/2$-upper quantile of the distribution $t_{n-2}$* (see Figure \@ref(fig:ttest)). Usually $\alpha=0.05$ is selected. The interpretation of this CI is that *it will contain the unknown coefficient $\beta_j$ with a probability of $100(1-\alpha)$*. A simple way of understanding this concept is as follows. Suppose you have 100 samples generated according to the same linear model. If you compute the CI for a coefficient, then in approximately $100(1-\alpha)$ of them the true coefficient would be actually inside it.
+
+```{r, ttest, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The Student\'s $t$ distribution for the $t$-statistics associated to $\beta_0=0$ and $\beta_1=0$, for the `y1 ~ x1` regression.'}
+knitr::include_graphics("images/ttest.png")
+```
+
+> Do you need to remember these formulas? **No, but you need to understand them.** `R` + `R Commander` will compute everything for you through the functions `lm`, `summary` and `confint`.
+
+For example, in the `assumptions` dataset we can compute the CIs for $\beta_0$ and $\beta_1$ of the first model very easily. Assuming you have loaded the dataset, in `R` we can simply type:
+```{r, echo = FALSE}
+load("datasets/assumptions.RData")
+```
+```{r}
+mod1 <- lm(y1 ~ x1, data = assumptions)
+confint(mod1)
+```
+By default, the conficence interval is computed for $\alpha=0.05$. You can change this on the `level` argument, for example:
+```{r}
+confint(mod1, level = 0.90) # alpha = 0.10
+confint(mod1, level = 0.95) # alpha = 0.05
+confint(mod1, level = 0.99) # alpha = 0.01
+```
+Note that the larger the confidence of the interval, the longer -- thus less useful -- it is! For example, the interval $(-\infty,\infty)$ contains any coefficient with a 100% confidence, but is completely useless.
+
+If you want to make the CIs though the help of `R Commander` (assuming the dataset has been loaded and is the active one), then do the following:
+
+1. Fit the linear model (`'Statistics' -> 'Fit models' -> 'Linear regression...'`).
+2. Go to `'Models' -> 'Confidence intervals...'` and then input the `'Condifence Level'`.
+
+```{block, type = 'rmdnote'}
+Compute the CIs for the coefficients for the coefficients of the regressions `y2 ~ x2`, `y6 ~ x6` and `y7 ~ x7`. Do you think all of them are meaningful? Which ones are and why?
+```
+
+```{block, type = 'rmdnote'}
+Compute the CIs for the coefficients of the following regressions:
+
+- `MathMean ~ ScienceMean` 
+- `MathMean ~ ReadingMean`
+- `Seats2013.2023 ~ Population2010`
+- `Seats2011 ~ Population2010`
+- `CamCom2011 ~ Population2010`
+
+```
+
+A CI for $\sigma^2$ can be also computed, but is less important in practise. The formula is:
+$$
+\left(\frac{\hat\sigma^2}{n-2}\chi^2_{n-2;\alpha/2},\frac{\hat\sigma^2}{n-2}\chi^2_{n-2;1-\alpha/2}\right)
+$$
+where $\chi^2_{n-2;q}$ is the $q$-upper quantiles of the *$\chi^2$ distribution* with $n-2$ degrees of freedom, $\chi^2_{n-2}$.
+
+```{block, type = 'rmdnote'}
+Compute the CI for $\sigma^2$ for the regression of `MathMean` on `logGDPp` in the `pisa` dataset. To compute $\chi^2_{n-2;q}$, you can do:
+
+- In `R` by `qchisq(p = q, df = n - 2, lower.tail = FALSE)`.
+- In `R Commander`, go to `'Distributions' -> 'Continuous distributions' -> 'Chi-squared distribution' -> 'Chi-squared quantiles'` and then select `'Upper tail'`. Input $q$ as the `'Probabilities'` and $n-2$ as the `'Degrees of freedom'`.
+```
+
+<!--
+The CIs are a powerful tool to see what are the effects of $\beta_1$ despite the randomness of the data. It is also important  if 
+
+$j=0,1$
+
+$$
+H_0:\beta_j=0\quad \text{vs}\quad H_1:\beta_j\neq 0.
+$$
+
+We have:
+
+- A null hypothesis $H_0:\beta_j=0$
+- The $t$-statistics
+- The distribution of the $t$-statistics if $H_0$ was true
+
+-->
+Remember the analogy of hypothesis testing vs a trial:
+
+|         Hypothesis testing       |                      Trial                        |
+|----------------------------------|---------------------------------------------------|
+| Null hypothesis $H_0$ | Accused with the crime of being FALSE. It has the "presumption of innocence", which means that it is *not guilty* until there is enough evidence to supporting its guilt |
+| Statistic $T_n$ | Prosecutor and defense lawyer. They present evidences supporting innocence and guilt  |
+| Distribution of $T_n$ under $H_0$ | The judge conducting the trial. Evaluates the evidence presented by both sides and presents a verdict for $H_0$  | 
+| Significance level $\alpha$ | 1-$\alpha$ is the strength of evidences required by the judge in order to condemn $H_0$. The judge will allow evidences that condemn $100\times\alpha$ of the innocents. $\alpha=0.05$ is considered a reasonable level |
+| $p$-value | Decision of the judge. If $p$-value$<\alpha$, $H_0$ is declared guilty. Otherwise, is declared not guilty |
+| $H_0$ is rejected | $H_0$ is declared guilty: there are strong evidences supporting the crime |
+| $H_0$ is not rejected | $H_0$ is declared not guilty: it is innocent or there are no enough evidences supporting its crime |
+
+> The $p$-value is the probability of obtaining a statistic more unfavourable to $H_0$ than the observed, assuming that $H_0$ is true.
+
+```{block, type = 'rmdtip'}
+Graphical interpretation of the $t$-test for $H_0:\beta_j=0$ (at level $\alpha$).
+
+**If $0$ inside the CI for $\beta_j$ of level $\alpha$?**
+
+- **Yes: do not reject $H_0$**.
+- **No: reject $H_0$**.
+```
+
+
+
