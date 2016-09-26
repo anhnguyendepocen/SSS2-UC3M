@@ -117,8 +117,18 @@ assumptions <- data.frame(x1, x2, x3, x4, x5, x6, x7, x8, x9,
 save(assumptions, file = "assumptions.RData")
 
 
+# t
+png("ttest.png", width = 7, height = 7, res = 200, units = "in")
+xx <- seq(-7, 7, l = 500)
+plot(xx, dt(x = xx, df = 198), type = "l", xlab = "x", ylab = "Density of the Student's t with 198 df", lwd = 2)
+q1 <- qt(p = 0.975, df = 198, lower.tail = FALSE)
+q2 <- qt(p = 0.025, df = 198, lower.tail = FALSE)
+xvals <- seq(q1, q2, length = 200)
+dvals <- dt(x = xvals, df = 198)
+polygon(c(xvals, rev(xvals)), c(rep(0, 200), rev(dvals)), col = "lightblue")
+abline(v = -0.353, col = 2, lwd = 2)
+abline(v = -6.170, col = 3, lwd = 2)
+legend("topright", legend = c("95% CI", "t-stat beta0", "t-stat beta1"), col = c("lightblue", 2:3), lwd = 2)
+dev.off()
 
-
-
-
-
+summary(mod1)
