@@ -79,7 +79,7 @@ The only thing you need to do to run `R Commander` in any UC3M computer is:
     
 An important warning about UC3M computer labs:
 
-```{block, type = 'rmdimportant'}
+```{block, type = 'rmdcaution'}
 Every file you save locally (including installed packages) will be wiped out after you close your session. So be sure to save your valuable files at the end of the lesson. 
 
 The **exception** is the folder `'C:\\TEMP'`, where all the files you save will be accessible for *everyone* that logs in the computer!
@@ -107,7 +107,7 @@ In summary, `R Commander` eases the learning curve of `R` and provides a powerfu
 
 You are allowed to bring your own laptop to the labs. This may have a series of benefits, such as admin privileges, saving all your files locally and a deeper familiarization with the software. But keep in mind:
 
-```{block, type = 'rmdimportant'}
+```{block, type = 'rmdcaution'}
 If you plan to use your personal laptop, **you** are responsible for the right setup of the software (and laptop) *prior* to the lab lesson.
 ```
 
@@ -187,7 +187,7 @@ This is a handy list with a small description and download link for all the data
 
 - `US_apportionment.xls` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/US_apportionment.xls)). Contains the 50 US states entitled to representation in the US House of Representatives. The recorded variables are `State`, `Population2010` and `Seats2013–2023`.
 
-- `EU_apportionment.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/EU_apportionment.txt)). Contains 28 rows with the member states for the EU (`Country`), the number of seats assigned under different years (`Seats2011`, `Seats2014`), the Cambridge Compromise apportionment (`CamCom2011`), and the states population (`Population2010`.`Population2013`).
+- `EU_apportionment.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/EU_apportionment.txt)). Contains 28 rows with the member states for the EU (`Country`), the number of seats assigned under different years (`Seats2011`, `Seats2014`), the Cambridge Compromise apportionment (`CamCom2011`), and the states population (`Population2010`, `Population2013`).
 
 - `leastSquares.RData` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/leastSquares.RData)). Contains a single `data.frame`, named `leastSquares`, with 50 observations of the variables `x`, `yLin`, `yQua` and `yExp`. These are generated as $X\sim\mathcal{N}(0,1)$, $Y_\mathrm{lin}=-0.5+1.5X+\varepsilon$, $Y_\mathrm{qua}=-0.5+1.5X^2+\varepsilon$ and $Y_\mathrm{exp}=-0.5+1.5\cdot2^X+\varepsilon$, with $\varepsilon\sim\mathcal{N}(0,0.5^2)$. The purpose of the dataset is to illustrate the least squares fitting.
 
