@@ -142,7 +142,7 @@ Repeat the regression analysis (steps 2--3) for:
 Save the new models with different names to avoid overwriting the previous models!
 ```
 
-## Case study II: Apportionment in the EU and US
+## Case study II: Apportionment in the EU and US {#euus}
 
 > Apportionment is the process by which seats in a legislative body are distributed among administrative divisions entitled to representation.
 >
@@ -928,63 +928,128 @@ Graphical interpretation of the $t$-test for $H_0:\beta_j=0$ (at level $\alpha$)
 
 ## Nonlinear relationships
 
-The linear model is termed *linear* not because the regression curve is a line, but because *the effect of the parameters $\beta_0$ and $\beta_1$ is linear*. Indeed, the predictor $X$ can have a nonlinear effect on the response $Y$ and still be a linear model! For example, the following models can be transformed into simple linear models:
+The linear model is termed *linear* not because the regression curve is a line, but because **the effects of the parameters $\beta_0$ and $\beta_1$ are linear**. Indeed, the predictor $X$ may exhibit a nonlinear effect on the response $Y$ and still be a linear model! For example, the following models can be transformed into simple linear models:
 
   1. $Y=\beta_0+\beta_1X^2+\varepsilon$
   2. $Y=\beta_0+\beta_1\log(X)+\varepsilon$
   3. $Y=\beta_0+\beta_1(X^3-\log(|X|) + 2^X)+\varepsilon$
 
-The trick is to work with the transformed predictor ($X^2$, $\log(X)$, ...), instead of with the orignal $X$. Then, instead of considering the sample $(X_1,Y_1),\ldots,(X_n,Y_n)$, we consider the sample $(\tilde X_1,Y_1),\ldots,(\tilde X_n,Y_n)$ with (for the above examples):
+The trick is to work with the transformed predictor ($X^2$, $\log(X)$, ...), instead of with the original variable $X$. Then, rather than working with the sample $(X_1,Y_1),\ldots,(X_n,Y_n)$, we consider the transformed sample $(\tilde X_1,Y_1),\ldots,(\tilde X_n,Y_n)$ with (for the above examples):
 
   1. $\tilde X_i=X_i^2$, $i=1,\ldots,n$.
   2. $\tilde X_i=X_i^3$, $i=1,\ldots,n$.
   3. $\tilde X_i=X_i^3-\log(|X_i|) + 2^{X_i}$, $i=1,\ldots,n$.
 
-```{r, nonlineartransf, echo = FALSE, warning = FALSE, results = 'hide', out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = 'Some common nonlinear transformations.'}
+```{r, nonlineartransf, echo = FALSE, warning = FALSE, results = 'hide', out.width = '45%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Some common nonlinear transformations and their negative counterparts. Recall the domain of definition of each transformation.'}
 x <- seq(-2, 5, l = 200)
 plot(x, x, xlab = "x", ylab = "y", type = "l", col = 1, lwd = 2)
 lines(x, x^2, col = 2, lwd = 2)
 lines(x, x^3, col = 3, lwd = 2)
 lines(x, sqrt(x), col = 4, lwd = 2)
 lines(x, exp(x), col = 5, lwd = 2)
-lines(x, log(x), col = 6, lwd = 2)
-legend("bottomright", legend = expression(y == x, y == x^2, y == x^3, y == sqrt(x), y == e^x, y == log(x)), lwd = 2, col = 1:6)
+lines(x, exp(-x), col = 6, lwd = 2)
+lines(x, log(x), col = 7, lwd = 2)
+legend("bottomright", legend = expression(y == x, y == x^2, y == x^3, y == sqrt(x), y == exp(x), y == exp(-x), y == log(x)), lwd = 2, col = 1:7)
+plot(x, -x, xlab = "x", ylab = "y", type = "l", col = 1, lwd = 2)
+lines(x, -x^2, col = 2, lwd = 2)
+lines(x, -x^3, col = 3, lwd = 2)
+lines(x, -sqrt(x), col = 4, lwd = 2)
+lines(x, -exp(x), col = 5, lwd = 2)
+lines(x, -exp(-x), col = 6, lwd = 2)
+lines(x, -log(x), col = 7, lwd = 2)
+legend("topright", legend = expression(y == -x, y == -x^2, y == -x^3, y == -sqrt(x), y == -exp(-x), y == -exp(x), y == -log(x)), lwd = 2, col = 1:7)
 ```
 
-An example of this simple but powerful trick is given as follows. Figure \@ref(fig:quadratic) shows the scatterplot for some data `y` and  `x`, together with its fitted regression line. Celarly, the data does not follow a linear pattern, but a nonlinear one. In order to identify which one might be, we compare it against the mathematical functions displayed in Figure \@ref(fig:nonlineartransf). We see that the shape of the point cloud is similar to $y=x^2$. Hence, `y` might be better explained by the *square* of `x`, `x^2`, rather than by `x`. Indeed, if we plot `y` against `x^2` in Figure \@ref(fig:linearized), we can see that the fit of the regression line is much better. The summaries of both models are given below.  
+An example of this simple but powerful trick is given as follows. The left panel of Figure \@ref(fig:quadratic) shows the scatterplot for some data `y` and  `x`, together with its fitted regression line. Clearly, the data does not follow a linear pattern, but a nonlinear one. In order to identify which one might be, we compare it against the set of mathematical functions displayed in Figure \@ref(fig:nonlineartransf). We see that the shape of the point cloud is similar to $y=x^2$. Hence, `y` might be better explained by the *square* of `x`, `x^2`, rather than by `x`. Indeed, if we plot `y` against `x^2` in the right panel of Figure \@ref(fig:quadratic), we can see that the fit of the regression line is much better.
 
-```{r, quadratic, echo = FALSE, out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = 'Quadratic pattern when plotting $Y$ against $X$.'}
+In conclusion, with a simple trick we have increased drastically the explanation of the response. However, there is a catch: knowing which transformation is required in order to linearise the relation between response and the predictor is a kind of art which requires some good eye. This is partially alleviated by the extension of this technique to deal with *polynomials* rather than *monomials*, as we will see in the next chapter. For the moment, we will consider only the transformations displayed in Figure \@ref(fig:nonlineartransf).
+
+```{r, quadratic, echo = FALSE, out.width = '45%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Left: quadratic pattern when plotting $Y$ against $X$. Right: linearizsd pattern when plotting $Y$ against $X^2$.'}
 set.seed(345607)
-x <- seq(-2, 5, l = 200)
-y <- 0.5 * x^2 + rnorm(200)
+x <- round(seq(-2, 5, l = 50), 1)
+y <- round(0.5 * x^2 + rnorm(50), 1)
 mod1 <- lm(y ~ x)
 plot(x, y, pch = 16)
 abline(mod1$coefficients, col = 2, lwd = 2)
-```
-
-```{r, linearized, echo = FALSE, out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = 'Linear pattern when plotting $Y$ against $X^2$.'}
 mod2 <- lm(y ~ I(x^2))
 plot(x^2, y, xlab = "x^2", pch = 16)
 abline(mod2$coefficients, col = 2, lwd = 2)
 ```
 
-```{r, echo = FALSE, out.width = '90%'}
+```{block, type = 'rmdinsight'}
+If you apply a nonlinear transformation, namely $f$, and fit the linear model $Y=\beta_0+\beta_1 f(X)+\varepsilon$, then there is no point in fit also the model resulting from the negative transformation $-f$. The model with $-f$ is exactly the same as the one with $f$ but with the sign of $\beta_1$ flipped! 
+
+As a rule of thumb, use the figure with the transformations to compare it with the data pattern, then choose the most similar curve, and finally apply the corresponding function with **positive sign**.
+```
+
+Let's see how we can compute transformations of our predictors and perform a linear regression with them. The data for the above example is the following:
+```{r}
+# Data
+x <- c(-2, -1.9, -1.7, -1.6, -1.4, -1.3, -1.1, -1, -0.9, -0.7, -0.6, 
+       -0.4, -0.3, -0.1, 0, 0.1, 0.3, 0.4, 0.6, 0.7, 0.9, 1, 1.1, 1.3, 
+       1.4, 1.6, 1.7, 1.9, 2, 2.1, 2.3, 2.4, 2.6, 2.7, 2.9, 3, 3.1, 
+       3.3, 3.4, 3.6, 3.7, 3.9, 4, 4.1, 4.3, 4.4, 4.6, 4.7, 4.9, 5)
+y <- c(1.4, 0.4, 2.4, 1.7, 2.4, 0, 0.3, -1, 1.3, 0.2, -0.7, 1.2, -0.1,
+       -1.2, -0.1, 1, -1.1, -0.9, 0.1, 0.8, 0, 1.7, 0.3, 0.8, 1.2, 1.1,
+       2.5, 1.5, 2, 3.8, 2.4, 2.9, 2.7, 4.2, 5.8, 4.7, 5.3, 4.9, 5.1, 
+       6.3, 8.6, 8.1, 7.1, 7.9, 8.4, 9.2, 12, 10.5, 8.7, 13.5)
+
+# Data frame (a matrix with column names)
+nonLinear <- data.frame(x = x, y = y)
+```
+If we want to compute a new variable that contains the square of `x`, we can do it in two equivalent ways:
+
+1. Through `R Commander`. In Section \@ref(euus) we saw how to create a new variable in our active dataset (remember Figure \@ref(fig:newvar)). Go to `'Data' -> 'Manage variables in active dataset...' -> 'Compute new variable...'`. Set the `'New variable name'` to `x2` and the `'Expression to compute'` to `x^2`.
+
+2. Through `R`. Just type:
+
+    ```{r}
+    # We create a new column inside nonLinear, called x2, that contains nonLinear$x^2
+    nonLinear$x2 <- nonLinear$x^2
+    ```
+
+With either the two previous points you will have a new variable called `x2`. If you wish to remove it, you can do it by either typing
+```{r, eval = FALSE}
+# Empties the column named x2
+nonLinear$x2 <- NULL
+```
+or, in `R Commander`, by going to `'Data' -> 'Manage variables in active data set' -> 'Delete variables from data set...'` and select to remove  `x2`.
+
+Now we are ready to perform the linear regression. If you do it directly through `R`, you will obtain:
+```{r}
+mod1 <- lm(y ~ x, data = nonLinear)
 summary(mod1)
+mod2 <- lm(y ~ x2, data = nonLinear)
 summary(mod2)
 ```
 
+
+
 ```{block, type = 'rmdtip'}
-How to add new variables?
+A fast way of performing and summarizing the quadratic fit is 
+
+    summary(lm(y ~ I(x^2), data = nonLinear))
+
+Some remarks about this expression:
+
+  - The `I()` function wrapping `x^2` is fundamental when applying arithmetic operations in the predictor. The symbols `+`, `\*`, `^`, ... have **diferrent meaning** when inputted in a formula, so is required to use `I()` to indicate that they must be interpreted in their arithmetic meaning and that the result of the expression denotes a new predictor variable. For example, use `I((x - 1)^3 - log(3 \* x))` if you want to apply the transformation `(x - 1)^3 - log(3 * x)`.
+  
+  - We are computing the `summary` of `lm` directly, without using an intermediate variable for storing the output of `lm`. This is perfectly valid and very handy, but note that you will not be able to access the information outputted by `lm`, only the one from `summary`.
+
 ```
 
 ```{block, type = 'rmdexercise'}
-In the PISA case study we used `logGDPp` instead of `GDPp` for regressing `MathMean` on the wealth of a country. We did this in order to avoid the scale distortions with very different GDPs. We also saw that `Shanghai-China`, `Vietnam` and `Qatar` were outliers for the `pisa` dataset (so exclude them in the following with `subset = -c(1, 17, 63)`). 
+Load the dataset `assumptions.RData`. We are going to work with the regressions `y2 ~ x2`, `y3 ~ x3`, `y8 ~ x8` and `y9 ~ x9`, in order to identify which transformation gives the best fit. (For the purpose of illustration, we do not care if the assumptions are respected.) For these, do the following:
 
-Answer now the following questions:
+- Find the transformation that yields the largest $R^2$.
+- Compare the original and the transformed linear models.
 
-- Display the scatterplots and linear fits for `MathMean` vs `GDPp` or `logGDPp`.
-- Which measure of wealth gives a better fit? `GDPp` or `logGDPp`? Justify the answer.
-- Try with other nonlinear transformations. Are you able to increase the $R^2$? Which is the largest $R^2$ you can get?
-- What happens if you employ `log10` or `log2` as transformations? How do the fits compare with using `log`? (Remember that $\log_a b=\frac{\log b}{\log a}$, where $\log$ is the *natural logarithm* and $\log_a$ is the logarithm in base $a$.)
+Some hints:
+
+- `y2 ~ x2` has a negative dependence, so look at the left panel of the transformations figure.
+- `y3 ~ x3` seems to have just a subtle nonlinearity...
+- For `y9 ~ x9`, try with also with `exp(-abs(x))`, `log(abs(x))` and `2^abs(x)`. (`abs()` computes the absolute value.)
+ 
 ```
+
 
