@@ -17,28 +17,38 @@ red <- rgb(1, 0, 0, alpha = 0.75)
 # UI for application
 ui <- fluidPage(
 
-  # Vertical bar with a select input for the data pattern and type of distance, and slider input for intercept and slope
-  verticalLayout(
+  # Arrange in 2 columns:
+  # - the select inputs for the data pattern and type of distance
+  # - the slider inputs for intercept and slope
+  fluidRow(
 
-    inputPanel(
+    br(),
+    column(width = 2, offset = 1,
 
       selectInput(inputId = "dataType", label = "Data pattern:", choices = c("linear", "quadratic", "exponential")),
-      selectInput(inputId = "distType", label = "Type of distance:", choices = c("vertical", "horizontal", "perpendicular")),
-      sliderInput(inputId = "beta0", label = "Intercept:",
-                  min = -3, max = 3, value = 0.5, step = 0.05),
-      sliderInput(inputId = "beta1", label = "Slope:",
-                  min = -3, max = 3, value = 0.5, step = 0.05)
+      br(),
+      selectInput(inputId = "distType", label = "Type of distance:", choices = c("vertical", "horizontal", "perpendicular"))
 
     ),
+    column(width = 4,
 
-    # Show the regression plot
-    mainPanel(
-
-      plotOutput("regressionPlot")
+      sliderInput(inputId = "beta0", label = "Intercept:",
+                  min = -3, max = 3, value = 0.5, step = 0.05, width = '100%'),
+      sliderInput(inputId = "beta1", label = "Slope:",
+                  min = -3, max = 3, value = 0.5, step = 0.05, width = '100%')
 
     )
 
+  ),
+
+
+  # Show the regression plot
+  mainPanel(
+
+    plotOutput("regressionPlot")
+
   )
+
 
 )
 
