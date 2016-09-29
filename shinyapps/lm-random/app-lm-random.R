@@ -70,10 +70,13 @@ server <- function(input, output) {
 
     }
 
-    # Plot
+    # Response's data
     x <- sqrt(input$sigma2x) * xData[1:input$n]
     regX <- input$beta0 + input$beta1 * x
     y <- regX + sqrt(input$sigma2) * error[1:input$n]
+
+    # Plot
+    par(mar =  c(4, 4, 1, 1) + 0.1, oma = rep(0, 4))
     plot(x, y, xlim = c(-5, 5), ylim = c(-5, 5), pch = 16, xlab = "x", ylab = "y")
     abline(a = input$beta0, b = input$beta1, col = 1, lwd = 3)
     abline(lm(y ~ x)$coefficients, col = 2, lwd = 3)

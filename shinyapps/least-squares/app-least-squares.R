@@ -29,7 +29,7 @@ ui <- fluidPage(align = "center",
       selectInput(inputId = "distType", label = "Type of distance:",
                   choices = c("vertical", "horizontal", "perpendicular")),
       sliderInput(inputId = "beta0", label = "Intercept:",
-                  min = -3, max = 3, value = 0.5, step = 0.05),
+                  min = -3, max = 3, value = 0, step = 0.05),
       sliderInput(inputId = "beta1", label = "Slope:",
                   min = -3, max = 3, value = 0.5, step = 0.05)
 
@@ -75,6 +75,7 @@ server <- function(input, output) {
     }
 
     # Plot
+    par(mar =  c(4, 4, 3, 1) + 0.1, oma = rep(0, 4))
     plot(x, y, xlim = c(-5, 5), ylim = c(-5, 5), pch = 16)
     segments(x0 = x, y0 = y, x1 = proj[, 1], y1 = proj[, 2], col = red, lty = 2)
     title(main = paste("Sum of squared distances:",

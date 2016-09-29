@@ -679,7 +679,7 @@ There are some important points hidden behind the election of RSS as the error c
 
 Figure \@ref(fig:leastsquares) illustrates the influence of the distance employed in the sum of squares. Try to minimize the sum of squares for the different datasets. Is the best choice of intercept and slope independent of the type of distance?  
 
-```{r, leastsquares, echo = FALSE, fig.cap = 'Least squares illustration.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+```{r, leastsquares, echo = FALSE, fig.cap = 'The effect of the kind of distance in the error criterion. The choices of intercept and slope that minimize the sum of squared distances for a kind of distance are not the optimal for a different kind of distance.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
 knitr::include_app('https://egarpor.shinyapps.io/least-squares/', height = '900px')
 ```
 
@@ -687,7 +687,7 @@ The data of the figure has been generated with the following code:
 ```{r}
 set.seed(34567) # Fixes the seed for the random generator
 x <- rnorm(n = 50) # Generates 50 points from a N(0, 1)
-eps <- rnorm(n = 50, sd = 0.5) # Generates 50 points from a N(0, 0.5^2)
+eps <- rnorm(n = 50) # Generates 50 points from a N(0, 1)
 yLin <- -0.5 + 1.5 * x + eps
 yQua <- -0.5 + 1.5 * x^2 + eps
 yExp <- -0.5 + 1.5 * 2^x + eps
@@ -796,7 +796,7 @@ The dataset `assumptions.RData` ([download](https://raw.githubusercontent.com/eg
 
 ## Inference for the model coefficients {#inference}
 
-The assumptions introduced in the previous section allow to specify what is the distribution of the random variables $\hat\beta_0$ and $\hat\beta_1$. 
+The assumptions introduced in the previous section allow to specify what is the distribution of the *random variables* $\hat\beta_0$ and $\hat\beta_1$. 
 
 These distributions are derived conditionally on the sample predictors $X_1,\ldots,X_n$. In other words, we assume that the randomness of $Y_i=\beta_0+\beta_1X_i+\varepsilon_i$, $i=1,\ldots,n$, comes only from the error terms and not from the predictors. To denote this, we employ lowercase for the sample predictors $x_1,\ldots,x_n$.
 
@@ -822,6 +822,11 @@ Some important remarks on (\@ref(eq:norm1)--\@ref(eq:se1)) are
     - *Error variance $\sigma^2$*. The more disperse the $Y$'s are, the less precise are the estimates are.
     - *Predictor variance $S_x^2$*. If the predictor is spread out (large $S_x^2$), then it is easier to "anchor" the slope. 
     - *Mean $\bar X$*. It has influence only on the precision of $\hat\beta_0$. The larger $\bar X$ is, the less precise $\hat\beta_0$ is.
+
+
+```{r, randomcoefs, echo = FALSE, fig.cap = 'Illustration of the randomness of the fitted coefficients $(\\hat\\beta_0,\\hat\\beta_1)$ and the influence of $n$, $\\sigma^2$ and  $S_x^2$. The sample predictors $x_1,\\ldots,x_n$ are fixed and new responses $Y_1,\\ldots,Y_n$ are generated each time from a linear model $Y=\\beta_0+\\beta_1X+\\varepsilon$. ', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+knitr::include_app('https://egarpor.shinyapps.io/lm-random/', height = '1000px')
+```
 
 The problem with (\@ref(eq:norm1)) and (\@ref(eq:se1)) is that $\sigma^2$ is unknown in practice! We need to estimate $\sigma^2$ from the data, and we can do it by computing the variance of the fitted residuals:
 $$

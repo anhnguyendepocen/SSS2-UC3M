@@ -2,7 +2,7 @@
 title: "Lab notes for *Statistics for Social Sciences II: Multivariate Techniques*"
 subtitle: "BSc in International Studies and BSc in International Studies	&	Political	Science, Carlos III University of Madrid"
 author: "Eduardo García Portugués"
-date: "`r Sys.Date()`, v3.1"
+date: "`r Sys.Date()`, v3.2"
 knit: "bookdown::render_book"
 documentclass: book
 bibliography: SSS2-UC3M.bib
