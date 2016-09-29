@@ -761,7 +761,7 @@ The assumptions of the linear model are:
 
 i. **Linearity**: $\mathbb{E}(Y|X=x)=\beta_0+\beta_1x$.
 ii. **Homocedasticity**: $\mathbb{V}\text{ar}(\varepsilon_i)=\sigma^2$, with $\sigma^2$ constant for $i=1,\ldots,n$.
-iii. **Normality**: $\varepsilon_i\sim\mathcal{N}(0,\sigma^2)$.
+iii. **Normality**: $\varepsilon_i\sim\mathcal{N}(0,\sigma^2)$ for $i=1,\ldots,n$.
 iv. **Independence of the errors**: $\varepsilon_1,\ldots,\varepsilon_n$ are independent (or uncorrelated, $\mathbb{E}(\varepsilon_i\varepsilon_j)=0$, $i\neq j$, since they are assumed to be Normal by iii).
 
 A good one-line summary of the linear model is (independence is assumed)
@@ -772,9 +772,9 @@ $$
 ```{block, type = 'rmdinsight'}
 Recall:
 
-- Nothing is said about the randomness of $X$. $X$ could be deterministic (called *fixed design*) or random (*random design*). 
+- Nothing is said about the distribution of $X$. Indeed, $X$ could be deterministic (called *fixed design*) or random (*random design*). 
 
-- The linear model assumes that $Y$ is continuous due to iii, but $X$ can be discrete.
+- The linear model **assumes that $Y$ is continuous** due to the normality of the errors. However, **$X$ can be discrete**!
 ```
 
 Figures \@ref(fig:linearmodelgood) and \@ref(fig:linearmodelbad) represent situations where the assumptions of the model are respected and violated, respectively. For the moment, we will focus on building the intuition for checking the assumptions visually. In the next chapter we will see more sophisticated detection methods and the alternatives to their failure.
