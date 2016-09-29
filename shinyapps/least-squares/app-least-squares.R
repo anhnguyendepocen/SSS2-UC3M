@@ -15,40 +15,29 @@ yExp <- -0.5 + 1.5 * 2^x + eps
 red <- rgb(1, 0, 0, alpha = 0.75)
 
 # UI for application
-ui <- fluidPage(
+ui <- fluidPage(align = "center",
 
-  # Arrange in 2 columns:
+  # Vertical layout with:
   # - the select inputs for the data pattern and type of distance
   # - the slider inputs for intercept and slope
-  fluidRow(
+  verticalLayout(
 
-    br(),
-    column(width = 2, offset = 1,
+    inputPanel(
 
-      selectInput(inputId = "dataType", label = "Data pattern:", choices = c("linear", "quadratic", "exponential")),
-      br(),
-      selectInput(inputId = "distType", label = "Type of distance:", choices = c("vertical", "horizontal", "perpendicular"))
+      selectInput(inputId = "dataType", label = "Data pattern:",
+                  choices = c("linear", "quadratic", "exponential")),
+      selectInput(inputId = "distType", label = "Type of distance:",
+                  choices = c("vertical", "horizontal", "perpendicular")),
+      sliderInput(inputId = "beta0", label = "Intercept:",
+                  min = -3, max = 3, value = 0.5, step = 0.05),
+      sliderInput(inputId = "beta1", label = "Slope:",
+                  min = -3, max = 3, value = 0.5, step = 0.05)
 
     ),
-    column(width = 4,
-
-      sliderInput(inputId = "beta0", label = "Intercept:",
-                  min = -3, max = 3, value = 0.5, step = 0.05, width = '100%'),
-      sliderInput(inputId = "beta1", label = "Slope:",
-                  min = -3, max = 3, value = 0.5, step = 0.05, width = '100%')
-
-    )
-
-  ),
-
-
-  # Show the regression plot
-  mainPanel(
 
     plotOutput("regressionPlot")
 
   )
-
 
 )
 
@@ -80,15 +69,18 @@ server <- function(input, output) {
       a <- input$beta1
       b <- -1
       c <- input$beta0
-      proj <- cbind(b * (b * x - a * y) - a * c, a * (-b * x + a * y) - b * c) / (a^2 + b^2)
+      proj <- cbind(b * (b * x - a * y) - a * c,
+                    a * (-b * x + a * y) - b * c) / (a^2 + b^2)
 
     }
 
     # Plot
     plot(x, y, xlim = c(-5, 5), ylim = c(-5, 5), pch = 16)
     segments(x0 = x, y0 = y, x1 = proj[, 1], y1 = proj[, 2], col = red, lty = 2)
-    title(main = paste("Sum of squared distances:", sprintf("%.2f", sum((proj[, 1] - x)^2 + (proj[, 2] - y)^2))), cex.main = 1.5)
-    abline(a = input$beta0, b = input$beta1, col = 2, lwd = 2)
+    title(main = paste("Sum of squared distances:",
+                       sprintf("%.2f", sum((proj[, 1] - x)^2 + (proj[, 2] - y)^2))),
+          cex.main = 1.5)
+    abline(a = input$beta0, b = input$beta1, col = 2, lwd = 3)
 
   }, width = 650, height = 650)
 
