@@ -37,6 +37,8 @@ visualizeFitLm <- function(data, nGrid = 5, zTop = 0.5, theta = -30, phi = 20,
   gY <- seq(min(data$Y) - sdY, max(data$Y) + sdY, length = nGrid)
   gridMat <- persp(gX, gY, matrix(0, nGrid, nGrid), zlim = c(0, zTop),
                    theta = theta, phi = phi, box = FALSE, border = gray(0.75))
+  text(x = trans3d(median(gX), min(gY), 0, gridMat), labels = "x", pos = 1)
+  text(x = trans3d(min(gX), median(gY), 0, gridMat), labels = "y", pos = 2)
 
   # Compute regression curve
   lx <- 501
