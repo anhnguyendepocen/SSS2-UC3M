@@ -12,9 +12,11 @@ load("xData.RData")
 ui <- fluidPage(align = "center",
 
   # Vertical layout with:
+  # - action buttom for generating a new sample
+  # - select input for sample size
   # - the slider inputs for intercept and slope
   # - the slider inputs variance of error and predictor
-  # - the sample options
+
   verticalLayout(
 
     inputPanel(
@@ -42,7 +44,7 @@ ui <- fluidPage(align = "center",
 # Server logic
 server <- function(input, output) {
 
-  # Add a default Manage the first call
+  # Manage the first call
   values <- reactiveValues(default = 0)
   observeEvent(input$newSample, {
 
