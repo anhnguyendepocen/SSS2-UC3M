@@ -27,9 +27,9 @@ ui <- fluidPage(align = "center",
       sliderInput(inputId = "beta1", label = "Slope:",
                   min = -3, max = 3, value = 0.5, step = 0.5),
       sliderInput(inputId = "sigma2", label = "Error variance:",
-                  min = 0.1, max = 4, value = 1, step = 0.5),
+                  min = 0, max = 4, value = 1, step = 0.25),
       sliderInput(inputId = "sigma2x", label = "Predictor variance:",
-                  min = 0.1, max = 4, value = 1, step = 0.5)
+                  min = 0, max = 4, value = 1, step = 0.25)
 
     ),
 
