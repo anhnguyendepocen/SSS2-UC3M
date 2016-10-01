@@ -116,9 +116,10 @@ We are going to do the following. First, import the data into `R Commander` and 
         library(sandwich)
         ```
         ```{r, out.width = '90%', fig.asp = 1, fig.align = 'center'}
-        scatterplot(MathMean ~ logGDPp, reg.line = lm, smooth = FALSE, spread = FALSE, id.method = 'mahal', 
-                    id.n = 3, boxplots = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9),
-                    main = "Average Math score vs. logGDPp", pch = c(16), data = pisa)
+        scatterplot(MathMean ~ logGDPp, reg.line = lm, smooth = FALSE, spread = FALSE, 
+                    id.method = 'mahal', id.n = 3, boxplots = FALSE, span = 0.5, 
+                    ellipse = FALSE, levels = c(.5, .9), main = "Average Math score
+                    vs. logGDPp", pch = c(16), data = pisa)
         ```
         
         There are three clear *outliers*^[The outliers have a considerable impact on the regression line, as we will see later.]: Vietnam, Shanghai-China and Qatar. The first two are non high-income economies that perform exceptionally well in the test (although Shanghai-China is a cherry-picked region of China). On the other hand, Qatar is a high-income economy that has really poor scores.
@@ -285,15 +286,19 @@ summary(appCamComNoGer2011)
 We see that the Cambridge Compromise has a larger $R^2$ and a lower intercept than the official allocation of seats. This means that it favors a more proportional allocation, which is fairer in the sense that the deviations from the linear trend are smaller (Q3). We conclude the case study by illustrating both fits.
 
 ```{r, echo = FALSE, results = 'hide', out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = '`Seats2011` vs `Population2010` in the `EU` dataset, Germany excluded.'}
-scatterplot(Seats2011 ~ Population2010, reg.line = lm, smooth = FALSE, spread = FALSE, id.method = 'mahal', 
-            id.n = 25, id.cex = 0.75, boxplots = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9), 
-            main = "Approportionment in the EU parliament (Germany excl.)", pch = c(16), cex = 0.75, data = EU, subset = -1)
+scatterplot(Seats2011 ~ Population2010, reg.line = lm, smooth = FALSE, spread = FALSE, 
+            id.method = 'mahal', id.n = 25, id.cex = 0.75, boxplots = FALSE, span = 0.5,
+            ellipse = FALSE, levels = c(.5, .9), main = "Approportionment in the EU 
+            parliament (Germany excl.)", pch = c(16), cex = 0.75, data = EU, 
+            subset = -1)
 ```
 
 ```{r, echo = FALSE, results = 'hide', out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = '`CamCom2011` vs `Population2010` in the `EU` dataset, Germany excluded.'}
-scatterplot(CamCom2011 ~ Population2010, reg.line = lm, smooth = FALSE, spread = FALSE, id.method = 'mahal', 
-            id.n = 25, id.cex = 0.75, boxplots = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9), 
-            main = "Proposal for approportionment in the EU parliament (Germany excl.)", pch = c(16), cex = 0.75, data = EU, subset = -1)
+scatterplot(CamCom2011 ~ Population2010, reg.line = lm, smooth = FALSE, spread = FALSE, 
+            id.method = 'mahal', id.n = 25, id.cex = 0.75, boxplots = FALSE, span = 0.5, 
+            ellipse = FALSE, levels = c(.5, .9), main = "Proposal for approportionment 
+            in the EU parliament (Germany excl.)", pch = c(16), cex = 0.75, data = EU, 
+            subset = -1)
 ```
 
 ```{block, type = 'rmdexercise'}
@@ -393,6 +398,8 @@ The following table contains a handy cheat sheet of equivalences between `R` cod
 | `anova(model)` | ANOVA table |
 
 ```{block, type = 'rmdexercise'}
+Do the following:
+
 - Compute the regression of `CamCom2011` into `Population2010`. Save that model as the variable `myModel`.
 - Access the objects `residuals` and `coefficients` of `myModel`.
 - Compute the summary of `myModel` and store it as the variable `summaryMyModel`.
@@ -465,6 +472,8 @@ a
 ```
 
 ```{block, type = 'rmdexercise'}
+Do the following:
+
 - Store $-123$ in the variable `b`.
 - Get the log of the square of `b`. (Answer: `9.624369`)
 - Remove variable `b`.
@@ -521,6 +530,8 @@ myData2[c(-1, 2)]
 ```
 
 ```{block, type = 'rmdexercise'}
+Do the following:
+
 - Create the vector $x=(1, 7, 3, 4)$. 
 - Create the vector $y=(100, 99, 98, ..., 2, 1)$.
 - Compute $x_2+y_4$ and $\cos(x_3) + \sin(x_2) e^{-y_2}$. (Answers: `104`, `-0.9899925`)
@@ -563,6 +574,8 @@ args(sort)
 ```
 
 ```{block, type = 'rmdexercise'}
+Do the following:
+
 - Compute the mean, median and variance of $y$. (Answers: `49.5`, `49.5`, `843.6869`)
 - Do the same for $y+1$. What are the differences?
 - What is the maximum of $y$? Where is it placed?
@@ -623,6 +636,8 @@ names(myList)
 ```
 
 ```{block, type = 'rmdexercise'}
+Do the following:
+
 - Create a matrix called `M` with rows given by `y[3:5]`, `y[3:5]^2` and `log(y[3:5])`.
 - Create a data frame called `myDataFrame` with column names "y", "y2" and "logy" containing the vectors `y[3:5]`, `y[3:5]^2` and `log(y[3:5])`, respectively.
 - Create a list, called `l`, with entries for `x` and `M`. Access the elements by their names.
@@ -973,7 +988,7 @@ For the moment, we will focus only on the bilateral case.
 ```{block, type = 'rmdinsight'}
 The connection of a $t$-test for $H_0:\beta_j=0$ and the CI for $\beta_j$, both at level $\alpha$, is the following.
 
-**Is $0$ inside the CI for $\beta_j$ of level $\alpha$?**
+**Is $0$ inside the CI for $\beta_j$?**
 
 - **Yes $\rightarrow$ do not reject $H_0$**. 
 - **No $\rightarrow$ reject $H_0$**.
@@ -994,16 +1009,20 @@ The `Coefficients` block of the output of `summary` contains the next elements r
 In the above output for `summary(mod1)`, $H_0:\beta_0=0$ is not rejected at any reasonable level for $\alpha$ (that is, $0.10$,$0.05$ and $0.01$). Hence $\beta_0$ is not significant. On the other hand, $H_0:\beta_1=0$ is rejected at any level $\alpha$ larger than the $p$-value, `3.77e-09`. Therefore, it is significant.
 
 ```{block, type = 'rmdexercise'}
-- Check that: 
-    * The intercept of `y7 ~ x7` is not significant at any reasonable level $\alpha$.
-    * The slope is significant for any $\alpha>10^{-7}$.
+For the `assumptions` dataset, do the next:
+
+- Regression `y7 ~ x7`. Check that: 
+    - The intercept of  is not significant at any reasonable level $\alpha$.
+    - The slope is significant for any $\alpha>10^{-7}$.
   
-- Assume the linear model assumptions were verified for `y6 ~ x6`. 
-    * Check that $\beta_0$ is significantly different from zero at any level
+- Regression `y6 ~ x6`. Assume the linear model assumptions are verified. 
+    - Check that $\beta_0$ is significantly different from zero at any level
 $\alpha$. 
-    * For which $\alpha=0.10,0.05,0.01$ is $\beta_1$ significant?
-  
-- Re-analyse the significance of the coefficients in `Seats2013.2023 ~ Population2010` and `Seats2011 ~ Population2010` for the `US` and `EU` datasets, respectively.
+    - For which $\alpha=0.10,0.05,0.01$ is $\beta_1$ significant?
+```  
+
+```{block, type = 'rmdexercise'}
+Re-analyse the significance of the coefficients in `Seats2013.2023 ~ Population2010` and `Seats2011 ~ Population2010` for the `US` and `EU` datasets, respectively.
 ```
 
 ## Prediction of the mean and individual
