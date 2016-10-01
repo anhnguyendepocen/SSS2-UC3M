@@ -4,16 +4,16 @@
   background: #f5f5f5 5px center/3em no-repeat;
 } 
 .rmdcaution {
-  background-image: url("../images/css/caution.png");
+  background-image: url("../images/icons/caution.png");
 }
 .rmdinsight {
-  background-image: url("../images/css/insight.png");
+  background-image: url("../images/icons/insight.png");
 }
 .rmdexercise {
-  background-image: url("../images/css/exercise.png");
+  background-image: url("../images/icons/exercise.png");
 }
 .rmdtip {
-  background-image: url("../images/css/tip.png");
+  background-image: url("../images/icons/tip.png");
 }
 .kable_wrapper {
   border-spacing: 20px 0;

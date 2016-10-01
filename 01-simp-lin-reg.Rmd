@@ -116,8 +116,8 @@ We are going to do the following. First, import the data into `R Commander` and 
         library(sandwich)
         ```
         ```{r, out.width = '90%', fig.asp = 1, fig.align = 'center'}
-        scatterplot(MathMean ~ logGDPp, reg.line = lm, smooth = FALSE, spread = FALSE, 
-                    id.method = 'mahal', id.n = 3, boxplots = FALSE, span = 0.5, 
+        scatterplot(MathMean ~ logGDPp, reg.line = lm, smooth = FALSE, spread = FALSE,
+                    id.method = 'mahal', id.n = 3, boxplots = FALSE, span = 0.5,
                     ellipse = FALSE, levels = c(.5, .9), main = "Average Math score
                     vs. logGDPp", pch = c(16), data = pisa)
         ```
@@ -127,9 +127,11 @@ We are going to do the following. First, import the data into `R Commander` and 
         We can identify countries that are above and below the linear trend in the plot. This is particularly interesting: we can assess whether a country is performing better or worse with respect to its *expected PISA score according to its economic status* (this adds more insight into Q2). To do so, we want to display the text labels in the points of the scatterplot. We can take a shortcut: copy and run in the input panel the next piece of code. It is a slightly modified version of the previous code (what are the differences?).
     
         ```{r, out.width = '90%', fig.asp = 1, fig.align = 'center', results = 'hide'}
-        scatterplot(MathMean ~ logGDPp, reg.line = lm, smooth = FALSE, spread = FALSE, id.method = 'mahal', 
-                    id.n = 65, id.cex = 0.75, boxplots = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9), 
-                    main = "Average Math score vs. logGDPp", pch = c(16), cex = 0.75, data = pisa)
+        scatterplot(MathMean ~ logGDPp, reg.line = lm, smooth = FALSE, spread = FALSE, 
+                    id.method = 'mahal', id.n = 65, id.cex = 0.75, boxplots = FALSE, 
+                    span = 0.5, ellipse = FALSE, levels = c(.5, .9), 
+                    main = "Average Math score vs. logGDPp", pch = c(16), cex = 0.75,
+                    data = pisa)
         ```
     
 If you understood the previous analysis, then you should be able to perform the next ones on your own.
@@ -226,9 +228,11 @@ The fitted regression line is `RatioSeats2013.2023`$=0.000+1.005\,\times$`RatioP
 If we make the scatterplot for the `US` dataset, we can see the almost perfect (up to integer rounding) 1:1 relation between the ratios "state seats"/"total seats" and "state population"/"aggregated population". We can set the scatterplot to automatically label the `'25'` most different points (select the numeric box with the mouse and type `'25'` -- the arrow buttons are limited to `'10'`) with their case names. As it is seen in Figure \@ref(fig:ratios), there is no state clearly over- or under-represented (Q2).
 
 ```{r, ratios, echo = FALSE, out.width = '90%', fig.asp = 1, results = 'hide', fig.align = 'center', fig.cap = 'The apportionment in the US House of Representatives compared with a linear fit.'}
-scatterplot(RatioSeats2013.2023 ~ RatioPopulation2010, reg.line = lm, smooth = FALSE, spread = FALSE, id.method = 'mahal', 
-            id.n = 25, id.cex = 0.75, boxplots = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9), 
-            main = "Approportionment in the US House of Representatives", pch = c(16), cex = 0.75, data = US)
+scatterplot(RatioSeats2013.2023 ~ RatioPopulation2010, reg.line = lm, smooth = FALSE, 
+            spread = FALSE, id.method = 'mahal', id.n = 25, id.cex = 0.75, 
+            boxplots = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9), 
+            main = "Approportionment in the US House of Representatives", pch = c(16), 
+            cex = 0.75, data = US)
 ```
 
 Let's switch to the `EU` dataset, for which we will focus on the 2011 variables. A quick way of visualizing this dataset and, in general, of **visualizing multivariate data** (up to a moderate number of dimensions) is to use a *matrix scatterplot*. Essentially, it displays the scatterplots between all the pairs of variables. To do it, go to `'Graphs' -> 'Scatterplot matrix...'` and select the number of variables to be displayed. If you select them as in Figures \@ref(fig:mscatter1a) and \@ref(fig:mscatter1b), you should get an output like Figure \@ref(fig:mscatter2). 
@@ -250,9 +254,10 @@ The scatterplot matrix has a central panel displaying one-variable summary plots
 The most interesting panels in Figure \@ref(fig:mscatter2) for our study are `CamCom2011` vs `Population2010` -- panel (1,2) -- and `Seats2011` vs `Population2010` -- panel (3,2). At first sight, it seems that the Cambridge Compromise was favoring a fairer allocation of seats than what it was actually being used in the EU parliament in 2011 (recall the step-wise patterns in (3,2)). Let's explore in depth the scatterplot `Seats2011` vs `Population2010`.
 
 ```{r, echo = FALSE, results = 'hide', out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = '`Seats2011` vs `Population2010` in the `EU` dataset.'}
-scatterplot(Seats2011 ~ Population2010, reg.line = lm, smooth = FALSE, spread = FALSE, id.method = 'mahal', 
-            id.n = 25, id.cex = 0.75, boxplots = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9), 
-            main = "Approportionment in the EU parliament in 2011", pch = c(16), cex = 0.75, data = EU)
+scatterplot(Seats2011 ~ Population2010, reg.line = lm, smooth = FALSE, spread = FALSE, 
+            id.method = 'mahal', id.n = 25, id.cex = 0.75, boxplots = FALSE, span = 0.5, 
+            ellipse = FALSE, levels = c(.5, .9), main = "Approportionment in the EU 
+            parliament in 2011", pch = c(16), cex = 0.75, data = EU)
 ```
 
 There are some countries clearly detrimented and benefited by this apportionment. For example, France and Spain are under-represented and, on the other hand, Germany, Hungary and Czech Republic are over-represented (Q2). 
