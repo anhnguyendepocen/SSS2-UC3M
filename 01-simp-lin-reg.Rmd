@@ -220,7 +220,7 @@ Let's fit a regression line to the `US` data, with `RatioSeats2013.2023` as the 
 appUS <- lm(RatioSeats2013.2023 ~ RatioPopulation2010, data = US)
 summary(appUS)
 ```
-The fitted regression line is `RatioSeats2013.2023`$=0.000+1.005\,\times$`RatioPopulation2010` and has an $R^2=0.9991$ (`'Multiple R-squared'`), which means that the data is almost perfectly linearly distributed. Furthermore, the *intercept coefficient is not significant*. This is seen in the column `'Pr(>|t|)'`, which gives the $p$-values for the null hypotheses $H_0:\beta_0=0$ and $H_0:\beta_1=0$, respectively. The null hypothesis $H_0:\beta_0=0$ is *not rejected* ($p$-value$=0.407$; non-significant) whereas $H_0:\beta_1=0$ is rejected ($p$-value$=0$; significant)^[We will be able to say more about how these test are performed after Section \@ref(inference).]. Hence, we can conclude that the appropriation of seats in the US House of Representatives is indeed directly proportional to the population of each state (partially answers Q1).
+The fitted regression line is `RatioSeats2013.2023`$=0.000+1.005\,\times$`RatioPopulation2010` and has an $R^2=0.9991$ (`'Multiple R-squared'`), which means that the data is almost perfectly linearly distributed. Furthermore, the *intercept coefficient is not significant*. This is seen in the column `'Pr(>|t|)'`, which gives the $p$-values for the null hypotheses $H_0:\beta_0=0$ and $H_0:\beta_1=0$, respectively. The null hypothesis $H_0:\beta_0=0$ is *not rejected* ($p\text{-value}=0.407$; non-significant) whereas $H_0:\beta_1=0$ is rejected ($p\text{-value}=0$; significant)^[We will be able to say more about how these test are performed after Section \@ref(inference).]. Hence, we can conclude that the appropriation of seats in the US House of Representatives is indeed directly proportional to the population of each state (partially answers Q1).
 
 If we make the scatterplot for the `US` dataset, we can see the almost perfect (up to integer rounding) 1:1 relation between the ratios "state seats"/"total seats" and "state population"/"aggregated population". We can set the scatterplot to automatically label the `'25'` most different points (select the numeric box with the mouse and type `'25'` -- the arrow buttons are limited to `'10'`) with their case names. As it is seen in Figure \@ref(fig:ratios), there is no state clearly over- or under-represented (Q2).
 
@@ -754,7 +754,7 @@ Adapt the code conveniently for doing the same checking with
 Why do we need assumptions? To make **inference** on the model parameters. In other words, to infer properties about a the *unknown* population coefficients $\beta_0$ and $\beta_1$ from the sample $(X_1,Y_1),\ldots,(X_n,Y_n)$.
 
 ```{r, linearmodel, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The key concepts of the linear model.'}
-knitr::include_graphics("images/linearmodel.png")
+knitr::include_graphics("images/R/linearmodel.png")
 ```
 
 The assumptions of the linear model are:
@@ -780,11 +780,11 @@ Recall:
 Figures \@ref(fig:linearmodelgood) and \@ref(fig:linearmodelbad) represent situations where the assumptions of the model are respected and violated, respectively. For the moment, we will focus on building the intuition for checking the assumptions visually. In the next chapter we will see more sophisticated detection methods and the alternatives to their failure.
 
 ```{r, linearmodelgood, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Perfectly valid linear models (all the assumptions are verified).'}
-knitr::include_graphics("images/linearmodelgood.png")
+knitr::include_graphics("images/R/linearmodelgood.png")
 ```
 
 ```{r, linearmodelbad, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Problematic linear models (a single assumption does not hold).'}
-knitr::include_graphics("images/linearmodelbad.png")
+knitr::include_graphics("images/R/linearmodelbad.png")
 ```
 
 ```{block, type = 'rmdexercise'}
@@ -796,9 +796,11 @@ The dataset `assumptions.RData` ([download](https://raw.githubusercontent.com/eg
 
 ## Inference for the model coefficients {#inference}
 
-The assumptions introduced in the previous section allow to specify what is the distribution of the *random variables* $\hat\beta_0$ and $\hat\beta_1$. 
+The assumptions introduced in the previous section allow to specify what is the distribution of the *random variables* $\hat\beta_0$ and $\hat\beta_1$. As we will see, this is a key point for making inference on $\beta_0$ and $\beta_1$.
 
-These distributions are derived conditionally on the sample predictors $X_1,\ldots,X_n$. In other words, we assume that the randomness of $Y_i=\beta_0+\beta_1X_i+\varepsilon_i$, $i=1,\ldots,n$, comes only from the error terms and not from the predictors. To denote this, we employ lowercase for the sample predictors $x_1,\ldots,x_n$.
+The distributions are derived conditionally on the sample predictors $X_1,\ldots,X_n$. In other words, we assume that the randomness of $Y_i=\beta_0+\beta_1X_i+\varepsilon_i$, $i=1,\ldots,n$, comes only from the error terms and not from the predictors. To denote this, we employ lowercase for the sample predictors $x_1,\ldots,x_n$.
+
+### Distributions of the fitted coefficients
 
 The distributions of $\hat\beta_0$ and $\hat\beta_1$ are:
 \begin{equation}
@@ -813,7 +815,7 @@ $$
 \frac{\hat\beta_0-\beta_0}{\mathrm{SE}(\hat\beta_0)}\sim\mathcal{N}(0,1),\quad\frac{\hat\beta_1-\beta_1}{\mathrm{SE}(\hat\beta_1)}\sim\mathcal{N}(0,1).
 $$
 
-Some important remarks on (\@ref(eq:norm1)--\@ref(eq:se1)) are
+Some important remarks on (\@ref(eq:norm1)) and (\@ref(eq:se1)) are
 
 - **Bias**. Both estimates are unbiased. That means that their expectations are the true coefficients.
 - **Variance**. The variances $\mathrm{SE}(\hat\beta_0)^2$ and $\mathrm{SE}(\hat\beta_1)^2$ have an interesting interpretation:
@@ -824,55 +826,74 @@ Some important remarks on (\@ref(eq:norm1)--\@ref(eq:se1)) are
     - *Mean $\bar X$*. It has influence only on the precision of $\hat\beta_0$. The larger $\bar X$ is, the less precise $\hat\beta_0$ is.
 
 
-```{r, randomcoefs, echo = FALSE, fig.cap = 'Illustration of the randomness of the fitted coefficients $(\\hat\\beta_0,\\hat\\beta_1)$ and the influence of $n$, $\\sigma^2$ and  $S_x^2$. The sample predictors $x_1,\\ldots,x_n$ are fixed and new responses $Y_1,\\ldots,Y_n$ are generated each time from a linear model $Y=\\beta_0+\\beta_1X+\\varepsilon$. ', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+```{r, randomcoefs, echo = FALSE, fig.cap = 'Illustration of the randomness of the fitted coefficients $(\\hat\\beta_0,\\hat\\beta_1)$ and the influence of $n$, $\\sigma^2$ and  $S_x^2$. The sample predictors $x_1,\\ldots,x_n$ are fixed and new responses $Y_1,\\ldots,Y_n$ are generated each time from a linear model $Y=\\beta_0+\\beta_1X+\\varepsilon$.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
 knitr::include_app('https://egarpor.shinyapps.io/lm-random/', height = '1000px')
 ```
 
-The problem with (\@ref(eq:norm1)) and (\@ref(eq:se1)) is that $\sigma^2$ is unknown in practice! We need to estimate $\sigma^2$ from the data, and we can do it by computing the variance of the fitted residuals:
+The problem with (\@ref(eq:norm1)) and (\@ref(eq:se1)) is that *$\sigma^2$ is unknown* in practice, so we need to estimate $\sigma^2$ from the data. We do so by computing the *sample variance of the fitted residuals* $\hat\varepsilon_1,\ldots,\hat\varepsilon_n$. First note that the fitted residuals have zero mean, as it can be easily seen:
+\begin{equation}
+\bar\varepsilon =\frac{1}{n}\sum_{i=1}^n(Y_i-\hat\beta_0-\hat\beta_1X_i)=\frac{1}{n}\sum_{i=1}^n(Y_i-\bar Y+\hat\beta_1\bar X-\hat\beta_1X_i)=0.
+\end{equation}
+Due to this, we can and we can do it by computing a *rescaled* sample variance of the fitted residuals:
 $$
 \hat\sigma^2=\frac{\sum_{i=1}^n\hat\varepsilon_i^2}{n-2}.
 $$
-Why the $n-2$ in the denominator? These are called the *degrees of freedom* and is the number of data points minus the number of already fitted parameters. We have "spent" $2$ parameters on fitting $\hat\beta_0$ and $\hat\beta_1$.
+Note the $n-2$ in the denominator, instead of $n$! $n-2$ are the *degrees of freedom* and is the number of data points minus the number of already fitted parameters. The interpretation is that "we have consumed $2$ degrees of freedom of the sample on fitting $\hat\beta_0$ and $\hat\beta_1$".
 
-If we use the estimate $\hat\sigma^2$ instead of $\sigma^2$, we get different (and more useful) distributions for $\beta_0$ and $\beta_1$:
+If we use the estimate $\hat\sigma^2$ instead of $\sigma^2$, we get different -- and more useful -- distributions for $\beta_0$ and $\beta_1$:
 \begin{equation}
 \frac{\hat\beta_0-\beta_0}{\hat{\mathrm{SE}}(\hat\beta_0)}\sim t_{n-2},\quad\frac{\hat\beta_1-\beta_1}{\hat{\mathrm{SE}}(\hat\beta_1)}\sim t_{n-2}\label{eq:norm3}
 \end{equation}
-where $t_{n-2}$ represents the *Student's $t$ distribution*^[The Student's $t$ distribution converges to a $\mathcal{N}(0,1)$ when $n$ is large. With $n$ larger than $30$ the normal is a good approximation.] with $n-2$ degrees of freedom and
+where $t_{n-2}$ represents the *Student's $t$ distribution*^[The Student's $t$ distribution has *heavier tails* than the normal, which means that large observations in absolute value are more likely. $t_n$ converges to a $\mathcal{N}(0,1)$ when $n$ is large. For example, with $n$ larger than $30$, the normal is a good approximation.] with $n-2$ degrees of freedom and
 \begin{equation}
-\hat{\mathrm{SE}}(\hat\beta_0)^2=\frac{\hat\sigma^2}{n}\left[1+\frac{\bar X^2}{S_x^2}\right],\quad \hat{\mathrm{SE}}(\hat\beta_1)^2=\frac{\hat\sigma^2}{nS_x^2}.\label{eq:se2}
+\hat{\mathrm{SE}}(\hat\beta_0)^2=\frac{\hat\sigma^2}{n}\left[1+\frac{\bar X^2}{S_x^2}\right],\quad \hat{\mathrm{SE}}(\hat\beta_1)^2=\frac{\hat\sigma^2}{nS_x^2}\label{eq:se2}
 \end{equation}
-The LHSs of \@ref(eq:norm3) are called *$t$-statistics*.
+are the estimates of $\mathrm{SE}(\hat\beta_0)^2$ and $\mathrm{SE}(\hat\beta_1)^2$. The LHSs of (\@ref(eq:norm3)) are called *$t$-statistics* because of their distribution.
 
-Thanks to this, we can have the $100(1-\alpha)$ Confidence Intervals (CI) for the coefficients:
-$$
-\left(\hat\beta_j-\hat{\mathrm{SE}}(\hat\beta_j)t_{n-2;\alpha/2},\hat\beta_j+\hat{\mathrm{SE}}(\hat\beta_j)t_{n-2;\alpha/2}\right),\quad j=0,1,
-$$
-where $t_{n-2;\alpha/2}$ is the *$\alpha/2$-upper quantile of the distribution $t_{n-2}$* (see Figure \@ref(fig:ttest)). Usually $\alpha=0.05$ is selected. The interpretation of this CI is that *it will contain the unknown coefficient $\beta_j$ with a probability of $100(1-\alpha)$*. A simple way of understanding this concept is as follows. Suppose you have 100 samples generated according to the same linear model. If you compute the CI for a coefficient, then in approximately $100(1-\alpha)$ of them the true coefficient would be actually inside it.
+### Confidence intervals for the coefficients
 
-```{r, ttest, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The Student\'s $t$ distribution for the $t$-statistics associated to null intercept and slope, for the `y1 ~ x1` regression.'}
-knitr::include_graphics("images/ttest.png")
+Due to (\@ref(eq:norm3)) and (\@ref(eq:se2)), we can have the $100(1-\alpha)\%$ Confidence Intervals (CI) for the coefficients:
+\begin{equation}
+\left(\hat\beta_j-\hat{\mathrm{SE}}(\hat\beta_j)t_{n-2;\alpha/2},\hat\beta_j+\hat{\mathrm{SE}}(\hat\beta_j)t_{n-2;\alpha/2}\right),\quad j=0,1,\label{eq:ci}
+\end{equation}
+where $t_{n-2;\alpha/2}$ is the *$\alpha/2$-upper quantile of the distribution $t_{n-2}$* (see Figure \@ref(fig:ttest)). Usually, $\alpha=0.10,0.05,0.01$ are considered.
+
+```{r, ttest, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The Student\'s $t$ distribution for the $t$-statistics associated to null intercept and slope, for the `y1 ~ x1` regression of the `assumptions` dataset.'}
+knitr::include_graphics("images/R/ttest.png")
 ```
 
-> Do you need to remember these formulas? **No, but you need to understand them.** `R` + `R Commander` will compute everything for you through the functions `lm`, `summary` and `confint`.
+```{block, type = 'rmdtip'}
+Do you need to remember the above equations? **No, althought you need to fully understand them.** `R` + `R Commander` will compute everything for you through the functions `lm`, `summary` and `confint`.
+```
 
-For example, in the `assumptions` dataset we can compute the CIs for $\beta_0$ and $\beta_1$ of the first model very easily. Assuming you have loaded the dataset, in `R` we can simply type:
+This *random* CI *contains the unknown coefficient $\beta_j$ with a probability of $1-\alpha$*. A simple way of understanding this concept is as follows. Suppose you have 100 samples generated according to a linear model. If you compute the CI for a coefficient, then in approximately $100(1-\alpha)$ of the samples the true coefficient would be actually inside the random CI. This is illustrated in Figure \@ref(fig:ci).
+
+```{r, ci, echo = FALSE, fig.cap = 'Illustration of the randomness of the CI for $\\beta_0$ at $100(1-\\alpha)\\%$ confidence. The plot shows 100 rndom CIs for $\\beta_0$, computed from 100 random datasets generated by the same linear model, with intercept $\\beta_0$. The illustration for $\\beta_1$ is completely analogous.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+knitr::include_app('https://egarpor.shinyapps.io/ci-random/', height = '900px')
+```
+
+Let's see how we can compute the CIs for $\beta_0$ and $\beta_1$ in practice. We do it in the first regression of the `assumptions` dataset. Assuming you have loaded the dataset, in `R` we can simply type:
 ```{r, echo = FALSE}
 load("datasets/assumptions.RData")
 ```
-```{r}
+```{r, collapse = TRUE}
 mod1 <- lm(y1 ~ x1, data = assumptions)
 confint(mod1)
 ```
+In this example, the $95\%$ confidence interval for $\beta_0$ is $(-0.2256901, 0.1572392)$. For $\beta_1$ is $(-0.5587490, -0.2881032)$. Therefore, we can say that **with a $95\%$ confidence `x1` has a negative effect on `y1`**. If the CI for $\beta_1$ was $(-0.2256901, 0.1572392)$, we could not arrive to the same conclusion, since the CI contains both positive and negative numbers.
+
 By default, the confidence interval is computed for $\alpha=0.05$. You can change this on the `level` argument, for example:
-```{r}
+```{r, collapse = TRUE}
 confint(mod1, level = 0.90) # alpha = 0.10
 confint(mod1, level = 0.95) # alpha = 0.05
 confint(mod1, level = 0.99) # alpha = 0.01
 ```
-Note that the larger the confidence of the interval, the longer -- thus less useful -- it is! For example, the interval $(-\infty,\infty)$ contains any coefficient with a 100% confidence, but is completely useless.
 
-If you want to make the CIs though the help of `R Commander` (assuming the dataset has been loaded and is the active one), then do the following:
+```{block, type = 'rmdinsight'}
+Note that the larger the confidence of the interval, the longer -- thus less useful -- it is. For example, the interval $(-\infty,\infty)$ contains any coefficient with a 100% confidence, but is completely useless.
+```
+
+If you want to make the CIs through the help of `R Commander` (assuming the dataset has been loaded and is the active one), then do the following:
 
 1. Fit the linear model (`'Statistics' -> 'Fit models' -> 'Linear regression...'`).
 2. Go to `'Models' -> 'Confidence intervals...'` and then input the `'Condifence Level'`.
@@ -884,11 +905,12 @@ Compute the CIs for the coefficients for the coefficients of the regressions `y2
 ```{block, type = 'rmdexercise'}
 Compute the CIs for the coefficients of the following regressions:
 
-- `MathMean ~ ScienceMean` 
+- `MathMean ~ ScienceMean`. 
 - `MathMean ~ ReadingMean`
 - `Seats2013.2023 ~ Population2010`
-- `Seats2011 ~ Population2010`
 - `CamCom2011 ~ Population2010`
+
+For the above regressions, can we conclude with a $95\%$ confidence that the effect of the predictor is positive in the response?
 
 ```
 
@@ -896,7 +918,7 @@ A CI for $\sigma^2$ can be also computed, but is less important in practice. The
 $$
 \left(\frac{\hat\sigma^2}{n-2}\chi^2_{n-2;\alpha/2},\frac{\hat\sigma^2}{n-2}\chi^2_{n-2;1-\alpha/2}\right)
 $$
-where $\chi^2_{n-2;q}$ is the $q$-upper quantiles of the *$\chi^2$ distribution* with $n-2$ degrees of freedom, $\chi^2_{n-2}$.
+where $\chi^2_{n-2;q}$ is the $q$-upper quantiles of the *$\chi^2$ distribution*^[$\chi_n^2$ is the distribution of the sum of the squares of $n$ random variables $\mathcal{N}(0,1)$.] with $n-2$ degrees of freedom, $\chi^2_{n-2}$.
 
 ```{block, type = 'rmdexercise'}
 Compute the CI for $\sigma^2$ for the regression of `MathMean` on `logGDPp` in the `pisa` dataset. To compute $\chi^2_{n-2;q}$, you can do:
@@ -905,48 +927,94 @@ Compute the CI for $\sigma^2$ for the regression of `MathMean` on `logGDPp` in t
 - In `R Commander`, go to `'Distributions' -> 'Continuous distributions' -> 'Chi-squared distribution' -> 'Chi-squared quantiles'` and then select `'Upper tail'`. Input $q$ as the `'Probabilities'` and $n-2$ as the `'Degrees of freedom'`.
 ```
 
-<!--
-The CIs are a powerful tool to see what are the effects of $\beta_1$ despite the randomness of the data. It is also important  if 
+### Testing on the coefficients
 
-$j=0,1$
-
+The distributions in (\@ref(eq:norm3)) also allow to conduct a formal *hypothesis test* on the coefficients $\beta_j$, $j=0,1$. For example the test for *significance* (shortcut for *significantly difference from zero*) is specially important, that is, the test of the hypotheses
 $$
-H_0:\beta_j=0\quad \text{vs}\quad H_1:\beta_j\neq 0.
+H_0:\beta_j=0
 $$
+for $j=0,1$. The test of $H_0:\beta_1=0$ is specially interesting, since it allows to answer whether *the variable $X$ has a significant linear effect on $Y$*. The statistic used for testing for significance is the $t$-statistic
+$$
+\frac{\hat\beta_j}{\hat{\mathrm{SE}}(\hat\beta_j)},
+$$
+which is distributed as a $t_{n-2}$ *under the (veracity of) the null hypothesis*. 
 
-We have:
-
-- A null hypothesis $H_0:\beta_j=0$
-- The $t$-statistics
-- The distribution of the $t$-statistics if $H_0$ was true
-
--->
-Remember the analogy of hypothesis testing vs a trial:
+```{block, type = 'rmdinsight'}
+Remember the analogy of hypothesis testing vs a trial, as given in the table below.
+```
 
 |         Hypothesis testing       |                      Trial                        |
 |----------------------------------|---------------------------------------------------|
-| Null hypothesis $H_0$ | Accused with the crime of being FALSE. It has the "presumption of innocence", which means that it is *not guilty* until there is enough evidence to supporting its guilt |
-| Statistic $T_n$ | Prosecutor and defense lawyer. They present evidences supporting innocence and guilt  |
-| Distribution of $T_n$ under $H_0$ | The judge conducting the trial. Evaluates the evidence presented by both sides and presents a verdict for $H_0$  | 
-| Significance level $\alpha$ | 1-$\alpha$ is the strength of evidences required by the judge in order to condemn $H_0$. The judge will allow evidences that condemn $100\times\alpha$ of the innocents. $\alpha=0.05$ is considered a reasonable level |
-| $p$-value | Decision of the judge. If $p$-value$<\alpha$, $H_0$ is declared guilty. Otherwise, is declared not guilty |
-| $H_0$ is rejected | $H_0$ is declared guilty: there are strong evidences supporting the crime |
-| $H_0$ is not rejected | $H_0$ is declared not guilty: it is innocent or there are no enough evidences supporting its crime |
+| Null hypothesis $H_0$ | **Accused of comitting a crime**. It has the "presumption of innocence", which means that it is *not guilty* until there is enough evidence to supporting its guilt |
+| Sample $X_1,\ldots,X_n$ | Collection of small **evidences supporting innocence and guilt**  |
+| Statistic $T_n$ | **Summary of the evicences presented** by the prosecutor and defense lawyer   |
+| Distribution of $T_n$ under $H_0$ | The **judge** conducting the trial. Evaluates the evidence presented by both sides and presents a verdict for $H_0$  | 
+| Significance level $\alpha$ | $1-\alpha$ is the **strength of evidences required by the judge for condemning $H_0$**. The judge allows evidences that on average condemn $100\alpha\%$ of the innocents! $\alpha=0.05$ is considered a reasonable level |
+| $p$-value | **Decision** of the judge. If $p\text{-value}<\alpha$, $H_0$ is declared guilty. Otherwise, is declared not guilty |
+| $H_0$ is rejected | $H_0$ is declared guilty: there are **strong evidences supporting its guilt** |
+| $H_0$ is not rejected | $H_0$ is declared not guilty: either is **innocent or there are no enough evidences supporting its guilt** |
+
+More formally, the $p$-value is defined as:
 
 > The $p$-value is the probability of obtaining a statistic more unfavourable to $H_0$ than the observed, assuming that $H_0$ is true.
 
+Therefore, **if the $p$-value is small** (smaller than the chosen level $\alpha$), **it is unlikely that the evidence against $H_0$ is due to randomness. As a consequence, $H_0$ is rejected**. If the $p$-value is large (larger than $\alpha$), then it is more possible that the evidences against $H_0$ are merely due to the randomness of the data. In this case, we do not reject $H_0$.
+
+The null hypothesis $H_0$ is tested *against* the *alternative hypothesis*, $H_1$. If $H_0$ is rejected, it is *rejected in favor* of $H_1$. The alternative hypothesis can be *bilateral*, such as 
+$$
+H_0:\beta_j= 0\quad\text{vs}\quad H_1:\beta_j\neq 0
+$$
+or *unilateral*, such as
+$$
+H_0:\beta_j= 0\quad\text{vs}\quad H_1:\beta_j<0\quad(\text{or } H_1:\beta_j>0).
+$$
+For the moment, we will focus only on the bilateral case.
+
 ```{block, type = 'rmdinsight'}
-Graphical interpretation of the $t$-test for $H_0:\beta_j=0$ (at level $\alpha$).
+The connection of a $t$-test for $H_0:\beta_j=0$ and the CI for $\beta_j$, both at level $\alpha$, is the following.
 
-**If $0$ inside the CI for $\beta_j$ of level $\alpha$?**
+**Is $0$ inside the CI for $\beta_j$ of level $\alpha$?**
 
-- **Yes: do not reject $H_0$**.
-- **No: reject $H_0$**.
+- **Yes $\rightarrow$ do not reject $H_0$**. 
+- **No $\rightarrow$ reject $H_0$**.
+```
+
+The tests for significance are built-in in the `summary` function, as we glimpsed in Section \@ref(euus). For `mod1`, we have:
+```{r, collapse = TRUE}
+summary(mod1)
+```
+The `Coefficients` block of the output of `summary` contains the next elements regarding the test $H_0:\beta_j=0$ vs $H_1:\beta_j\neq0$:
+
+- `Estimate`: least squares estimate $\hat\beta_j$.
+- `Std. Error`: estimated standard error $\hat{\mathrm{SE}}(\hat\beta_j)$.
+- `t value`: $t$-statistic $\frac{\hat\beta_j}{\hat{\mathrm{SE}}(\hat\beta_j)}$.
+- `Pr(>|t|)`: $p$-value of the $t$-test.
+- `Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1`: codes indicating the size of the $p$-value. The more stars, the more evidence supporting that $H_0$ does not hold.
+
+In the above output for `summary(mod1)`, $H_0:\beta_0=0$ is not rejected at any reasonable level for $\alpha$ (that is, $0.10$,$0.05$ and $0.01$). Hence $\beta_0$ is not significant. On the other hand, $H_0:\beta_1=0$ is rejected at any level $\alpha$ larger than the $p$-value, `3.77e-09`. Therefore, it is significant.
+
+```{block, type = 'rmdexercise'}
+- Check that: 
+    * The intercept of `y7 ~ x7` is not significant at any reasonable level $\alpha$.
+    * The slope is significant for any $\alpha>10^{-7}$.
+  
+- Assume the linear model assumptions were verified for `y6 ~ x6`. 
+    * Check that $\beta_0$ is significantly different from zero at any level
+$\alpha$. 
+    * For which $\alpha=0.10,0.05,0.01$ is $\beta_1$ significant?
+  
+- Re-analyse the significance of the coefficients in `Seats2013.2023 ~ Population2010` and `Seats2011 ~ Population2010` for the `US` and `EU` datasets, respectively.
 ```
 
 ## Prediction of the mean and individual
 
+`predict`
+
 ## Assesing model fit and ANOVA {#fit}
+
+$R^2$
+
+`anova`
 
 ## Nonlinear relationships
 
