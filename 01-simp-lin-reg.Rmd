@@ -129,9 +129,8 @@ We are going to do the following. First, import the data into `R Commander` and 
         ```{r, out.width = '90%', fig.asp = 1, fig.align = 'center', results = 'hide'}
         scatterplot(MathMean ~ logGDPp, reg.line = lm, smooth = FALSE, spread = FALSE, 
                     id.method = 'mahal', id.n = 65, id.cex = 0.75, boxplots = FALSE, 
-                    span = 0.5, ellipse = FALSE, levels = c(.5, .9), 
-                    main = "Average Math score vs. logGDPp", pch = c(16), cex = 0.75,
-                    data = pisa)
+                    span = 0.5, ellipse = FALSE, levels = c(.5, .9), main = "Average 
+                    Math score vs. logGDPp", pch = c(16), cex = 0.75, data = pisa)
         ```
     
 If you understood the previous analysis, then you should be able to perform the next ones on your own.
