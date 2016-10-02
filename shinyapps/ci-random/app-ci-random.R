@@ -1,5 +1,5 @@
 #
-# Shiny web application for illustrating the Confidence Interval (CI) fot the
+# Shiny web application for illustrating the Confidence Interval (CI) for the
 # intercept in the linear model, when the error variance is unkwnown
 #
 
