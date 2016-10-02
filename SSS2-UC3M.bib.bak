@@ -50,6 +50,7 @@
   Pages                    = {1-4},
   Volume                   = {38},
 
+  Doi                      = {10.1109/JPROC.1998.658762},
   Owner                    = {Eduardo},
   Timestamp                = {2016.09.25}
 }
@@ -113,6 +114,7 @@
   Pages                    = {573-578},
   Volume                   = {100},
 
+  Doi                      = {10.1257/aer.100.2.573},
   Publisher                = {American Economic Association}
 }
 
@@ -129,7 +131,7 @@ the ggplot2 Package},
 @Electronic{WB,
   Title                    = {GDP per capita},
   Author                   = {The World Bank, World Development Indicators},
-  Note                     = {Retrieved from http://data.worldbank.org/indicator/NY.GDP.PCAP.CD},
+  Url                      = {http://data.worldbank.org/indicator/NY.GDP.PCAP.CD},
   Year                     = {2012},
 
   Owner                    = {Eduardo},
