@@ -47,7 +47,7 @@
   Journal                  = {Electronics},
   Year                     = {1965},
   Number                   = {8},
-  Pages                    = {4},
+  Pages                    = {1-4},
   Volume                   = {38},
 
   Owner                    = {Eduardo},
@@ -89,6 +89,31 @@
   Year                     = {2015},
 
   Url                      = {https://www.R-project.org/}
+}
+
+@TechReport{Reinhart2010a,
+  Title                    = {Growth in a Time of Debt},
+  Author                   = {Carmen M. Reinhart and Kenneth S. Rogoff},
+  Institution              = {National Bureau of Economic Research},
+  Year                     = {2010},
+  Month                    = {January},
+  Number                   = {15639},
+  Type                     = {Working Paper},
+
+  Doi                      = {10.3386/w15639},
+  Series                   = {Working Paper Series}
+}
+
+@Article{Reinhart2010b,
+  Title                    = {Growth in a Time of Debt},
+  Author                   = {Reinhart, Carmen M. and Rogoff, Kenneth S.},
+  Journal                  = {The American Economic Review},
+  Year                     = {2010},
+  Number                   = {2},
+  Pages                    = {573-578},
+  Volume                   = {100},
+
+  Publisher                = {American Economic Association}
 }
 
 @Manual{R-KMggplot2,
