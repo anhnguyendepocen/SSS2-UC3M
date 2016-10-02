@@ -683,13 +683,13 @@ $$
 
 It can be seen that *the minimizers of the RSS*^[They are unique and always exist. They can be obtained by solving $\frac{\partial}{\partial \beta_0}\text{RSS}(\beta_0,\beta_1)=0$ and $\frac{\partial}{\partial \beta_1}\text{RSS}(\beta_0,\beta_1)=0$.] are
 \begin{equation}
-\hat\beta_0=\bar{Y}-\hat\beta_1\bar{X},\quad \hat\beta_1=\frac{S_{xy}}{S_x^2},\label{eq:3}
+\hat\beta_0=\bar{Y}-\hat\beta_1\bar{X},\quad \hat\beta_1=\frac{s_{xy}}{s_x^2},\label{eq:3}
 \end{equation}
 where:
 
 - $\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$ is the *sample mean*.
-- $S_x^2=\frac{1}{n}\sum_{i=1}^n(X_i-\bar{X})^2$ is the *sample variance*. The sample standard deviation is $S_x=\sqrt{S_x^2}$.
-- $S_{xy}=\frac{1}{n}\sum_{i=1}^n(X_i-\bar{X})(Y_i-\bar{Y})$ is the *sample covariance*. It measures the degree of linear association between $X_1,\ldots,X_n$ and $Y_1,\ldots,Y_n$. Once scaled by $S_xS_y$, it gives the *sample correlation coefficient*, $r=\frac{S_{xy}}{S_xS_y}$.
+- $s_x^2=\frac{1}{n}\sum_{i=1}^n(X_i-\bar{X})^2$ is the *sample variance*. The sample standard deviation is $s_x=\sqrt{s_x^2}$.
+- $s_{xy}=\frac{1}{n}\sum_{i=1}^n(X_i-\bar{X})(Y_i-\bar{Y})$ is the *sample covariance*. It measures the degree of linear association between $X_1,\ldots,X_n$ and $Y_1,\ldots,Y_n$. Once scaled by $s_xs_y$, it gives the *sample correlation coefficient*, $r=\frac{s_{xy}}{s_xs_y}$.
 
 There are some important points hidden behind the election of RSS as the error criterion for obtaining $(\hat\beta_0,\hat\beta_1)$:
 
@@ -768,7 +768,7 @@ Adapt the code conveniently for doing the same checking with
 - $X=$`Population2010` and $Y=$`Seats2011` from the `EU` dataset. 
 ```
 
-## Assumptions of the model
+## Assumptions of the model {#assumptions}
 
 Why do we need assumptions? To make **inference** on the model parameters. In other words, to infer properties about a the *unknown* population coefficients $\beta_0$ and $\beta_1$ from the sample $(X_1,Y_1),\ldots,(X_n,Y_n)$.
 
@@ -827,7 +827,7 @@ The distributions of $\hat\beta_0$ and $\hat\beta_1$ are:
 \end{equation}
 where
 \begin{equation}
-\mathrm{SE}(\hat\beta_0)^2=\frac{\sigma^2}{n}\left[1+\frac{\bar X^2}{S_x^2}\right],\quad \mathrm{SE}(\hat\beta_1)^2=\frac{\sigma^2}{nS_x^2}.\label{eq:se1}
+\mathrm{SE}(\hat\beta_0)^2=\frac{\sigma^2}{n}\left[1+\frac{\bar X^2}{s_x^2}\right],\quad \mathrm{SE}(\hat\beta_1)^2=\frac{\sigma^2}{ns_x^2}.\label{eq:se1}
 \end{equation}
 Recall that an equivalent form for (\@ref(eq:norm1)) is (why?)
 $$
@@ -840,16 +840,16 @@ Some important remarks on (\@ref(eq:norm1)) and (\@ref(eq:se1)) are
 - **Variance**. The variances $\mathrm{SE}(\hat\beta_0)^2$ and $\mathrm{SE}(\hat\beta_1)^2$ have an interesting interpretation:
 
     - *Sample size $n$*. As the sample size grows, the precision of the estimators increases, since both variances decrease.
-    - *Error variance $\sigma^2$*. The more disperse the $Y$'s are, the less precise are the estimates are.
-    - *Predictor variance $S_x^2$*. If the predictor is spread out (large $S_x^2$), then it is easier to "anchor" the slope. 
+    - *Error variance $\sigma^2$*. The more disperse $Y$ is, the less precise the estimates are.
+    - *Predictor variance $s_x^2$*. If the predictor is spread out (large $s_x^2$), then it is easier to "anchor" the slope. 
     - *Mean $\bar X$*. It has influence only on the precision of $\hat\beta_0$. The larger $\bar X$ is, the less precise $\hat\beta_0$ is.
 
 
-```{r, randomcoefs, echo = FALSE, fig.cap = 'Illustration of the randomness of the fitted coefficients $(\\hat\\beta_0,\\hat\\beta_1)$ and the influence of $n$, $\\sigma^2$ and  $S_x^2$. The sample predictors $x_1,\\ldots,x_n$ are fixed and new responses $Y_1,\\ldots,Y_n$ are generated each time from a linear model $Y=\\beta_0+\\beta_1X+\\varepsilon$.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+```{r, randomcoefs, echo = FALSE, fig.cap = 'Illustration of the randomness of the fitted coefficients $(\\hat\\beta_0,\\hat\\beta_1)$ and the influence of $n$, $\\sigma^2$ and  $s_x^2$. The sample predictors $x_1,\\ldots,x_n$ are fixed and new responses $Y_1,\\ldots,Y_n$ are generated each time from a linear model $Y=\\beta_0+\\beta_1X+\\varepsilon$.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
 knitr::include_app('https://egarpor.shinyapps.io/lm-random/', height = '1000px')
 ```
 
-The problem with (\@ref(eq:norm1)) and (\@ref(eq:se1)) is that *$\sigma^2$ is unknown* in practice, so we need to estimate $\sigma^2$ from the data. We do so by computing the *sample variance of the fitted residuals* $\hat\varepsilon_1,\ldots,\hat\varepsilon_n$. First note that the fitted residuals have zero mean, as it can be easily seen:
+The problem with (\@ref(eq:norm1)) and (\@ref(eq:se1)) is that *$\sigma^2$ is unknown* in practice, so we need to estimate $\sigma^2$ from the data. We do so by computing the *sample variance of the fitted residuals* $\hat\varepsilon_1,\ldots,\hat\varepsilon_n$. First note that *the fitted residuals have zero mean*. This can be easily seen by plugging-in the expressions for $\hat\beta_0$ and $\hat\beta_1$:
 \begin{equation}
 \bar\varepsilon =\frac{1}{n}\sum_{i=1}^n(Y_i-\hat\beta_0-\hat\beta_1X_i)=\frac{1}{n}\sum_{i=1}^n(Y_i-\bar Y+\hat\beta_1\bar X-\hat\beta_1X_i)=0.
 \end{equation}
@@ -865,7 +865,7 @@ If we use the estimate $\hat\sigma^2$ instead of $\sigma^2$, we get different --
 \end{equation}
 where $t_{n-2}$ represents the *Student's $t$ distribution*^[The Student's $t$ distribution has *heavier tails* than the normal, which means that large observations in absolute value are more likely. $t_n$ converges to a $\mathcal{N}(0,1)$ when $n$ is large. For example, with $n$ larger than $30$, the normal is a good approximation.] with $n-2$ degrees of freedom and
 \begin{equation}
-\hat{\mathrm{SE}}(\hat\beta_0)^2=\frac{\hat\sigma^2}{n}\left[1+\frac{\bar X^2}{S_x^2}\right],\quad \hat{\mathrm{SE}}(\hat\beta_1)^2=\frac{\hat\sigma^2}{nS_x^2}\label{eq:se2}
+\hat{\mathrm{SE}}(\hat\beta_0)^2=\frac{\hat\sigma^2}{n}\left[1+\frac{\bar X^2}{s_x^2}\right],\quad \hat{\mathrm{SE}}(\hat\beta_1)^2=\frac{\hat\sigma^2}{ns_x^2}\label{eq:se2}
 \end{equation}
 are the estimates of $\mathrm{SE}(\hat\beta_0)^2$ and $\mathrm{SE}(\hat\beta_1)^2$. The LHSs of (\@ref(eq:norm3)) are called *$t$-statistics* because of their distribution.
 
@@ -873,7 +873,7 @@ are the estimates of $\mathrm{SE}(\hat\beta_0)^2$ and $\mathrm{SE}(\hat\beta_1)^
 
 Due to (\@ref(eq:norm3)) and (\@ref(eq:se2)), we can have the $100(1-\alpha)\%$ Confidence Intervals (CI) for the coefficients:
 \begin{equation}
-\left(\hat\beta_j-\hat{\mathrm{SE}}(\hat\beta_j)t_{n-2;\alpha/2},\hat\beta_j+\hat{\mathrm{SE}}(\hat\beta_j)t_{n-2;\alpha/2}\right),\quad j=0,1,\label{eq:ci}
+\left(\hat\beta_j\pm\hat{\mathrm{SE}}(\hat\beta_j)t_{n-2;\alpha/2}\right),\quad j=0,1,\label{eq:ci}
 \end{equation}
 where $t_{n-2;\alpha/2}$ is the *$\alpha/2$-upper quantile of the distribution $t_{n-2}$* (see Figure \@ref(fig:ttest)). Usually, $\alpha=0.10,0.05,0.01$ are considered.
 
@@ -885,7 +885,7 @@ knitr::include_graphics("images/R/ttest.png")
 Do you need to remember the above equations? **No, althought you need to fully understand them.** `R` + `R Commander` will compute everything for you through the functions `lm`, `summary` and `confint`.
 ```
 
-This *random* CI *contains the unknown coefficient $\beta_j$ with a probability of $1-\alpha$*. A simple way of understanding this concept is as follows. Suppose you have 100 samples generated according to a linear model. If you compute the CI for a coefficient, then in approximately $100(1-\alpha)$ of the samples the true coefficient would be actually inside the random CI. This is illustrated in Figure \@ref(fig:ci).
+This *random* CI *contains the unknown coefficient $\beta_j$ with a probability of $1-\alpha$*. Note also that the CI is symmetric around $\hat\beta_j$. A simple way of understanding this concept is as follows. Suppose you have 100 samples generated according to a linear model. If you compute the CI for a coefficient, then in approximately $100(1-\alpha)$ of the samples the true coefficient would be actually inside the random CI. This is illustrated in Figure \@ref(fig:ci).
 
 ```{r, ci, echo = FALSE, fig.cap = 'Illustration of the randomness of the CI for $\\beta_0$ at $100(1-\\alpha)\\%$ confidence. The plot shows 100 rndom CIs for $\\beta_0$, computed from 100 random datasets generated by the same linear model, with intercept $\\beta_0$. The illustration for $\\beta_1$ is completely analogous.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
 knitr::include_app('https://egarpor.shinyapps.io/ci-random/', height = '900px')
@@ -935,15 +935,21 @@ For the above regressions, can we conclude with a $95\%$ confidence that the eff
 
 A CI for $\sigma^2$ can be also computed, but is less important in practice. The formula is:
 $$
-\left(\frac{\hat\sigma^2}{n-2}\chi^2_{n-2;\alpha/2},\frac{\hat\sigma^2}{n-2}\chi^2_{n-2;1-\alpha/2}\right)
+\left(\frac{n-2}{\chi^2_{n-2;\alpha/2}}\hat\sigma^2,\frac{n-2}{\chi^2_{n-2;1-\alpha/2}}\hat\sigma^2\right)
 $$
-where $\chi^2_{n-2;q}$ is the $q$-upper quantiles of the *$\chi^2$ distribution*^[$\chi_n^2$ is the distribution of the sum of the squares of $n$ random variables $\mathcal{N}(0,1)$.] with $n-2$ degrees of freedom, $\chi^2_{n-2}$.
+where $\chi^2_{n-2;q}$ is the $q$-upper quantile of the *$\chi^2$ distribution*^[$\chi_n^2$ is the distribution of the sum of the squares of $n$ random variables $\mathcal{N}(0,1)$.] with $n-2$ degrees of freedom, $\chi^2_{n-2}$. Note that the CI is *not symmetric* around $\hat\sigma^2$.
 
 ```{block, type = 'rmdexercise'}
-Compute the CI for $\sigma^2$ for the regression of `MathMean` on `logGDPp` in the `pisa` dataset. To compute $\chi^2_{n-2;q}$, you can do:
+Compute the CI for $\sigma^2$ for the regression of `MathMean` on `logGDPp` in the `pisa` dataset. Do it for $\alpha=0.10,0.05,0.01$. 
 
-- In `R` by `qchisq(p = q, df = n - 2, lower.tail = FALSE)`.
-- In `R Commander`, go to `'Distributions' -> 'Continuous distributions' -> 'Chi-squared distribution' -> 'Chi-squared quantiles'` and then select `'Upper tail'`. Input $q$ as the `'Probabilities'` and $n-2$ as the `'Degrees of freedom'`.
+- To compute $\chi^2_{n-2;q}$, you can do:
+
+  - In `R` by `qchisq(p = q, df = n - 2, lower.tail = FALSE)`.
+  - In `R Commander`, go to `'Distributions' -> 'Continuous distributions' -> 'Chi-squared distribution' -> 'Chi-squared quantiles'` and then select `'Upper tail'`. Input $q$ as the `'Probabilities'` and $n-2$ as the `'Degrees of freedom'`.
+
+- To compute $\hat\sigma^2$, use `summary(lm(MathMean ~ logGDPp, data = pisa))$sigma^2`. Remember that there are 65 countries in the study.
+
+Answers: `c(1720.669, 3104.512)`, `c(1635.441, 3306.257)` and `c(1484.639, 3752.946)`.
 ```
 
 ### Testing on the coefficients
@@ -1029,15 +1035,259 @@ $\alpha$.
 Re-analyse the significance of the coefficients in `Seats2013.2023 ~ Population2010` and `Seats2011 ~ Population2010` for the `US` and `EU` datasets, respectively.
 ```
 
-## Prediction of the mean and individual
+## Prediction of new observations {#prediction}
 
-`predict`
+The forecast of $Y$ from $X=x$ in the linear model is approached by two different approaches:
 
-## Assesing model fit and ANOVA {#fit}
+1. Inference on the **conditional mean** of $Y$ given $X=x$, $\mathbb{E}[Y|X=x]$. This is a deterministic quantity, which equals $\beta_0+\beta_1x$ in the linear model.
+2. Prediction of the **conditional response** $Y|X=x$. This is a random variable, which in the linear model is distributed as $\mathcal{N}(\beta_0+\beta_1x,\sigma^2)$.
 
-$R^2$
+Let's study first the inference on the conditional mean. $\beta_0+\beta_1x$ is estimated by $\hat y=\hat\beta_0+\hat\beta_1x$. Then, is a *deterministic quantity estimated by a random variable*. Moreover, it can be shown that the $100(1-\alpha)\%$ CI for $\beta_0+\beta_1x$ is
+\begin{equation}
+\left(\hat y \pm t_{n-2:\alpha/2}\sqrt{\frac{\hat\sigma^2}{n}\left(1+\frac{(x-\bar x)^2}{s_x^2}\right)}\right).\label{eq:ci1}
+\end{equation}
+Some important remarks on (\@ref(eq:ci1)) are:
 
-`anova`
+- **Bias**. The CI is centered around $\hat y=\hat\beta_0+\hat\beta_1x$, which obviously depends on $x$.
+
+- **Variance**. The variance that determines the length of the CI is $\frac{\hat\sigma^2}{n}\left(1+\frac{(x-\bar x)^2}{s_x^2}\right)$. Its interpretation is very similar to the one given for $\hat\beta_0$ and $\hat\beta_1$ in Section \@ref(inference):
+
+    - *Sample size $n$*. As the sample size grows, the length of the CI decreases, since theestimates $\hat\beta_0$ and $\hat\beta_1$ become more precise.
+    - *Error variance $\sigma^2$*. The more disperse $Y$ is, the less precise $\hat\beta_0$ and $\hat\beta_1$ are, hence the more variance on estimating $\beta_0+\beta_1x$.
+    - *Predictor variance $s_x^2$*. If the predictor is spread out (large $s_x^2$), then it is easier to "anchor" the regression line. This helps on reducing the variance, but up to a **certain limit**: there is a variance component purely dependent on the error!
+    - *Centrality $(x-\bar x)^2$*. The more extreme $x$ is, the wider the CI becomes. This is due to the "leverage" of the slope estimate $\hat\beta_1$: a small deviation from the true $\beta_1$ is magnified when $x$ is far away from $\bar x$, hence the more variability in these points. The minimum is achieved with $x=\bar x$, but it does not correspond to zero variance.
+
+Figure \@ref(fig:cipred) helps visualizing these concepts interactively.
+
+```{r, cipred, echo = FALSE, fig.cap = 'Illustration of the CIs for the conditional mean and response. Note how the length of the CIs is influenced by $x$, specially for the conditional mean.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+knitr::include_app('https://egarpor.shinyapps.io/ci-pred/', height = '1000px')
+```
+
+The prediction and computation of CIs can be done with the `R` function `predict`. The objects required for `predict` are: first, the output of `lm`; second, a `data.frame` containing the locations $x$ where we want to predict $\beta_0+\beta_1x$. To illustrate the use of `predict`, we are going to use the `pisa` dataset. In case you do not have it loaded, you can download it [here](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/pisa.RData) as a `.RData` file.
+
+```{r, echo = FALSE, warning = FALSE}
+pisa <- read.csv(file = "datasets/pisa.csv", header = TRUE)
+library(car)
+```
+
+```{r, collapse = TRUE}
+# Plot the data and the regression line (alternatively, using R Commander)
+scatterplot(MathMean ~ ReadingMean, data = pisa, smooth = FALSE)
+
+# Fit a linear model (alternatively, using R Commander)
+model <- lm(MathMean ~ ReadingMean, data = pisa)
+summary(model)
+
+# Data for which we want a prediction for the mean
+# Important! You have to name the column with the predictor name!
+newData <- data.frame(ReadingMean = 400)
+
+# Prediction 
+predict(model, newdata = newData)
+
+# Prediction with 95% confidence interval (the default)
+# CI: (lwr, upr)
+predict(model, newdata = newData, interval = "confidence")
+predict(model, newdata = newData, interval = "confidence", level = 0.95)
+
+# Other levels
+predict(model, newdata = newData, interval = "confidence", level = 0.90)
+predict(model, newdata = newData, interval = "confidence", level = 0.99)
+
+# Predictions for several values
+summary(pisa$ReadingMean)
+newData2 <- data.frame(ReadingMean = c(400, 450, 500, 550))
+predict(model, newdata = newData2, interval = "confidence")
+```
+
+```{block, type = 'rmdexercise'}
+For the `pisa` dataset, do the following:
+
+- Regress `MathMean` on `logGDPp` excluding Shanghai-China, Vietnam and Qatar (use `subset = -c(1, 16, 62)`). Name the fitted model `modExercise`.
+- Show the scatterplot with regression line (use `subset = -c(1, 16, 62)`).
+- Compute the estimate for the conditional mean of `MathMean` for a `logGDPp` of $10.263$ (Spain's). What is the CI at $\alpha=0.05$?
+- Do the same with the `logGDPp` of Sweden, Denmark, Italy and United States.
+- Check that `modExercise\$fitted.values` is the same as `predict(modExercise, newdata = data.frame(logGDPp = pisa$logGDPp))` (except for the three countries omitted). Why is so?
+```
+
+Let's study now the prediction of the conditional response $Y|X$. $Y|X$ is predicted by $\hat y=\hat\beta_0+\hat\beta_1x$ (the estimated conditional mean). So we estimate the unknown response $Y|X$ simply by its conditional mean. This is clearly a different situation: now we **estimate a random variable by another random variable**. As a consequence, there is a price to pay in terms of extra variability, and this is reflected in the $100(1-\alpha)\%$ CI for $Y|X$:
+\begin{equation}
+\left(\hat y \pm t_{n-2:\alpha/2}\sqrt{\hat\sigma^2+\frac{\hat\sigma^2}{n}\left(1+\frac{(x-\bar x)^2}{s_x^2}\right)}\right)\label{eq:ci2}
+\end{equation}
+The CI (\@ref(eq:ci2)) is very similar to (\@ref(eq:ci1)), but there is a key difference: it is always longer due to the extra term $\hat\sigma^2$. In Figure \@ref(fig:cipred) you can visualize the differences between both CIs.
+
+```{block, type = 'rmdinsight'}
+Similarities and differences in the prediction of the conditional mean $\mathbb{E}[Y|X=x]$ and conditional response $Y|X=x$:
+
+- *Similarities*. The estimate is the same, $\hat y=\hat\beta_0+\hat\beta_1x$. Both CI are centered in $\hat y$ and share the term $\frac{\hat\sigma^2}{n}\left(1+\frac{(x-\bar x)^2}{s_x^2}\right)$ in the variance.
+- *Differences*. $\mathbb{E}[Y|X=x]$ is deterministic and $Y|X=x$ is random. Therefore, the variance is larger for the prediction of $Y|X=x$: there is an extra $\hat\sigma^2$ term in the variance of its prediction.
+```
+
+The prediction and computation of CIs can be done with the R function predict. The objects required for predict are: first, the output of lm; second, a data.frame containing the locations  x
+  where we want to predict  β0+β1x
+ . To illustrate the use of predict, we are going to use the pisa dataset. In case you do not have it loaded, you can download it here as a .RData file.
+
+
+The prediction of a new observation can be done via the function `predict`, which also provides confidence intervals. 
+```{r, collapse = TRUE}
+# Prediction with 95% confidence interval (the default) CI: (lwr, upr)
+predict(model, newdata = newData, interval = "prediction")
+
+# Other levels
+predict(model, newdata = newData, interval = "prediction", level = 0.90)
+predict(model, newdata = newData, interval = "prediction", level = 0.99)
+
+# Predictions for several values
+predict(model, newdata = newData2, interval = "prediction")
+
+# Comparison with the mean CI
+predict(model, newdata = newData2, interval = "confidence")
+predict(model, newdata = newData2, interval = "prediction")
+```
+
+```{block, type = 'rmdexercise'}
+Redo the third and fourth points of the previous exercise with CIs for the conditional response. In addition, check if the `MathMean` scores of Sweden, Denmark, Vietnam and Qatar are inside or outside the prediction CIs.
+```
+
+## ANOVA and model fit {#fit}
+
+As we have seen in Sections \@ref(inference) and \@ref(prediction), the variance of the error, $\sigma^2$, plays a fundamental role in the inference for the model coefficients and prediction. In this section we will see how the variance of $Y$ is decomposed into a part twat corresponds to the regression and another that corresponds to the error. This decomposition is called the *Analysis of variance* (ANOVA). 
+
+Before entering explaining ANOVA, is important to recall an interesting result: *the mean of the fitted values $\hat Y_1,\ldots,\hat Y_n$ is the mean of $Y_1,\ldots, Y_n$*. This is easily seen if we plug-in the expressions of $\hat\beta_0$ and $\hat\beta_1$:
+$$
+\frac{1}{n}\sum_{i=1}^n \hat Y_i=\frac{1}{n}\sum_{i=1}^n \left(\hat \beta_0+\hat\beta_1X_i\right)=\hat \beta_0+\hat\beta_1\bar X=\left(\bar Y - \hat\beta_1\bar X \right) + \hat\beta_1\bar X=\bar Y.
+$$
+The ANOVA decomposition considers the following measures of variation related with the response:
+
+- $\text{SST}=\sum_{i=1}^n\left(Y_i-\bar Y\right)^2$, the **total sum of squares**. This is the *total variation* of $Y_1,\ldots,Y_n$, since $\text{SST}=ns_y^2$, where $s_y^2$ is the sample variance of $Y_1,\ldots,Y_n$.
+- $\text{SSR}=\sum_{i=1}^n\left(\hat Y_i-\bar Y\right)^2$, the **regression sum of squares**. This is the variation explained by the regression line, that is, *the variation from $\bar Y$ that is explained by the conditional mean $\hat\beta_0+\hat\beta_1X_i$*. $\text{SSR}=ns_{\hat y}^2$, where $s_{\hat y}^2$ is the sample variance of $\hat Y_1,\ldots,\hat Y_n$.
+- $\text{SSE}=\sum_{i=1}^n\left(Y_i-\hat Y_i\right)^2$, the **sum of squared errors**. Is the variation around the conditional mean. Recall that $\text{SSE}=\sum_{i=1}^n \hat\varepsilon_i^2=ns_{\hat \varepsilon}^2$, where $s_{\hat \varepsilon}^2$ is the sample variance of $\hat \varepsilon_1,\ldots,\hat \varepsilon_n$. 
+
+The ANOVA decomposition is
+$$
+\text{SST} = \text{SSR} + \text{SSE}
+$$
+and its graphical interpretation is in Figure \@ref(fig:anova).
+
+```{r, anova, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Visualization of the ANOVA decomposition. SST measures the variation of $Y_1,\\ldots,Y_n$ with respect to $\\bar Y$. SST measures the variation with respect to the conditional means, $\\hat \\beta_0+\\hat\\beta_1X_i$. SSE collects the variation of the residuals.', fig.show = 'hold'}
+knitr::include_graphics("images/R/anova.png")
+```
+
+The ANOVA table summarizes the decomoposition of the variance. Here is given  in the form used by `R`.
+
+|  | Degrees of freedom | Sum Squares | Mean Squares | $F$-value | $p$-value |
+|--|------------|--------|---------|----------------|----------------|
+| Predictor | $1$ | SSR | $\frac{\text{SSR}}{1}$ | $\frac{\text{SSR}/1}{\text{SSE}/(n-2)}$ | $p$ |
+| Residuals | $n - 2$ | SSE | $\frac{\text{SSE}}{n-2}$ | | |
+
+The `anova` function in `R` takes a model as an input and returns the ANOVA table. In `R Commander`, the ANOVA table can be computed by going to `'Models' -> 'Hypothesis tests' -> 'ANOVA table...'`. In the `'Type of Tests'` option, select `'Sequential ("Type I")'`. (This types `anova()` for you...)
+
+```{r, collapse = TRUE}
+# Fit a linear model (alternatively, using R Commander)
+model <- lm(MathMean ~ ReadingMean, data = pisa)
+summary(model)
+
+# ANOVA table
+anova(model)
+```
+
+The "$F$-value" of the ANOVA table represents the value of the $F$-statistic $\frac{\text{SSR}/1}{\text{SSE}/(n-2)}$. This statistic is employed to test 
+$$
+H_0:\beta_1=0\quad\text{vs.}\quad H_1:\beta_1\neq 0,
+$$
+that is, the hypothesis of no linear dependence of $Y$ on $X$. The result of this test is completely equivalent to the $t$-test that we saw in Section \@ref(inference) (but it will have a different meaning in the next chapter). Under $H_0$,
+$$
+F=\frac{\text{SSR}/1}{\text{SSE}/(n-2)}\stackrel{H_0}{\sim} F_{1,n-2},
+$$
+where $F_{1,n-2}$ is the *Snedecor's $F$ distribution*^[The $F_{n,m}$ distribution arises as the quotient of two independent random variables $\chi^2_n$ and $\chi^2_m$, $\frac{\chi^2_n/n}{\chi^2_m/m}$.] with $1$ and $n-2$ degrees of freedom. The $p$-value of this test is the same as the $p$-value of the $t$-test for $H_0:\beta_1=0$.
+
+Recall that the $F$-statistic, its $p$-value and dgerees of freedom are given in the output of `summary`.
+
+```{block, type = 'rmdexercise'}
+For the `y6 ~ x6` and `y7 ~ x7` in the `assumptions` dataset, compute their ANOVA tables. Check that the $p$-values of the $t$-test for $\beta_1$ and the $F$-test are the same.
+```
+
+The *coefficient of determination* $R^2$ is closely related with the ANOVA decomposition. $R^2$ is defined as
+$$
+R^2=\frac{\text{SSR}}{\text{SST}}=\frac{\text{SSR}}{\text{SSR}+\text{SSE}}=\frac{\text{SSR}}{\text{SSR}+(n-2)\hat\sigma^2}
+$$
+$R^2$ measures the **proportion of variation** of the response variable $Y$ that is **explained** by the predictor $X$ through the regression. The proportion of total variation of $Y$ that is not explained is $1-R^2=\frac{\text{SSE}}{\text{SST}}$. Intuitively, $R^2$ measures the **tightness of the data cloud around the regression line**, since is related directly with $\hat\sigma^2$.
+
+The $R^2$ is related with the sample *correlation coefficient*
+$$
+r_{xy}=\frac{s_{xy}}{s_xs_y}=\frac{\sum_{i=1}^n \left(X_i-\bar X \right)\left(Y_i-\bar Y \right)}{\sqrt{\sum_{i=1}^n \left(X_i-\bar X \right)^2\sum_{i=1}^n \left(Y_i-\bar Y \right)^2}}
+$$
+and it can be seen that $R^2=r_{xy}^2$. Interestingly, it also holds that $R^2=r^2_{y\hat y}=\frac{s_{y\hat y}}{s_ys_{\hat y}}$, that is, *the square of the sample correlation coefficient between $Y_1,\ldots,Y_n$ and $\hat Y_1,\ldots,\hat Y_n$ is $R^2$*, a fact that is not inmediately evident. This fact can be visualized with the next code.
+
+```{r}
+# Responses generated following a linear model
+set.seed(343567) # Fixes seed, allows to generate the same random data
+x <- rnorm(50)
+eps <- rnorm(50)
+y <- -1 + 2 * x + eps
+
+# Regression model
+reg <- lm(y ~ x)
+yHat <- reg$fitted.values
+
+# Plots
+par(mfrow = c(1, 2)) # Display plots in 1 row and 2 columns
+scatterplot(y ~ x, smooth = FALSE)
+scatterplot(y ~ yHat, smooth = FALSE)
+```
+
+```{block, type = 'rmdinsight'}
+$R^2$ does not measure the correctness of a linear model but its **usefulness** (for prediction, for *explaining the variance* of $Y$), assuming the model is correct.
+```
+For example, the following code shows two models equally valid, but with different $R^2$. The first gives more accurate predictions since the error variance is lower.
+```{r}
+# Fixed design
+x <- seq(0, 1, l = 50)
+
+# Errors with different variance
+set.seed(123456)
+eps1 <- rnorm(50, sd = 0.1)
+eps2 <- rnorm(50, sd = 1)
+
+# Responses generated following a linear model
+y1 <- 1 + 2 * x + eps1
+y2 <- 1 + 2 * x + eps2
+
+# Fits
+reg1 <- lm(y1 ~ x)
+reg2 <- lm(y2 ~ x)
+
+# R^2 depends on the error variance!
+summary(reg1)
+summary(reg2)
+
+# Plot
+scatterplot(y1 ~ x, smooth = FALSE)
+scatterplot(y2 ~ x, smooth = FALSE)
+```
+
+```{block, type = 'rmdinsight'}
+A large $R^2$ means *nothing* if the **assumptions of the model do not hold**.
+```
+
+Here is a counterexample of a linear regression done in a dataset that clearly does not satisfy the assumptions discussed in Section \@ref(assumptions), but despite so it has a large $R^2$.
+```{r}
+# Create data that: 
+# 1) does not follow a linear model
+# 2) the error is heteroskedastic
+x <- seq(0.15, 1, l = 100)
+set.seed(123456)
+eps3 <- rnorm(n = 100, sd = 0.25 * x^2)
+y3 <- 1 - 2 * x * (1 + 0.25 * sin(4 * pi * x)) + eps3
+
+# Great R^2!?
+reg3 <- lm(y3 ~ x)
+summary(reg3)
+
+# But prediction is obviously problematic
+scatterplot(y3 ~ x, smooth = FALSE)
+```
+
 
 ## Nonlinear relationships
 
@@ -1162,8 +1412,190 @@ Some hints:
 - `y2 ~ x2` has a negative dependence, so look at the left panel of the transformations figure.
 - `y3 ~ x3` seems to have just a subtle nonlinearity...
 - For `y9 ~ x9`, try with also with `exp(-abs(x))`, `log(abs(x))` and `2^abs(x)`. (`abs()` computes the absolute value.)
- 
 ```
 
 ## Exercises and case studies
 
+### Data importation
+
+<!--
+```{block, type = 'rmdexercise'}
+Import the following datasets into `R Commander` indicating the right formatting options:
+
+- [`data1.txt`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/data1.txt)
+- [`data2.csv`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/data2.csv)
+- [`data3.txt`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/data3.txt)
+- [`data4.xlsx`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/data4.xlsx)
+- [`data5.RData`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/data5.RData)
+- [`data6.txt`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/data6.txt)
+- [`data7.csv`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/data7.csv)
+- [`data8.RData`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/data8.RData)
+- [`data9.xlsx`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/data9.xlsx)
+- [`data10.txt`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/data10.txt)
+
+Create the file `datasets.RData` containing all the datasets.
+```    
+-->
+
+### Data management
+
+<!--
+Perform the following data management operations:
+
+- Load `datasets.RData`.
+- Establish the case names in `data1.txt` as the variable ``.
+- Establish the case names in `data7.csv` as the variable ``.
+- Create a new variable
+- Delete a row
+- Delete a variable
+- Add a new row
+- Set the observation
+- Set the observation     
+- Create a single `.RData` file saving all the modified datasets.
+- Load `datasets.RData`.
+-->
+
+### Computing a linear regression
+
+<!--
+Compute the linear regression for:
+
+- Compute the regression line for
+- Scatterplot
+- 
+- 
+--->
+
+### `R` basics
+
+<!---
+- Explain in your own words what is the operator `<-` doing.
+- Create the vectors $x = (1.17, 0.41, 0.34, 1.11, 1.02, 0.22, -0.24, -0.27, -0.40, -1.38)$ and $y = (3.63, 1.69, 0.27, 5.83, 2.64, 1.33, 1.22 -0.62, 1.29, -0.43)$. 
+- Set the positions 3, 4 and 8 of $x$ to 0. Set the positions 1, 4, 9 of $y$ to 0.5, -0.75, 0.3, -0.2.
+- Create a new vector $z$ containing $\log(x^2) - y^3*\sqrt(\exp(x))$
+- Create the vector $1, 4, 9, 16, 25, \ldots, 100$
+- Matrix1
+- Matrix2
+- data.frame
+- functions
+- 
+- 
+- 
+- lm
+- summary
+- Obtain the $R^2$
+- Check that $R^2$ is the same as $r_{xy}$ and $r_{}$
+- Which are the most overrepresented countries? Which are the least?
+- States
+- 
+-->
+
+### Model formulation
+
+<!--
+```{block, type = 'rmdexercise'}
+Answer the following conceptual questions:
+
+- Explain in your own words what is the difference between $(\beta_0,\beta_1)$ and $(\hat\beta_0,\hat\beta_1)$.
+- Is $\hat\beta_0$ a random variable? What about $\hat\beta_1$? Justify your answer.
+- What function are the least squares estimates minimizing? 
+```
+-->
+
+### Estimation
+
+### Assumptions of the linear model
+
+<!--
+```{block, type = 'rmdexercise'}
+The dataset `moreAssumptions.RData` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/moreAssumptions.RData)) contains the variables `x1`, ..., `x10` and `y1`, ..., `y10`. For each regression `y1 ~ x1`, ..., `y10 ~ x10` describe whether the assumptions of the linear model are being satisfied or not. Justify your answer and state which assumption(s) are violated. 
+```
+-->
+
+### Inference
+
+### Prediction
+
+### ANOVA and model fit
+
+### Nonlinear relations
+
+<!---
+Quadratic, exponential, square-root or logarithmic trend?
+-->
+
+### Case study: *Moore's law *
+
+*Moore's law* [@Moore1965] is an empirical law that states that the power of a computer doubles approximately every two years. More precisely:
+
+> Moore's law is the observation that the number of transistors in a dense integrated circuit [e.g. a CPU] doubles approximately every two years. 
+>
+> --- Wikipedia article on [Moore's law](https://en.wikipedia.org/wiki/Moore%27s_law)
+
+Translated into a mathematical formula, Moore's law is
+$$
+\text{transistors}\approx 2^{\text{years}/2}.
+$$
+Applying logarithms to both sides gives
+$$
+\log(\text{transistors})\approx \frac{\log(2)}{2}\text{years},
+$$
+or, more generally,
+$$
+\log(\text{transistors})=\beta_0+\beta_1 \text{years}+\varepsilon.
+$$
+```{block, type = 'rmdexercise'}
+The dataset `cpus.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/cpus.txt)) contains the transistor counts for the CPUs appeared in the time range 1971--2015. For this data, do the following:
+
+- Import conveniently the data and name it as `cpus`.
+- Show a scatterplot of `Transistor.count` vs `Date.of.introduction` with a linear regression.
+- Are the assumptions verified in `Transistor.count ~ Date.of.introduction`? Which ones are which are more "problematic"?
+- Create a new variable, named `Log.Transistor.count`, containing the logarithm of `Transistor.count`.
+- Show a scatterplot of `Log.Transistor.count` vs `Date.of.introduction`  with a linear regression.
+- Are the assumptions verified in `Log.Transistor.count ~ Date.of.introduction`? Which ones are which are more "problematic"?
+- Regress `Log.Transistor.count ~ Date.of.introduction`.
+- Summarize the fit. What are the estimates $\hat\beta_0$ and $\hat\beta_1$? Is $\hat\beta_1$ close to $\frac{\log(2)}{2}$? 
+- Compute the CI for $\beta_1$ at $\alpha=0.05$. Is $\frac{\log(2)}{2}$ inside it? What happens at levels $\alpha=0.10,0.01$?
+- We want to forecast the average log-number of transistors for the CPUs to be released in 2017. Compute the adequate prediction and CI.
+- A new CPU design is expected for 2017. What is the range of log-number of transistors expected for it, at a 95% level of confidence?
+- Compute the ANOVA table for `Log.Transistor.count ~ Date.of.introduction`. Is $\beta_1$ significative?
+```
+
+```{block, type = 'rmdexercise'}
+The dataset `gpus.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/gpus.txt)) contains the transistor counts for the GPUs appeared in the period 1997--2016. Repeat the previous analysis for this dataset.
+```
+
+### Case study: *Growth in a time of debt*
+
+<!--
+The paper *Growth in a time of debt* (@Reinhart2010a, @Reinhart2010b). You can read the story at [BBC](http://www.bbc.com/news/magazine-22223190),
+[The New Yor Times](http://www.nytimes.com/2013/04/19/opinion/krugman-the-excel-depression.html) and 
+[The Economist](http://www.economist.com/news/finance-and-economics/21576362-seminal-analysis-relationship-between-debt-and-growth-comes-under). Also, this [CNN interview to Paul Krugman](https://www.youtube.com/watch?v=3xj338ACri8) summarizes the key point (minutes 1:16 to 1:40).
+
+
+We study economic growth and inflation at different levels of government and external debt. Our analysis is based on new data on forty-four countries spanning about two hundred years. The dataset incorporates over 3,700 annual observations covering a wide range of political systems, institutions, exchange rate arrangements, and historic circumstances. Our main findings are: First, the relationship between government debt and real GDP growth is weak for debt/GDP ratios below a threshold of 90 percent of GDP. Above 90 percent, median growth rates fall by one percent, and average growth falls considerably more. We find that the threshold for public debt is similar in advanced and emerging economies. Second, emerging markets face lower thresholds for external debt (public and private)--which is usually denominated in a foreign currency. When external debt reaches 60 percent of GDP, annual growth declines by about two percent; for higher levels, growth rates are roughly cut in half. Third, there is no apparent contemporaneous link between inflation and public debt levels for the advanced countries as a group (some countries, such as the United States, have experienced higher inflation when debt/GDP is high.) The story is entirely different for emerging markets, where inflation rises sharply as debt increases.
+
+
+We replicate Reinhart and Rogoff (2010A and 2010B) and find that selective exclusion of available data, coding errors and inappropriate weighting of summary statistics lead to serious miscalculations that inaccurately represent the relationship between public debt and GDP growth among 20 advanced economies. Over 1946–2009, countries with public debt/GDP ratios above 90% averaged 2.2% real annual GDP growth, not −0.1% as published. The published results for (i) median GDP growth rates for the 1946–2009 period and (ii) mean and median GDP growth figures over 1790–2009 are all distorted by similar methodological errors, although the magnitudes of the distortions are somewhat smaller than with the mean figures for 1946–2009. Contrary to Reinhart and Rogoff’s broader contentions, both mean and median GDP growth when public debt levels exceed 90% of GDP are not dramatically different from when the public debt/GDP ratios are lower. The relationship between public debt and GDP growth varies significantly by period and country. Our overall evidence refutes RR’s claim that public debt/GDP ratios above 90% consistently reduce a country’s GDP growth.
+
+
+
+
+The data is available [here](http://www.peri.umass.edu/236/hash/31e2ff374b6377b2ddec04deaa6388b1/publication/566/)
+@Herndon2013
+
+```{block, type = 'rmdexercise'}
+Do:
+- Import the data
+- Compute and plot a linear regression
+- 
+```
+-->
+
+### Case study
+
+<!-- : a marketing plan -->
+
+### Case study
+
+<!-- : food spenditure vs income -->
