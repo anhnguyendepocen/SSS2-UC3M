@@ -31,10 +31,20 @@
   Url                      = {http://www.europarl.europa.eu/thinktank/en/document.html?reference=IPOL-AFCO_NT(2011)432760}
 }
 
+@Article{Herndon2013,
+  Title                    = {Does high public debt consistently stifle economic growth? A critique of {R}einhart and {R}ogoff},
+  Author                   = {Herndon, Thomas and Ash, Michael and Pollin, Robert},
+  Journal                  = {Cambridge Journal of Economics},
+  Year                     = {2013},
+
+  Doi                      = {10.1093/cje/bet075},
+  Eprint                   = {http://cje.oxfordjournals.org/content/early/2013/12/17/cje.bet075.full.pdf+html}
+}
+
 @Article{Moore1965,
   Title                    = {Cramming more components onto integrated circuits},
   Author                   = {Moore, Gordon E.},
-  Journal                  = {Electronics Magazine},
+  Journal                  = {Electronics},
   Year                     = {1965},
   Number                   = {8},
   Pages                    = {4},
