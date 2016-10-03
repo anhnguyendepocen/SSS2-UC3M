@@ -164,7 +164,7 @@ We know that there exist qualitative dissimilarities between both chambers, but 
 
 Let's begin by reading the data:
 
-1. The `US_apportionment.xlsx` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/US_apportionment.xlsx)) contains the 50 US states entitled to representation. The variables are `State`, `Population2010` (from the last census) and `Seats2013–2023`. This is an Excel file that we can read using `'Data' -> 'Import data' -> 'from Excel file...'`. A window will pop-up, asking for the right options. We set them as in Figure \@ref(fig:excel), since we want the variable `State` to be the case names. After clicking in `'View dataset'`, the data should look like Figure \@ref(fig:US).
+1. The `US-apportionment.xlsx` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/US-apportionment.xlsx)) contains the 50 US states entitled to representation. The variables are `State`, `Population2010` (from the last census) and `Seats2013–2023`. This is an Excel file that we can read using `'Data' -> 'Import data' -> 'from Excel file...'`. A window will pop-up, asking for the right options. We set them as in Figure \@ref(fig:excel), since we want the variable `State` to be the case names. After clicking in `'View dataset'`, the data should look like Figure \@ref(fig:US).
 
     ```{r, excel, echo = FALSE, out.width = '45%', fig.align = 'center', fig.cap = 'Importation of an Excel file.'}
     knitr::include_graphics("images/screenshots/excel.png")
@@ -174,7 +174,7 @@ Let's begin by reading the data:
     knitr::include_graphics("images/screenshots/US.png")
     ```
 
-2. The `EU_apportionment.txt` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/EU_apportionment.txt)) contains 28 rows with the member states of the EU (`Country`), the number of seats assigned under different years (`Seats2011`, `Seats2014`), the Cambridge Compromise apportionment (`CamCom2011`), and the countries population^[According to [EuroStat](http://ec.europa.eu/eurostat/tgm/table.do?tab=table&init=1&language=en&pcode=tps00001) and the population stated in the Cambridge Compromise report.] (`Population2010`,`Population2013`). 
+2. The `EU-apportionment.txt` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/EU-apportionment.txt)) contains 28 rows with the member states of the EU (`Country`), the number of seats assigned under different years (`Seats2011`, `Seats2014`), the Cambridge Compromise apportionment (`CamCom2011`), and the countries population^[According to [EuroStat](http://ec.europa.eu/eurostat/tgm/table.do?tab=table&init=1&language=en&pcode=tps00001) and the population stated in the Cambridge Compromise report.] (`Population2010`,`Population2013`). 
 
     ```{block, type = 'rmdexercise'}
     For this file, you should know how to:
@@ -185,8 +185,8 @@ Let's begin by reading the data:
     ```
     
     ```{r, EU, echo = FALSE}
-    US <- RcmdrMisc::readXL("datasets/US_apportionment.xlsx", rownames = TRUE, header = TRUE, na = "", sheet = "Hoja1", stringsAsFactors = TRUE)
-    EU <- read.table("datasets/EU_apportionment.txt", header = TRUE, na = "-", sep = "\t")
+    US <- RcmdrMisc::readXL("datasets/US-apportionment.xlsx", rownames = TRUE, header = TRUE, na = "", sheet = "Hoja1", stringsAsFactors = TRUE)
+    EU <- read.table("datasets/EU-apportionment.txt", header = TRUE, na = "-", sep = "\t")
     row.names(EU) <- EU$Country
     EU$Country <- NULL
     knitr::kable(
@@ -960,7 +960,7 @@ H_0:\beta_j=0
 $$
 for $j=0,1$. The test of $H_0:\beta_1=0$ is specially interesting, since it allows to answer whether *the variable $X$ has a significant linear effect on $Y$*. The statistic used for testing for significance is the $t$-statistic
 $$
-\frac{\hat\beta_j}{\hat{\mathrm{SE}}(\hat\beta_j)},
+\frac{\hat\beta_j-0}{\hat{\mathrm{SE}}(\hat\beta_j)},
 $$
 which is distributed as a $t_{n-2}$ *under the (veracity of) the null hypothesis*. 
 
@@ -1215,7 +1215,7 @@ $R^2$ measures the **proportion of variation** of the response variable $Y$ that
 
 The $R^2$ is related with the sample *correlation coefficient*
 $$
-r_{xy}=\frac{s_{xy}}{s_xs_y}=\frac{\sum_{i=1}^n \left(X_i-\bar X \right)\left(Y_i-\bar Y \right)}{\sqrt{\sum_{i=1}^n \left(X_i-\bar X \right)^2\sum_{i=1}^n \left(Y_i-\bar Y \right)^2}}
+r_{xy}=\frac{s_{xy}}{s_xs_y}=\frac{\sum_{i=1}^n \left(X_i-\bar X \right)\left(Y_i-\bar Y \right)}{\sqrt{\sum_{i=1}^n \left(X_i-\bar X \right)^2}\sqrt{\sum_{i=1}^n \left(Y_i-\bar Y \right)^2}}
 $$
 and it can be seen that $R^2=r_{xy}^2$. Interestingly, it also holds that $R^2=r^2_{y\hat y}=\frac{s_{y\hat y}}{s_ys_{\hat y}}$, that is, *the square of the sample correlation coefficient between $Y_1,\ldots,Y_n$ and $\hat Y_1,\ldots,\hat Y_n$ is $R^2$*, a fact that is not inmediately evident. This fact can be visualized with the next code.
 
@@ -1418,24 +1418,22 @@ Some hints:
 
 ### Data importation
 
-<!--
 ```{block, type = 'rmdexercise'}
 Import the following datasets into `R Commander` indicating the right formatting options:
 
-- [`data1.txt`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/data1.txt)
-- [`data2.csv`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/data2.csv)
-- [`data3.txt`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/data3.txt)
-- [`data4.xlsx`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/data4.xlsx)
-- [`data5.RData`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/data5.RData)
-- [`data6.txt`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/data6.txt)
-- [`data7.csv`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/data7.csv)
-- [`data8.RData`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/data8.RData)
-- [`data9.xlsx`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/data9.xlsx)
-- [`data10.txt`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/data10.txt)
+- [`iris.txt`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/iris.txt)
+- [`advertising.csv`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/advertising.csv)
+- [`auto.txt`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/auto.txt)
+- [`boston.xlsx`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/boston.xlsx)
+- [`anscombe.RData`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/anscombe.RData)
+- [`airquality.txt`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/airquality.txt)
+- [`wine.csv`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/wine.csv)
+- [`world-population.RData`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/world-population.RData)
+- [`la-liga-2015-2016.xlsx`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/la-liga-2015-2016.xlsx)
+- [`wdi-countries.txt`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/wdi-countries.txt)
 
 Create the file `datasets.RData` containing all the datasets.
-```    
--->
+```
 
 ### Data management
 
