@@ -663,9 +663,9 @@ Y = \beta_0 + \beta_1 X + \varepsilon \label{eq:1}
 \end{equation}
 holds between $X$ and $Y$. In (\@ref(eq:1)), $\beta_0$ and $\beta_1$ are known as the *intercept* and *slope*, respectively. $\varepsilon$ is a random variable with mean zero and independent from $X$. It describes the *error* around the mean, or the effect of other variables that we do not model. Another way of looking at (\@ref(eq:1)) is
 \begin{equation}
-\mathbb{E}(Y|X=x)=\beta_0+\beta_1x, \label{eq:2}
+\mathbb{E}[Y|X=x]=\beta_0+\beta_1x, \label{eq:2}
 \end{equation}
-since $\mathbb{E}(\varepsilon|X=x)=0$. 
+since $\mathbb{E}[\varepsilon|X=x]=0$. 
 
 The Left Hand Side (LHS) of (\@ref(eq:2)) is the *conditional expectation* of $Y$ given $X$. It represents how the mean of the random variable $Y$ is changing according to a particular value, denoted by $x$, of the random variable $X$. With the RHS, what we are saying is that the mean of $Y$ is changing in a *linear* fashion with respect to the value of $X$. Hence the interpretation of the coefficients:
 
@@ -778,10 +778,10 @@ knitr::include_graphics("images/R/linearmodel.png")
 
 The assumptions of the linear model are:
 
-i. **Linearity**: $\mathbb{E}(Y|X=x)=\beta_0+\beta_1x$.
+i. **Linearity**: $\mathbb{E}[Y|X=x]=\beta_0+\beta_1x$.
 ii. **Homocedasticity**: $\mathbb{V}\text{ar}(\varepsilon_i)=\sigma^2$, with $\sigma^2$ constant for $i=1,\ldots,n$.
 iii. **Normality**: $\varepsilon_i\sim\mathcal{N}(0,\sigma^2)$ for $i=1,\ldots,n$.
-iv. **Independence of the errors**: $\varepsilon_1,\ldots,\varepsilon_n$ are independent (or uncorrelated, $\mathbb{E}(\varepsilon_i\varepsilon_j)=0$, $i\neq j$, since they are assumed to be Normal by iii).
+iv. **Independence of the errors**: $\varepsilon_1,\ldots,\varepsilon_n$ are independent (or uncorrelated, $\mathbb{E}[\varepsilon_i\varepsilon_j]=0$, $i\neq j$, since they are assumed to be Normal by iii).
 
 A good one-line summary of the linear model is (independence is assumed)
 $$
