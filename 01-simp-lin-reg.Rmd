@@ -1060,7 +1060,7 @@ Some important remarks on (\@ref(eq:ci1)) are:
 Figure \@ref(fig:cipred) helps visualizing these concepts interactively.
 
 ```{r, cipred, echo = FALSE, fig.cap = 'Illustration of the CIs for the conditional mean and response. Note how the length of the CIs is influenced by $x$, specially for the conditional mean.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
-knitr::include_app('https://egarpor.shinyapps.io/ci-pred/', height = '1000px')
+knitr::include_app('https://egarpor.shinyapps.io/ci-prediction/', height = '1000px')
 ```
 
 The prediction and computation of CIs can be done with the `R` function `predict`. The objects required for `predict` are: first, the output of `lm`; second, a `data.frame` containing the locations $x$ where we want to predict $\beta_0+\beta_1x$. To illustrate the use of `predict`, we are going to use the `pisa` dataset. In case you do not have it loaded, you can download it [here](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/pisa.RData) as a `.RData` file.
@@ -1123,10 +1123,7 @@ Similarities and differences in the prediction of the conditional mean $\mathbb{
 - *Differences*. $\mathbb{E}[Y|X=x]$ is deterministic and $Y|X=x$ is random. Therefore, the variance is larger for the prediction of $Y|X=x$: there is an extra $\hat\sigma^2$ term in the variance of its prediction.
 ```
 
-The prediction and computation of CIs can be done with the R function predict. The objects required for predict are: first, the output of lm; second, a data.frame containing the locations  x
-  where we want to predict  β0+β1x
- . To illustrate the use of predict, we are going to use the pisa dataset. In case you do not have it loaded, you can download it here as a .RData file.
-
+The prediction and computation of CIs can be done with the R function predict. The objects required for predict are: first, the output of `lm`; second, a `data.frame` containing the locations $x$ where we want to predict $\beta_0+\beta_1 x$. To illustrate the use of predict, we are going to use the `pisa` dataset. In case you do not have it loaded, you can download it [here](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/pisa.RData) as a `.RData` file.
 
 The prediction of a new observation can be done via the function `predict`, which also provides confidence intervals. 
 ```{r, collapse = TRUE}
