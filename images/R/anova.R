@@ -28,6 +28,6 @@ plot(x, y, xlim = c(-4, 4), ylim = c(-4, 4), pch = 16, main = paste("SSE =", rou
 abline(mod$coefficients, col = 2, lwd = 2)
 segments(x0 = x, y0 = y, x1 = x, y1 = mod$fitted.values, col = 6)
 points(x, mod$fitted.values, pch = 16, col = 6)
-legend("topleft", legend = expression("Data", "Fitted line", (hat(Y)[i]- Y[i])^2), lwd = 2, col = c(1, 2, 6))
+legend("topleft", legend = expression("Data", "Fitted line", (hat(Y)[i] - Y[i])^2), lwd = 2, col = c(1, 2, 6))
 
 dev.off()
