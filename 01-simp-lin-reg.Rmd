@@ -1422,7 +1422,7 @@ Some hints:
 Import the following datasets into `R Commander` indicating the right formatting options:
 
 - [`iris.txt`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/iris.txt)
-- [`advertising.csv`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/advertising.csv)
+- [`ads.csv`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/ads.csv)
 - [`auto.txt`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/auto.txt)
 - [`boston.xlsx`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/boston.xlsx)
 - [`anscombe.RData`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/anscombe.RData)
