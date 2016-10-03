@@ -1432,7 +1432,7 @@ Import the following datasets into `R Commander` indicating the right formatting
 - [`la-liga-2015-2016.xlsx`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/la-liga-2015-2016.xlsx)
 - [`wdi-countries.txt`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/wdi-countries.txt)
 
-Create the file `datasets.RData` containing all the datasets.
+Create the file `datasets.RData` for saving all the datasets together.
 ```
 
 ### Data management
