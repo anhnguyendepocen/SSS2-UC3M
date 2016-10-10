@@ -55,20 +55,21 @@ abline(lm(I(y + epsNoIndep) ~ x)$coefficients, col = 2, lwd = 2)
 dev.off()
 
 # Quiz linear model
+n <- 200
 png("linearmodelquiz.png", width = 10, height = 10, res = 200, units = "in")
 set.seed(223971)
 par(mfrow = c(3, 3), mar = c(4, 4, 2, 1) + 0.1)
 
 # OK
-x1 <- rexp(200)
-eps <- rnorm(200)
+x1 <- rexp(n)
+eps <- rnorm(n)
 y1 <- -0.5 * x1 + eps
 plot(x1, y1, pch = 16, xlab = "x", ylab = "y", main = "1")
 abline(lm(y1 ~ x1)$coefficients, col = 2, lwd = 2)
 
 # Nonlinear
-x2 <- runif(200)
-eps <- rnorm(200)
+x2 <- runif(n)
+eps <- rnorm(n)
 y2 <- 1 - log(0.5 * x2) + eps
 plot(x2, y2, pch = 16, xlab = "x", ylab = "y", main = "2")
 abline(lm(y2 ~ x2)$coefficients, col = 2, lwd = 2)
@@ -80,41 +81,41 @@ plot(x3, y3, pch = 16, xlab = "x", ylab = "y", main = "3")
 abline(lm(y3 ~ x3)$coefficients, col = 2, lwd = 2)
 
 # Non-normal
-x4 <- rnorm(200)
-epst <- rt(200, 2)
+x4 <- rnorm(n)
+epst <- rt(n, 2)
 y4 <- 0.5 * x4 + epst
 plot(x4, y4, pch = 16, xlab = "x", ylab = "y", main = "4")
 abline(lm(y4 ~ x4)$coefficients, col = 2, lwd = 2)
 
 # Dependent
-x5 <- rnorm(200)
-epsNoIndep <- sdetorus::rTrajOu(x0 = 0, alpha = 0.01, mu = 0, sigma = 0.5, N = 200 - 1, delta = 0.01)
+x5 <- rnorm(n)
+epsNoIndep <- sdetorus::rTrajOu(x0 = 0, alpha = 0.01, mu = 0, sigma = 0.5, N = n - 1, delta = 0.01)
 y5 <- 1 - 0.5 * x5 + epsNoIndep
 plot(x5, y5, pch = 16, xlab = "x", ylab = "y", main = "5")
 abline(lm(y5 ~ x5)$coefficients, col = 2, lwd = 2)
 
 # Non-normal
-x6 <- rnorm(200, sd = 0.25)
-eps <- rpois(200, 3) - 3
+x6 <- rnorm(n, sd = 0.25)
+eps <- rpois(n, 3) - 3
 y6 <- 1 + x6 + eps
 plot(x6, y6, pch = 16, xlab = "x", ylab = "y", main = "6")
 abline(lm(y6 ~ x6)$coefficients, col = 2, lwd = 2)
 
 # OK
-x7 <- rnbinom(200, 10, 0.5)
+x7 <- rnbinom(n, 10, 0.5)
 y7 <- -0.1 * x7 + rnorm(100)
 plot(x7, y7, pch = 16, xlab = "x", ylab = "y", main = "7")
 abline(lm(y7 ~ x7)$coefficients, col = 2, lwd = 2)
 
 # Nonlinear, heteroskedastic
-x8 <- rnorm(200, sd = 2)
-y8 <- -1 + x8^3 + 5 * (x8 - min(x8)) * rnorm(200, sd = 2)
+x8 <- rnorm(n, sd = 2)
+y8 <- -1 + x8^3 + 5 * (x8 - min(x8)) * rnorm(n, sd = 2)
 plot(x8, y8, pch = 16, xlab = "x", ylab = "y", main = "8")
 abline(lm(y8 ~ x8)$coefficients, col = 2, lwd = 2)
 
 # Non linear, heteroskedastic
-x9 <- rt(200, 10)
-y9 <- -2 - 0.5 * log(abs(x9)) + rnorm(200)
+x9 <- rt(n, 10)
+y9 <- -2 - 0.5 * log(abs(x9)) + rnorm(n)
 plot(x9, y9, pch = 16, xlab = "x", ylab = "y", main = "9")
 abline(lm(y9 ~ x9)$coefficients, col = 2, lwd = 2)
 
@@ -129,18 +130,18 @@ save(assumptions, file = "assumptions.RData")
 # t
 png("ttest.png", width = 7, height = 7, res = 200, units = "in")
 xx <- seq(-7, 7, l = 500)
-plot(xx, dt(x = xx, df = 198), type = "l", xlab = "x", ylab = "Density of the Student's t with 198 df", lwd = 2)
-q1 <- qt(p = 0.975, df = 198, lower.tail = FALSE)
-q2 <- qt(p = 0.025, df = 198, lower.tail = FALSE)
-xvals1 <- seq(q1, q2, length = 200)
-dvals1 <- dt(x = xvals1, df = 198)
-xvals2 <- seq(xx[1], q1, length = 200)
-dvals2 <- dt(x = xvals2, df = 198)
-xvals3 <- seq(q2, xx[length(xx)], length = 200)
-dvals3 <- dt(x = xvals3, df = 198)
-polygon(c(xvals1, rev(xvals1)), c(rep(0, 200), rev(dvals1)), col = "lightblue")
-polygon(c(xvals2, rev(xvals2)), c(rep(0, 200), rev(dvals2)), col = "lightgreen")
-polygon(c(xvals3, rev(xvals3)), c(rep(0, 200), rev(dvals3)), col = "lightgreen")
+plot(xx, dt(x = xx, df = n - 2), type = "l", xlab = "x", ylab = "Density of the Student's t with n - 2 df", lwd = 2)
+q1 <- qt(p = 0.975, df = n - 2, lower.tail = FALSE)
+q2 <- qt(p = 0.025, df = n - 2, lower.tail = FALSE)
+xvals1 <- seq(q1, q2, length = n)
+dvals1 <- dt(x = xvals1, df = n - 2)
+xvals2 <- seq(xx[1], q1, length = n)
+dvals2 <- dt(x = xvals2, df = n - 2)
+xvals3 <- seq(q2, xx[length(xx)], length = n)
+dvals3 <- dt(x = xvals3, df = n - 2)
+polygon(c(xvals1, rev(xvals1)), c(rep(0, n), rev(dvals1)), col = "lightblue")
+polygon(c(xvals2, rev(xvals2)), c(rep(0, n), rev(dvals2)), col = "lightgreen")
+polygon(c(xvals3, rev(xvals3)), c(rep(0, n), rev(dvals3)), col = "lightgreen")
 text(x = q2, y = dvals1[1], labels = expression(t[list(n - 2, alpha/2)]), pos = 4)
 text(x = q1, y = dvals1[1], labels = expression(-t[list(n - 2, alpha/2)]), pos = 2)
 text(x = 0, y = 0.1, labels = expression(1 - alpha), pos = 3)
@@ -150,3 +151,74 @@ rug(-0.353, col = 2, lwd = 2)
 rug(-6.170, col = 6, lwd = 2)
 legend("topright", legend = expression(100 * (1 - alpha) * "% CI of the " * t[n - 2], "Tails with " * alpha/2 * " probability", t * "-statistic for " * beta[0], t * "-statistic for " * beta[1]), col = c("lightblue", "lightgreen", 2, 6), lwd = 2)
 dev.off()
+
+# Exercise assumptions
+n <- 200
+set.seed(223971)
+par(mfrow = c(3, 3), mar = c(4, 4, 2, 1) + 0.1)
+
+# Nonlinear
+x1 <- runif(n, max = 100)
+eps <- rnorm(n)
+y1 <- 2 * sqrt(x1) + eps
+plot(x1, y1, pch = 16, xlab = "x", ylab = "y", main = "1")
+abline(lm(y1 ~ x1)$coefficients, col = 2, lwd = 2)
+
+# Non normal
+x2 <- runif(n, 0, 5)
+y2 <- 0.5 + x2 + rpois(n, lambda = 5) - 5
+plot(x2, y2, pch = 16, xlab = "x", ylab = "y", main = "2")
+abline(lm(y2 ~ x2)$coefficients, col = 2, lwd = 2)
+
+# OK
+x3 <- c(rexp(n/2), 5 - rexp(n/2))
+eps <- rnorm(n, sd = 0.75)
+y3 <- 1 - 1 * x3 + eps
+plot(x3, y3, pch = 16, xlab = "x", ylab = "y", main = "3")
+abline(lm(y3 ~ x3)$coefficients, col = 2, lwd = 2)
+
+# OK
+x4 <- c(rnorm(n/2, -1, sd = 0.5), rpois(n/2, lambda = 2))
+y4 <- 3 - 0.5 * x4 + rnorm(n, sd = 0.5)
+plot(x4, y4, pch = 16, xlab = "x", ylab = "y", main = "4")
+abline(lm(y4 ~ x4)$coefficients, col = 2, lwd = 2)
+
+# OK
+x5 <- rnorm(n, sd = 2)
+y5 <- 1 + 5 * x5 + rnorm(n)
+plot(x5, y5, pch = 16, xlab = "x", ylab = "y", main = "5")
+abline(lm(y5 ~ x5)$coefficients, col = 2, lwd = 2)
+
+# Nonlinear
+x6 <- rt(n, df = 2)
+y6 <- -1 + x6^3 + rnorm(n, sd = 2)
+plot(x6, y6, pch = 16, xlab = "x", ylab = "y", main = "6")
+abline(lm(y6 ~ x6)$coefficients, col = 2, lwd = 2)
+
+# Dependent
+x7 <- rnorm(n)
+epsNoIndep <- sdetorus::rTrajOu(x0 = 0, alpha = 0.001, mu = 0, sigma = 0.75, N = n - 1, delta = 0.01)
+y7 <- 1 - 0.5 * x7 + epsNoIndep
+plot(x7, y7, pch = 16, xlab = "x", ylab = "y", main = "7")
+abline(lm(y7 ~ x7)$coefficients, col = 2, lwd = 2)
+
+# OK
+x8 <- rnbinom(n, 10, 0.5)
+y8 <- -0.1 * x8 + rnorm(100)
+plot(x8, y8, pch = 16, xlab = "x", ylab = "y", main = "8")
+abline(lm(y8 ~ x8)$coefficients, col = 2, lwd = 2)
+
+# Non linear
+x91 <- runif(n, 0, 5)
+x92 <- runif(n, 5, 10)
+y91 <- -2 - 0.5 * x91
+y92 <- -4.5 + 0.5 * (x92 - 5)
+x9 <- c(x91, x92)
+y9 <- c(y91, y92) + rnorm(n)
+plot(x9, y9, pch = 16, xlab = "x", ylab = "y", main = "9")
+abline(lm(y9 ~ x9)$coefficients, col = 2, lwd = 2)
+
+# Save RData
+moreAssumptions <- data.frame(x1, x2, x3, x4, x5, x6, x7, x8, x9,
+                              y1, y2, y3, y4, y5, y6, y7, y8, y9)
+save(moreAssumptions, file = "moreAssumptions.RData")

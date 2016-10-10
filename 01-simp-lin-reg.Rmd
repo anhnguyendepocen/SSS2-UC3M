@@ -1164,7 +1164,7 @@ $$
 The ANOVA decomposition considers the following measures of variation related with the response:
 
 - $\text{SST}=\sum_{i=1}^n\left(Y_i-\bar Y\right)^2$, the **total sum of squares**. This is the *total variation* of $Y_1,\ldots,Y_n$, since $\text{SST}=ns_y^2$, where $s_y^2$ is the sample variance of $Y_1,\ldots,Y_n$.
-- $\text{SSR}=\sum_{i=1}^n\left(\hat Y_i-\bar Y\right)^2$, the **regression sum of squares**. This is the variation explained by the regression line, that is, *the variation from $\bar Y$ that is explained by the conditional mean $\hat\beta_0+\hat\beta_1X_i$*. $\text{SSR}=ns_{\hat y}^2$, where $s_{\hat y}^2$ is the sample variance of $\hat Y_1,\ldots,\hat Y_n$.
+- $\text{SSR}=\sum_{i=1}^n\left(\hat Y_i-\bar Y\right)^2$, the **regression sum of squares**^[Recall that SSR is different from RSS (Residual Sum of Squares).]. This is the variation explained by the regression line, that is, *the variation from $\bar Y$ that is explained by the conditional mean $\hat\beta_0+\hat\beta_1X_i$*. $\text{SSR}=ns_{\hat y}^2$, where $s_{\hat y}^2$ is the sample variance of $\hat Y_1,\ldots,\hat Y_n$.
 - $\text{SSE}=\sum_{i=1}^n\left(Y_i-\hat Y_i\right)^2$, the **sum of squared errors**. Is the variation around the conditional mean. Recall that $\text{SSE}=\sum_{i=1}^n \hat\varepsilon_i^2=ns_{\hat \varepsilon}^2$, where $s_{\hat \varepsilon}^2$ is the sample variance of $\hat \varepsilon_1,\ldots,\hat \varepsilon_n$. 
 
 The ANOVA decomposition is
@@ -1446,25 +1446,27 @@ Import the following datasets into `R Commander` indicating the right formatting
 Create the file `datasets.RData` for saving all the datasets together.
 ```
 
-### Data management
+### Simple data management
 
 <!--
+```{block, type = 'rmdexercise'}
 Perform the following data management operations:
 
 - Load `datasets.RData`.
-- Establish the case names in `data1.txt` as the variable ``.
-- Establish the case names in `data7.csv` as the variable ``.
-- Create a new variable
+- Establish the case names in `la-liga-2015-2016` as the variable `Team`.
+- Establish the case names in `wdi-countries` as the variable `Country`.
+- Create a new variable named 
 - Delete a row
 - Delete a variable
 - Add a new row
 - Set the observation
 - Set the observation     
-- Create a single `.RData` file saving all the modified datasets.
-- Load `datasets.RData`.
+- Create a `newDatasets.RData` file saving all the modified datasets.
+- Exit `R Commander` and load `newDatasets.RData`.
+```
 -->
 
-### Computing a linear regression
+### Computing linear regressions
 
 <!--
 Compute the linear regression for:
@@ -1515,11 +1517,9 @@ Answer the following conceptual questions:
 
 ### Assumptions of the linear model
 
-<!--
 ```{block, type = 'rmdexercise'}
-The dataset `moreAssumptions.RData` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/moreAssumptions.RData)) contains the variables `x1`, ..., `x10` and `y1`, ..., `y10`. For each regression `y1 ~ x1`, ..., `y10 ~ x10` describe whether the assumptions of the linear model are being satisfied or not. Justify your answer and state which assumption(s) are violated. 
+The dataset `moreAssumptions.RData` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/moreAssumptions.RData)) contains the variables `x1`, ..., `x9` and `y1`, ..., `y9`. For each regression `y1 ~ x1`, ..., `y9 ~ x9` describe whether the assumptions of the linear model are being satisfied or not. Justify your answer and state which assumption(s) you think are violated. 
 ```
--->
 
 ### Inference
 
@@ -1577,7 +1577,7 @@ The dataset `gpus.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS
 
 ### Case study: *Growth in a time of debt*
 
-In the aftermath of the 2007-2008 financial crisis, the paper *Growth in a time of debt* (@Reinhart2010a, @Reinhart2010b) provided an important economical support for pro-austerity policies. The paper claimed that for levels of external debt in excess of 90% of the GDP, the GDP growth of a country was dramatically different than for lower levels of external debt. Therefore, it concludes the existence of a *magical threshold* - 90% - for which the level of external debt must be kept below in order to have a growing economy. Figure \@ref(fig:reinhart), extracted from @Reinhart2010a, illustrates the main finding.
+In the aftermath of the 2007-2008 financial crisis, the paper *Growth in a time of debt* [@Reinhart2010a] provided an important economical support for pro-austerity policies. The paper claimed that for levels of external debt in excess of 90% of the GDP, the GDP growth of a country was dramatically different than for lower levels of external debt. Therefore, it concludes the existence of a *magical threshold* - 90% - for which the level of external debt must be kept below in order to have a growing economy. Figure \@ref(fig:reinhart), extracted from @Reinhart2010a, illustrates the main finding.
 
 ```{r, reinhart, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'The *magical threshold* of 90% external debt.'}
 knitr::include_graphics("images/figures/reinhart.png")
@@ -1600,20 +1600,19 @@ The dataset `hap.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2
 `debtgdp` represents the percentage of public debt with respect to the GDP. 
 
 - Import the data and save it as `hap`.
-- The variable `CountryYear`. Set the case names of `hap` as `CountryYear`.
-- What is the correlation between `dRGDP` and `debtgdp`? What is the standard deviation of each variable?
-- What are the combinations of Contry and Year that led to the five highest GDP growth in 1946-–2009? And the lowest?
-- What are the combinations of Contry and Year that led to the five highest GDP growth in 1946-–2009? And the lowest?
+- Set the case names of `hap` as `Country.Year`.
+- What is the covariance between `dRGDP` and `debtgdp`? What is the standard deviation of each variable?
+- Summarize `dRGDP` and `debtgdp`. What are their minimum and maximum values?
 - Show the scatterplot of `dRGDP` vs `debtgdp` with the regression line.
 - Do you see any gap on the data around 90%? Is there any substantial change for `dRGDP` around there? 
-- Compute the linear regression of `dRGDP` on `debtgdp`.
+- Compute the linear regression of `dRGDP` on `debtgdp` and summarize the fit.
 - What are the fitted coefficients? What are the standard errors? What is the $R^2$? 
 - Compute the ANOVA table. How many degrees of freedom are? What is the SSR? What is SSE? What is the $p$-value for $H_0:\beta_1=0$?
 - Are $\beta_0$ and $\beta_1$ significant at level $\alpha=0.05$? And at level $\alpha=0.10,0.01$?
-- Compute the CIs for the coefficients. Can we conclude that the effect of `debtgdp` on `dRGDP` is positive? Negative? 
+- Compute the CIs for the coefficients. Can we conclude that the effect of `debtgdp` on `dRGDP` is positive? And negative? 
 - Predict the average growth for levels of debt of 60%, 70%, 80%, 90%, 100% and 110%. Compute the 95% CIs for all of them.
 - Predict the growth for the previous levels of debt. Compute also the CI for them. Is there a marked difference on the CIs for debt levels below and above 90%?
-- Which assumptions of the linear model you think are satisfied?
+- Which assumptions of the linear model you think are satisfied? Should we trust blindly the results obtained assuming the assumptions were saatisfied?
 ```
 
 ### Case study
