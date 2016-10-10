@@ -80,7 +80,7 @@ server <- function(input, output) {
     out <- (input$beta0 < confs[, 1]) | (input$beta0 > confs[, 2])
 
     # Plot
-    par(mar =  c(4, 4, 3, 1) + 0.1, oma = rep(0, 4))
+    par(mar = c(4, 4, 3, 1) + 0.1, oma = rep(0, 4))
     plot(1:M, rep(input$beta0, M), xlab = "Confidence intervals",
          ylab = expression(beta[0]), type = "n", ylim = c(-1.5, 1.5),
          main = substitute(expr = "Times " * beta[0]

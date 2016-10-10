@@ -90,7 +90,7 @@ server <- function(input, output) {
                      interval = interval)
 
     # Plot
-    par(mar =  c(4, 4, 1, 1) + 0.1, oma = rep(0, 4))
+    par(mar = c(4, 4, 1, 1) + 0.1, oma = rep(0, 4))
     plot(x, y, xlim = c(-5, 5), ylim = c(-5, 5), pch = 16, xlab = "x", ylab = "y")
     abline(a = 0.5, b = 1, col = 1, lwd = 3)
     abline(mod$coefficients, col = 2, lwd = 3)

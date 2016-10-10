@@ -75,7 +75,7 @@ server <- function(input, output) {
     }
 
     # Plot
-    par(mar =  c(4, 4, 3, 1) + 0.1, oma = rep(0, 4))
+    par(mar = c(4, 4, 3, 1) + 0.1, oma = rep(0, 4))
     plot(x, y, xlim = c(-5, 5), ylim = c(-5, 5), pch = 16)
     segments(x0 = x, y0 = y, x1 = proj[, 1], y1 = proj[, 2], col = red, lty = 2)
     title(main = paste("Sum of squared distances:",
