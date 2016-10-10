@@ -1165,7 +1165,7 @@ The ANOVA decomposition considers the following measures of variation related wi
 
 - $\text{SST}=\sum_{i=1}^n\left(Y_i-\bar Y\right)^2$, the **total sum of squares**. This is the *total variation* of $Y_1,\ldots,Y_n$, since $\text{SST}=ns_y^2$, where $s_y^2$ is the sample variance of $Y_1,\ldots,Y_n$.
 - $\text{SSR}=\sum_{i=1}^n\left(\hat Y_i-\bar Y\right)^2$, the **regression sum of squares**^[Recall that SSR is different from RSS (Residual Sum of Squares).]. This is the variation explained by the regression line, that is, *the variation from $\bar Y$ that is explained by the conditional mean $\hat\beta_0+\hat\beta_1X_i$*. $\text{SSR}=ns_{\hat y}^2$, where $s_{\hat y}^2$ is the sample variance of $\hat Y_1,\ldots,\hat Y_n$.
-- $\text{SSE}=\sum_{i=1}^n\left(Y_i-\hat Y_i\right)^2$, the **sum of squared errors**. Is the variation around the conditional mean. Recall that $\text{SSE}=\sum_{i=1}^n \hat\varepsilon_i^2=ns_{\hat \varepsilon}^2$, where $s_{\hat \varepsilon}^2$ is the sample variance of $\hat \varepsilon_1,\ldots,\hat \varepsilon_n$. 
+- $\text{SSE}=\sum_{i=1}^n\left(Y_i-\hat Y_i\right)^2$, the **sum of squared errors**. Is the variation around the conditional mean. Recall that $\text{SSE}=\sum_{i=1}^n \hat\varepsilon_i^2=(n-2)\hat\sigma^2$, where $\hat\sigma^2$ is the sample variance of $\hat \varepsilon_1,\ldots,\hat \varepsilon_n$. 
 
 The ANOVA decomposition is
 $$
@@ -1223,7 +1223,7 @@ r_{xy}=\frac{s_{xy}}{s_xs_y}=\frac{\sum_{i=1}^n \left(X_i-\bar X \right)\left(Y_
 $$
 and it can be seen that $R^2=r_{xy}^2$. Interestingly, it also holds that $R^2=r^2_{y\hat y}=\frac{s_{y\hat y}}{s_ys_{\hat y}}$, that is, *the square of the sample correlation coefficient between $Y_1,\ldots,Y_n$ and $\hat Y_1,\ldots,\hat Y_n$ is $R^2$*, a fact that is not immediately evident. It can be visualized with the next code.
 
-```{r}
+```{r, fig.show = 'hold'}
 # Responses generated following a linear model
 set.seed(343567) # Fixes seed, allows to generate the same random data
 x <- rnorm(50)
@@ -1422,7 +1422,7 @@ Some hints:
 
 - `y2 ~ x2` has a negative dependence, so look at the left panel of the transformations figure.
 - `y3 ~ x3` seems to have just a subtle nonlinearity... Will it be worth to attempt a transformation?
-- For `y9 ~ x9`, try with also with `exp(-abs(x))`, `log(abs(x))` and `2^abs(x)`. (`abs()` computes the absolute value.)
+- For `y9 ~ x9`, try with also with `exp(-abs(x9))`, `log(abs(x9))` and `2^abs(x9)`. (`abs` computes the absolute value.)
 ```
 
 ## Exercises and case studies
