@@ -82,7 +82,9 @@ server <- function(input, output) {
                        sprintf("%.2f", sum((proj[, 1] - x)^2 + (proj[, 2] - y)^2))),
           cex.main = 1.5)
     abline(a = input$beta0, b = input$beta1, col = 2, lwd = 3)
-
+    legend("bottomright", legend = c("Fitted regression", "Distances"),
+           col = c(2, red), lwd = c(3, 1), lty = 1:2, cex = 1.5)
+    
   }, width = 650, height = 650)
 
 }

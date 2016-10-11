@@ -11,6 +11,7 @@ load("xData.RData")
 # x grids
 xNew <- seq(-5, 5, l = 210)
 coarse <- seq(10, 200, by = 10)
+blue <- rgb(0, 0, 1, alpha = 0.75)
 
 # UI for application
 ui <- fluidPage(align = "center",
@@ -24,7 +25,8 @@ ui <- fluidPage(align = "center",
 
     inputPanel(
 
-      actionButton(inputId = "newSample", label = h5("sample!"), icon = h5("Get a new")),
+      actionButton(inputId = "newSample", label = h5("sample!"), 
+                   icon = h5("Get a new")),
       selectInput(inputId = "n", label = "Sample size:",
                   choices = c(10, 50, 100, 200, 500), selected = 100),
       selectInput(inputId = "ciType", label = "CI type:",
@@ -32,9 +34,9 @@ ui <- fluidPage(align = "center",
       selectInput(inputId = "alpha", label = "alpha:",
                   choices = c("0.25", "0.10", "0.05", "0.01"), selected = "0.05"),
       sliderInput(inputId = "sigma2", label = "Error variance:",
-                  min = 0, max = 4, value = 1, step = 0.25),
+                  min = 0, max = 3, value = 1, step = 0.1),
       sliderInput(inputId = "sigma2x", label = "Predictor variance:",
-                  min = 0.25, max = 4, value = 1, step = 0.25)
+                  min = 0.1, max = 3, value = 1, step = 0.1)
 
     ),
 
@@ -67,6 +69,7 @@ server <- function(input, output) {
     # Check if the buttom was clicked
     if (values$default == 0) {
 
+      set.seed(423432)
       error <- rnorm(500)
 
     } else {
@@ -95,14 +98,14 @@ server <- function(input, output) {
     abline(a = 0.5, b = 1, col = 1, lwd = 3)
     abline(mod$coefficients, col = 2, lwd = 3)
     segments(x0 = xNew[coarse], y0 = confs[coarse, 2], x1 = xNew[coarse],
-             y1 = confs[coarse, 3], lwd = 2, col = 4)
+             y1 = confs[coarse, 3], lwd = 2, col = blue)
     points(xNew[coarse], confs[coarse, 1], col = 2, pch = 16)
-    lines(xNew, confs[, 2], col = 4, lty = 2, lwd = 2)
-    lines(xNew, confs[, 3], col = 4, lty = 2, lwd = 2)
+    lines(xNew, confs[, 2], col = blue, lty = 2, lwd = 2)
+    lines(xNew, confs[, 3], col = blue, lty = 2, lwd = 2)
     legend("bottomright", legend = c("True regression", "Fitted regression",
                                      ifelse(input$ciType == "Mean", "CI for mean",
                                             "CI for response")),
-           lwd = 3, col = c(1:2, 4), cex = 1.5)
+           lwd = 3, col = c(1:2, blue), cex = 1.5)
 
   }, width = 650, height = 650)
 

@@ -21,7 +21,8 @@ ui <- fluidPage(align = "center",
 
     inputPanel(
 
-      actionButton(inputId = "newSample", label = h5("sample!"), icon = h5("Get a new")),
+      actionButton(inputId = "newSample", label = h5("sample!"), 
+                   icon = h5("Get a new")),
       selectInput(inputId = "n", label = "Sample size:",
                   choices = c(10, 50, 100, 200, 500), selected = 100),
       sliderInput(inputId = "beta0", label = "Intercept:",
@@ -29,9 +30,9 @@ ui <- fluidPage(align = "center",
       sliderInput(inputId = "beta1", label = "Slope:",
                   min = -3, max = 3, value = 0.5, step = 0.5),
       sliderInput(inputId = "sigma2", label = "Error variance:",
-                  min = 0, max = 4, value = 1, step = 0.25),
+                  min = 0, max = 3, value = 1, step = 0.1),
       sliderInput(inputId = "sigma2x", label = "Predictor variance:",
-                  min = 0.25, max = 4, value = 1, step = 0.25)
+                  min = 0.1, max = 3, value = 1, step = 0.1)
 
     ),
 
@@ -64,6 +65,7 @@ server <- function(input, output) {
     # Check if the buttom was clicked
     if (values$default == 0){
 
+      set.seed(423432)
       error <- rnorm(500)
 
     } else {

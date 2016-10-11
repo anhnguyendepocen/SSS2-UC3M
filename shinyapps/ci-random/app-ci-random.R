@@ -23,7 +23,8 @@ ui <- fluidPage(align = "center",
 
     inputPanel(
 
-      actionButton(inputId = "newSample", label = h5("samples!"), icon = h5("Get 100 new")),
+      actionButton(inputId = "newSample", label = h5("samples!"), 
+                   icon = h5("Get 100 new")),
       selectInput(inputId = "alpha", label = "alpha:",
                   choices = c("0.25", "0.10", "0.05", "0.01"), selected = "0.05"),
       sliderInput(inputId = "beta0", label = "Intercept:",
@@ -60,6 +61,7 @@ server <- function(input, output) {
     # Check if the buttom was clicked
     if (values$default == 0) {
 
+      set.seed(423432)
       error <- matrix(rnorm(M * n), nrow = M, ncol = n)
 
     } else {

@@ -1,5 +1,6 @@
 #
-# Shiny web application for illustrating non-linear transformations of the predictor 
+# Shiny web application for illustrating non-linear transformations of the  
+# predictor in linear regression
 #
 
 library(shiny)
@@ -70,13 +71,14 @@ server <- function(input, output) {
     # Plot
     par(mfrow = c(1, 2), mar = c(4, 4, 3, 1) + 0.1, oma = rep(0, 4))
     plot(x, y, pch = 16)
-    title(main = paste("Original predictor. R^2:", 
-                       sprintf("%.3f", summary(mod)$r.squared)), cex.main = 1)
+    title(main = substitute(expr = "Original predictor. " * R^2 * ": " * R2,
+                            list(R2 = sprintf("%.3f", summary(mod)$r.squared))),
+          cex.main = 1.25)
     abline(coef(mod), col = 2, lwd = 3)
     plot(xTransf, y, pch = 16, xlab = input$transfType)
-    title(main = paste("Transformed predictor. R^2:", 
-                       sprintf("%.3f", summary(modTransf)$r.squared)),
-          cex.main = 1)
+    title(main = substitute(expr = "Transformed predictor. " * R^2 * ": " * R2,
+                            list(R2 = sprintf("%.3f", summary(modTransf)$r.squared))),
+          cex.main = 1.25)
     abline(coef(modTransf), col = 2, lwd = 3)
 
   }, width = 650, height = 325)
