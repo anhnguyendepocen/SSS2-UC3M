@@ -69,14 +69,14 @@ server <- function(input, output) {
     modTransf <- lm(y ~ xTransf)
     
     # Plot
-    par(mfrow = c(1, 2), mar = c(4, 4, 3, 1) + 0.1, oma = rep(0, 4))
+    par(mfrow = c(1, 2), mar = c(3.75, 4, 3, 1) + 0.1, oma = rep(0, 4))
     plot(x, y, pch = 16)
-    title(main = substitute(expr = "Original predictor. " * R^2 * ": " * R2,
+    title(main = substitute(expr = "Original predictor. " * R^2 * " = " * R2,
                             list(R2 = sprintf("%.3f", summary(mod)$r.squared))),
           cex.main = 1.25)
     abline(coef(mod), col = 2, lwd = 3)
     plot(xTransf, y, pch = 16, xlab = input$transfType)
-    title(main = substitute(expr = "Transformed predictor. " * R^2 * ": " * R2,
+    title(main = substitute(expr = "Transformed predictor. " * R^2 * " = " * R2,
                             list(R2 = sprintf("%.3f", summary(modTransf)$r.squared))),
           cex.main = 1.25)
     abline(coef(modTransf), col = 2, lwd = 3)

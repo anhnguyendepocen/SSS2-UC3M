@@ -1177,6 +1177,10 @@ and its graphical interpretation is in Figure \@ref(fig:anova).
 knitr::include_graphics("images/R/anova.png")
 ```
 
+```{r, anovaillus, echo = FALSE, fig.cap = 'Illustration of the ANOVA decomposition and its dependence on $\\sigma^2$ and $\\hat\\sigma^2$.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+knitr::include_app('https://egarpor.shinyapps.io/anova/', height = '800px')
+```
+
 The ANOVA table summarizes the decomposition of the variance. Here is given  in the form used by `R`.
 
 |  | Degrees of freedom | Sum Squares | Mean Squares | $F$-value | $p$-value |
@@ -1356,6 +1360,10 @@ If you apply a nonlinear transformation, namely $f$, and fit the linear model $Y
 As a rule of thumb, use the figure with the transformations to compare it with the data pattern, then choose the most similar curve, and finally apply the corresponding function with **positive sign**.
 ```
 
+```{r, transf, echo = FALSE, fig.cap = 'Illustration of the choice of the non-linear transformation.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+knitr::include_app('https://egarpor.shinyapps.io/non-linear/', height = '550px')
+```
+
 Let's see how we can compute transformations of our predictors and perform a linear regression with them. The data for the above example is the following:
 ```{r}
 # Data
@@ -1397,8 +1405,6 @@ mod2 <- lm(y ~ x2, data = nonLinear)
 summary(mod2)
 ```
 
-
-
 ```{block, type = 'rmdtip'}
 A fast way of performing and summarizing the quadratic fit is 
 
@@ -1406,7 +1412,7 @@ A fast way of performing and summarizing the quadratic fit is
 
 Some remarks about this expression:
 
-  - The `I()` function wrapping `x^2` is fundamental when applying arithmetic operations in the predictor. The symbols `+`, `\*`, `^`, ... have **diferrent meaning** when inputted in a formula, so is required to use `I()` to indicate that they must be interpreted in their arithmetic meaning and that the result of the expression denotes a new predictor variable. For example, use `I((x - 1)^3 - log(3 \* x))` if you want to apply the transformation `(x - 1)^3 - log(3 * x)`.
+  - The `I()` function wrapping `x^2` is fundamental when applying arithmetic operations in the predictor. The symbols `+`, `\*`, `^`, ... have **diferent meaning** when inputted in a formula, so is required to use `I()` to indicate that they must be interpreted in their arithmetic meaning and that the result of the expression denotes a new predictor variable. For example, use `I((x - 1)^3 - log(3 \* x))` if you want to apply the transformation `(x - 1)^3 - log(3 * x)`.
   
   - We are computing the `summary` of `lm` directly, without using an intermediate variable for storing the output of `lm`. This is perfectly valid and very handy, but note that you will not be able to access the information outputted by `lm`, only the one from `summary`.
 
@@ -1612,7 +1618,7 @@ The dataset `hap.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2
 - Compute the CIs for the coefficients. Can we conclude that the effect of `debtgdp` on `dRGDP` is positive? And negative? 
 - Predict the average growth for levels of debt of 60%, 70%, 80%, 90%, 100% and 110%. Compute the 95% CIs for all of them.
 - Predict the growth for the previous levels of debt. Compute also the CI for them. Is there a marked difference on the CIs for debt levels below and above 90%?
-- Which assumptions of the linear model you think are satisfied? Should we trust blindly the results obtained assuming the assumptions were saatisfied?
+- Which assumptions of the linear model you think are satisfied? Should we trust blindly the results obtained assuming the assumptions were satisfied?
 ```
 
 ### Case study
