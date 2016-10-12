@@ -155,6 +155,7 @@ dev.off()
 # Exercise assumptions
 n <- 200
 set.seed(223971)
+png("linearmodelquiz2.png", width = 10, height = 10, res = 200, units = "in")
 par(mfrow = c(3, 3), mar = c(4, 4, 2, 1) + 0.1)
 
 # Nonlinear
@@ -218,6 +219,7 @@ y9 <- c(y91, y92) + rnorm(n)
 plot(x9, y9, pch = 16, xlab = "x", ylab = "y", main = "9")
 abline(lm(y9 ~ x9)$coefficients, col = 2, lwd = 2)
 
+dev.off()
 # Save RData
 moreAssumptions <- data.frame(x1, x2, x3, x4, x5, x6, x7, x8, x9,
                               y1, y2, y3, y4, y5, y6, y7, y8, y9)

@@ -1427,8 +1427,8 @@ Some remarks about this expression:
 
 ```
 
-```{block, type = 'rmdexercise'}
-Load the dataset `assumptions.RData`. We are going to work with the regressions `y2 ~ x2`, `y3 ~ x3`, `y8 ~ x8` and `y9 ~ x9`, in order to identify which transformation gives the best fit. (For the purpose of illustration, we do not care if the assumptions are respected.) For these, do the following:
+```{block2, type = 'rmdexercise'}
+Load the dataset `assumptions.RData`. We are going to work with the regressions `y2 ~ x2`, `y3 ~ x3`, `y8 ~ x8` and `y9 ~ x9`, in order to identify which transformation of Figure \@ref(fig:nonlineartransf) gives the best fit. (For the purpose of illustration, we do not care if the assumptions are respected.) For these, do the following:
 
 - Find the transformation that yields the largest $R^2$.
 - Compare the original and the transformed linear models.
@@ -1438,6 +1438,7 @@ Some hints:
 - `y2 ~ x2` has a negative dependence, so look at the right panel of the transformations figure.
 - `y3 ~ x3` seems to have just a subtle nonlinearity... Will it be worth to attempt a transformation?
 - For `y9 ~ x9`, try with also with `exp(-abs(x9))`, `log(abs(x9))` and `2^abs(x9)`. (`abs` computes the absolute value.)
+
 ```
 
 ## Exercises and case studies
@@ -1461,37 +1462,59 @@ Import the following datasets into `R Commander` indicating the right formatting
 Create the file `datasets.RData` for saving all the datasets together.
 ```
 
+```{block, type = 'rmdtip'}
+There are a good number of datasets directly available in `R`:
+
+- To **inspect them**, go to `'Data' -> 'Data in packages' -> 'List datasets in packages'` and you will get a long list of the available datasets, the package where they are stored and a small description about them. Or, in `R`, simply type `data()`.
+
+- To **load a dataset**, go to `'Data' -> 'Data in packages' -> 'Read dataset from an attached package...'` and select the package and dataset. Or, in `R`, simply type `data(nameDataset, package = "namePackage")`.
+
+- To **get help** on the dataset, go to `'Help' -> 'Help on active dataset (if available)'` or simply type `help(nameDataset)`.
+
+As you can see, this is a handy way of accessing a good number of datasets directly from `R`.
+```
+
+```{block, type = 'rmdexercise'}
+Import the datasets `Titanic` (`datasets` package), `PublicSchools` (`sandwich` package) and `USArrests` (`datasets` package). Describe briefly the characteristics of each dataset (dimensions, variables, context).
+```
+
+
 ### Simple data management
 
-<!--
 ```{block, type = 'rmdexercise'}
-Perform the following data management operations:
+Perform the following data management operations. Remember to select the adequate dataset as the active one:
 
 - Load `datasets.RData`.
-- Establish the case names in `la-liga-2015-2016` as the variable `Team`.
+- Establish the case names in `la-liga-2015-2016` as the variable `Team` (if they were not set).
 - Establish the case names in `wdi-countries` as the variable `Country`.
-- Create a new variable named 
-- Delete a row
-- Delete a variable
-- Add a new row
-- Set the observation
-- Set the observation     
+- In `la-liga-2015-2016`, create a new variable named `Goals.wrt.mean`, defined as `Goals - mean(Goals)`.
+- In `wdi-countries`, create a new variable that standarizes^[The standarization of $X_1,\ldots,X_n$ is $Z_1,\ldots,Z_n$, with $Z_i=\frac{X_i-\bar X}{s_x}$, where $s_x$ is the standard deviation of $X_1,\ldots,X_n$] the `GDP.growth`. Call it `GDP.growth`.
+- Delete the variable `Species` from `iris`.
+- For `la-liga-2015-2016`, go to `'Edit dataset'` and change the `Points` of `Getafe` to `40`. To do so, click on the cell, change the content and **click OK** or select a new cell to **save changes**. Do not hit `'Enter`' or you will add a new column!. 
+- Explore the menu options of `'Edit dataset'`for adding and removing rows/columns. Is a useful feature for simple edits.
 - Create a `newDatasets.RData` file saving all the modified datasets.
-- Exit `R Commander` and load `newDatasets.RData`.
+- Restart `R Commander` and then load `newDatasets.RData` (ignore the error `'ERROR: There is more than one object in the file...'` and check that all the datasets are indeed available).
 ```
--->
+
 
 ### Computing linear regressions
 
+```{block, type = 'rmdexercise'}
+TBA
 <!--
 Compute the linear regression for:
 - Compute the regression line for
 - Scatterplot
-
+- Outliers
+- Modify the code to
+- Matrix scatterplot
 -->
+```
 
 ### `R` basics
 
+```{block, type = 'rmdexercise'}
+TBA
 <!--
 - Explain in your own words what is the operator `<-` doing.
 - Create the vectors $x = (1.17, 0.41, 0.34, 1.11, 1.02, 0.22, -0.24, -0.27, -0.40, -1.38)$ and $y = (3.63, 1.69, 0.27, 5.83, 2.64, 1.33, 1.22 -0.62, 1.29, -0.43)$. 
@@ -1513,20 +1536,23 @@ Compute the linear regression for:
 - States
 - 
 -->
+```
 
-### Model formulation
+### Model formulation and estimation
 
-<!--
 ```{block, type = 'rmdexercise'}
-Answer the following conceptual questions:
+TBA
+<!--
+Answer the following conceptual questions in your own words:
 
-- Explain in your own words what is the difference between $(\beta_0,\beta_1)$ and $(\hat\beta_0,\hat\beta_1)$.
+- What is the difference between $(\beta_0,\beta_1)$ and $(\hat\beta_0,\hat\beta_1)$.
 - Is $\hat\beta_0$ a random variable? What about $\hat\beta_1$? Justify your answer.
 - What function are the least squares estimates minimizing? 
-```
+- Is $\sigma^2$ affecting 
+-
+-
 -->
-
-### Estimation
+```
 
 ### Assumptions of the linear model
 
@@ -1536,15 +1562,29 @@ The dataset `moreAssumptions.RData` ([download](https://raw.githubusercontent.co
 
 ### Inference
 
+```{block, type = 'rmdexercise'}
+TBA
+```
+
 ### Prediction
+
+```{block, type = 'rmdexercise'}
+TBA
+```
 
 ### ANOVA and model fit
 
+```{block, type = 'rmdexercise'}
+TBA
+```
+
 ### Nonlinear relations
 
-<!--
-Quadratic, exponential, square-root or logarithmic trend?
--->
+```{block2, type = 'rmdexercise'}
+Load `moreAssumptions`. For the regressions `y1 ~ x1`, `y2 ~ x2`, `y6 ~ x6` and `y9 ~ x9`, identify which nonlinear transformation yields the largest $R^2$. For that transformation, check wether the assumptions are verified.
+
+Hints: use the transformations in Figure \@ref(fig:nonlineartransf) for the three first regressions. For `y9 ~ x9`, try with `(5 - x9)^2`, `abs(x9 - 5)` and `abs(x9 - 5)^3`.
+```
 
 ### Case study: *Moore's law *
 
@@ -1609,29 +1649,27 @@ knitr::include_url("https://www.youtube.com/embed/3xj338ACri8")
 @Herndon2013 made the data of the study publicly available. You can download it [here](http://www.peri.umass.edu/236/hash/31e2ff374b6377b2ddec04deaa6388b1/publication/566/).
 
 ```{block, type = 'rmdexercise'}
-The dataset `hap.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/hap.txt)) contains data for 20 advanced economies in the time period 1946–2009, and is the data source for the papers aforementioned. The variable `dRGDP` represents the real GDP growth (as a percentage) and 
-`debtgdp` represents the percentage of public debt with respect to the GDP. 
+The dataset `hap.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/hap.txt)) contains data for 20 advanced economies in the time period 1946–2009, and is the data source for the papers aforementioned. The variable `dRGDP` represents the real GDP growth (as a percentage) and `debtgdp` represents the percentage of public debt with respect to the GDP. 
 
 - Import the data and save it as `hap`.
 - Set the case names of `hap` as `Country.Year`.
-- What is the covariance between `dRGDP` and `debtgdp`? What is the standard deviation of each variable?
 - Summarize `dRGDP` and `debtgdp`. What are their minimum and maximum values?
-- Show the scatterplot of `dRGDP` vs `debtgdp` with the regression line.
+- What is the correlation between `dRGDP` and `debtgdp`? What is the standard deviation of each variable?
+- Show the scatterplot of `dRGDP` vs `debtgdp` with the regression line. Is this coherent with what was stated in the video at 1:30?
 - Do you see any gap on the data around 90%? Is there any substantial change for `dRGDP` around there? 
 - Compute the linear regression of `dRGDP` on `debtgdp` and summarize the fit.
-- What are the fitted coefficients? What are the standard errors? What is the $R^2$? 
+- What are the fitted coefficients? What are their standard errors? What is the $R^2$? 
 - Compute the ANOVA table. How many degrees of freedom are? What is the SSR? What is SSE? What is the $p$-value for $H_0:\beta_1=0$?
+- Is SSR larger than SSE? Is this coherent with the resulting $R^2$?
 - Are $\beta_0$ and $\beta_1$ significant at level $\alpha=0.05$? And at level $\alpha=0.10,0.01$?
 - Compute the CIs for the coefficients. Can we conclude that the effect of `debtgdp` on `dRGDP` is positive? And negative? 
 - Predict the average growth for levels of debt of 60%, 70%, 80%, 90%, 100% and 110%. Compute the 95% CIs for all of them.
 - Predict the growth for the previous levels of debt. Compute also the CI for them. Is there a marked difference on the CIs for debt levels below and above 90%?
-- Which assumptions of the linear model you think are satisfied? Should we trust blindly the results obtained assuming the assumptions were satisfied?
+- Which assumptions of the linear model you think are satisfied? Should we trust blindly the inferential results obtained assuming that the assumptions were satisfied?
 ```
 
-### Case study
+### Case study: *Engel curves*
 
-<!-- : a marketing plan -->
+TBA
 
-### Case study
 
-<!-- : food spenditure vs income -->
