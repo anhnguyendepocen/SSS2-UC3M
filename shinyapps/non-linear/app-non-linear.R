@@ -29,7 +29,7 @@ ui <- fluidPage(align = "center",
       selectInput(inputId = "dataType", label = "Dataset pattern:",
                   choices = c("Linear", "Quadratic", "Square root", "Logarithm",
                               "Exponential", "Negative exponential")),
-      selectInput(inputId = "transfType", label = "Transformation:",
+      selectInput(inputId = "transfType", label = "Transform x into:",
                   choices = c("x", "x^2", "sqrt(x)", "log(x)", 
                               "exp(x)", "exp(-x)"))
 
@@ -69,7 +69,7 @@ server <- function(input, output) {
     modTransf <- lm(y ~ xTransf)
     
     # Plot
-    par(mfrow = c(1, 2), mar = c(3.75, 4, 3, 1) + 0.1, oma = rep(0, 4))
+    par(mfrow = c(1, 2), mar = c(4, 4, 3, 1) + 0.1, oma = rep(0, 4))
     plot(x, y, pch = 16)
     title(main = substitute(expr = "Original predictor. " * R^2 * " = " * R2,
                             list(R2 = sprintf("%.3f", summary(mod)$r.squared))),
