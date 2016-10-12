@@ -66,9 +66,9 @@ We are going to do the following. First, import the data into `R Commander` and 
         ```
         
         Select the *response variable*. This is the variable denoted by $Y$ that we want to predict/explain. Then select the *explanatory variable* (also known as the *predictor*). It is denoted by $X$ and is the variable used to predict/explain $Y$. Recall the form of the linear model:
-        $$
+        \begin{align*}
         Y=\beta_0+\beta_1X+\varepsilon
-        $$
+        \end{align*}
         
         In our case $Y=$`MathMean` and  $X=$`logGDPp`, so select them and click `'OK'`^[In principle, you could pick more than one explanatory variables using the `'Control'` or `'Shift'` keys, but that corresponds to the *multiple linear regression* (covered in Chapter 3).]. 
     
@@ -118,8 +118,8 @@ We are going to do the following. First, import the data into `R Commander` and 
         ```{r, out.width = '90%', fig.asp = 1, fig.align = 'center'}
         scatterplot(MathMean ~ logGDPp, reg.line = lm, smooth = FALSE, spread = FALSE,
                     id.method = 'mahal', id.n = 3, boxplots = FALSE, span = 0.5,
-                    ellipse = FALSE, levels = c(.5, .9), main = "Average Math score
-                    vs. logGDPp", pch = c(16), data = pisa)
+                    ellipse = FALSE, levels = c(.5, .9), 
+                    main = "Average Math score vs. logGDPp", pch = c(16), data = pisa)
         ```
         
         There are three clear *outliers*^[The outliers have a considerable impact on the regression line, as we will see later.]: Vietnam, Shanghai-China and Qatar. The first two are non high-income economies that perform exceptionally well in the test (although Shanghai-China is a cherry-picked region of China). On the other hand, Qatar is a high-income economy that has really poor scores.
@@ -129,8 +129,9 @@ We are going to do the following. First, import the data into `R Commander` and 
         ```{r, out.width = '90%', fig.asp = 1, fig.align = 'center', results = 'hide'}
         scatterplot(MathMean ~ logGDPp, reg.line = lm, smooth = FALSE, spread = FALSE, 
                     id.method = 'mahal', id.n = 65, id.cex = 0.75, boxplots = FALSE, 
-                    span = 0.5, ellipse = FALSE, levels = c(.5, .9), main = "Average 
-                    Math score vs. logGDPp", pch = c(16), cex = 0.75, data = pisa)
+                    span = 0.5, ellipse = FALSE, levels = c(.5, .9), 
+                    main = "Average Math score vs. logGDPp", pch = c(16), cex = 0.75,
+                    data = pisa)
         ```
     
 If you understood the previous analysis, then you should be able to perform the next ones on your own.
@@ -255,8 +256,9 @@ The most interesting panels in Figure \@ref(fig:mscatter2) for our study are `Ca
 ```{r, echo = FALSE, results = 'hide', out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = '`Seats2011` vs `Population2010` in the `EU` dataset.'}
 scatterplot(Seats2011 ~ Population2010, reg.line = lm, smooth = FALSE, spread = FALSE, 
             id.method = 'mahal', id.n = 25, id.cex = 0.75, boxplots = FALSE, span = 0.5, 
-            ellipse = FALSE, levels = c(.5, .9), main = "Approportionment in the EU 
-            parliament in 2011", pch = c(16), cex = 0.75, data = EU)
+            ellipse = FALSE, levels = c(.5, .9), 
+            main = "Approportionment in the EU parliament in 2011", pch = c(16), 
+            cex = 0.75, data = EU)
 ```
 
 There are some countries clearly detrimented and benefited by this apportionment. For example, France and Spain are under-represented and, on the other hand, Germany, Hungary and Czech Republic are over-represented (Q2). 
@@ -292,17 +294,17 @@ We see that the Cambridge Compromise has a larger $R^2$ and a lower intercept th
 ```{r, echo = FALSE, results = 'hide', out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = '`Seats2011` vs `Population2010` in the `EU` dataset, Germany excluded.'}
 scatterplot(Seats2011 ~ Population2010, reg.line = lm, smooth = FALSE, spread = FALSE, 
             id.method = 'mahal', id.n = 25, id.cex = 0.75, boxplots = FALSE, span = 0.5,
-            ellipse = FALSE, levels = c(.5, .9), main = "Approportionment in the EU 
-            parliament (Germany excl.)", pch = c(16), cex = 0.75, data = EU, 
-            subset = -1)
+            ellipse = FALSE, levels = c(.5, .9), 
+            main = "Approportionment in the EU parliament (Germany excl.)", 
+            pch = c(16), cex = 0.75, data = EU, subset = -1)
 ```
 
 ```{r, echo = FALSE, results = 'hide', out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = '`CamCom2011` vs `Population2010` in the `EU` dataset, Germany excluded.'}
 scatterplot(CamCom2011 ~ Population2010, reg.line = lm, smooth = FALSE, spread = FALSE, 
             id.method = 'mahal', id.n = 25, id.cex = 0.75, boxplots = FALSE, span = 0.5, 
-            ellipse = FALSE, levels = c(.5, .9), main = "Proposal for approportionment 
-            in the EU parliament (Germany excl.)", pch = c(16), cex = 0.75, data = EU, 
-            subset = -1)
+            ellipse = FALSE, levels = c(.5, .9), 
+            main = "Proposal for approportionment in the EU parliament (Germany excl.)",
+            pch = c(16), cex = 0.75, data = EU, subset = -1)
 ```
 
 ```{block, type = 'rmdexercise'}
@@ -659,33 +661,33 @@ Do the following:
 ## Model formulation and estimation by least squares
 
 The simple linear model is a statistical tool for describing the relation between two random variables, $X$ and $Y$. For example, in the `pisa` dataset, $X$ could be `ReadingMean` and $Y=$ `MathMean`. The linear model is *constructed by assuming* that the linear relation
-\begin{equation}
-Y = \beta_0 + \beta_1 X + \varepsilon \label{eq:1}
-\end{equation}
-holds between $X$ and $Y$. In (\@ref(eq:1)), $\beta_0$ and $\beta_1$ are known as the *intercept* and *slope*, respectively. $\varepsilon$ is a random variable with mean zero and independent from $X$. It describes the *error* around the mean, or the effect of other variables that we do not model. Another way of looking at (\@ref(eq:1)) is
-\begin{equation}
-\mathbb{E}[Y|X=x]=\beta_0+\beta_1x, \label{eq:2}
-\end{equation}
+\begin{align}
+Y = \beta_0 + \beta_1 X + \varepsilon (\#eq:1)
+\end{align}
+holds between $X$ and $Y$. In \@ref(eq:1), $\beta_0$ and $\beta_1$ are known as the *intercept* and *slope*, respectively. $\varepsilon$ is a random variable with mean zero and independent from $X$. It describes the *error* around the mean, or the effect of other variables that we do not model. Another way of looking at \@ref(eq:1) is
+\begin{align}
+\mathbb{E}[Y|X=x]=\beta_0+\beta_1x, (\#eq:2)
+\end{align}
 since $\mathbb{E}[\varepsilon|X=x]=0$. 
 
-The Left Hand Side (LHS) of (\@ref(eq:2)) is the *conditional expectation* of $Y$ given $X$. It represents how the mean of the random variable $Y$ is changing according to a particular value, denoted by $x$, of the random variable $X$. With the RHS, what we are saying is that the mean of $Y$ is changing in a *linear* fashion with respect to the value of $X$. Hence the interpretation of the coefficients:
+The Left Hand Side (LHS) of \@ref(eq:2) is the *conditional expectation* of $Y$ given $X$. It represents how the mean of the random variable $Y$ is changing according to a particular value, denoted by $x$, of the random variable $X$. With the RHS, what we are saying is that the mean of $Y$ is changing in a *linear* fashion with respect to the value of $X$. Hence the interpretation of the coefficients:
 
 - $\beta_0$: is the mean of $Y$ when $X=0$.
 - $\beta_1$: is the increment in mean of $Y$ for an increment of one unit in $X=x$.
 
 If we have a sample $(X_1,Y_1),\ldots,(X_n,Y_n)$ for our random variables $X$ and $Y$, we can estimate the unknown coefficients $\beta_0$ and $\beta_1$. In the `pisa` dataset, the sample are the observations for `ReadingMean` and `MathMean`. A possible way of estimating $(\beta_0,\beta_1)$ is by minimizing the *Residual Sum of Squares* (RSS):
-$$
+\begin{align*}
 \text{RSS}(\beta_0,\beta_1)=\sum_{i=1}^n(Y_i-\beta_0-\beta_1X_i)^2.
-$$
+\end{align*}
 In other words, we look for the estimators $(\hat\beta_0,\hat\beta_1)$ such that
-$$
+\begin{align*}
 (\hat\beta_0,\hat\beta_1)=\arg\min_{(\beta_0,\beta_1)\in\mathbb{R}^2} \text{RSS}(\beta_0,\beta_1).
-$$
+\end{align*}
 
 It can be seen that *the minimizers of the RSS*^[They are unique and always exist. They can be obtained by solving $\frac{\partial}{\partial \beta_0}\text{RSS}(\beta_0,\beta_1)=0$ and $\frac{\partial}{\partial \beta_1}\text{RSS}(\beta_0,\beta_1)=0$.] are
-\begin{equation}
-\hat\beta_0=\bar{Y}-\hat\beta_1\bar{X},\quad \hat\beta_1=\frac{s_{xy}}{s_x^2},\label{eq:3}
-\end{equation}
+\begin{align}
+\hat\beta_0=\bar{Y}-\hat\beta_1\bar{X},\quad \hat\beta_1=\frac{s_{xy}}{s_x^2},(\#eq:3)
+\end{align}
 where:
 
 - $\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$ is the *sample mean*.
@@ -730,18 +732,18 @@ In an abuse of notation, the term *regression line* is often used to denote both
 Once we have the least squares estimates $(\beta_0,\beta_1)$, we can define the next two concepts:
 
 - The *fitted values* $\hat Y_1,\ldots,\hat Y_n$, where 
-$$
+\begin{align*}
 \hat Y_i=\hat\beta_0+\hat\beta_1X_i,\quad i=1,\ldots,n.
-$$
+\end{align*}
 They are the vertical projections of $Y_1,\ldots,Y_n$ into the fitted line (see Figure \@ref(fig:leastsquares)).
 
 - The *estimated residuals* $\hat \varepsilon_1,\ldots,\hat \varepsilon_n$, where 
-$$
+\begin{align*}
 \hat\varepsilon_i=Y_i-\hat Y_i,\quad i=1,\ldots,n.
-$$
+\end{align*}
 They are the vertical distances between actual data and fitted data. Hence, another way of writing the minimum RSS is $\sum_{i=1}^n(Y_i-\hat\beta_0-\hat\beta_1Y_i)^2=\sum_{i=1}^n\hat\varepsilon_i^2$.
 
-To conclude this section, we check that the regression coefficients given by `lm` are indeed the ones given in (\@ref(eq:3)).
+To conclude this section, we check that the regression coefficients given by `lm` are indeed the ones given in \@ref(eq:3).
 
 ```{r, echo = TRUE, collapse = TRUE}
 # Covariance
@@ -785,9 +787,9 @@ iii. **Normality**: $\varepsilon_i\sim\mathcal{N}(0,\sigma^2)$ for $i=1,\ldots,n
 iv. **Independence of the errors**: $\varepsilon_1,\ldots,\varepsilon_n$ are independent (or uncorrelated, $\mathbb{E}[\varepsilon_i\varepsilon_j]=0$, $i\neq j$, since they are assumed to be Normal by iii).
 
 A good one-line summary of the linear model is (independence is assumed)
-$$
+\begin{align*}
 Y|X=x\sim \mathcal{N}(\beta_0+\beta_1x,\sigma^2)
-$$
+\end{align*}
 
 ```{block, type = 'rmdinsight'}
 Recall:
@@ -823,19 +825,19 @@ The distributions are derived conditionally on the sample predictors $X_1,\ldots
 ### Distributions of the fitted coefficients
 
 The distributions of $\hat\beta_0$ and $\hat\beta_1$ are:
-\begin{equation}
-\hat\beta_0\sim\mathcal{N}\left(\beta_0,\mathrm{SE}(\hat\beta_0)^2\right),\quad\hat\beta_1\sim\mathcal{N}\left(\beta_1,\mathrm{SE}(\hat\beta_1)^2\right)\label{eq:norm1}
-\end{equation}
+\begin{align}
+\hat\beta_0\sim\mathcal{N}\left(\beta_0,\mathrm{SE}(\hat\beta_0)^2\right),\quad\hat\beta_1\sim\mathcal{N}\left(\beta_1,\mathrm{SE}(\hat\beta_1)^2\right)(\#eq:norm1)
+\end{align}
 where
-\begin{equation}
-\mathrm{SE}(\hat\beta_0)^2=\frac{\sigma^2}{n}\left[1+\frac{\bar X^2}{s_x^2}\right],\quad \mathrm{SE}(\hat\beta_1)^2=\frac{\sigma^2}{ns_x^2}.\label{eq:se1}
-\end{equation}
-Recall that an equivalent form for (\@ref(eq:norm1)) is (why?)
-$$
+\begin{align}
+\mathrm{SE}(\hat\beta_0)^2=\frac{\sigma^2}{n}\left[1+\frac{\bar X^2}{s_x^2}\right],\quad \mathrm{SE}(\hat\beta_1)^2=\frac{\sigma^2}{ns_x^2}.(\#eq:se1)
+\end{align}
+Recall that an equivalent form for \@ref(eq:norm1) is (why?)
+\begin{align*}
 \frac{\hat\beta_0-\beta_0}{\mathrm{SE}(\hat\beta_0)}\sim\mathcal{N}(0,1),\quad\frac{\hat\beta_1-\beta_1}{\mathrm{SE}(\hat\beta_1)}\sim\mathcal{N}(0,1).
-$$
+\end{align*}
 
-Some important remarks on (\@ref(eq:norm1)) and (\@ref(eq:se1)) are
+Some important remarks on \@ref(eq:norm1) and \@ref(eq:se1) are
 
 - **Bias**. Both estimates are unbiased. That means that their expectations are the true coefficients.
 - **Variance**. The variances $\mathrm{SE}(\hat\beta_0)^2$ and $\mathrm{SE}(\hat\beta_1)^2$ have an interesting interpretation in terms of its components:
@@ -851,32 +853,32 @@ Some important remarks on (\@ref(eq:norm1)) and (\@ref(eq:se1)) are
 knitr::include_app('https://egarpor.shinyapps.io/lm-random/', height = '1000px')
 ```
 
-The problem with (\@ref(eq:norm1)) and (\@ref(eq:se1)) is that *$\sigma^2$ is unknown* in practice, so we need to estimate $\sigma^2$ from the data. We do so by computing the *sample variance of the fitted residuals* $\hat\varepsilon_1,\ldots,\hat\varepsilon_n$. First note that *the fitted residuals have zero mean*. This can be easily seen by replacing $\hat\beta_0=\bar Y-\hat\beta_1\bar X$:
-\begin{equation}
+The problem with \@ref(eq:norm1) and \@ref(eq:se1) is that *$\sigma^2$ is unknown* in practice, so we need to estimate $\sigma^2$ from the data. We do so by computing the *sample variance of the fitted residuals* $\hat\varepsilon_1,\ldots,\hat\varepsilon_n$. First note that *the fitted residuals have zero mean*. This can be easily seen by replacing $\hat\beta_0=\bar Y-\hat\beta_1\bar X$:
+\begin{align}
 \bar\varepsilon =\frac{1}{n}\sum_{i=1}^n(Y_i-\hat\beta_0-\hat\beta_1X_i)=\frac{1}{n}\sum_{i=1}^n(Y_i-\bar Y+\hat\beta_1\bar X-\hat\beta_1X_i)=0.
-\end{equation}
+\end{align}
 Due to this, we can and we can do it by computing a *rescaled* sample variance of the fitted residuals:
-$$
+\begin{align*}
 \hat\sigma^2=\frac{\sum_{i=1}^n\hat\varepsilon_i^2}{n-2}.
-$$
+\end{align*}
 Note the $n-2$ in the denominator, instead of $n$! $n-2$ are the *degrees of freedom* and is the number of data points minus the number of already fitted parameters. The interpretation is that "we have consumed $2$ degrees of freedom of the sample on fitting $\hat\beta_0$ and $\hat\beta_1$".
 
 If we use the estimate $\hat\sigma^2$ instead of $\sigma^2$, we get different -- and more useful -- distributions for $\beta_0$ and $\beta_1$:
-\begin{equation}
-\frac{\hat\beta_0-\beta_0}{\hat{\mathrm{SE}}(\hat\beta_0)}\sim t_{n-2},\quad\frac{\hat\beta_1-\beta_1}{\hat{\mathrm{SE}}(\hat\beta_1)}\sim t_{n-2}\label{eq:norm3}
-\end{equation}
+\begin{align}
+\frac{\hat\beta_0-\beta_0}{\hat{\mathrm{SE}}(\hat\beta_0)}\sim t_{n-2},\quad\frac{\hat\beta_1-\beta_1}{\hat{\mathrm{SE}}(\hat\beta_1)}\sim t_{n-2}(\#eq:norm3)
+\end{align}
 where $t_{n-2}$ represents the *Student's $t$ distribution*^[The Student's $t$ distribution has *heavier tails* than the normal, which means that large observations in absolute value are more likely. $t_n$ converges to a $\mathcal{N}(0,1)$ when $n$ is large. For example, with $n$ larger than $30$, the normal is a good approximation.] with $n-2$ degrees of freedom and
-\begin{equation}
-\hat{\mathrm{SE}}(\hat\beta_0)^2=\frac{\hat\sigma^2}{n}\left[1+\frac{\bar X^2}{s_x^2}\right],\quad \hat{\mathrm{SE}}(\hat\beta_1)^2=\frac{\hat\sigma^2}{ns_x^2}\label{eq:se2}
-\end{equation}
-are the estimates of $\mathrm{SE}(\hat\beta_0)^2$ and $\mathrm{SE}(\hat\beta_1)^2$. The LHSs of (\@ref(eq:norm3)) are called *$t$-statistics* because of their distribution. The interpretation of (\@ref(eq:se2)) is analogous to the one of (\@ref(eq:se1)).
+\begin{align}
+\hat{\mathrm{SE}}(\hat\beta_0)^2=\frac{\hat\sigma^2}{n}\left[1+\frac{\bar X^2}{s_x^2}\right],\quad \hat{\mathrm{SE}}(\hat\beta_1)^2=\frac{\hat\sigma^2}{ns_x^2}(\#eq:se2)
+\end{align}
+are the estimates of $\mathrm{SE}(\hat\beta_0)^2$ and $\mathrm{SE}(\hat\beta_1)^2$. The LHSs of \@ref(eq:norm3) are called *$t$-statistics* because of their distribution. The interpretation of \@ref(eq:se2) is analogous to the one of \@ref(eq:se1).
 
 ### Confidence intervals for the coefficients
 
-Due to (\@ref(eq:norm3)) and (\@ref(eq:se2)), we can have the $100(1-\alpha)\%$ Confidence Intervals (CI) for the coefficients:
-\begin{equation}
-\left(\hat\beta_j\pm\hat{\mathrm{SE}}(\hat\beta_j)t_{n-2;\alpha/2}\right),\quad j=0,1,\label{eq:ci}
-\end{equation}
+Due to \@ref(eq:norm3) and \@ref(eq:se2), we can have the $100(1-\alpha)\%$ Confidence Intervals (CI) for the coefficients:
+\begin{align}
+\left(\hat\beta_j\pm\hat{\mathrm{SE}}(\hat\beta_j)t_{n-2;\alpha/2}\right),\quad j=0,1,(\#eq:ci)
+\end{align}
 where $t_{n-2;\alpha/2}$ is the *$\alpha/2$-upper quantile of the distribution $t_{n-2}$* (see Figure \@ref(fig:ttest)). Usually, $\alpha=0.10,0.05,0.01$ are considered.
 
 ```{r, ttest, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The Student\'s $t$ distribution for the $t$-statistics associated to null intercept and slope, for the `y1 ~ x1` regression of the `assumptions` dataset.'}
@@ -941,9 +943,9 @@ For the above regressions, can we conclude with a 95% confidence that the effect
 ```
 
 A CI for $\sigma^2$ can be also computed, but is less important in practice. The formula is:
-$$
+\begin{align*}
 \left(\frac{n-2}{\chi^2_{n-2;\alpha/2}}\hat\sigma^2,\frac{n-2}{\chi^2_{n-2;1-\alpha/2}}\hat\sigma^2\right)
-$$
+\end{align*}
 where $\chi^2_{n-2;q}$ is the $q$-upper quantile of the *$\chi^2$ distribution*^[$\chi_n^2$ is the distribution of the sum of the squares of $n$ random variables $\mathcal{N}(0,1)$.] with $n-2$ degrees of freedom, $\chi^2_{n-2}$. Note that the CI is *not symmetric* around $\hat\sigma^2$.
 
 ```{block, type = 'rmdexercise'}
@@ -961,14 +963,14 @@ Answers: `c(1720.669, 3104.512)`, `c(1635.441, 3306.257)` and `c(1484.639, 3752.
 
 ### Testing on the coefficients
 
-The distributions in (\@ref(eq:norm3)) also allow to conduct a formal *hypothesis test* on the coefficients $\beta_j$, $j=0,1$. For example the test for *significance* (shortcut for *significantly difference from zero*) is specially important, that is, the test of the hypotheses
-$$
+The distributions in \@ref(eq:norm3) also allow to conduct a formal *hypothesis test* on the coefficients $\beta_j$, $j=0,1$. For example the test for *significance* (shortcut for *significantly difference from zero*) is specially important, that is, the test of the hypotheses
+\begin{align*}
 H_0:\beta_j=0
-$$
+\end{align*}
 for $j=0,1$. The test of $H_0:\beta_1=0$ is specially interesting, since it allows to answer whether *the variable $X$ has a significant linear effect on $Y$*. The statistic used for testing for significance is the $t$-statistic
-$$
+\begin{align*}
 \frac{\hat\beta_j-0}{\hat{\mathrm{SE}}(\hat\beta_j)},
-$$
+\end{align*}
 which is distributed as a $t_{n-2}$ *under the (veracity of) the null hypothesis*. 
 
 ```{block, type = 'rmdinsight'}
@@ -993,13 +995,13 @@ More formally, the $p$-value is defined as:
 Therefore, **if the $p$-value is small** (smaller than the chosen level $\alpha$), **it is unlikely that the evidence against $H_0$ is due to randomness. As a consequence, $H_0$ is rejected**. If the $p$-value is large (larger than $\alpha$), then it is more possible that the evidences against $H_0$ are merely due to the randomness of the data. In this case, we do not reject $H_0$.
 
 The null hypothesis $H_0$ is tested *against* the *alternative hypothesis*, $H_1$. If $H_0$ is rejected, it is *rejected in favor* of $H_1$. The alternative hypothesis can be *bilateral*, such as 
-$$
+\begin{align*}
 H_0:\beta_j= 0\quad\text{vs}\quad H_1:\beta_j\neq 0
-$$
+\end{align*}
 or *unilateral*, such as
-$$
+\begin{align*}
 H_0:\beta_j= 0\quad\text{vs}\quad H_1:\beta_j<0\quad(\text{or } H_1:\beta_j>0).
-$$
+\end{align*}
 For the moment, we will focus only on the bilateral case.
 
 ```{block, type = 'rmdinsight'}
@@ -1050,10 +1052,10 @@ The forecast of $Y$ from $X=x$ in the linear model is approached by two differen
 2. Prediction of the **conditional response** $Y|X=x$. This is a random variable, which in the linear model is distributed as $\mathcal{N}(\beta_0+\beta_1x,\sigma^2)$.
 
 Let's study first the inference on the conditional mean. $\beta_0+\beta_1x$ is estimated by $\hat y=\hat\beta_0+\hat\beta_1x$. Then, is a *deterministic quantity estimated by a random variable*. Moreover, it can be shown that the $100(1-\alpha)\%$ CI for $\beta_0+\beta_1x$ is
-\begin{equation}
-\left(\hat y \pm t_{n-2:\alpha/2}\sqrt{\frac{\hat\sigma^2}{n}\left(1+\frac{(x-\bar x)^2}{s_x^2}\right)}\right).\label{eq:ci1}
-\end{equation}
-Some important remarks on (\@ref(eq:ci1)) are:
+\begin{align}
+\left(\hat y \pm t_{n-2:\alpha/2}\sqrt{\frac{\hat\sigma^2}{n}\left(1+\frac{(x-\bar x)^2}{s_x^2}\right)}\right).(\#eq:ci1)
+\end{align}
+Some important remarks on \@ref(eq:ci1) are:
 
 - **Bias**. The CI is centered around $\hat y=\hat\beta_0+\hat\beta_1x$, which obviously depends on $x$.
 
@@ -1118,10 +1120,10 @@ For the `pisa` dataset, do the following:
 ```
 
 Let's study now the prediction of the conditional response $Y|X$. $Y|X$ is predicted by $\hat y=\hat\beta_0+\hat\beta_1x$ (the estimated conditional mean). So we estimate the unknown response $Y|X$ simply by its conditional mean. This is clearly a different situation: now we **estimate a random variable by another random variable**. As a consequence, there is a price to pay in terms of extra variability, and this is reflected in the $100(1-\alpha)\%$ CI for $Y|X$:
-\begin{equation}
-\left(\hat y \pm t_{n-2:\alpha/2}\sqrt{\hat\sigma^2+\frac{\hat\sigma^2}{n}\left(1+\frac{(x-\bar x)^2}{s_x^2}\right)}\right)\label{eq:ci2}
-\end{equation}
-The CI (\@ref(eq:ci2)) is very similar to (\@ref(eq:ci1)), but there is a key difference: it is always longer due to the extra term $\hat\sigma^2$. In Figure \@ref(fig:cipred) you can visualize the differences between both CIs.
+\begin{align}
+\left(\hat y \pm t_{n-2:\alpha/2}\sqrt{\hat\sigma^2+\frac{\hat\sigma^2}{n}\left(1+\frac{(x-\bar x)^2}{s_x^2}\right)}\right)(\#eq:ci2)
+\end{align}
+The CI \@ref(eq:ci2) is very similar to \@ref(eq:ci1), but there is a key difference: it is always longer due to the extra term $\hat\sigma^2$. In Figure \@ref(fig:cipred) you can visualize the differences between both CIs.
 
 ```{block, type = 'rmdinsight'}
 Similarities and differences in the prediction of the conditional mean $\mathbb{E}[Y|X=x]$ and conditional response $Y|X=x$:
@@ -1155,23 +1157,27 @@ Redo the third and fourth points of the previous exercise with CIs for the condi
 
 ## ANOVA and model fit {#fit}
 
-As we have seen in Sections \@ref(inference) and \@ref(prediction), the variance of the error, $\sigma^2$, plays a fundamental role in the inference for the model coefficients and prediction. In this section we will see how the variance of $Y$ is decomposed into a part twat corresponds to the regression and another that corresponds to the error. This decomposition is called the *Analysis of variance* (ANOVA). 
+As we have seen in Sections \@ref(inference) and \@ref(prediction), the variance of the error, $\sigma^2$, plays a fundamental role in the inference for the model coefficients and prediction. In this section we will see how the variance of $Y$ is decomposed into a part twat corresponds to the regression and another that corresponds to the error. This decomposition is called the *ANalysis Of VAriance* (ANOVA). 
 
-Before entering explaining ANOVA, is important to recall an interesting result: *the mean of the fitted values $\hat Y_1,\ldots,\hat Y_n$ is the mean of $Y_1,\ldots, Y_n$*. This is easily seen if we plug-in the expression of $\hat\beta_0$:
-$$
+Before explaining ANOVA, it is important to recall an interesting result: *the mean of the fitted values $\hat Y_1,\ldots,\hat Y_n$ is the mean of $Y_1,\ldots, Y_n$*. This is easily seen if we plug-in the expression of $\hat\beta_0$:
+\begin{align*}
 \frac{1}{n}\sum_{i=1}^n \hat Y_i=\frac{1}{n}\sum_{i=1}^n \left(\hat \beta_0+\hat\beta_1X_i\right)=\hat \beta_0+\hat\beta_1\bar X=\left(\bar Y - \hat\beta_1\bar X \right) + \hat\beta_1\bar X=\bar Y.
-$$
+\end{align*}
 The ANOVA decomposition considers the following measures of variation related with the response:
 
 - $\text{SST}=\sum_{i=1}^n\left(Y_i-\bar Y\right)^2$, the **total sum of squares**. This is the *total variation* of $Y_1,\ldots,Y_n$, since $\text{SST}=ns_y^2$, where $s_y^2$ is the sample variance of $Y_1,\ldots,Y_n$.
-- $\text{SSR}=\sum_{i=1}^n\left(\hat Y_i-\bar Y\right)^2$, the **regression sum of squares**^[Recall that SSR is different from RSS (Residual Sum of Squares).]. This is the variation explained by the regression line, that is, *the variation from $\bar Y$ that is explained by the conditional mean $\hat\beta_0+\hat\beta_1X_i$*. $\text{SSR}=ns_{\hat y}^2$, where $s_{\hat y}^2$ is the sample variance of $\hat Y_1,\ldots,\hat Y_n$.
+- $\text{SSR}=\sum_{i=1}^n\left(\hat Y_i-\bar Y\right)^2$, the **regression sum of squares**^[Recall that SSR is different from RSS (Residual Sum of Squares).]. This is the variation explained by the regression line, that is, *the variation from $\bar Y$ that is explained by the conditional mean $\hat Y_i=\hat\beta_0+\hat\beta_1X_i$*. $\text{SSR}=ns_{\hat y}^2$, where $s_{\hat y}^2$ is the sample variance of $\hat Y_1,\ldots,\hat Y_n$.
 - $\text{SSE}=\sum_{i=1}^n\left(Y_i-\hat Y_i\right)^2$, the **sum of squared errors**. Is the variation around the conditional mean. Recall that $\text{SSE}=\sum_{i=1}^n \hat\varepsilon_i^2=(n-2)\hat\sigma^2$, where $\hat\sigma^2$ is the sample variance of $\hat \varepsilon_1,\ldots,\hat \varepsilon_n$. 
 
 The ANOVA decomposition is
-$$
-\text{SST} = \text{SSR} + \text{SSE}
-$$
-and its graphical interpretation is in Figure \@ref(fig:anova).
+\begin{align}
+\underbrace{\text{SST}}_{\text{Variation of }Y_i's} = \underbrace{\text{SSR}}_{\text{Variation of }\hat Y_i's} + \underbrace{\text{SSE}}_{\text{Variation of }\hat \epsilon_i's} (\#eq:anova)
+\end{align}
+or, equivalently (dividing by $n$ in \@ref(eq:anova)),
+\begin{align*}
+\underbrace{s_y^2}_{\text{Variance of $Y_i$'s}} = \underbrace{s_{\hat y}^2}_{\text{Variance of $\hat Y_i$'s}} + \underbrace{(n-2)/n\hat\sigma^2}_{\text{Variance of $\hat\varepsilon_i$'s}}.
+\end{align*}
+The graphical interpretation of \@ref(eq:anova) is shown in Figures \@ref(fig:anova) and \@ref(fig:anovaillus).
 
 ```{r, anova, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Visualization of the ANOVA decomposition. SST measures the variation of $Y_1,\\ldots,Y_n$ with respect to $\\bar Y$. SST measures the variation with respect to the conditional means, $\\hat \\beta_0+\\hat\\beta_1X_i$. SSE collects the variation of the residuals.', fig.show = 'hold'}
 knitr::include_graphics("images/R/anova.png")
@@ -1181,7 +1187,7 @@ knitr::include_graphics("images/R/anova.png")
 knitr::include_app('https://egarpor.shinyapps.io/anova/', height = '800px')
 ```
 
-The ANOVA table summarizes the decomposition of the variance. Here is given  in the form used by `R`.
+The ANOVA table summarizes the decomposition of the variance. Here is given in the layout employed by `R`.
 
 |  | Degrees of freedom | Sum Squares | Mean Squares | $F$-value | $p$-value |
 |--|------------|--------|---------|----------------|----------------|
@@ -1200,34 +1206,46 @@ anova(model)
 ```
 
 The "$F$-value" of the ANOVA table represents the value of the $F$-statistic $\frac{\text{SSR}/1}{\text{SSE}/(n-2)}$. This statistic is employed to test 
-$$
+\begin{align*}
 H_0:\beta_1=0\quad\text{vs.}\quad H_1:\beta_1\neq 0,
-$$
-that is, the hypothesis of no linear dependence of $Y$ on $X$. The result of this test is completely equivalent to the $t$-test that we saw in Section \@ref(inference) (but it will have a different meaning in the next chapter). Under $H_0$,
-$$
-F=\frac{\text{SSR}/1}{\text{SSE}/(n-2)}\stackrel{H_0}{\sim} F_{1,n-2},
-$$
-where $F_{1,n-2}$ is the *Snedecor's $F$ distribution*^[The $F_{n,m}$ distribution arises as the quotient of two independent random variables $\chi^2_n$ and $\chi^2_m$, $\frac{\chi^2_n/n}{\chi^2_m/m}$.] with $1$ and $n-2$ degrees of freedom. The $p$-value of this test is the same as the $p$-value of the $t$-test for $H_0:\beta_1=0$.
+\end{align*}
+that is, the hypothesis of no linear dependence of $Y$ on $X$. The result of this test is completely equivalent to the $t$-test for $\beta_1$ that we saw in Section \@ref(inference) (this is something *specific for simple linear regression* -- the $F$-test will not be equivalent to the $t$-test for $\beta_1$ in the next chapter). Under $H_0$,
+\begin{align*}
+F=\frac{\text{SSR}/1}{\text{SSE}/(n-2)}\stackrel{H_0}{\sim} F_{1,n-2}
+\end{align*}
+where $F_{1,n-2}$ is the *Snedecor's $F$ distribution*^[The $F_{n,m}$ distribution arises as the quotient of two independent random variables $\chi^2_n$ and $\chi^2_m$, $\frac{\chi^2_n/n}{\chi^2_m/m}$.] with $1$ and $n-2$ degrees of freedom. If $H_0$ is true, then $F$ is expected to be *small* since SSR will be close to zero. The $p$-value of this test is the same as the $p$-value of the $t$-test for $H_0:\beta_1=0$.
 
-Recall that the $F$-statistic, its $p$-value and degrees of freedom are given in the output of `summary`.
+Recall that the $F$-statistic, its $p$-value and the degrees of freedom are also given in the output of `summary`.
 
 ```{block, type = 'rmdexercise'}
 For the `y6 ~ x6` and `y7 ~ x7` in the `assumptions` dataset, compute their ANOVA tables. Check that the $p$-values of the $t$-test for $\beta_1$ and the $F$-test are the same.
 ```
 
 The *coefficient of determination* $R^2$ is closely related with the ANOVA decomposition. $R^2$ is defined as
-$$
+\begin{align*}
 R^2=\frac{\text{SSR}}{\text{SST}}=\frac{\text{SSR}}{\text{SSR}+\text{SSE}}=\frac{\text{SSR}}{\text{SSR}+(n-2)\hat\sigma^2}
-$$
-$R^2$ measures the **proportion of variation** of the response variable $Y$ that is **explained** by the predictor $X$ through the regression. The proportion of total variation of $Y$ that is not explained is $1-R^2=\frac{\text{SSE}}{\text{SST}}$. Intuitively, $R^2$ measures the **tightness of the data cloud around the regression line**, since is related directly with $\hat\sigma^2$.
+\end{align*}
+$R^2$ measures the **proportion of variation** of the response variable $Y$ that is **explained** by the predictor $X$ through the regression. The proportion of total variation of $Y$ that is not explained is $1-R^2=\frac{\text{SSE}}{\text{SST}}$. Intuitively, $R^2$ measures the **tightness of the data cloud around the regression line**, since is related directly with $\hat\sigma^2$. Check in Figure \@ref(fig:anovaillus) how changing the value of $\sigma^2$ (not $\hat\sigma^2$, but $\hat\sigma^2$ this is obviously dependent on $\sigma^2$) affects the $R^2$.
 
 The $R^2$ is related with the sample *correlation coefficient*
-$$
+\begin{align*}
 r_{xy}=\frac{s_{xy}}{s_xs_y}=\frac{\sum_{i=1}^n \left(X_i-\bar X \right)\left(Y_i-\bar Y \right)}{\sqrt{\sum_{i=1}^n \left(X_i-\bar X \right)^2}\sqrt{\sum_{i=1}^n \left(Y_i-\bar Y \right)^2}}
-$$
-and it can be seen that $R^2=r_{xy}^2$. Interestingly, it also holds that $R^2=r^2_{y\hat y}=\frac{s_{y\hat y}}{s_ys_{\hat y}}$, that is, *the square of the sample correlation coefficient between $Y_1,\ldots,Y_n$ and $\hat Y_1,\ldots,\hat Y_n$ is $R^2$*, a fact that is not immediately evident. It can be visualized with the next code.
+\end{align*}
+and it can be seen that $R^2=r_{xy}^2$. Interestingly, it also holds that $R^2=r^2_{y\hat y}$, that is, *the square of the sample correlation coefficient between $Y_1,\ldots,Y_n$ and $\hat Y_1,\ldots,\hat Y_n$ is $R^2$*, a fact that is not immediately evident. This can be easily by first noting that
+\begin{align}
+\hat Y_i=\hat\beta_0+\hat\beta_1X_i=(\bar Y-\hat\beta_1X_i)+\hat\beta_1X_i=\bar Y+\hat\beta_1(X_i-\bar X) (\#eq:yhat)
+\end{align}
+and then replacing \@ref(eq:yhat) into
+\begin{align*}
+r^2_{y\hat y}=\frac{s_{y\hat y}^2}{s_y^2s_{\hat y}^2}=\frac{\left(\sum_{i=1}^n \left(Y_i-\bar Y \right)\left(\hat Y_i-\bar Y \right)\right)^2}{\sum_{i=1}^n \left(Y_i-\bar Y \right)^2\sum_{i=1}^n \left(\hat Y_i-\bar Y \right)^2}=\frac{\left(\sum_{i=1}^n \left(Y_i-\bar Y \right)\left(\bar Y+\hat\beta_1(X_i-\bar X)-\bar Y \right)\right)^2}{\sum_{i=1}^n \left(Y_i-\bar Y \right)^2\sum_{i=1}^n \left(\bar Y+\hat\beta_1(X_i-\bar X)-\bar Y \right)^2}=r^2_{xy}.
+\end{align*}
 
-```{r, fig.show = 'hold'}
+```{block, type = 'rmdinsight'}
+The equality $R^2=r^2_{y \hat y}$ is still true for the **multiple** linear regression, e.g. $Y=\beta_0+\beta_1X_1+\beta_2X_2+\varepsilon$. On the contrary, there is no coefficient of correlation between three or more variables, so $r_{x_1x_2y}$ does not exist. Hence, $R^2=r^2_{x y}$ is a specific fact for **simple** linear regression.
+```
+
+The result $R^2=r^2_{xy}=r^2_{y\hat y}$ can be checked numerically and graphically with the next code.
+```{r, fig.show = 'hold', collapse = TRUE}
 # Responses generated following a linear model
 set.seed(343567) # Fixes seed, allows to generate the same random data
 x <- rnorm(50)
@@ -1246,47 +1264,25 @@ cor(y, x)^2
 cor(y, yHat)^2
 
 # Plots
-par(mfrow = c(1, 2)) # Display plots in 1 row and 2 columns
 scatterplot(y ~ x, smooth = FALSE)
 scatterplot(y ~ yHat, smooth = FALSE)
 ```
 
+We conclude this section by pointing out two common sins regarding the use of $R^2$. First, recall two important concepts regarding the application of *any* regression model in practice, in particular the linear model:
+
+1. **Correctness**. The linear model is built on certain assumptions, such as the ones we saw in Section \@ref(assumptions). **All the inferential results are based on these assumptions being true!**^[If the assumptions are not satisfied (mismatch between what is assumed to happen in theory and what the data is), then the inference results may be misleading.]. A model is formally *correct* whenever the assumptions on which is based are not violated in the data.
+
+2. **Usefulness**. The usefulness of the model is a more subjective concept, but is usually measured by the accuracy on the prediction and explanation of the response $Y$ by the predictor $X$. For example, $Y=0X+\varepsilon$ is a valid linear model, but is completely useless for predicting $Y$ from $X$.
+
+Figure \@ref(fig:anovaillus) show a fitted regression line to a small dataset, for various levels of $\sigma^2$. All the linear models are *correct* by construction, but the ones with a larger $R^2$ are more *useful* for predicting/explaining $Y$ from $X$, since this is done in a more precise way.
+
 ```{block, type = 'rmdinsight'}
 $R^2$ does not measure the correctness of a linear model but its **usefulness** (for prediction, for *explaining the variance* of $Y$), assuming the model is correct.
 ```
-For example, the following code shows two models equally valid, but with different $R^2$. The first gives more accurate predictions since the error variance is lower.
-```{r}
-# Fixed design
-x <- seq(0, 1, l = 50)
 
-# Errors with different variance
-set.seed(123456)
-eps1 <- rnorm(50, sd = 0.1)
-eps2 <- rnorm(50, sd = 1)
+Trusting blindly the $R^2$ can lead to catastrophic conclusions, since the model may not be correct. Here is a counterexample of a linear regression performed in a data that clearly does not satisfy the assumptions discussed in Section \@ref(assumptions), but despite so it has a large $R^2$. Recall how biased will be the predictions for $x=0.35$ and $x=0.65$!
 
-# Responses generated following a linear model
-y1 <- 1 + 2 * x + eps1
-y2 <- 1 + 2 * x + eps2
-
-# Fits
-reg1 <- lm(y1 ~ x)
-reg2 <- lm(y2 ~ x)
-
-# R^2 depends on the error variance!
-summary(reg1)
-summary(reg2)
-
-# Plot
-scatterplot(y1 ~ x, smooth = FALSE)
-scatterplot(y2 ~ x, smooth = FALSE)
-```
-
-```{block, type = 'rmdinsight'}
-A large $R^2$ means *nothing* if the **assumptions of the model do not hold**.
-```
-
-Here is a counterexample of a linear regression done in a dataset that clearly does not satisfy the assumptions discussed in Section \@ref(assumptions), but despite so it has a large $R^2$.
-```{r}
+```{r, collapse = TRUE}
 # Create data that: 
 # 1) does not follow a linear model
 # 2) the error is heteroskedastic
@@ -1303,6 +1299,10 @@ summary(reg3)
 scatterplot(y3 ~ x, smooth = FALSE)
 ```
 
+So remember:
+```{block, type = 'rmdinsight'}
+A large $R^2$ means *nothing* if the **assumptions of the model do not hold**. $R^2$ is the proportion of variance of $Y$ explained by $X$, but, of course, *only when the linear model is correct*.
+```
 
 ## Nonlinear relationships
 
@@ -1315,7 +1315,7 @@ The linear model is termed *linear* not because the regression curve is a line, 
 The trick is to work with the transformed predictor ($X^2$, $\log(X)$, ...), instead of with the original variable $X$. Then, rather than working with the sample $(X_1,Y_1),\ldots,(X_n,Y_n)$, we consider the transformed sample $(\tilde X_1,Y_1),\ldots,(\tilde X_n,Y_n)$ with (for the above examples):
 
   1. $\tilde X_i=X_i^2$, $i=1,\ldots,n$.
-  2. $\tilde X_i=X_i^3$, $i=1,\ldots,n$.
+  2. $\tilde X_i=\log(X_i)$, $i=1,\ldots,n$.
   3. $\tilde X_i=X_i^3-\log(|X_i|) + 2^{X_i}$, $i=1,\ldots,n$.
 
 ```{r, nonlineartransf, echo = FALSE, warning = FALSE, results = 'hide', out.width = '45%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Some common nonlinear transformations and their negative counterparts. Recall the domain of definition of each transformation.'}
@@ -1340,9 +1340,9 @@ legend("topright", legend = expression(y == -x, y == -x^2, y == -x^3, y == -sqrt
 
 An example of this simple but powerful trick is given as follows. The left panel of Figure \@ref(fig:quadratic) shows the scatterplot for some data `y` and  `x`, together with its fitted regression line. Clearly, the data does not follow a linear pattern, but a nonlinear one. In order to identify which one might be, we compare it against the set of mathematical functions displayed in Figure \@ref(fig:nonlineartransf). We see that the shape of the point cloud is similar to $y=x^2$. Hence, `y` might be better explained by the *square* of `x`, `x^2`, rather than by `x`. Indeed, if we plot `y` against `x^2` in the right panel of Figure \@ref(fig:quadratic), we can see that the fit of the regression line is much better.
 
-In conclusion, with a simple trick we have increased drastically the explanation of the response. However, there is a catch: knowing which transformation is required in order to linearise the relation between response and the predictor is a kind of art which requires some good eye. This is partially alleviated by the extension of this technique to deal with *polynomials* rather than *monomials*, as we will see in the next chapter. For the moment, we will consider only the transformations displayed in Figure \@ref(fig:nonlineartransf).
+In conclusion, with a simple trick we have increased drastically the explanation of the response. However, there is a catch: knowing which transformation is required in order to linearise the relation between response and the predictor is a kind of art which requires some good eye. This is partially alleviated by the extension of this technique to deal with *polynomials* rather than *monomials*, as we will see in the next chapter. For the moment, we will consider only the transformations displayed in Figure \@ref(fig:nonlineartransf). Figure \@ref(fig:transf) shows different transformations linearizing nonlinear data patterns.
 
-```{r, quadratic, echo = FALSE, out.width = '45%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Left: quadratic pattern when plotting $Y$ against $X$. Right: linearizsd pattern when plotting $Y$ against $X^2$.'}
+```{r, quadratic, echo = FALSE, out.width = '45%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Left: quadratic pattern when plotting $Y$ against $X$. Right: linearized pattern when plotting $Y$ against $X^2$.'}
 set.seed(345607)
 x <- round(seq(-2, 5, l = 50), 1)
 y <- round(0.5 * x^2 + rnorm(50), 1)
@@ -1357,11 +1357,16 @@ abline(mod2$coefficients, col = 2, lwd = 2)
 ```{block, type = 'rmdinsight'}
 If you apply a nonlinear transformation, namely $f$, and fit the linear model $Y=\beta_0+\beta_1 f(X)+\varepsilon$, then there is no point in fit also the model resulting from the negative transformation $-f$. The model with $-f$ is exactly the same as the one with $f$ but with the sign of $\beta_1$ flipped! 
 
-As a rule of thumb, use the figure with the transformations to compare it with the data pattern, then choose the most similar curve, and finally apply the corresponding function with **positive sign**.
+As a rule of thumb, use Figure \@ref(fig:nonlineartransf) with the transformations to compare it with the data pattern, then choose the most similar curve, and finally apply the corresponding function with **positive sign**.
 ```
 
-```{r, transf, echo = FALSE, fig.cap = 'Illustration of the choice of the non-linear transformation.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+```{r, transf, echo = FALSE, fig.cap = 'Illustration of the choice of the nonlinear transformation.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
 knitr::include_app('https://egarpor.shinyapps.io/non-linear/', height = '550px')
+```
+
+```{block, type = 'rmdinsight'}
+As you might have realized, applying nonlinear transformations to the predictors is a **simple trick that extends enormously the functionality of the linear model**. This is particular useful in real applications, where linearity is hardly verified (For example, in the PISA case study of Section \@ref(pisa), we employed
+`logGDPp` instead of `GDPp` due to its higher linearity with `MathMean`.)
 ```
 
 Let's see how we can compute transformations of our predictors and perform a linear regression with them. The data for the above example is the following:
@@ -1379,15 +1384,19 @@ y <- c(1.4, 0.4, 2.4, 1.7, 2.4, 0, 0.3, -1, 1.3, 0.2, -0.7, 1.2, -0.1,
 # Data frame (a matrix with column names)
 nonLinear <- data.frame(x = x, y = y)
 ```
-If we want to compute a new variable that contains the square of `x`, we can do it in two equivalent ways:
+In order to perform a linear regression in `x^2`, and not in `x`, we need to compute a new variable in our dataset that contains the square of `x`. We can do it in two equivalent ways:
 
 1. Through `R Commander`. In Section \@ref(euus) we saw how to create a new variable in our active dataset (remember Figure \@ref(fig:newvar)). Go to `'Data' -> 'Manage variables in active dataset...' -> 'Compute new variable...'`. Set the `'New variable name'` to `x2` and the `'Expression to compute'` to `x^2`.
 
 2. Through `R`. Just type:
 
     ```{r}
-    # We create a new column inside nonLinear, called x2, that contains nonLinear$x^2
+    # We create a new column inside nonLinear, called x2, that contains 
+    # nonLinear$x^2
     nonLinear$x2 <- nonLinear$x^2
+    
+    # Check the variables
+    names(nonLinear)
     ```
 
 With either the two previous points you will have a new variable called `x2`. If you wish to remove it, you can do it by either typing
@@ -1412,7 +1421,7 @@ A fast way of performing and summarizing the quadratic fit is
 
 Some remarks about this expression:
 
-  - The `I()` function wrapping `x^2` is fundamental when applying arithmetic operations in the predictor. The symbols `+`, `\*`, `^`, ... have **diferent meaning** when inputted in a formula, so is required to use `I()` to indicate that they must be interpreted in their arithmetic meaning and that the result of the expression denotes a new predictor variable. For example, use `I((x - 1)^3 - log(3 \* x))` if you want to apply the transformation `(x - 1)^3 - log(3 * x)`.
+  - The `I()` function wrapping `x^2` is fundamental when applying arithmetic operations in the predictor. The symbols `+`, `\*`, `^`, ... have **different meaning** when inputted in a formula, so is required to use `I()` to indicate that they must be interpreted in their arithmetic meaning and that the result of the expression denotes a new predictor variable. For example, use `I((x - 1)^3 - log(3 \* x))` if you want to apply the transformation `(x - 1)^3 - log(3 * x)`.
   
   - We are computing the `summary` of `lm` directly, without using an intermediate variable for storing the output of `lm`. This is perfectly valid and very handy, but note that you will not be able to access the information outputted by `lm`, only the one from `summary`.
 
@@ -1426,7 +1435,7 @@ Load the dataset `assumptions.RData`. We are going to work with the regressions 
 
 Some hints:
 
-- `y2 ~ x2` has a negative dependence, so look at the left panel of the transformations figure.
+- `y2 ~ x2` has a negative dependence, so look at the right panel of the transformations figure.
 - `y3 ~ x3` seems to have just a subtle nonlinearity... Will it be worth to attempt a transformation?
 - For `y9 ~ x9`, try with also with `exp(-abs(x9))`, `log(abs(x9))` and `2^abs(x9)`. (`abs` computes the absolute value.)
 ```
@@ -1476,16 +1485,14 @@ Perform the following data management operations:
 
 <!--
 Compute the linear regression for:
-
 - Compute the regression line for
 - Scatterplot
-- 
-- 
---->
+
+-->
 
 ### `R` basics
 
-<!---
+<!--
 - Explain in your own words what is the operator `<-` doing.
 - Create the vectors $x = (1.17, 0.41, 0.34, 1.11, 1.02, 0.22, -0.24, -0.27, -0.40, -1.38)$ and $y = (3.63, 1.69, 0.27, 5.83, 2.64, 1.33, 1.22 -0.62, 1.29, -0.43)$. 
 - Set the positions 3, 4 and 8 of $x$ to 0. Set the positions 1, 4, 9 of $y$ to 0.5, -0.75, 0.3, -0.2.
@@ -1535,7 +1542,7 @@ The dataset `moreAssumptions.RData` ([download](https://raw.githubusercontent.co
 
 ### Nonlinear relations
 
-<!---
+<!--
 Quadratic, exponential, square-root or logarithmic trend?
 -->
 
@@ -1548,17 +1555,17 @@ Quadratic, exponential, square-root or logarithmic trend?
 > --- Wikipedia article on [Moore's law](https://en.wikipedia.org/wiki/Moore%27s_law)
 
 Translated into a mathematical formula, Moore's law is
-$$
+\begin{align*}
 \text{transistors}\approx 2^{\text{years}/2}.
-$$
+\end{align*}
 Applying logarithms to both sides gives (why?)
-$$
+\begin{align*}
 \log(\text{transistors})\approx \frac{\log(2)}{2}\text{years}.
-$$
+\end{align*}
 We can write the above formula more generally
-$$
+\begin{align*}
 \log(\text{transistors})=\beta_0+\beta_1 \text{years}+\varepsilon,
-$$
+\end{align*}
 where $\varepsilon$ is a random error. This is a linear model!
 ```{block, type = 'rmdexercise'}
 The dataset `cpus.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/cpus.txt)) contains the transistor counts for the CPUs appeared in the time range 1971--2015. For this data, do the following:
@@ -1585,17 +1592,17 @@ The dataset `gpus.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS
 
 In the aftermath of the 2007-2008 financial crisis, the paper *Growth in a time of debt* [@Reinhart2010a] provided an important economical support for pro-austerity policies. The paper claimed that for levels of external debt in excess of 90% of the GDP, the GDP growth of a country was dramatically different than for lower levels of external debt. Therefore, it concludes the existence of a *magical threshold* - 90% - for which the level of external debt must be kept below in order to have a growing economy. Figure \@ref(fig:reinhart), extracted from @Reinhart2010a, illustrates the main finding.
 
-```{r, reinhart, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'The *magical threshold* of 90% external debt.'}
+```{r, reinhart, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'The *magical threshold* of $90\\%$ external debt.'}
 knitr::include_graphics("images/figures/reinhart.png")
 ```
 
-@Herndon2013 replicated the analysis of @Reinhart2010a and found that "selective exclusion of available data, coding errors and inappropriate weighting of summary statistics lead to serious miscalculations that inaccurately represent the relationship between public debt and GDP growth among 20 advanced economies". The authors concluded that "both mean and median GDP growth when public debt levels exceed 90% of GDP are not dramatically different from when the public debt/GDP ratios are lower". As a consequence, the paper led to an unjustified support for the adoption of austerity policies for countries with various levels of public debt.
+@Herndon2013 replicated the analysis of @Reinhart2010a and found that "selective exclusion of available data, coding errors and inappropriate weighting of summary statistics lead to serious miscalculations that inaccurately represent the relationship between public debt and GDP growth among 20 advanced economies". The authors concluded that "both mean and median GDP growth when public debt levels exceed 90% of GDP are not dramatically different from when the public debt/GDP ratios are lower". As a consequence, @Reinhart2010a led to an unjustified support for the adoption of austerity policies for countries with various levels of public debt.
 
 You can read the full story at [BBC](http://www.bbc.com/news/magazine-22223190),
 [The New York Times](http://www.nytimes.com/2013/04/19/opinion/krugman-the-excel-depression.html) and 
 [The Economist](http://www.economist.com/news/finance-and-economics/21576362-seminal-analysis-relationship-between-debt-and-growth-comes-under). Also, the video in Figure \@ref(fig:video) contains a quick summary of the story by Nobel Prize laureate Paul Krugman.
 
-```{r, video, echo = FALSE, fig.align = 'center', fig.cap = 'CNN interview to Paul Krugman (key point from 1:16 to 1:40).'}
+```{r, video, echo = FALSE, fig.align = 'center', fig.cap = 'CNN interview to Paul Krugman (key point from 1:16 to 1:40).', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE}
 knitr::include_url("https://www.youtube.com/embed/3xj338ACri8")
 ```
 
