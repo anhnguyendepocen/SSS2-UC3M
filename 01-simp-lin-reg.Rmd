@@ -3,7 +3,9 @@
 
 The simple linear regression is a *simple* but useful statistical model. In short, it allows to analyse the (assumed) linear relation between two variables in a proper way. To convince you why is useful, let's see what it can do in real-case scenarios!
 
-## Case study I: PISA scores and GDPp {#pisa}
+## Examples and applications
+
+### Case study I: PISA scores and GDPp {#pisa}
 
 The Programme for International Student Assessment (PISA) is a study carried out by the Organisation for Economic Co-operation and Development (OECD) in 65 countries with the purpose of evaluating the performance of 15-year-old pupils on mathematics, science, and reading. A phenomena observed over years is that *wealthy countries tend to achieve larger average scores*. The purpose of this case study, motivated by the @PISA inform, is to answer two questions related with the previous statement:
 
@@ -145,7 +147,7 @@ Repeat the regression analysis (steps 2--3) for:
 Save the new models with different names to avoid overwriting the previous models!
 ```
 
-## Case study II: Apportionment in the EU and US {#euus}
+### Case study II: Apportionment in the EU and US {#euus}
 
 > Apportionment is the process by which seats in a legislative body are distributed among administrative divisions entitled to representation.
 >
@@ -223,7 +225,7 @@ Let's fit a regression line to the `US` data, with `RatioSeats2013.2023` as the 
 appUS <- lm(RatioSeats2013.2023 ~ RatioPopulation2010, data = US)
 summary(appUS)
 ```
-The fitted regression line is `RatioSeats2013.2023`$=0.000+1.005\,\times$`RatioPopulation2010` and has an $R^2=0.9991$ (`'Multiple R-squared'`), which means that the data is almost perfectly linearly distributed. Furthermore, the *intercept coefficient is not significant*. This is seen in the column `'Pr(>|t|)'`, which gives the $p$-values for the null hypotheses $H_0:\beta_0=0$ and $H_0:\beta_1=0$, respectively. The null hypothesis $H_0:\beta_0=0$ is *not rejected* ($p\text{-value}=0.407$; non-significant) whereas $H_0:\beta_1=0$ is rejected ($p\text{-value}=0$; significant)^[We will be able to say more about how these test are performed after Section \@ref(inference).]. Hence, we can conclude that the appropriation of seats in the US House of Representatives is indeed directly proportional to the population of each state (partially answers Q1).
+The fitted regression line is `RatioSeats2013.2023`$=0.000+1.005\,\times$`RatioPopulation2010` and has an $R^2=0.9991$ (`'Multiple R-squared'`), which means that the data is almost perfectly linearly distributed. Furthermore, the *intercept coefficient is not significant for the regression*. This is seen in the column `'Pr(>|t|)'`, which gives the $p$-values for the null hypotheses $H_0:\beta_0=0$ and $H_0:\beta_1=0$, respectively. The null hypothesis $H_0:\beta_0=0$ is *not rejected* ($p\text{-value}=0.407$; non-significant) whereas $H_0:\beta_1=0$ is rejected ($p\text{-value}=0$; significant)^[We will be able to say more about how these test are performed after Section \@ref(inference).]. Hence, we can conclude that the appropriation of seats in the US House of Representatives is indeed directly proportional to the population of each state (partially answers Q1).
 
 If we make the scatterplot for the `US` dataset, we can see the almost perfect (up to integer rounding) 1:1 relation between the ratios "state seats"/"total seats" and "state population"/"aggregated population". We can set the scatterplot to automatically label the `'25'` most different points (select the numeric box with the mouse and type `'25'` -- the arrow buttons are limited to `'10'`) with their case names. As it is seen in Figure \@ref(fig:ratios), there is no state clearly over- or under-represented (Q2).
 
@@ -1025,19 +1027,19 @@ The `Coefficients` block of the output of `summary` contains the next elements r
 - `Pr(>|t|)`: $p$-value of the $t$-test.
 - `Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1`: codes indicating the size of the $p$-value. The more stars, the more evidence supporting that $H_0$ does not hold.
 
-In the above output for `summary(mod1)`, $H_0:\beta_0=0$ is not rejected at any reasonable level for $\alpha$ (that is, $0.10$,$0.05$ and $0.01$). Hence $\beta_0$ is not significant. On the other hand, $H_0:\beta_1=0$ is rejected at any level $\alpha$ larger than the $p$-value, `3.77e-09`. Therefore, it is significant.
+In the above output for `summary(mod1)`, $H_0:\beta_0=0$ is not rejected at any reasonable level for $\alpha$ (that is, $0.10$,$0.05$ and $0.01$). Hence $\hat\beta_0$ is not significantly different from zero and $\beta_0$ is not significant for the regression. On the other hand, $H_0:\beta_1=0$ is rejected at any level $\alpha$ larger than the $p$-value, `3.77e-09`. Therefore, $\beta_1$ is significant for the regression (and $\hat\beta_1$ is not significantly different from zero).
 
 ```{block, type = 'rmdexercise'}
 For the `assumptions` dataset, do the next:
 
 - Regression `y7 ~ x7`. Check that: 
-    - The intercept of  is not significant at any reasonable level $\alpha$.
+    - The intercept of  is not significant for the regression at any reasonable level $\alpha$.
     - The slope is significant for any $\alpha>10^{-7}$.
   
 - Regression `y6 ~ x6`. Assume the linear model assumptions are verified. 
-    - Check that $\beta_0$ is significantly different from zero at any level
+    - Check that $\hat\beta_0$ is significantly different from zero at any level
 $\alpha$. 
-    - For which $\alpha=0.10,0.05,0.01$ is $\beta_1$ significant?
+    - For which $\alpha=0.10,0.05,0.01$ is $\hat\beta_1$ significantly different from zero?
 ```  
 
 ```{block, type = 'rmdexercise'}
@@ -1500,23 +1502,51 @@ Perform the following data management operations. Remember to select the adequat
 ### Computing linear regressions
 
 ```{block, type = 'rmdexercise'}
-TBA
-<!--
-Compute the linear regression for:
-- Compute the regression line for
-- Scatterplot
-- Outliers
-- Modify the code to
-- Matrix scatterplot
--->
+Import the `iris` dataset, either from [`iris.txt`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/iris.txt) or `datasets.RData`. This dataset contains measurements for 150 iris flowers. The purpose of this exercise is to do the following analyses through `R Commander` *while inspecting and understanding the outputed code* to identify what parts are changing, how and why. 
+
+- Fit the regression line for `Petal.Width` (response) on `Petal.Length` (predictor) and summarize it.
+- Make the scatterplot of `Petal.Width` (y) vs `Petal.Length` (x) with a regression line.
+- Set the `'Graph title'` to "iris dataset: petal width vs petal length", the `'x-axis label'` to "petal length" and `'y-axis label'` to "sepal length".
+- Identify the 5 most outlierish points `'Automatically'`.
+- Check that the summary for the fitted line and the scatterplot displayed are coherent.
+- Make the matrix scatterplot for the four variables and including `'Least-squares lines'`.
+- Set the `'On Diagonal'` plots to `'Histograms'` and `'Boxplots'`.
+- Set the `'Graph title'` to "iris matrix scatterplot".
+- Identify the 5 most outlierish points `'Automatically'`.
+- Modify the *code* to identify 15 points.
+- Compute the regression line for the plot in the third row and the fourth column and create the scatterplot for it.
+```
+
+```{block, type = 'rmdinsight'}
+The last scatterplot is an illustration of the **Simpson's paradox**. The paradox surges when there are two or more well-defined groups in the data, they all have *positive (negative) correlation*, but taken as a *whole dataset*, the **correlation is the opposite**.
 ```
 
 ### `R` basics
 
 ```{block, type = 'rmdexercise'}
+Answer briefly in your own words:
+
+- What is the operator `<-` doing? What does it mean, for example, that `a <- 1:5`?
+- What is the difference between a matrix and a data frame? Why is the latter useful?
+- What are the differences between a vector and a matrix?
+- What is `c` employed for?
+- Consider the expression `lm(a ~ b, data = myData)`.
+    - What is `lm` standing for?
+    - What does it mean `a ~ b`? What are the roles of `a` and `b`?
+    - Is `myData` a matrix or a data frame?
+    - What must be the relation between `myData` and `a` and `b`?
+    - Explain the differences with `lm(b ~ a, data = myData)`.
+- What are the differences between running `a <- 1; a`, `a <- 1` and `1`.
+- What are the differences between a list and a data frame? What are their common parts?
+- Why is `\$` employed? How can you know in which variables you can use `$`?
+- If you have a vector `x`, what are `x^2` and `x + 1` doing to its elements?
+```
+
+```{block, type = 'rmdexercise'}
 TBA
 <!--
-- Explain in your own words what is the operator `<-` doing.
+Do the following:
+
 - Create the vectors $x = (1.17, 0.41, 0.34, 1.11, 1.02, 0.22, -0.24, -0.27, -0.40, -1.38)$ and $y = (3.63, 1.69, 0.27, 5.83, 2.64, 1.33, 1.22 -0.62, 1.29, -0.43)$. 
 - Set the positions 3, 4 and 8 of $x$ to 0. Set the positions 1, 4, 9 of $y$ to 0.5, -0.75, 0.3, -0.2.
 - Create a new vector $z$ containing $\log(x^2) - y^3*\sqrt(\exp(x))$
@@ -1534,7 +1564,15 @@ TBA
 - Check that $R^2$ is the same as $r_{xy}$ and $r_{}$
 - Which are the most overrepresented countries? Which are the least?
 - States
-- 
+-->
+```
+
+```{block, type = 'rmdexercise'}
+TBA
+<!--
+Identify the problems with the following `R` codes, compared with what they were meant to do. Work out the right answer.
+
+- "Compute the mean of $-1.23, \sqrt{2}, 2.34, 5, 0.15$"
 -->
 ```
 
@@ -1547,7 +1585,8 @@ Answer the following conceptual questions in your own words:
 
 - What is the difference between $(\beta_0,\beta_1)$ and $(\hat\beta_0,\hat\beta_1)$.
 - Is $\hat\beta_0$ a random variable? What about $\hat\beta_1$? Justify your answer.
-- What function are the least squares estimates minimizing? 
+- What function are the least squares estimates minimizing? Is important the choice of the kind distances (horizontal, vertical, perpendicular)?
+- What is the justification for a vertical distance?
 - Is $\sigma^2$ affecting 
 -
 -
@@ -1586,7 +1625,7 @@ Load `moreAssumptions`. For the regressions `y1 ~ x1`, `y2 ~ x2`, `y6 ~ x6` and 
 Hints: use the transformations in Figure \@ref(fig:nonlineartransf) for the three first regressions. For `y9 ~ x9`, try with `(5 - x9)^2`, `abs(x9 - 5)` and `abs(x9 - 5)^3`.
 ```
 
-### Case study: *Moore's law *
+### Case study: *Moore's law*
 
 *Moore's law* [@Moore1965] is an empirical law that states that the power of a computer doubles approximately every two years. More precisely:
 
@@ -1661,15 +1700,11 @@ The dataset `hap.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2
 - What are the fitted coefficients? What are their standard errors? What is the $R^2$? 
 - Compute the ANOVA table. How many degrees of freedom are? What is the SSR? What is SSE? What is the $p$-value for $H_0:\beta_1=0$?
 - Is SSR larger than SSE? Is this coherent with the resulting $R^2$?
-- Are $\beta_0$ and $\beta_1$ significant at level $\alpha=0.05$? And at level $\alpha=0.10,0.01$?
-- Compute the CIs for the coefficients. Can we conclude that the effect of `debtgdp` on `dRGDP` is positive? And negative? 
+- Are $\beta_0$ and $\beta_1$ significant for the regression at level $\alpha=0.05$? And at level $\alpha=0.10,0.01$?
+- Compute the CIs for the coefficients. Can we conclude that the effect of `debtgdp` on `dRGDP` is positive at $\alpha=0.05$? And negative? 
 - Predict the average growth for levels of debt of 60%, 70%, 80%, 90%, 100% and 110%. Compute the 95% CIs for all of them.
 - Predict the growth for the previous levels of debt. Compute also the CI for them. Is there a marked difference on the CIs for debt levels below and above 90%?
 - Which assumptions of the linear model you think are satisfied? Should we trust blindly the inferential results obtained assuming that the assumptions were satisfied?
 ```
-
-### Case study: *Engel curves*
-
-TBA
 
 

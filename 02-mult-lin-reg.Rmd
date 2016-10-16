@@ -1,0 +1,38 @@
+
+# Multiple linear regression {#mult}
+
+The multiple linear regression is an *extension* of the simple linear regression. If the simple linear regression employed a *single* predictor $X$ to explain the response $Y$, the multiple linear regression employs *multiple* predictors $X_1,\ldots,X_p$ for explaining a single response $Y$. To convince you why is useful, let's see what it can do in real-case scenarios!
+<!--
+## Examples and applications
+
+### Case study I: wines
+
+College
+Wage
+USArrests
+Boston
+
+### Case study II: marketing plan
+
+## Model formulation and estimation by least squares
+
+## Inference for model parameters
+
+## Forecasting
+
+## Assessing model fit and ANOVA
+
+## Nonlinear relationships and qualitative predictors
+
+## Model diagnostics
+
+Qualitative predictors (one level and more than two levels)
+
+Extensions and interactions
+
+## Multicollinearity
+
+Insight into straight line in 3D
+
+## Exercises and case studies
+-->
