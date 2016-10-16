@@ -63,7 +63,7 @@ We are going to do the following. First, import the data into `R Commander` and 
 
     * Go to `'Statistics' -> 'Fit models' -> 'Linear regression...'`. A window like Figure \@ref(fig:lm) will pop-up. 
     
-        ```{r, lm, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Window for performing linear regression.'}
+        ```{r, lm, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Window for performing simple linear regression.'}
         knitr::include_graphics("images/screenshots/lm.png")
         ```
         
@@ -72,7 +72,7 @@ We are going to do the following. First, import the data into `R Commander` and 
         Y=\beta_0+\beta_1X+\varepsilon
         \end{align*}
         
-        In our case $Y=$`MathMean` and  $X=$`logGDPp`, so select them and click `'OK'`^[In principle, you could pick more than one explanatory variables using the `'Control'` or `'Shift'` keys, but that corresponds to the *multiple linear regression* (covered in Chapter 3).]. 
+        In our case $Y=$`MathMean` and  $X=$`logGDPp`, so select them and click `'OK'`^[In principle, you could pick more than one explanatory variables using the `'Control'` or `'Shift'` keys, but that corresponds to the *multiple linear regression* (covered in Chapter \@ref(mult)).]. 
     
         ```{block, type = 'rmdtip'}
         If you want to deselect an option in an `R Commander` menu, use `'Control' + 'Mouse click'`.
@@ -138,7 +138,7 @@ We are going to do the following. First, import the data into `R Commander` and 
     
 If you understood the previous analysis, then you should be able to perform the next ones on your own.
 
-```{block, type = 'rmdexercise', out.width = '90%'}
+```{block, type = 'rmdexercise'}
 Repeat the regression analysis (steps 2--3) for:
 
 - `ReadingMean` regressed on `logGDPp`. Are the results similar to `MathMean` on `logGDPp`?
@@ -159,7 +159,7 @@ The *European Parliament* and the *US House of Representatives* are two of the m
 
 - Until now, the apportionment in the **EU** was set by *treaties* (Nice, Lisbon), in which *negotiations* between countries took place. The [last accepted composition](http://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32013D0312) gives an allocation of seats based on the principle of "degressive proportionality"^[Less populated states are given more weight than its corresponding proportional share.] and somehow vague guidelines. It concludes with a commitment to establish a system to "allocate the seats between Member States in an objective, fair, durable and transparent way, translating the principle of degressive proportionality". The Cambridge Compromise [@CamCom] was a proposal in that direction that was not effectively implemented. Currently, every state is guaranteed a *minimum of 6 seats* and a *maximum of 96* for a grand total of 750 seats.
 
-We know that there exist qualitative dissimilarities between both chambers, but we can not be more specific with the description at hand. The purpose of this case study is to quantify and visualize what are the differences between the apportionments of the two chambers, and how the linear regression can add insights on what is actually going on with the EU apportionment. The questions we want to answer are:
+We know that there exist qualitative dissimilarities between both chambers, but we can not be more specific with the description at hand. The purpose of this case study is to quantify and visualize what are the differences between the apportionments of the two chambers, and how the simple linear regression can add insights on what is actually going on with the EU apportionment. The questions we want to answer are:
 
 - Q1. *Can we quantify which chamber is more proportional?*
 - Q2. *What are the over-represented and under-represented states in both chambers?*
@@ -390,7 +390,7 @@ sumMod
 The following table contains a handy cheat sheet of equivalences between `R` code and some of the statistical concepts associated to linear regression.
 
 |              `R`                       |        Statistical concept          |
-|----------------------------------------|-------------------------------------|
+|:---------------------------------------|:------------------------------------|
 | `x` | Predictor $X_1,\ldots,X_n$    | 
 | `y` | Response $Y_1,\ldots,Y_n$    |
 | `data <- data.frame(x = x, y = y)` | Sample $(X_1,Y_1),\ldots,(X_n,Y_n)$    | 
@@ -801,7 +801,7 @@ Recall:
 - The linear model **assumes that $Y$ is continuous** due to the normality of the errors. However, **$X$ can be discrete**!
 ```
 
-Figures \@ref(fig:linearmodelgood) and \@ref(fig:linearmodelbad) represent situations where the assumptions of the model are respected and violated, respectively. For the moment, we will focus on building the intuition for checking the assumptions visually. In the next chapter we will see more sophisticated methods for checking the assumptions. We will see also what are the possible fixes to the failure of assumptions.
+Figures \@ref(fig:linearmodelgood) and \@ref(fig:linearmodelbad) represent situations where the assumptions of the model are respected and violated, respectively. For the moment, we will focus on building the intuition for checking the assumptions visually. In Chapter \@ref(mult) we will see more sophisticated methods for checking the assumptions. We will see also what are the possible fixes to the failure of assumptions.
 
 ```{r, linearmodelgood, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Perfectly valid linear models (all the assumptions are verified).'}
 knitr::include_graphics("images/R/linearmodelgood.png")
@@ -980,7 +980,7 @@ Remember the analogy of hypothesis testing vs a trial, as given in the table bel
 ```
 
 |         Hypothesis testing       |                      Trial                        |
-|----------------------------------|---------------------------------------------------|
+|:---------------------------------|:--------------------------------------------------|
 | Null hypothesis $H_0$ | **Accused of comitting a crime**. It has the "presumption of innocence", which means that it is *not guilty* until there is enough evidence to supporting its guilt |
 | Sample $X_1,\ldots,X_n$ | Collection of small **evidences supporting innocence and guilt**  |
 | Statistic $T_n$ | **Summary of the evicences presented** by the prosecutor and defense lawyer   |
@@ -1046,7 +1046,7 @@ $\alpha$.
 Re-analyse the significance of the coefficients in `Seats2013.2023 ~ Population2010` and `Seats2011 ~ Population2010` for the `US` and `EU` datasets, respectively.
 ```
 
-## Prediction of new observations {#prediction}
+## Prediction {#prediction}
 
 The forecast of $Y$ from $X=x$ in the linear model is approached by two different approaches:
 
@@ -1211,7 +1211,7 @@ The "$F$-value" of the ANOVA table represents the value of the $F$-statistic $\f
 \begin{align*}
 H_0:\beta_1=0\quad\text{vs.}\quad H_1:\beta_1\neq 0,
 \end{align*}
-that is, the hypothesis of no linear dependence of $Y$ on $X$. The result of this test is completely equivalent to the $t$-test for $\beta_1$ that we saw in Section \@ref(inference) (this is something *specific for simple linear regression* -- the $F$-test will not be equivalent to the $t$-test for $\beta_1$ in the next chapter). Under $H_0$,
+that is, the hypothesis of no linear dependence of $Y$ on $X$. The result of this test is completely equivalent to the $t$-test for $\beta_1$ that we saw in Section \@ref(inference) (this is something *specific for simple linear regression* -- the $F$-test will not be equivalent to the $t$-test for $\beta_1$ in Chapter \@ref(mult)). Under $H_0$,
 \begin{align*}
 F=\frac{\text{SSR}/1}{\text{SSE}/(n-2)}\stackrel{H_0}{\sim} F_{1,n-2}
 \end{align*}
@@ -1342,7 +1342,7 @@ legend("topright", legend = expression(y == -x, y == -x^2, y == -x^3, y == -sqrt
 
 An example of this simple but powerful trick is given as follows. The left panel of Figure \@ref(fig:quadratic) shows the scatterplot for some data `y` and  `x`, together with its fitted regression line. Clearly, the data does not follow a linear pattern, but a nonlinear one. In order to identify which one might be, we compare it against the set of mathematical functions displayed in Figure \@ref(fig:nonlineartransf). We see that the shape of the point cloud is similar to $y=x^2$. Hence, `y` might be better explained by the *square* of `x`, `x^2`, rather than by `x`. Indeed, if we plot `y` against `x^2` in the right panel of Figure \@ref(fig:quadratic), we can see that the fit of the regression line is much better.
 
-In conclusion, with a simple trick we have increased drastically the explanation of the response. However, there is a catch: knowing which transformation is required in order to linearise the relation between response and the predictor is a kind of art which requires some good eye. This is partially alleviated by the extension of this technique to deal with *polynomials* rather than *monomials*, as we will see in the next chapter. For the moment, we will consider only the transformations displayed in Figure \@ref(fig:nonlineartransf). Figure \@ref(fig:transf) shows different transformations linearizing nonlinear data patterns.
+In conclusion, with a simple trick we have increased drastically the explanation of the response. However, there is a catch: knowing which transformation is required in order to linearise the relation between response and the predictor is a kind of art which requires some good eye. This is partially alleviated by the extension of this technique to deal with *polynomials* rather than *monomials*, as we will see in Chapter \@ref(mult). For the moment, we will consider only the transformations displayed in Figure \@ref(fig:nonlineartransf). Figure \@ref(fig:transf) shows different transformations linearising nonlinear data patterns.
 
 ```{r, quadratic, echo = FALSE, out.width = '45%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Left: quadratic pattern when plotting $Y$ against $X$. Right: linearized pattern when plotting $Y$ against $X^2$.'}
 set.seed(345607)
@@ -1386,13 +1386,13 @@ y <- c(1.4, 0.4, 2.4, 1.7, 2.4, 0, 0.3, -1, 1.3, 0.2, -0.7, 1.2, -0.1,
 # Data frame (a matrix with column names)
 nonLinear <- data.frame(x = x, y = y)
 ```
-In order to perform a linear regression in `x^2`, and not in `x`, we need to compute a new variable in our dataset that contains the square of `x`. We can do it in two equivalent ways:
+In order to perform a simple linear regression in `x^2`, and not in `x`, we need to compute a new variable in our dataset that contains the square of `x`. We can do it in two equivalent ways:
 
 1. Through `R Commander`. In Section \@ref(euus) we saw how to create a new variable in our active dataset (remember Figure \@ref(fig:newvar)). Go to `'Data' -> 'Manage variables in active dataset...' -> 'Compute new variable...'`. Set the `'New variable name'` to `x2` and the `'Expression to compute'` to `x^2`.
 
 2. Through `R`. Just type:
 
-    ```{r}
+    ```{r, collapse = TRUE}
     # We create a new column inside nonLinear, called x2, that contains 
     # nonLinear$x^2
     nonLinear$x2 <- nonLinear$x^2
@@ -1408,8 +1408,8 @@ nonLinear$x2 <- NULL
 ```
 or, in `R Commander`, by going to `'Data' -> 'Manage variables in active data set' -> 'Delete variables from data set...'` and select to remove  `x2`.
 
-Now we are ready to perform the linear regression. If you do it directly through `R`, you will obtain:
-```{r}
+Now we are ready to perform the regression. If you do it directly through `R`, you will obtain:
+```{r, collapse = TRUE}
 mod1 <- lm(y ~ x, data = nonLinear)
 summary(mod1)
 mod2 <- lm(y ~ x2, data = nonLinear)
@@ -1490,7 +1490,7 @@ Perform the following data management operations. Remember to select the adequat
 - Establish the case names in `la-liga-2015-2016` as the variable `Team` (if they were not set).
 - Establish the case names in `wdi-countries` as the variable `Country`.
 - In `la-liga-2015-2016`, create a new variable named `Goals.wrt.mean`, defined as `Goals - mean(Goals)`.
-- In `wdi-countries`, create a new variable that standarizes^[The standarization of $X_1,\ldots,X_n$ is $Z_1,\ldots,Z_n$, with $Z_i=\frac{X_i-\bar X}{s_x}$, where $s_x$ is the standard deviation of $X_1,\ldots,X_n$] the `GDP.growth`. Call it `GDP.growth`.
+- In `wdi-countries`, create a new variable that standardizes^[The standardization of $X_1,\ldots,X_n$ is $Z_1,\ldots,Z_n$, with $Z_i=\frac{X_i-\bar X}{s_x}$, where $s_x$ is the standard deviation of $X_1,\ldots,X_n$] the `GDP.growth`. Call it `GDP.growth`.
 - Delete the variable `Species` from `iris`.
 - For `la-liga-2015-2016`, go to `'Edit dataset'` and change the `Points` of `Getafe` to `40`. To do so, click on the cell, change the content and **click OK** or select a new cell to **save changes**. Do not hit `'Enter`' or you will add a new column!. 
 - Explore the menu options of `'Edit dataset'`for adding and removing rows/columns. Is a useful feature for simple edits.
@@ -1499,7 +1499,7 @@ Perform the following data management operations. Remember to select the adequat
 ```
 
 
-### Computing linear regressions
+### Computing simple linear regressions
 
 ```{block, type = 'rmdexercise'}
 Import the `iris` dataset, either from [`iris.txt`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/iris.txt) or `datasets.RData`. This dataset contains measurements for 150 iris flowers. The purpose of this exercise is to do the following analyses through `R Commander` *while inspecting and understanding the outputed code* to identify what parts are changing, how and why. 
@@ -1507,12 +1507,12 @@ Import the `iris` dataset, either from [`iris.txt`](https://raw.githubuserconten
 - Fit the regression line for `Petal.Width` (response) on `Petal.Length` (predictor) and summarize it.
 - Make the scatterplot of `Petal.Width` (y) vs `Petal.Length` (x) with a regression line.
 - Set the `'Graph title'` to "iris dataset: petal width vs petal length", the `'x-axis label'` to "petal length" and `'y-axis label'` to "sepal length".
-- Identify the 5 most outlierish points `'Automatically'`.
+- Identify the 5 most outlier points `'Automatically'`.
 - Check that the summary for the fitted line and the scatterplot displayed are coherent.
 - Make the matrix scatterplot for the four variables and including `'Least-squares lines'`.
 - Set the `'On Diagonal'` plots to `'Histograms'` and `'Boxplots'`.
 - Set the `'Graph title'` to "iris matrix scatterplot".
-- Identify the 5 most outlierish points `'Automatically'`.
+- Identify the 5 most outlier points `'Automatically'`.
 - Modify the *code* to identify 15 points.
 - Compute the regression line for the plot in the third row and the fourth column and create the scatterplot for it.
 ```
