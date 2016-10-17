@@ -1,38 +1,278 @@
 
 # Multiple linear regression {#mult}
 
-The multiple linear regression is an *extension* of the simple linear regression. If the simple linear regression employed a *single* predictor $X$ to explain the response $Y$, the multiple linear regression employs *multiple* predictors $X_1,\ldots,X_p$ for explaining a single response $Y$. To convince you why is useful, let's see what it can do in real-case scenarios!
-<!--
+The multiple linear regression is an *extension* of the simple linear regression. If the simple linear regression employed a *single* predictor $X$ to explain the response $Y$, the multiple linear regression employs *multiple* predictors $X_1,\ldots,X_k$ for explaining a single response $Y$:
+$$
+Y=\beta_0+\beta_1X_1+\beta_2X_2+\ldots+\beta_pX_k+\varepsilon
+$$
+To convince you why is useful, let's see what it can do in real-case scenarios!
+
 ## Examples and applications
 
-### Case study I: wines
+### Case study I: *The Bordeaux equation*
+
+> Calculate the winter rain and the harvest rain (in millimeters). Add summer heat in the vineyard (in degrees centigrade). Subtract 12.145. And what do you have? A very, very passionate argument over wine.
+>
+> --- "Wine Equation Puts Some Noses Out of Joint", [The New York Times](http://www.nytimes.com/1990/03/04/us/wine-equation-puts-some-noses-out-of-joint.html), 04/03/1990
+
+This case study is motivated by the study of professor Orley Ashenfelter [@Ashenfelter1995] on the quality of red Bordeaux vintages. The study became mainstream after disputes with the wine press, especially with Robert Parker, Jr., one of the most influential wine critic in America. See a short review of the story at the [Financial Times](http://www.ft.com/cms/s/0/1e9cb152-5824-11dc-8c65-0000779fd2ac.html?ft_site=falcon&desktop=true#axzz4NGeRjzkc).
+
+Red Bordeaux wines have been produced in Bordeaux, one of most famous and prolific wine regions in the world, in a very similar way for hundreds of years. However, *the quality of vintages is largely variable* from one season to another due to a long list of random factors, such as the weather conditions. Because Bordeaux wines taste better when they are older (young wines are astringent, when the wines age they lose their astringency),  there is an incentive to store the young wines until they are mature. Due to the important difference in taste, it is hard to determine the quality of the wine when it is so young because just by tasting it, because it is going to change substantially when the aged wine is in the market. Therefore, being able to *predict the quality of a vintage* is a valuable information for investing resources, for determining a fair price for vintages and for understanding what factors are affecting the wine quality. The purpose of this case study is to answer:
+
+- Q1. *Can we predict the quality of a vintage effectively?*
+- Q2. *What is the interpretation of such prediction?*
+
+The `wine.csv` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/wine.csv)) contains 27 red Bordeaux vintages. The data is the originally employed by @Ashenfelter1995, except for the inclusion of the variable `Year`, the exclusion of NAs and the reference price used for the wine. The original source is [here](http://www.liquidasset.com/winedata.html). Each row has the following variables:
+
+- `Year`: year in which grapes were harvested to make wine.
+- `Price`: *logarithm* of the average market price for Bordeaux vintages according to 1990--1991 auctions.^[In @Ashenfelter1995, this variable is expressed relative to the price of the 1961 vintage, regarded as the best one ever recorded. In other words, they consider `Price - 8.4937` as the price variable.] This is a nonlinear transformation of the *response* (hence different to what we did in Section \@ref(nonlin)) made to *linearize* the response.
+- `WinterRain`: winter rainfall (in mm).
+- `AGST`: Average Growing Season Temperature (in Celsius degrees).
+- `HarvestRain`: harvest rainfall (in mm). 
+- `Age`: age of the wine measured as the number of years stored in a cask.
+- `FrancePop`: population of France at `Year` (in thousands).
+
+The *quality* of the wine is quantified as the `Price`, a clever way of quantifying a qualitative measure. The data is shown in Table \@ref(tab:winetable). 
+
+```{r, winetable, echo = FALSE, out.width = '90%', fig.align = 'center'}
+wine <- read.csv(file = "datasets/wine.csv", header = TRUE)
+knitr::kable(
+  wine,
+  booktabs = TRUE,
+  longtable = TRUE,
+  caption = '`wine` dataset.'
+)
+row.names(wine) <- wine$Year
+wine$Year <- NULL
+```
+
+Let's begin by summarizing the information in Table \@ref(tab:winetable). First, import correctly the dataset into `R Commander` and `'Set case names...'` as the variable `Year`. Let's summarize and inspect the data in two ways:
+
+1. **Numerically**. Go to `'Statistics' -> 'Summaries' -> 'Active data set'`.
+
+    ```{r, collapse = TRUE}
+    summary(wine)
+    ```
+    Additionally, other summary statistics are available in `'Statistics' -> 'Summaries' -> 'Numerical summaries...'`.
+
+2. **Graphically**. Make a scatterplot matrix with all the variables. Add the `'Least-squares lines'`, `'Histograms'` on the diagonals and choose to identify 2 points.
+
+    ```{r, scat, collapse = TRUE, out.width = '90%', fig.asp = 1, outfig.align = 'center', fig.cap = 'Scatterplot matrix for `wine`.'}
+    scatterplotMatrix(~ Age + AGST + FrancePop + HarvestRain + Price + WinterRain, 
+                      reg.line = lm, smooth = FALSE, spread = FALSE, span = 0.5, 
+                      ellipse = FALSE, levels = c(.5, .9), id.n = 2, 
+                      diagonal = 'histogram', data = wine)
+    ```
+
+Recall that the objective is to **predict** `Price`. Based on the above matrix scatterplot the best we can predict `Price` by a simple linear regression seems to be with `AGST` or `HarvestRain`. Let's see which one yields the larger $R^2$.
+```{r, collapse = TRUE}
+modAGST <- lm(Price ~ AGST, data = wine)
+summary(modAGST)
+
+modHarvestRain <- lm(Price ~ HarvestRain, data = wine)
+summary(modHarvestRain)
+```
+In `Price ~ AGST`, the intercept is not significant for the regression but the slope is, and  `AGST` has a positive effect on the `Price`. For `Price ~ HarvestRain`, both intercept and slope are significant and the effect is negative. 
+
+```{block, type = 'rmdexercise'}
+Complete the analysis by computing the linear models `Price ~ FrancePop`, `Price ~ Age` and `Price ~ WinterRain`. Name them as `modFrancePop`, `modAge` and `modWinterRain`. Check if the intercepts and slopes are significant for the regression.
+```
+```{r, echo = FALSE}
+modFrancePop <- lm(Price ~ FrancePop, data = wine)
+modAge <- lm(Price ~ Age, data = wine)
+modWinterRain <- lm(Price ~ WinterRain, data = wine)
+```
+
+If we do the simple regressions of `Price` on the remaining predictors, we obtain a table like this for the $R^2$:
+
+| Predictor | $R^2$ |
+|:----------|:------|
+|`AGST`| $0.435$ |
+|`HarvestRain`| $0.317$ |
+|`FrancePop`| $0.218$ |
+|`Age`| $0.200$ |
+|`WinterRain`| $0.019$ |
+
+A natural question to ask is:
+
+> Can we *combine* these simple regressions to increase the $R^2$ and the prediction accuracy for `Price`?
+
+The answer is yes, by means of the **multiple linear regression**. In order to make our first one, go to `'Statistics' -> 'Fit models' -> 'Linear model...'`. A window like Figure \@ref(fig:lmod) will pop-up. 
+    
+```{r, lmod, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Window for performing multiple linear regression.'}
+knitr::include_graphics("images/screenshots/lm.png")
+```
+
+Set the response as `Price` and add the rest of variables as predictors, in the form `Age + AGST + FrancePop + HarvestRain + WinterRain`. Note the **use of `+` for including all the predictors**. This does *not* mean that they are all summed and then the regression is done on the sum!^[If you wanted to do so, you will need the function `I()` for indicating that `+` is not including predictors in the model, but is acting as a sum operator: `Price ~ I(Age + AGST + FrancePop + HarvestRain + WinterRain)`.]. Instead of, this notation is designed to **resemble the multiple linear model**:
+\begin{align*}
+Y=\beta_0+\beta_1X_1+\beta_2X_2+\ldots+\beta_kX_k+\varepsilon
+\end{align*}
+If the model is named `modFull`, we get the following summary when clicking in `'OK'`:
+```{r, collapse = TRUE}
+modFull <- lm(Price ~ Age + AGST + FrancePop + HarvestRain + WinterRain, data = wine)
+summary(modFull)
+```
+The main difference with simple linear regressions is that we have more rows on the `'Coefficients'` section, since these correspond to each of the predictors. The fitted regression is `Price` $= -2.343 + 0.013\,\times$ `Age` $+ 0.614\,\times$ `AGST` $- 0.000\,\times$ `FrancePop` $- 0.003\,\times$ `HarvestRain` $+ 0.001\,\times$ `WinterRain`
+. Recall that the `'Multiple R-squared'` has almost doubled with respect to the best simple linear regression!^[The $R^2$ for the multiple linear regression $Y=\beta_0+\beta_1X_1+\ldots+\beta_kX_k+\varepsilon$ is not the sum of the $R^2$'s for the simple linear regressions $Y=\beta_0+\beta_jX_j+\varepsilon$, $j=1,\ldots,k$.] This tells us that we can explain up to $82.75\%$ of the `Price` variability by the predictors.
+
+Note however that **many predictors are not significant** for the regression: `FrancePop`, `Age` and the intercept are not significant. This is an indication of an **excess of predictors** adding little information to the response. Note the almost perfect correlation between `FrancePop` and `Age` shown in Figure \@ref(fig:scat): one of them is not adding any extra information to explain `Price`. This complicates the model unneceserily and, more importantly, it has the undesirable effect of making the **coefficient estimates less precise**. We opt to remove the predictor `FrancePop` from the model since it is exogenous to the wine context.
+
+```{block, type = 'rmdtip'}
+Two useful tips  about `lm`'s syntax for including/excluding predictors faster:
+
+- `Price ~ .` -> **includes all the variables in the dataset as predictors**. It is equivalent to `Price ~ Age + AGST + FrancePop + HarvestRain + WinterRain`.
+- `Price ~ . - FrancePop` -> **includes all the variables except the ones with `-` as predictors**. It is equivalent to It is equivalent to `Price ~ Age + AGST + HarvestRain + WinterRain`.
+```
+
+Then, the model without `FrancePop` is
+```{r, collapse = TRUE}
+modWine <- lm(Price ~ . - FrancePop, data = wine)
+summary(modWine)
+```
+All the coefficients are significant at level $\alpha=0.05$. Therefore, there is no clear redundant information. In addition, the $R^2$ is very similar to the full model, but the `'Adjusted R-squared'`, a weighting of the $R^2$ to account for the number of predictors used by the model, is slightly larger. Hence, this means that, comparatively to the number of predictors used, `modWine` explains more variability of `Price` than `modFull`. Later in this chapter we will see the precise meaning of the $R^2$ adjusted.
+
+The comparison of the coefficients of both models can be done with `'Models -> Compare model coefficients...'`:
+```{r, collapse = TRUE}
+compareCoefs(modFull, modWine)
+```
+Note how **the coefficients for `modWine` have smaller errors than `modFull`**.
+
+As a conclusion, `modWine` is a model that explains the $82.75\%$ of the variability in a non-redundant way and with all their coefficients significant. Therefore, we have a formula for effectively explaining and predicting the quality of a vintage (answers Q1).
+
+The interpretation of `modWine` agrees with well-known facts in viticulture that make perfect sense (Q2):
+
+- Higher temperatures are associated with better quality (higher priced) wine.
+- Rain before the growing season is good for the wine quality, but during harvest is bad.
+- The quality of the wine improves with the age.
+
+Although these were known facts, keep in mind that the model allows to *quantify the effect of each variable on the wine quality* and provides us with a precise way of *predicting the quality of future vintages*.
+
+```{block, type = 'rmdexercise'}
+Create a new variable in `wine` named `PriceOrley`, defined as `Price - 8.4937`. Check that the model `PriceOrley ~ . - FrancePop - Price` *kind of* coincides with the formula given in the second paragraph of the [Financial Times article](http://www.ft.com/cms/s/0/1e9cb152-5824-11dc-8c65-0000779fd2ac.html?ft_site=falcon&desktop=true#axzz4NGeRjzkc) (the author forgot to add the `Age` term and the `ACGS` has an extra zero).
+```
+
+### Case study II: Housing values in Boston
+
+The second case study is motivated by @Harrison1978, who proposed an *hedonic model* for determining the willingness of house buyers to pay for clean air. An hedonic model is a model that decomposes the price of an item into separate components that determine its price. For example, an hedonic model for the price of a house may decompose its price into the house characteristics, the kind of neighborhood, and the location. The study of @Harrison1978 employed data from the Boston metropolitan area, containing 560 suburbs and 14 variables. The `Boston` dataset is available through the file `Boston.xlsx` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/Boston.xlsx)) and through the dataset `Boston` in the `MASS` package (load `MASS` by `'Tools' -> 'Load package(s)...'`). 
+
+The description of the related variables can be found in `?Boston` and @Harrison1978^[But be aware of the changes in units for `medv`, `black`, `lstat` and `nox`.], but we summarize here the most important ones as they appear in `Boston`. They are aggregated into five topics:
+
+- *Dependent* variable: `medv`, the median value of owner-occupied homes (in thousands of dollars).
+- *Structural* variables indicating the house characteristics: `rm` (average number of rooms "in owner units") and `age` (proportion of owner-occupied units built prior to 1940).
+- *Neighborhood* variables: `crim` (crime rate by town), `zn` (proportion of residential areas), `indus` (proportion of non-retail business area), `chas` (river limitation), `tax` (cost of public services in each community), `ptratio` (pupil-teacher ratio), `black` ($1000(B - 0.63)^2$, where $B$ is the black proportion of population - low and high values of $B$ increase housing prices) and `lstat` (percent of lower status of the population).
+- *Accesibility* variables: `dis` (distances to five Boston employment centers) and `rad` (accessibility to radial highways - larger index denotes better accessibility).
+- *Air pollution* variable: `nox`, the annual concentration of nitrogen oxide (in parts per ten million).
+
+A summary of the data is shown below:
+```{r, echo = FALSE, warning = FALSE}
+library(RcmdrMisc)
+Boston <- readXL("datasets/Boston.xlsx", rownames = FALSE, header = TRUE, na = "", 
+                 sheet = "Hoja1", stringsAsFactors = TRUE)
+```
+```{r, collapse = TRUE}
+summary(Boston)
+```
+
+The two goals of this case study are:
+
+- Q1. *Quantify the influence of the predictor variables in the housing prices.*
+- Q2. *Obtain the "best possible" model for decomposing the housing variables and interpret it.*
+
+We begin by making an exploratory analysis of the data with a matrix scatterplot. Since the number of variables is high, we opt to plot only five variables: `crim`, `dis`, `medv`, `nox` and `rm`. Each of them represents the five topics in which variables were classified.
+
+```{r, scat2, collapse = TRUE, out.width = '90%', fig.asp = 1, outfig.align = 'center', fig.cap = 'Scatterplot matrix for `crim`, `dis`, `medv`, `nox` and `rm` from the `Boston` dataset.'}
+scatterplotMatrix(~ crim + dis + medv + nox + rm, reg.line = lm, smooth = FALSE,
+                  spread = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9), 
+                  id.n = 0, diagonal = 'density', data = Boston)
+```
+The diagonal panels are showing an estimate of the unknown density of each variable. Note the peculiar distribution of `crim`, very concentrated at zero, and the asymmetry in `medv`, with a second mode associated to the most expensive properties. Inspecting the individual panels, it is clear that some nonlinearity exists in the data. For simplicity, we disregard that analysis for the moment (but see the final exercise).
+
+Let's fit a multiple linear regression for explaining `medv`. There are a good number of variables now, and some of them might be of little use for predicting `medv`. However, there is no clear intuituion of which predictors will yield better explanations of `medv` with the information at hand. Therefore, we can start by doing a linear model on *all* the predictors:
+```{r, collapse = TRUE}
+modHouse <- lm(medv ~ ., data = Boston)
+summary(modHouse)
+```
+There are a couple of non-significant variables, but so far the model has an $R^2=0.74$ and the fitted coefficients are sensible with what it would be expected. For example, `crim`, `tax`, `ptratio` and `nox` have negative effects on `medv`, while `rm`, `rad` and `chas` have positive. However, the non-significant coefficients are not improving significantly the model, but only adding artificial noise and decreasing the overall accuracy of the coeffcient estimates!
+
+Let's polish a little bit the previous model. Instead of removing manually each non-significant variable to reduce the complexity, we employ an automatic tool in `R` called *stepwise model selection*. It as different flavors, that we will in detail later in this chapter, but essentially this powerful tool *usually* ends up selecting the "best model": *a model that delivers the maximum fit with the minimum number of variables*.
+
+The stepwise model selection is located at `'Models' -> 'Stepwise model selection...'` and is always applied on the active model. Apply it with the default options to `modBest`:
+
+```{r, collapse = TRUE}
+modBest <- stepwise(modHouse, direction = 'backward/forward', criterion = 'BIC')
+```
+
+Note the different steps: it starts with the full model and, when `+` is shown, it means that the variable is *excluded* at that step. The procedure seeks to minimize an *information criterion* (BIC or AIC).^[Although note that the printed messages always display `'AIC'` even if you choose `'BIC'`.] Remember to save the output to a variable if you want to have the final model (you need to do this in `R`)!
+
+The summary of the final model is:
+```{r, collapse = TRUE}
+summary(modBest)
+```
+Let's compute the confidence intervals at level $\alpha=0.05$:
+```{r, collapse = TRUE}
+confint(modBest)
+```
+We have quantified the influence of the predictor variables in the housing prices (Q1) and we can conclude that, in the final model and with confidence level $\alpha=0.05$:
+
+- `chas`, `age`, `rad` and `black` have a **significantly positive** influence on `medv`.
+- `nox`, `dis`, `tax`, `pratio` and `lstat` have a **significantly negative** influence on `medv`.
+
+```{block2, type = 'rmdexercise'}
+The model employed in @Harrison1978 is different from `modBest`. In the paper, several nonlinear transformations of the predictors (as in Section \@ref(nonlin)) and the response are done to improve the linear fit. Also, different units are used for `medv`, `black`, `lstat` and `nox`. The authors consider these variables :
+
+- *Response*: `log(1000 * medv)`
+- *Linear predictors*: `age`, `black / 1000` (this variable corresponds to their $(B-0.63)^2$), `tax`, `ptratio`, `crim`, `zn`, `indus` and `chas`.
+- *Nonlinear predictors*: `rm^2`, `log(dis)`, `log(rad)`, `log(lstat / 100)` and `(10 * nox)^2`.
+
+Do the following:
+
+1. Check if the model with such predictors corresponds to the one in the first column, Table VII, page 100 of @Harrison1978
+(open-access paper available [here](https://deepblue.lib.umich.edu/bitstream/handle/2027.42/22636/0000186.pdf)). To do so, Save this model as `modelHarrison` and summarize it. **Hint**: the formula should be something like `I(log(1000 * medv)) ~ age + I(black / 1000) + ... + I(log(lstat / 100)) + I((10 * nox)^2)`. 
+
+2. Make a `stepwise` selection of the variables in `modelHarrison` (use defaults) and save it as `modelHarrisonSel`. Summarize it.
+
+3. Which model has a larger $R^2$? And adjusted $R^2$? Which is simpler and has more significant coefficients?
+<!--
+lm(I(log(medv*1000)) ~ I(rm^2) + age + log(dis) + log(rad) + tax + ptratio + I(black/1000) + I(log(lstat/100)) + crim + zn + indus + chas + I((10*nox)^2)
+-->
+```
+
+
+
+<!--
+## Model formulation and estimation by least squares
+
+Animations:
+- Planar RSS
+- Plane insight on rotation
+
+## Inference for model parameters
+
+## Prediction
+-->
+
+<!--
+## Assessing model fit and ANOVA
+
+## Model selection
+
+## Nonlinear relationships and qualitative predictors
+
+Qualitative predictors (one level and more than two levels)
+
+Extensions and interactions
+-->
+
+<!--
+## Model diagnostics and multicollinearity
+
+Insight into straight line in 3D
+
+## Exercises and case studies
 
 College
 Wage
 USArrests
 Boston
 
-### Case study II: marketing plan
-
-## Model formulation and estimation by least squares
-
-## Inference for model parameters
-
-## Forecasting
-
-## Assessing model fit and ANOVA
-
-## Nonlinear relationships and qualitative predictors
-
-## Model diagnostics
-
-Qualitative predictors (one level and more than two levels)
-
-Extensions and interactions
-
-## Multicollinearity
-
-Insight into straight line in 3D
-
-## Exercises and case studies
 -->
