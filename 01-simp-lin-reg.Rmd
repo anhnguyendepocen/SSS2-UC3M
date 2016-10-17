@@ -1356,7 +1356,7 @@ plot(x^2, y, xlab = "x^2", pch = 16)
 abline(mod2$coefficients, col = 2, lwd = 2)
 ```
 
-```{block, type = 'rmdinsight'}
+```{block2, type = 'rmdinsight'}
 If you apply a nonlinear transformation, namely $f$, and fit the linear model $Y=\beta_0+\beta_1 f(X)+\varepsilon$, then there is no point in fit also the model resulting from the negative transformation $-f$. The model with $-f$ is exactly the same as the one with $f$ but with the sign of $\beta_1$ flipped! 
 
 As a rule of thumb, use Figure \@ref(fig:nonlineartransf) with the transformations to compare it with the data pattern, then choose the most similar curve, and finally apply the corresponding function with **positive sign**.
@@ -1366,7 +1366,7 @@ As a rule of thumb, use Figure \@ref(fig:nonlineartransf) with the transformatio
 knitr::include_app('https://egarpor.shinyapps.io/non-linear/', height = '550px')
 ```
 
-```{block, type = 'rmdinsight'}
+```{block2, type = 'rmdinsight'}
 As you might have realized, applying nonlinear transformations to the predictors is a **simple trick that extends enormously the functionality of the linear model**. This is particular useful in real applications, where linearity is hardly verified (For example, in the PISA case study of Section \@ref(pisa), we employed
 `logGDPp` instead of `GDPp` due to its higher linearity with `MathMean`.)
 ```
