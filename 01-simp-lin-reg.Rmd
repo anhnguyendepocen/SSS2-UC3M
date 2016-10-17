@@ -1306,7 +1306,7 @@ So remember:
 A large $R^2$ means *nothing* if the **assumptions of the model do not hold**. $R^2$ is the proportion of variance of $Y$ explained by $X$, but, of course, *only when the linear model is correct*.
 ```
 
-## Nonlinear relationships
+## Nonlinear relationships {#nonlin}
 
 The linear model is termed *linear* not because the regression curve is a line, but because **the effects of the parameters $\beta_0$ and $\beta_1$ are linear**. Indeed, the predictor $X$ may exhibit a nonlinear effect on the response $Y$ and still be a linear model! For example, the following models can be transformed into simple linear models:
 
