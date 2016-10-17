@@ -217,7 +217,7 @@ We have quantified the influence of the predictor variables in the housing price
 - `chas`, `age`, `rad` and `black` have a **significantly positive** influence on `medv`.
 - `nox`, `dis`, `tax`, `pratio` and `lstat` have a **significantly negative** influence on `medv`.
 
-```{block2, type = 'rmdexercise'}
+```{block, type = 'rmdexercise'}
 The model employed in @Harrison1978 is different from `modBest`. In the paper, several nonlinear transformations of the predictors (as in Section \@ref(nonlin)) and the response are done to improve the linear fit. Also, different units are used for `medv`, `black`, `lstat` and `nox`. The authors consider these variables :
 
 - *Response*: `log(1000 * medv)`
