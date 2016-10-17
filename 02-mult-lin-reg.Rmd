@@ -15,9 +15,9 @@ To convince you why is useful, let's see what it can do in real-case scenarios!
 >
 > --- "Wine Equation Puts Some Noses Out of Joint", [The New York Times](http://www.nytimes.com/1990/03/04/us/wine-equation-puts-some-noses-out-of-joint.html), 04/03/1990
 
-This case study is motivated by the study of professor Orley Ashenfelter [@Ashenfelter1995] on the quality of red Bordeaux vintages. The study became mainstream after disputes with the wine press, especially with Robert Parker, Jr., one of the most influential wine critic in America. See a short review of the story at the [Financial Times](http://www.ft.com/cms/s/0/1e9cb152-5824-11dc-8c65-0000779fd2ac.html?ft_site=falcon&desktop=true#axzz4NGeRjzkc).
+This case study is motivated by the study of professor Orley Ashenfelter [@Ashenfelter1995] on the quality of red Bordeaux vintages. The study became mainstream after disputes with the wine press, especially with Robert Parker, Jr., one of the most influential wine critic in America. See a short review of the story at the [Financial Times](http://www.ft.com/cms/s/0/1e9cb152-5824-11dc-8c65-0000779fd2ac.html).
 
-Red Bordeaux wines have been produced in Bordeaux, one of most famous and prolific wine regions in the world, in a very similar way for hundreds of years. However, *the quality of vintages is largely variable* from one season to another due to a long list of random factors, such as the weather conditions. Because Bordeaux wines taste better when they are older (young wines are astringent, when the wines age they lose their astringency),  there is an incentive to store the young wines until they are mature. Due to the important difference in taste, it is hard to determine the quality of the wine when it is so young because just by tasting it, because it is going to change substantially when the aged wine is in the market. Therefore, being able to *predict the quality of a vintage* is a valuable information for investing resources, for determining a fair price for vintages and for understanding what factors are affecting the wine quality. The purpose of this case study is to answer:
+Red Bordeaux wines have been produced in Bordeaux, one of most famous and prolific wine regions in the world, in a very similar way for hundreds of years. However, *the quality of vintages is largely variable* from one season to another due to a long list of random factors, such as the weather conditions. Because Bordeaux wines taste better when they are older (young wines are astringent, when the wines age they lose their astringency),  there is an incentive to store the young wines until they are mature. Due to the important difference in taste, it is hard to determine the quality of the wine when it is so young just by tasting it, because it is going to change substantially when the aged wine is in the market. Therefore, being able to *predict the quality of a vintage* is a valuable information for investing resources, for determining a fair price for vintages and for understanding what factors are affecting the wine quality. The purpose of this case study is to answer:
 
 - Q1. *Can we predict the quality of a vintage effectively?*
 - Q2. *What is the interpretation of such prediction?*
@@ -57,7 +57,7 @@ Let's begin by summarizing the information in Table \@ref(tab:winetable). First,
 
 2. **Graphically**. Make a scatterplot matrix with all the variables. Add the `'Least-squares lines'`, `'Histograms'` on the diagonals and choose to identify 2 points.
 
-    ```{r, scat, collapse = TRUE, out.width = '90%', fig.asp = 1, outfig.align = 'center', fig.cap = 'Scatterplot matrix for `wine`.'}
+    ```{r, scat, collapse = TRUE, out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = 'Scatterplot matrix for `wine`.'}
     scatterplotMatrix(~ Age + AGST + FrancePop + HarvestRain + Price + WinterRain, 
                       reg.line = lm, smooth = FALSE, spread = FALSE, span = 0.5, 
                       ellipse = FALSE, levels = c(.5, .9), id.n = 2, 
@@ -87,15 +87,15 @@ If we do the simple regressions of `Price` on the remaining predictors, we obtai
 
 | Predictor | $R^2$ |
 |:----------|:------|
-|`AGST`| $0.435$ |
-|`HarvestRain`| $0.317$ |
-|`FrancePop`| $0.218$ |
-|`Age`| $0.200$ |
-|`WinterRain`| $0.019$ |
+|`AGST`| $0.4456$ |
+|`HarvestRain`| $0.2572$ |
+|`FrancePop`| $0.2314$ |
+|`Age`| $0.2120$ |
+|`WinterRain`| $0.01819$ |
 
 A natural question to ask is:
 
-> Can we *combine* these simple regressions to increase the $R^2$ and the prediction accuracy for `Price`?
+> Can we *combine* these simple regressions to increase both the $R^2$ and the prediction accuracy for `Price`?
 
 The answer is yes, by means of the **multiple linear regression**. In order to make our first one, go to `'Statistics' -> 'Fit models' -> 'Linear model...'`. A window like Figure \@ref(fig:lmod) will pop-up. 
     
@@ -148,7 +148,7 @@ The interpretation of `modWine2` agrees with well-known facts in viticulture tha
 Although these were known facts, keep in mind that the model allows to *quantify the effect of each variable on the wine quality* and provides us with a precise way of *predicting the quality of future vintages*.
 
 ```{block, type = 'rmdexercise'}
-Create a new variable in `wine` named `PriceOrley`, defined as `Price - 8.4937`. Check that the model `PriceOrley ~ . - FrancePop - Price` *kind of* coincides with the formula given in the second paragraph of the [Financial Times article](http://www.ft.com/cms/s/0/1e9cb152-5824-11dc-8c65-0000779fd2ac.html?ft_site=falcon&desktop=true#axzz4NGeRjzkc) (the author forgot to add the `Age` term and the `ACGS` has an extra zero).
+Create a new variable in `wine` named `PriceOrley`, defined as `Price - 8.4937`. Check that the model `PriceOrley ~ . - FrancePop - Price` *kind of* coincides with the formula given in the second paragraph of the [Financial Times article](http://www.ft.com/cms/s/0/1e9cb152-5824-11dc-8c65-0000779fd2ac.html) ([Google's cache](https://webcache.googleusercontent.com/search?q=cache:1mRF68v_Uz4J:https://www.ft.com/content/1e9cb152-5824-11dc-8c65-0000779fd2ac+&cd=2&hl=en&ct=clnk&gl=es)). (The author forgot to add the `Age` term and the `ACGS` has an extra zero.)
 ```
 
 ### Case study II: Housing values in Boston
@@ -159,8 +159,8 @@ The description of the related variables can be found in `?Boston` and @Harrison
 
 - *Dependent* variable: `medv`, the median value of owner-occupied homes (in thousands of dollars).
 - *Structural* variables indicating the house characteristics: `rm` (average number of rooms "in owner units") and `age` (proportion of owner-occupied units built prior to 1940).
-- *Neighborhood* variables: `crim` (crime rate by town), `zn` (proportion of residential areas), `indus` (proportion of non-retail business area), `chas` (river limitation), `tax` (cost of public services in each community), `ptratio` (pupil-teacher ratio), `black` ($1000(B - 0.63)^2$, where $B$ is the black proportion of population - low and high values of $B$ increase housing prices) and `lstat` (percent of lower status of the population).
-- *Accesibility* variables: `dis` (distances to five Boston employment centers) and `rad` (accessibility to radial highways - larger index denotes better accessibility).
+- *Neighborhood* variables: `crim` (crime rate by town), `zn` (proportion of residential areas), `indus` (proportion of non-retail business area), `chas` (river limitation), `tax` (cost of public services in each community), `ptratio` (pupil-teacher ratio), `black` ($1000(B - 0.63)^2$, where $B$ is the black proportion of population -- low and high values of $B$ increase housing prices) and `lstat` (percent of lower status of the population).
+- *Accesibility* variables: `dis` (distances to five Boston employment centers) and `rad` (accessibility to radial highways -- larger index denotes better accessibility).
 - *Air pollution* variable: `nox`, the annual concentration of nitrogen oxide (in parts per ten million).
 
 A summary of the data is shown below:
@@ -180,7 +180,7 @@ The two goals of this case study are:
 
 We begin by making an exploratory analysis of the data with a matrix scatterplot. Since the number of variables is high, we opt to plot only five variables: `crim`, `dis`, `medv`, `nox` and `rm`. Each of them represents the five topics in which variables were classified.
 
-```{r, scat2, collapse = TRUE, out.width = '90%', fig.asp = 1, outfig.align = 'center', fig.cap = 'Scatterplot matrix for `crim`, `dis`, `medv`, `nox` and `rm` from the `Boston` dataset.'}
+```{r, scat2, collapse = TRUE, out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = 'Scatterplot matrix for `crim`, `dis`, `medv`, `nox` and `rm` from the `Boston` dataset.'}
 scatterplotMatrix(~ crim + dis + medv + nox + rm, reg.line = lm, smooth = FALSE,
                   spread = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9), 
                   id.n = 0, diagonal = 'density', data = Boston)
@@ -217,7 +217,7 @@ We have quantified the influence of the predictor variables in the housing price
 - `chas`, `age`, `rad` and `black` have a **significantly positive** influence on `medv`.
 - `nox`, `dis`, `tax`, `pratio` and `lstat` have a **significantly negative** influence on `medv`.
 
-```{block, type = 'rmdexercise'}
+```{block2, type = 'rmdexercise'}
 The model employed in @Harrison1978 is different from `modBest`. In the paper, several nonlinear transformations of the predictors (as in Section \@ref(nonlin)) and the response are done to improve the linear fit. Also, different units are used for `medv`, `black`, `lstat` and `nox`. The authors consider these variables :
 
 - *Response*: `log(1000 * medv)`
