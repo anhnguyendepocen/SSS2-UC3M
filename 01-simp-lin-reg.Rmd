@@ -1453,7 +1453,7 @@ Import the following datasets into `R Commander` indicating the right formatting
 - [`iris.txt`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/iris.txt)
 - [`ads.csv`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/ads.csv)
 - [`auto.txt`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/auto.txt)
-- [`boston.xlsx`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/boston.xlsx)
+- [`Boston.xlsx`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/Boston.xlsx)
 - [`anscombe.RData`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/anscombe.RData)
 - [`airquality.txt`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/airquality.txt)
 - [`wine.csv`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/wine.csv)

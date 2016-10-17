@@ -199,4 +199,4 @@ This is a handy list with a small description and download link for all the rele
 
 - `wine.csv` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/wine.csv)). The dataset is formed by the auction `Price` of 27 red Bordeaux vintages, four vintage descriptors (`WinterRain`, `AGST`, `HarvestRain`, `Age`) and the population of France in the year of the auction, `FrancePop`.
 
-- `boston.xlsx` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/boston.xlsx)). The dataset contains 14 variables describing 506 suburbs in Boston. Among those variables, `medv` is the median house value, `rm` is the average number of rooms per house and `crim` is the per capita crime rate. The full description is available in `?Boston`.
+- `Boston.xlsx` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/Boston.xlsx)). The dataset contains 14 variables describing 506 suburbs in Boston. Among those variables, `medv` is the median house value, `rm` is the average number of rooms per house and `crim` is the per capita crime rate. The full description is available in `?Boston`.
