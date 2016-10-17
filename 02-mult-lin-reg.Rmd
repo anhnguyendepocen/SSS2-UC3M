@@ -100,17 +100,17 @@ A natural question to ask is:
 The answer is yes, by means of the **multiple linear regression**. In order to make our first one, go to `'Statistics' -> 'Fit models' -> 'Linear model...'`. A window like Figure \@ref(fig:lmod) will pop-up. 
     
 ```{r, lmod, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Window for performing multiple linear regression.'}
-knitr::include_graphics("images/screenshots/lm.png")
+knitr::include_graphics("images/screenshots/lmm.png")
 ```
 
 Set the response as `Price` and add the rest of variables as predictors, in the form `Age + AGST + FrancePop + HarvestRain + WinterRain`. Note the **use of `+` for including all the predictors**. This does *not* mean that they are all summed and then the regression is done on the sum!^[If you wanted to do so, you will need the function `I()` for indicating that `+` is not including predictors in the model, but is acting as a sum operator: `Price ~ I(Age + AGST + FrancePop + HarvestRain + WinterRain)`.]. Instead of, this notation is designed to **resemble the multiple linear model**:
 \begin{align*}
 Y=\beta_0+\beta_1X_1+\beta_2X_2+\ldots+\beta_kX_k+\varepsilon
 \end{align*}
-If the model is named `modFull`, we get the following summary when clicking in `'OK'`:
+If the model is named `modWine1`, we get the following summary when clicking in `'OK'`:
 ```{r, collapse = TRUE}
-modFull <- lm(Price ~ Age + AGST + FrancePop + HarvestRain + WinterRain, data = wine)
-summary(modFull)
+modWine1 <- lm(Price ~ Age + AGST + FrancePop + HarvestRain + WinterRain, data = wine)
+summary(modWine1)
 ```
 The main difference with simple linear regressions is that we have more rows on the `'Coefficients'` section, since these correspond to each of the predictors. The fitted regression is `Price` $= -2.343 + 0.013\,\times$ `Age` $+ 0.614\,\times$ `AGST` $- 0.000\,\times$ `FrancePop` $- 0.003\,\times$ `HarvestRain` $+ 0.001\,\times$ `WinterRain`
 . Recall that the `'Multiple R-squared'` has almost doubled with respect to the best simple linear regression!^[The $R^2$ for the multiple linear regression $Y=\beta_0+\beta_1X_1+\ldots+\beta_kX_k+\varepsilon$ is not the sum of the $R^2$'s for the simple linear regressions $Y=\beta_0+\beta_jX_j+\varepsilon$, $j=1,\ldots,k$.] This tells us that we can explain up to $82.75\%$ of the `Price` variability by the predictors.
@@ -126,20 +126,20 @@ Two useful tips  about `lm`'s syntax for including/excluding predictors faster:
 
 Then, the model without `FrancePop` is
 ```{r, collapse = TRUE}
-modWine <- lm(Price ~ . - FrancePop, data = wine)
-summary(modWine)
+modWine2 <- lm(Price ~ . - FrancePop, data = wine)
+summary(modWine2)
 ```
-All the coefficients are significant at level $\alpha=0.05$. Therefore, there is no clear redundant information. In addition, the $R^2$ is very similar to the full model, but the `'Adjusted R-squared'`, a weighting of the $R^2$ to account for the number of predictors used by the model, is slightly larger. Hence, this means that, comparatively to the number of predictors used, `modWine` explains more variability of `Price` than `modFull`. Later in this chapter we will see the precise meaning of the $R^2$ adjusted.
+All the coefficients are significant at level $\alpha=0.05$. Therefore, there is no clear redundant information. In addition, the $R^2$ is very similar to the full model, but the `'Adjusted R-squared'`, a weighting of the $R^2$ to account for the number of predictors used by the model, is slightly larger. Hence, this means that, comparatively to the number of predictors used, `modWine2` explains more variability of `Price` than `modWine1`. Later in this chapter we will see the precise meaning of the $R^2$ adjusted.
 
 The comparison of the coefficients of both models can be done with `'Models -> Compare model coefficients...'`:
 ```{r, collapse = TRUE}
-compareCoefs(modFull, modWine)
+compareCoefs(modWine1, modWine2)
 ```
-Note how **the coefficients for `modWine` have smaller errors than `modFull`**.
+Note how **the coefficients for `modWine2` have smaller errors than `modWine1`**.
 
-As a conclusion, `modWine` is a model that explains the $82.75\%$ of the variability in a non-redundant way and with all their coefficients significant. Therefore, we have a formula for effectively explaining and predicting the quality of a vintage (answers Q1).
+As a conclusion, `modWine2` is a model that explains the $82.75\%$ of the variability in a non-redundant way and with all their coefficients significant. Therefore, we have a formula for effectively explaining and predicting the quality of a vintage (answers Q1).
 
-The interpretation of `modWine` agrees with well-known facts in viticulture that make perfect sense (Q2):
+The interpretation of `modWine2` agrees with well-known facts in viticulture that make perfect sense (Q2):
 
 - Higher temperatures are associated with better quality (higher priced) wine.
 - Rain before the growing season is good for the wine quality, but during harvest is bad.
