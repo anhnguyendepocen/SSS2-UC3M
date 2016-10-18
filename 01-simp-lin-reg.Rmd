@@ -699,7 +699,7 @@ where:
 
 - $\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$ is the *sample mean*.
 - $s_x^2=\frac{1}{n}\sum_{i=1}^n(X_i-\bar{X})^2$ is the *sample variance*. The sample standard deviation is $s_x=\sqrt{s_x^2}$.
-- $s_{xy}=\frac{1}{n}\sum_{i=1}^n(X_i-\bar{X})(Y_i-\bar{Y})$ is the *sample covariance*. It measures the degree of linear association between $X_1,\ldots,X_n$ and $Y_1,\ldots,Y_n$. Once scaled by $s_xs_y$, it gives the *sample correlation coefficient*, $r=\frac{s_{xy}}{s_xs_y}$.
+- $s_{xy}=\frac{1}{n}\sum_{i=1}^n(X_i-\bar{X})(Y_i-\bar{Y})$ is the *sample covariance*. It measures the degree of linear association between $X_1,\ldots,X_n$ and $Y_1,\ldots,Y_n$. Once scaled by $s_xs_y$, it gives the *sample correlation coefficient*, $r_{xy}=\frac{s_{xy}}{s_xs_y}$.
 
 There are some important points hidden behind the election of RSS as the error criterion for obtaining $(\hat\beta_0,\hat\beta_1)$:
 
@@ -1549,7 +1549,7 @@ Answer briefly in your own words:
 - If you have a vector `x`, what are `x^2` and `x + 1` doing to its elements?
 ```
 
-```{block, type = 'rmdexercise'}
+```{block2, type = 'rmdexercise'}
 Do the following:
 
 - Create the vectors $x = (1.17, 0.41, 0.34, 1.11, 1.02, 0.22, -0.24, -0.27, -0.40, -1.38)$ and $y = (3.63, 1.69, 0.27, 5.83, 2.64, 1.33, 1.22 -0.62, 1.29, -0.43)$. 
@@ -1571,38 +1571,12 @@ Do the following:
 - Do a `str` on `A`, `worldPopulation`, `mod` and `sumMod`.
 - Access the $R^2$ and $\hat\sigma$ in `sumMod`.
 - Check that $R^2$ is the same as the squared correlation between predictor and response, and also the squared correlation between response and `mod$fitted.values`.
-```
 
-
-```{block, type = 'rmdexercise'}
-TBA
-<!--
-Identify the problems with the following `R` codes, compared with what they were meant to do. **All of them are wrong!** They may generate an error or do something different to what is asked. Work out the right answer.
-
-1. "Compute the mean of $-1.23, \sqrt{2}, 2.34, 5, 0.15$"
-    - `mean(-1.23, sqrt(2), 2.34, 5, 0.15)`
-    - `mean(c(-1.23, 2^1/2, 2.34, 5, 0.15))`
-    - `mean(c(-1.23, sqrt(2), 2.34, 5, 0.15)`
-2. "Compute the variance of `x`"
-    - `sum(x^2)`
-    - `mean(x^2)`
-    - `sd(x)`
-3. "Compute the linear model of `x`"
-4. "Compute "
-5. "Compute "
-6. "Compute "
-7. "Compute "
-8. "Compute "
-9. "Compute "
-10. "Compute "
--->
 ```
 
 ### Model formulation and estimation
 
 ```{block, type = 'rmdexercise'}
-TBA
-<!--
 Answer the following conceptual questions in your own words:
 
 - What is the difference between $(\beta_0,\beta_1)$ and $(\hat\beta_0,\hat\beta_1)$.
@@ -1610,7 +1584,11 @@ Answer the following conceptual questions in your own words:
 - What function are the least squares estimates minimizing? Is important the choice of the kind distances (horizontal, vertical, perpendicular)?
 - What is the justification for the use of a vertical distance in the RSS?
 - Is $\sigma^2$ affecting the $R^2$ (indirectly or directly)? Why?
--->
+- What are the estimated residuals? What is their interpretation?
+- What are the fitted values? What is their interpretation?
+- What is the relation of $\hat \beta_1$ with $r_{xy}$?
+
+Finally, check that the regression line goes through $(\bar X, \bar Y)$, in other words, that $\bar Y=\hat\beta_0+\hat\beta_1\bar X$.
 ```
 
 ### Assumptions of the linear model

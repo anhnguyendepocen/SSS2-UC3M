@@ -37,10 +37,10 @@ The *quality* of the wine is quantified as the `Price`, a clever way of quantify
 ```{r, winetable, echo = FALSE, out.width = '90%', fig.align = 'center'}
 wine <- read.csv(file = "datasets/wine.csv", header = TRUE)
 knitr::kable(
-  wine,
+  head(wine, 15),
   booktabs = TRUE,
   longtable = TRUE,
-  caption = '`wine` dataset.'
+  caption = 'First 15 rows of the `wine` dataset.'
 )
 row.names(wine) <- wine$Year
 wine$Year <- NULL
@@ -162,7 +162,7 @@ The description of the related variables can be found in `?Boston` and @Harrison
 
 - *Dependent* variable: `medv`, the median value of owner-occupied homes (in thousands of dollars).
 - *Structural* variables indicating the house characteristics: `rm` (average number of rooms "in owner units") and `age` (proportion of owner-occupied units built prior to 1940).
-- *Neighborhood* variables: `crim` (crime rate by town), `zn` (proportion of residential areas), `indus` (proportion of non-retail business area), `chas` (river limitation), `tax` (cost of public services in each community), `ptratio` (pupil-teacher ratio), `black` ($1000(B - 0.63)^2$, where $B$ is the black proportion of population -- low and high values of $B$ increase housing prices) and `lstat` (percent of lower status of the population).
+- *Neighborhood* variables: `crim` (crime rate), `zn` (proportion of residential areas), `indus` (proportion of non-retail business area), `chas` (river limitation), `tax` (cost of public services in each community), `ptratio` (pupil-teacher ratio), `black` (variable $1000(B - 0.63)^2$, where $B$ is the black proportion of population -- low and high values of $B$ increase housing prices) and `lstat` (percent of lower status of the population).
 - *Accesibility* variables: `dis` (distances to five Boston employment centers) and `rad` (accessibility to radial highways -- larger index denotes better accessibility).
 - *Air pollution* variable: `nox`, the annual concentration of nitrogen oxide (in parts per ten million).
 
@@ -197,7 +197,7 @@ summary(modHouse)
 ```
 There are a couple of non-significant variables, but so far the model has an $R^2=0.74$ and the fitted coefficients are sensible with what it would be expected. For example, `crim`, `tax`, `ptratio` and `nox` have negative effects on `medv`, while `rm`, `rad` and `chas` have positive. However, the non-significant coefficients are not improving significantly the model, but only adding artificial noise and decreasing the overall accuracy of the coefficient estimates!
 
-Let's polish a little bit the previous model. Instead of removing manually each non-significant variable to reduce the complexity, we employ an automatic tool in `R` called *stepwise model selection*. It as different flavors, that we will in detail later in this chapter, but essentially this powerful tool *usually* ends up selecting the "best model": *a model that delivers the maximum fit with the minimum number of variables*.
+Let's polish a little bit the previous model. Instead of removing manually each non-significant variable to reduce the complexity, we employ an automatic tool in `R` called **stepwise model selection**. It as different flavors, that we will in detail later in this chapter, but essentially this powerful tool *usually* ends up selecting "a" *best model*: **a model that delivers the maximum fit with the minimum number of variables**.
 
 The stepwise model selection is located at `'Models' -> 'Stepwise model selection...'` and is always applied on the active model. Apply it with the default options to `modBest`:
 
@@ -205,7 +205,7 @@ The stepwise model selection is located at `'Models' -> 'Stepwise model selectio
 modBest <- stepwise(modHouse, direction = 'backward/forward', criterion = 'BIC')
 ```
 
-Note the different steps: it starts with the full model and, when `+` is shown, it means that the variable is *excluded* at that step. The procedure seeks to minimize an *information criterion* (BIC or AIC).^[Although note that the printed messages always display `'AIC'` even if you choose `'BIC'`.] Remember to save the output to a variable if you want to have the final model (you need to do this in `R`)!
+Note the different steps: it starts with the full model and, when `+` is shown, it means that the variable is *excluded* at that step. The procedure seeks to minimize an **information criterion** (BIC or AIC)^[Although note that the printed messages always display `'AIC'` even if you choose `'BIC'`.]. An information criterion balances the fitness of a model with the number of predictors employed. Hence, it determines objectively the best model: *the one that minimizes the information criterion*. Remember to save the output to a variable if you want to have the final model (you need to do this in `R`)!
 
 The summary of the final model is:
 ```{r, collapse = TRUE}
@@ -221,7 +221,7 @@ We have quantified the influence of the predictor variables in the housing price
 - `nox`, `dis`, `tax`, `pratio` and `lstat` have a **significantly negative** influence on `medv`.
 
 ```{block2, type = 'rmdexercise'}
-The model employed in @Harrison1978 is different from `modBest`. In the paper, several nonlinear transformations of the predictors (remember Section \@ref(nonlin)) and the response are done to improve the linear fit. Also, different units are used for `medv`, `black`, `lstat` and `nox`. The authors consider these variables :
+The model employed in @Harrison1978 is different from `modBest`. In the paper, several nonlinear transformations of the predictors (remember Section \@ref(nonlin)) and the response are done to improve the linear fit. Also, different units are used for `medv`, `black`, `lstat` and `nox`. The authors considered these variables:
 
 - *Response*: `log(1000 * medv)`
 - *Linear predictors*: `age`, `black / 1000` (this variable corresponds to their $(B-0.63)^2$), `tax`, `ptratio`, `crim`, `zn`, `indus` and `chas`.
@@ -235,6 +235,7 @@ Do the following:
 2. Make a `stepwise` selection of the variables in `modelHarrison` (use defaults) and save it as `modelHarrisonSel`. Summarize it.
 
 3. Which model has a larger $R^2$? And adjusted $R^2$? Which is simpler and has more significant coefficients?
+
 ```
 <!--
 lm(I(log(medv*1000)) ~ I(rm^2) + age + log(dis) + log(rad) + tax + ptratio + I(black/1000) + I(log(lstat/100)) + crim + zn + indus + chas + I((10*nox)^2)
