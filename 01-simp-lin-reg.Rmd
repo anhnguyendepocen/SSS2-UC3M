@@ -628,6 +628,11 @@ myDf
 # The nice thing is that you can access variables by its name with the $ operator
 myDf$newname1
 
+# And create new variables also (it has to be of the same 
+# length as the rest of variables)
+myDf$myNewVariable <- c(0, 1)
+myDf
+  
 # A list is a collection of arbitrary variables
 myList <- list(myData = myData, A = A, myDf = myDf) 
 
@@ -1508,6 +1513,7 @@ Import the `iris` dataset, either from [`iris.txt`](https://raw.githubuserconten
 - Make the scatterplot of `Petal.Width` (y) vs `Petal.Length` (x) with a regression line.
 - Set the `'Graph title'` to "iris dataset: petal width vs petal length", the `'x-axis label'` to "petal length" and `'y-axis label'` to "sepal length".
 - Identify the 5 most outlier points `'Automatically'`.
+- Redo the linear regression and scatterplot excluding the points labelled as outliers (exclude them in `'Subset expression'` with a `-c(...)`).
 - Check that the summary for the fitted line and the scatterplot displayed are coherent.
 - Make the matrix scatterplot for the four variables and including `'Least-squares lines'`.
 - Set the `'On Diagonal'` plots to `'Histograms'` and `'Boxplots'`.
@@ -1515,10 +1521,11 @@ Import the `iris` dataset, either from [`iris.txt`](https://raw.githubuserconten
 - Identify the 5 most outlier points `'Automatically'`.
 - Modify the *code* to identify 15 points.
 - Compute the regression line for the plot in the third row and the fourth column and create the scatterplot for it.
+- Redo the scatterplot by selecting the option `'Plot by groups...'` and then selecting `'Species'`.
 ```
 
 ```{block, type = 'rmdinsight'}
-The last scatterplot is an illustration of the **Simpson's paradox**. The paradox surges when there are two or more well-defined groups in the data, they all have *positive (negative) correlation*, but taken as a *whole dataset*, the **correlation is the opposite**.
+The last scatterplots are an illustration of the **Simpson's paradox**. The paradox surges when there are two or more well-defined groups in the data, they all have *positive (negative) correlation*, but taken as a *whole dataset*, the **correlation is the opposite**.
 ```
 
 ### `R` basics
@@ -1543,36 +1550,51 @@ Answer briefly in your own words:
 ```
 
 ```{block, type = 'rmdexercise'}
-TBA
-<!--
 Do the following:
 
 - Create the vectors $x = (1.17, 0.41, 0.34, 1.11, 1.02, 0.22, -0.24, -0.27, -0.40, -1.38)$ and $y = (3.63, 1.69, 0.27, 5.83, 2.64, 1.33, 1.22 -0.62, 1.29, -0.43)$. 
-- Set the positions 3, 4 and 8 of $x$ to 0. Set the positions 1, 4, 9 of $y$ to 0.5, -0.75, 0.3, -0.2.
-- Create a new vector $z$ containing $\log(x^2) - y^3*\sqrt(\exp(x))$
-- Create the vector $1, 4, 9, 16, 25, \ldots, 100$
-- Matrix1
-- Matrix2
-- data.frame
-- functions
-- 
-- 
-- 
-- lm
-- summary
-- Obtain the $R^2$
-- Check that $R^2$ is the same as $r_{xy}$ and $r_{}$
-- Which are the most overrepresented countries? Which are the least?
-- States
--->
+- Set the positions 3, 4 and 8 of $x$ to 0. Set the positions 1, 4, 9 of $y$ to 0.5, -0.75 and 0.3, respectively.
+- Create a new vector $z$ containing $\log(x^2) - y^3\sqrt{\exp(x)}$.
+- Create the vector $t=(1, 4, 9, 16, 25, \ldots, 100)$.
+- Access all the elements of $t$ except the third and fifth.
+- Create the matrix $A=\begin{pmatrix}1 & -3\\0 & 2\end{pmatrix}$. Hint: use `rbind` or `cbind`.
+- Using $A$, what is a short way (less amount of code) of computing $B=\begin{pmatrix}1+\sqrt{2}\sin(3) & -3+\sqrt{2}\sin(3)\\0+\sqrt{2}\sin(3) & 2+\sqrt{2}\sin(3)\end{pmatrix}$?
+- Compute `A*B`. Check that it makes sense with the results of `A[1, 1] * B[1, 1]`, `A[1, 2] * B[1, 2]`, `A[2, 1] * B[2, 1]` and `A[2, 2] * B[2, 2]`. Why?
+- Create a data frame named `worldPopulation` such that:
+    - the first variable is called `Year` and contains the values `c(1915, 1925, 1935, 1945, 1955, 1965, 1975, 1985, 1995, 2005, 2015)`.
+    - the second variable is called `Population` and contains the values `c(1798.0, 1952.3, 2197.3, 2366.6, 2758.3, 3322.5, 4061.4, 4852.5, 5735.1, 6519.6, 7349.5)`.
+- Write `names(worldPopulation)`. Access to the two variables.
+- Create a new variable in `worldPopulation` called `logPopulation` that contains `log(Population)`.
+- Compute the standard deviation, mean and median of the variables in  `worldPopulation`.
+- Regress `logPopulation` into `Year`. Save the result as `mod`.
+- Compute the summary of the model and save it as `sumMod`.
+- Do a `str` on `A`, `worldPopulation`, `mod` and `sumMod`.
+- Access the $R^2$ and $\hat\sigma$ in `sumMod`.
+- Check that $R^2$ is the same as the squared correlation between predictor and response, and also the squared correlation between response and `mod$fitted.values`.
 ```
+
 
 ```{block, type = 'rmdexercise'}
 TBA
 <!--
-Identify the problems with the following `R` codes, compared with what they were meant to do. Work out the right answer.
+Identify the problems with the following `R` codes, compared with what they were meant to do. **All of them are wrong!** They may generate an error or do something different to what is asked. Work out the right answer.
 
-- "Compute the mean of $-1.23, \sqrt{2}, 2.34, 5, 0.15$"
+1. "Compute the mean of $-1.23, \sqrt{2}, 2.34, 5, 0.15$"
+    - `mean(-1.23, sqrt(2), 2.34, 5, 0.15)`
+    - `mean(c(-1.23, 2^1/2, 2.34, 5, 0.15))`
+    - `mean(c(-1.23, sqrt(2), 2.34, 5, 0.15)`
+2. "Compute the variance of `x`"
+    - `sum(x^2)`
+    - `mean(x^2)`
+    - `sd(x)`
+3. "Compute the linear model of `x`"
+4. "Compute "
+5. "Compute "
+6. "Compute "
+7. "Compute "
+8. "Compute "
+9. "Compute "
+10. "Compute "
 -->
 ```
 
@@ -1586,10 +1608,8 @@ Answer the following conceptual questions in your own words:
 - What is the difference between $(\beta_0,\beta_1)$ and $(\hat\beta_0,\hat\beta_1)$.
 - Is $\hat\beta_0$ a random variable? What about $\hat\beta_1$? Justify your answer.
 - What function are the least squares estimates minimizing? Is important the choice of the kind distances (horizontal, vertical, perpendicular)?
-- What is the justification for a vertical distance?
-- Is $\sigma^2$ affecting 
--
--
+- What is the justification for the use of a vertical distance in the RSS?
+- Is $\sigma^2$ affecting the $R^2$ (indirectly or directly)? Why?
 -->
 ```
 
@@ -1669,7 +1689,7 @@ The dataset `gpus.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS
 
 ### Case study: *Growth in a time of debt*
 
-In the aftermath of the 2007-2008 financial crisis, the paper *Growth in a time of debt* [@Reinhart2010a] provided an important economical support for pro-austerity policies. The paper claimed that for levels of external debt in excess of 90% of the GDP, the GDP growth of a country was dramatically different than for lower levels of external debt. Therefore, it concludes the existence of a *magical threshold* -- 90% -- for which the level of external debt must be kept below in order to have a growing economy. Figure \@ref(fig:reinhart), extracted from @Reinhart2010a, illustrates the main finding.
+In the aftermath of the 2007-2008 financial crisis, the paper *Growth in a time of debt* [@Reinhart2010a], from Carmen M. Reinhart and Kenneth Rogoff (both at Harvard), provided an important economical support for pro-austerity policies. The paper claimed that for levels of external debt in excess of 90% of the GDP, the GDP growth of a country was dramatically different than for lower levels of external debt. Therefore, it concludes the existence of a *magical threshold* -- 90% -- for which the level of external debt must be kept below in order to have a growing economy. Figure \@ref(fig:reinhart), extracted from @Reinhart2010a, illustrates the main finding.
 
 ```{r, reinhart, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'The *magical threshold* of $90\\%$ external debt.'}
 knitr::include_graphics("images/figures/reinhart.png")
@@ -1681,7 +1701,7 @@ You can read the full story at [BBC](http://www.bbc.com/news/magazine-22223190),
 [The New York Times](http://www.nytimes.com/2013/04/19/opinion/krugman-the-excel-depression.html) and 
 [The Economist](http://www.economist.com/news/finance-and-economics/21576362-seminal-analysis-relationship-between-debt-and-growth-comes-under). Also, the video in Figure \@ref(fig:video) contains a quick summary of the story by Nobel Prize laureate Paul Krugman.
 
-```{r, video, echo = FALSE, fig.align = 'center', fig.cap = 'CNN interview to Paul Krugman (key point from 1:16 to 1:40).', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE}
+```{r, video, echo = FALSE, fig.align = 'center', fig.cap = 'CNN interview to Paul Krugman (key point from 1:16 to 1:40), broadcasted in 2013.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE}
 knitr::include_url("https://www.youtube.com/embed/3xj338ACri8")
 ```
 
