@@ -1,7 +1,13 @@
 
 # Simple linear regression {#simp}
 
-The simple linear regression is a *simple* but useful statistical model. In short, it allows to analyse the (assumed) linear relation between two variables in a proper way. To convince you why is useful, let's see what it can do in real-case scenarios!
+The simple linear regression is a *simple* but useful statistical model. In short, it allows to analyse the (assumed) linear relation between two variables, $X$ and $Y$ in a proper way. It does it by considering the model
+$$
+Y=\beta_0+\beta_1X+\varepsilon
+$$
+which in Chapter \@ref(mult) will be extended to multiple linear regression.
+
+To convince you why simple linear regression is useful, let's begin by seeing what it can do in real-case scenarios!
 
 ## Examples and applications
 
@@ -665,9 +671,9 @@ Do the following:
 
 ```
 
-## Model formulation and estimation by least squares
+## Model formulation and estimation by least squares {#modelsimp}
 
-The simple linear model is a statistical tool for describing the relation between two random variables, $X$ and $Y$. For example, in the `pisa` dataset, $X$ could be `ReadingMean` and $Y=$ `MathMean`. The linear model is *constructed by assuming* that the linear relation
+The simple linear model is a statistical tool for describing the relation between two random variables, $X$ and $Y$. For example, in the `pisa` dataset, $X$ could be `ReadingMean` and $Y=$ `MathMean`. The simple linear model is *constructed by assuming* that the linear relation
 \begin{align}
 Y = \beta_0 + \beta_1 X + \varepsilon (\#eq:1)
 \end{align}
@@ -1173,8 +1179,8 @@ Before explaining ANOVA, it is important to recall an interesting result: *the m
 The ANOVA decomposition considers the following measures of variation related with the response:
 
 - $\text{SST}=\sum_{i=1}^n\left(Y_i-\bar Y\right)^2$, the **total sum of squares**. This is the *total variation* of $Y_1,\ldots,Y_n$, since $\text{SST}=ns_y^2$, where $s_y^2$ is the sample variance of $Y_1,\ldots,Y_n$.
-- $\text{SSR}=\sum_{i=1}^n\left(\hat Y_i-\bar Y\right)^2$, the **regression sum of squares**^[Recall that SSR is different from RSS (Residual Sum of Squares).]. This is the variation explained by the regression line, that is, *the variation from $\bar Y$ that is explained by the conditional mean $\hat Y_i=\hat\beta_0+\hat\beta_1X_i$*. $\text{SSR}=ns_{\hat y}^2$, where $s_{\hat y}^2$ is the sample variance of $\hat Y_1,\ldots,\hat Y_n$.
-- $\text{SSE}=\sum_{i=1}^n\left(Y_i-\hat Y_i\right)^2$, the **sum of squared errors**. Is the variation around the conditional mean. Recall that $\text{SSE}=\sum_{i=1}^n \hat\varepsilon_i^2=(n-2)\hat\sigma^2$, where $\hat\sigma^2$ is the sample variance of $\hat \varepsilon_1,\ldots,\hat \varepsilon_n$. 
+- $\text{SSR}=\sum_{i=1}^n\left(\hat Y_i-\bar Y\right)^2$, the **regression sum of squares**^[Recall that SSR is different from RSS (Residual Sum of Squares, Section \@ref(modelsimp)).]. This is the variation explained by the regression line, that is, *the variation from $\bar Y$ that is explained by the conditional mean $\hat Y_i=\hat\beta_0+\hat\beta_1X_i$*. $\text{SSR}=ns_{\hat y}^2$, where $s_{\hat y}^2$ is the sample variance of $\hat Y_1,\ldots,\hat Y_n$.
+- $\text{SSE}=\sum_{i=1}^n\left(Y_i-\hat Y_i\right)^2$, the **sum of squared errors**^[Recal that SSE and RSS (for $(\hat \beta_0,\hat \beta_1)$) are just different names for referring to the same quantity: $\text{SSE}=\sum_{i=1}^n\left(Y_i-\hat Y_i\right)^2=\sum_{i=1}^n\left(Y_i-\hat \beta_0-\hat \beta_1X_i\right)^2=\mathrm{RSS}\left(\hat \beta_0,\hat \beta_1\right)$.]. Is the variation around the conditional mean. Recall that $\text{SSE}=\sum_{i=1}^n \hat\varepsilon_i^2=(n-2)\hat\sigma^2$, where $\hat\sigma^2$ is the sample variance of $\hat \varepsilon_1,\ldots,\hat \varepsilon_n$. 
 
 The ANOVA decomposition is
 \begin{align}
@@ -1233,6 +1239,14 @@ The *coefficient of determination* $R^2$ is closely related with the ANOVA decom
 R^2=\frac{\text{SSR}}{\text{SST}}=\frac{\text{SSR}}{\text{SSR}+\text{SSE}}=\frac{\text{SSR}}{\text{SSR}+(n-2)\hat\sigma^2}
 \end{align*}
 $R^2$ measures the **proportion of variation** of the response variable $Y$ that is **explained** by the predictor $X$ through the regression. The proportion of total variation of $Y$ that is not explained is $1-R^2=\frac{\text{SSE}}{\text{SST}}$. Intuitively, $R^2$ measures the **tightness of the data cloud around the regression line**, since is related directly with $\hat\sigma^2$. Check in Figure \@ref(fig:anovaillus) how changing the value of $\sigma^2$ (not $\hat\sigma^2$, but $\hat\sigma^2$ this is obviously dependent on $\sigma^2$) affects the $R^2$.
+
+```{block, type = 'rmdinsight'}
+The ANOVA decomposition gives another interpretation of the least-squares estimates: **$(\hat\beta_0,\hat\beta_1)$ are the estimated coefficients that maximize the $R^2$** (among all the possible estimates we could think about). Recall that
+$$
+R^2=\frac{\text{SSR}}{\text{SST}}=\frac{\text{SST} - \text{SSE}}{\text{SST}}=\frac{\text{SST} - \text{RSS}(\hat\beta_0,\hat\beta_1)}{\text{SST}},
+$$
+so if $\text{RSS}(\hat\beta_0,\hat\beta_1)=\min_{\beta_0,\beta_1}\text{RSS}(\beta_0,\beta_1)$, then $R^2$ is maximal for $(\hat\beta_0,\hat\beta_1)$.
+```
 
 The $R^2$ is related with the sample *correlation coefficient*
 \begin{align*}

@@ -82,7 +82,17 @@ An important warning about UC3M computer labs:
 ```{block, type = 'rmdcaution'}
 Every file you save locally (including installed packages) will be wiped out after you close your session. So be sure to save your valuable files at the end of the lesson. 
 
-The **exception** is the folder `'C:\\TEMP'`, where all the files you save will be accessible for *everyone* that logs in the computer!
+The **exception** is the folder `'C:/TEMP'`, where all the files you save will be accessible for *everyone* that logs in the computer!
+```
+
+```{block2, type = 'rmdcaution'}
+In UC3M computers, `R` and `R Commander` are only available in Spanish. To have them in English, you need to do a workaround:
+
+1. Create a shotcut to `R` in your desktop. To do so, go to `'C:/Archivos de programa/R/R-3.3.1/bin/', right-click in `'R.exe'` and choose `'Enviar a' -> 'Escritorio (crear acceso directo)'`.
+2. Modify the properties of the shortcut. Right-click on the shortcut and choose `'Propiedades'`. Then **append** to the `'Destino'` field the text `Language=en` (separated by a space, see Figure \@ref(fig:lang)). Click `'Aplicar'` and then `'OK'`.
+3. Run that shortcut and then type `library(Rcmdr)`.
+
+Tip: if you save the modified shortcut in `'C:/TEMP'`, it could be available the next time you log in.
 ```
 
 Alternatively, you can bring your own laptop and save all your files in it, see Section \@ref(laptop).
@@ -130,16 +140,20 @@ Regardless of your choice, at some point you will probably need to run the softw
     ```{r, eval = FALSE}
     library(Rcmdr)
     ```
-    
+
+```{block, type = 'rmdcaution'}
+**Mac OS X users**. To prevent an occasional freezing of `R` and `R Commander` by the OS, go to `'Tools' -> 'Manage Mac OS X app nap for R.app...'` and select `'off (recommended)'`.
+```
+
 By default `R` and `R Commander` will have menus and messages in the language of your OS. If you want them in English, a simple option is to change the OS language to English and reboot. If you want to stick with your OS language, another options are:
 
-- Windows. Create a shortcut in your desktop, either to `'R x64 X.X.X'` or to `'R i386 X.X.X'`. Add a distinctive descriptor to its name, for example `'R x64 X.X.X ENGLISH'`. Then `'Right mouse click'` on it, select `'Properties'` and **append** to the `'Target'` field the text `Language=en` (separated by a space, see Figure \@ref(fig:lang)). Analogously, use `Language=es` for Spanish, `Language=it` for Italian, etc. Use this shortcut to launch `R` (and then `R Commander`) in the chosen language.
+- **Windows**. Create a shortcut in your desktop, either to `'R x64 X.X.X'` or to `'R i386 X.X.X'`. Add a distinctive descriptor to its name, for example `'R x64 X.X.X ENGLISH'`. Then `'Right mouse click'` on it, select `'Properties'` and **append** to the `'Target'` field the text `Language=en` (separated by a space, see Figure \@ref(fig:lang)). Analogously, use `Language=es` for Spanish, `Language=it` for Italian, etc. Use this shortcut to launch `R` (and then `R Commander`) in the chosen language. Click `'Apply'` and then `'OK'`.
 
     ```{r, lang, echo = FALSE, out.width = '45%', fig.align = 'center', fig.cap = 'Modification of the `R` shortcut properties in Windows.'}
   knitr::include_graphics("images/screenshots/lang.png")
     ```
 
-- Mac OS X. Open `R.app` and simply run
+- **Mac OS X**. Open `R.app` and simply run
 
     ```{r, eval = FALSE}
     system("defaults write org.R-project.R force.LANG en_GB.UTF-8")
@@ -197,6 +211,6 @@ This is a handy list with a small description and download link for all the rele
 
 - `hap.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/hap.txt)). Contains data for 20 advanced economies in the time period 1946–2009, measured for 31 variables. Among those, the variable `dRGDP` represents the real GDP growth (as a percentage) and `debtgdp` represents the percentage of public debt with respect to the GDP. 
 
-- `wine.csv` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/wine.csv)). The dataset is formed by the auction `Price` of 27 red Bordeaux vintages, four vintage descriptors (`WinterRain`, `AGST`, `HarvestRain`, `Age`) and the population of France in the year of the auction, `FrancePop`.
+- `wine.csv` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/wine.csv)). The dataset is formed by the auction `Price` of 27 red Bordeaux vintages, four vintage descriptors (`WinterRain`, `AGST`, `HarvestRain`, `Age`) and the population of France in the year of the vintage, `FrancePop`.
 
 - `Boston.xlsx` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/Boston.xlsx)). The dataset contains 14 variables describing 506 suburbs in Boston. Among those variables, `medv` is the median house value, `rm` is the average number of rooms per house and `crim` is the per capita crime rate. The full description is available in `?Boston`.
