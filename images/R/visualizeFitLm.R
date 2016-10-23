@@ -2,10 +2,10 @@
 
 #' @title Visualize the fit of a simple linear model
 #'
-#' @description Generates a plot illustrating the key concepts for a fitted linear model: linear trend, model-based confidence bands and normality around the mean.
+#' @description Generates a plot illustrating the key concepts for a fitted simple linear model: linear trend, model-based confidence bands and normality around the mean.
 #'
-#' @param data a \code{data.frame} containing a \code{X} and \code{Y} variables.
-#' @param nGrid number of cuts used to produce the XY grid..
+#' @param data a \code{data.frame} containing \code{X} and \code{Y} as variables.
+#' @param nGrid number of cuts used to produce the XY grid.
 #' @param zTop upper z-limit of the 3D bounding box.
 #' @inheritParams base::persp
 #' @param alpha desired level for the theoretical confidence intervals.
@@ -22,7 +22,7 @@
 #' visualizeFitLm(data = data, alpha = 0.01)
 #' @author Eduardo García-Portugués (\email{edgarcia@est-econ.uc3m.es}), based on the original code from Arthur Charpentier (\url{http://freakonometrics.hypotheses.org/9593}).
 #' @export
-visualizeFitLm <- function(data, nGrid = 5, zTop = 0.5, theta = -30, phi = 20,
+visualizeFitLm <- function(data, nGrid = 6, zTop = 0.5, theta = -30, phi = 20,
                            alpha = 0.05) {
 
   # Estimate lm
@@ -30,7 +30,6 @@ visualizeFitLm <- function(data, nGrid = 5, zTop = 0.5, theta = -30, phi = 20,
   mod <- lm(Y ~ X, data = data)
 
   # Create and plot initial XY-grid
-  nGrid <- 6
   sdX <- sd(data$X)
   sdY <- sd(data$Y)
   gX <- seq(min(data$X) - sdX, max(data$X) + sdX, length = nGrid)
@@ -47,7 +46,7 @@ visualizeFitLm <- function(data, nGrid = 5, zTop = 0.5, theta = -30, phi = 20,
   new <- data.frame(X = x)
   pred <- predict(mod, newdata = new, type = "response")
 
-  # Compute confidence bands
+  # Compute theoretical confidence bands
   sigma <- summary(mod)$sigma
   yDown <- qnorm(alpha/2, pred, sigma)
   yUp <- qnorm(1 - alpha/2, pred, sigma)
@@ -89,3 +88,82 @@ visualizeFitLm <- function(data, nGrid = 5, zTop = 0.5, theta = -30, phi = 20,
 
 }
 
+
+#' @title Visualize the fit of a multiple linear model
+#'
+#' @description Generates a plot illustrating the key concepts for a fitted multiple linear model: linear trend, model-based confidence bands and normality around the mean.
+#'
+#' @param data a \code{data.frame} containing \code{X}, \code{Y} and \code{Z} as variables.
+#' @param nGrid number of cuts used to produce the XYZ grid.
+#' @inheritParams visualizeFitLm
+#' @param alpha desired level for the theoretical confidence intervals.
+#' @param basalScatter Add the projections of points in the XY plane?
+#' @return
+#' Nothing. The function is called to produce a plot.
+#' @examples
+#' # Generate data
+#' X <- rnorm(100, sd = 1.5)
+#' Y <- rnorm(100, sd = 1.5)
+#' Z <- 0.5 - 0.25 * X + 0.25 * Y + rnorm(100, sd = 1.5)
+#' data <- data.frame(X = X, Y = Y, Z = Z)
+#'
+#' par(mar = rep(0, 4), oma = rep(0, 4))
+#' visualizeFitLm3D(data = data)
+#' visualizeFitLm3D(data = data, phi = 5)
+#' @author Eduardo García-Portugués (\email{edgarcia@est-econ.uc3m.es}).
+#' @export
+visualizeFitLm3D <- function(data, nGrid = 6, theta = -30, phi = 20,
+                             alpha = 0.05, basalScatter = TRUE) {
+  
+  # Estimate lm
+  mod <- lm(Z ~ X + Y, data = data)
+  n <- length(data$X)
+  
+  # Create and plot initial XYZ-grid
+  sdX <- sd(data$X)
+  sdY <- sd(data$Y)
+  sdZ <- sd(data$Z)
+  gX <- seq(min(data$X) - sdX, max(data$X) + sdX, length = nGrid)
+  gY <- seq(min(data$Y) - sdY, max(data$Y) + sdY, length = nGrid)
+  gZ <- seq(min(data$Z) - sdZ, max(data$Z) + sdZ, length = nGrid)
+  
+  # Compute regression surface
+  lxy <- 21
+  x <- seq(gX[1], gX[nGrid], length = lxy)
+  y <- seq(gY[1], gY[nGrid], length = lxy)
+  xy <- expand.grid(x = x, y = y)
+  new <- data.frame(X = xy$x, Y = xy$y)
+  pred <- predict(mod, newdata = new, type = "response")
+  
+  # Compute theoretical confidence bands
+  sigma <- summary(mod)$sigma
+  zDown <- qnorm(alpha/2, pred, sigma)
+  zUp <- qnorm(1 - alpha/2, pred, sigma)
+
+  # Plot data and regression
+  require(plot3D)
+  gridMat <- scatter3D(data$X, data$Y, data$Z, pch = 16, theta = theta, phi = phi, 
+                       bty = "g", nticks = nGrid, axes = FALSE, colkey = FALSE,
+                       col = 2, xlim = range(gX), ylim = range(gY), 
+                       zlim = range(c(gZ, zDown, zUp)),
+                       panel.first = function(pmat) {
+                         if (basalScatter) {
+                           XY <- trans3D(data$X, data$Y, rep(gZ[1], n), pmat = pmat)
+                           scatter2D(XY$x, XY$y, pch = 16, cex = 0.5, add = TRUE, 
+                                     colkey = FALSE, col = 1)
+                         }
+                       })
+  text(x = trans3d(median(gX), gY[1], gZ[1], gridMat), labels = "x", pos = 1)
+  text(x = trans3d(gX[1], median(gY), gZ[1], gridMat), labels = "y", pos = 2)
+  text(x = trans3d(gX[1], gY[nGrid], median(gZ), gridMat), labels = "z", pos = 2)
+  
+  # Plot confidence region
+  M <- mesh(x, y)
+  surf3D(x = M$x, y = M$y, z = matrix(zUp, lxy, lxy), col = "yellow", 
+         alpha = 0.1, add = TRUE, NAcol = NULL)
+  surf3D(x = M$x, y = M$y, z = matrix(zDown, lxy, lxy), col = "yellow", 
+         alpha = 0.1, add = TRUE, NAcol = NULL)
+  surf3D(x = M$x, y = M$y, z = matrix(pred, lxy, lxy), col = "lightblue", 
+         alpha = 0.3, border = gray(0.5), add = TRUE, NAcol = NULL)
+  
+}
