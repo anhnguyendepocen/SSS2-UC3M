@@ -1,13 +1,13 @@
 
 # Multiple linear regression {#mult}
 
-The multiple linear regression is an *extension* of the simple linear regression. If the simple linear regression employed a *single* predictor $X$ to explain the response $Y$, the multiple linear regression employs *multiple* predictors $X_1,\ldots,X_k$ for explaining a single response $Y$:
-$$
-Y=\beta_0+\beta_1X_1+\beta_2X_2+\ldots+\beta_pX_k+\varepsilon
-$$
-To convince you why is useful, let's see what it can do in real-case scenarios!
+The multiple linear regression is an *extension* of the simple linear regression saw in Chapter \@ref(simp). If the simple linear regression employed a *single* predictor $X$ to explain the response $Y$, the multiple linear regression employs *multiple* predictors $X_1,\ldots,X_k$ for explaining a single response $Y$:
+\[
+Y=\beta_0+\beta_1X_1+\beta_2X_2+\ldots+\beta_kX_k+\varepsilon
+\]
+To convince you why is useful, let's begin by seeing what it can deliver in real-case scenarios!
 
-## Examples and applications
+## Examples and applications {#eamult}
 
 ### Case study I: *The Bordeaux equation*
 
@@ -241,46 +241,464 @@ Do the following:
 lm(I(log(medv*1000)) ~ I(rm^2) + age + log(dis) + log(rad) + tax + ptratio + I(black/1000) + I(log(lstat/100)) + crim + zn + indus + chas + I((10*nox)^2)
 -->
 
-<!--
 
-## Model formulation and estimation by least squares
+## Model formulation and estimation by least squares {#modelmult}
 
-Animations:
+The multiple linear model extends the simple linear model by describing the relation between the random variables $X_1,\ldots,X_k$ and $Y$. For example, in the last model for the `wine` dataset, we had $k=4$ variables $X_1=$`WinterRain`, $X_2=$`AGST`, $X_3=$`HarvestRain` and $X_4=$`Age`, and $Y=$ `Price`. Therefore, as in Section \@ref(modelsimp), the multiple linear model is *constructed by assuming* that the linear relation
+\begin{align}
+Y = \beta_0 + \beta_1 X_1 + \ldots + \beta_k X_k + \varepsilon (\#eq:k1)
+\end{align}
+holds between the predictors $X_1,\ldots,X_k$ and the response $Y$. In \@ref(eq:k1), $\beta_0$ is the *intercept* and $\beta_1,\ldots,\beta_k$ are the *slopes*, respectively. $\varepsilon$ is a random variable with mean zero and independent from $X_1,\ldots,X_n$. Another way of looking at \@ref(eq:k1) is
+\begin{align}
+\mathbb{E}[Y|X_1=x_1,\ldots,X_k=x_k]=\beta_0+\beta_1x_1+\ldots+\beta_kx_k, (\#eq:k2)
+\end{align}
+since $\mathbb{E}[\varepsilon|X_1=x_1,\ldots,X_k=x_k]=0$. 
 
-- Planar RSS
-- Plane insight on rotation
+The LHS of \@ref(eq:k2) is the conditional expectation of $Y$ given $X_1,\ldots,X_k$. It represents how the mean of the random variable $Y$ is changing according to particular values, denoted by $x_1,\ldots,x_k$, of the random variables $X_1,\ldots,X_k$. With the RHS, what we are saying is that the mean of $Y$ is changing in a *linear* fashion with respect to the value of $X$. Hence the interpretation of the coefficients:
+
+- $\beta_0$: is the mean of $Y$ when $X_1=\ldots=X_k=0$.
+- $\beta_j$, $j\geq1$: is the increment in mean of $Y$ for an increment of one unit in $X_j=x_j$, provided that the remaining variables $X_1,\ldots,X_{j-1},X_{j+1},\ldots,X_k$ do not change.
+
+Figure \@ref(fig:leastsquares2) illustrates the geometrical interpretation of a multiple linear model: a plane in the $k$-dimensional space. If $k=1$, the plane is the regression line for simple linear regression. If $k=2$, then the plane can be visualized in a three-dimensional plot
+
+```{r, leastsquares2, echo = FALSE, fig.cap = 'The least squares regression plane $y=\\hat\\beta_0+\\hat\\beta_1x_1+\\hat\\beta_2x_2$ and its dependence on the kind of distance in the error criterion.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+knitr::include_app('https://egarpor.shinyapps.io/least-squares-3D/', height = '700px')
+```
+
+The estimation of $\beta_0,\beta_1,\ldots,\beta_k$ is done as in simple linear regression, by minimizing the Residual Sum of Squares (RSS). First we need to introduce some helpful *matrix notation*. In the following, **bold face** are used for distinguishing vectors and matrices from scalars:
+
+- We denote by $\mathbf{X}=(X_1,\ldots,X_k)$ to the collection of random variables acting as predictors. $\mathbf{X}$ is a *random vector*. Hence, a sample of $(\mathbf{X},Y)$ is $(\mathbf{X}_1,Y_1),\ldots,(\mathbf{X}_n,Y_n)$. $\mathbf{X}_i=(X_{i1},\ldots,X_{ik})$ is the $i$-th observation of $\mathbf{X}$. $X_{ij}$ denotes the $i$-th observation of the $j$-th predictor $X_j$.
+
+- The *design matrix* contains all the information of the predictors and a column of ones
+\[
+\mathbf{X}=\begin{pmatrix}
+1 & X_{11} & \cdots & X_{1k}\\
+\vdots & \vdots & \ddots & \vdots\\
+1 & X_{n1} & \cdots & X_{nk}
+\end{pmatrix}_{n\times(k+1)}
+\]
+
+- The *vector of responses* $\mathbf{Y}$, the *vector of coefficients* $\boldsymbol\beta$ and *vector of errors* are, respectively^[The vectors are regarded as column matrices.],
+\[
+\mathbf{Y}=\begin{pmatrix}
+Y_1 \\
+\vdots \\
+Y_n
+\end{pmatrix}_{n\times 1},\quad\boldsymbol\beta=\begin{pmatrix}
+\beta_0 \\
+\beta_1 \\
+\vdots \\
+\beta_k
+\end{pmatrix}_{(k+1)\times 1}\text{ and }
+\boldsymbol\varepsilon=\begin{pmatrix}
+\varepsilon_1 \\
+\vdots \\
+\varepsilon_n
+\end{pmatrix}_{n\times 1}.
+\]
+Thanks to the matrix notation, we can turn the sample version of the multiple linear model, namely
+\begin{align*}
+Y_i&=\beta_0 + \beta_1 X_{i1} + \ldots +\beta_k X_{ik} + \varepsilon_i,\quad i=1,\ldots,n
+\end{align*}
+into something as compact as
+\begin{align*}
+\mathbf{Y}=\mathbf{X}\boldsymbol\beta+\boldsymbol\varepsilon.
+\end{align*}
+
+```{block2, type = 'rmdinsight'}
+Recall that if $k=1$ we have the simple linear model. In this case:
+\[
+\mathbf{X}=\begin{pmatrix}
+1 & X_{11}\\
+\vdots & \vdots\\
+1 & X_{n1}
+\end{pmatrix}_{n\times2}\text{ and } \beta=\begin{pmatrix}
+\beta_0 \\
+\beta_1 
+\end{pmatrix}_{2\times 1}
+\]
+```
+
+The RSS for the multiple linear regression is
+\begin{align}
+\text{RSS}(\boldsymbol\beta)&=\sum_{i=1}^n(Y_i-\beta_0-\beta_1X_{i1}-\ldots-\beta_kX_{ik})^2\nonumber\\
+&=(\mathbf{Y}-\mathbf{X}\boldsymbol{\beta})^T(\mathbf{Y}-\mathbf{X}\boldsymbol{\beta}).(\#eq:rss)
+\end{align}
+The RSS aggregates the *squared vertical distances* from the data to a regression plane given by $\boldsymbol\beta$. Remember that the *vertical distances* are considered because we want to minimize the error in the *prediction* of $Y$. The least squares estimators are *the minimizers of the RSS*^[They are unique and always exist.]:
+\begin{align*}
+\hat{\boldsymbol{\beta}}=\arg\min_{\boldsymbol{\beta}\in\mathbb{R}^{k+1}} \text{RSS}(\boldsymbol{\beta}).
+\end{align*}
+Luckily, thanks to the matrix form of \@ref(eq:rss), it is simple to compute a closed-form expression for the least squares estimates:
+\begin{align}
+\hat{\boldsymbol{\beta}}=(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{Y},(\#eq:k3)
+\end{align}
+
+```{block2, type = 'rmdinsight'}
+There are some similarities between \@ref(eq:k3) and $\hat\beta_1=(s_x^2)^{-1}s_{xy}$ from the simple linear model: both measure the covariance between $\mathbf{X}$ and $Y$ weighted by the variance of $\mathbf{X}$.
+```
+
+The data of the illustration has been generated with the following code:
+```{r}
+# Generates 50 points from a N(0, 1): predictors and error
+set.seed(34567) # Fixes the seed for the random generator
+x1 <- rnorm(50)
+x2 <- rnorm(50)
+x3 <- x1 + rnorm(50, sd = 0.05) # Make variables dependent
+eps <- rnorm(50)
+
+# Responses
+yLin <- -0.5 + 0.5 * x1 + 0.5 * x2 + eps
+yQua <- -0.5 + x1^2 + 0.5 * x2 + eps
+yExp <- -0.5 + 0.5 * exp(x2) + x3 + eps
+
+# Data
+leastSquares3D <- data.frame(x1 = x1, x2 = x2, yLin = yLin, yQua = yQua, yExp = yExp)
+```
+
+Let's check that indeed the coefficients given by `lm` are the ones given by equation \@ref(eq:k3) for the regression `yLin ~ x1 + x2`.
+```{r, echo = TRUE, collapse = TRUE}
+# Matrix X
+X <- cbind(1, x1, x2)
+
+# Vector Y
+Y <- yLin
+
+# Coefficients 
+solve(t(X) %*% X) %*% t(X) %*% Y
+# %*% multiplies matrices
+# solve() computes the inverse of a matrix
+# t() transposes a matrix
+
+# Output from lm
+mod <- lm(yLin ~ x1 + x2, data = leastSquares3D)
+mod$coefficients
+```
+
+```{block2, type = 'rmdexercise'}
+Compute $\boldsymbol{\beta}$ for the regressions `yLin ~ x1 + x2`, `yQua ~ x1 + x2` and `yExp ~ x2 + x3` using:
+
+- equation \@ref(eq:k3) and 
+- the function `lm`. 
+
+Check that the fitted plane and the coefficient estimates are coherent.
+```
+
+Once we have the least squares estimates $\hat{\boldsymbol{\beta}}$, we can define the next two concepts:
+
+- The *fitted values* $\hat Y_1,\ldots,\hat Y_n$, where 
+\begin{align*}
+\hat Y_i=\hat\beta_0+\hat\beta_1X_{i1}+\cdots+\hat\beta_kX_{ik},\quad i=1,\ldots,n.
+\end{align*}
+They are the vertical projections of $Y_1,\ldots,Y_n$ into the fitted line (see Figure \@ref(fig:leastsquares2)). In a matrix form, inputting \@ref(eq:rss)
+\[
+\hat{\mathbf{Y}}=\mathbf{X}\hat{\boldsymbol{\beta}}=\mathbf{X}(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{Y}=\mathbf{H}\mathbf{Y},
+\]
+where $\mathbf{H}=\mathbf{X}(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{Y}$ is called the *hat matrix* because it "puts the hat into $\mathbf{Y}$". What it does is to project $\mathbf{Y}$ into the regression plane (see Figure \@ref(fig:leastsquares2)).
+
+- The *estimated residuals* $\hat \varepsilon_1,\ldots,\hat \varepsilon_n$, where 
+\begin{align*}
+\hat\varepsilon_i=Y_i-\hat Y_i,\quad i=1,\ldots,n.
+\end{align*}
+They are the vertical distances between actual data and fitted data. 
+
+We conclude with an insight on the relation of multiple and simple linear regressions. It is illustrated in Figure \@ref(fig:multmarg).
+
+```{block, type = 'rmdinsight'}
+Consider the multiple linear model $Y=\beta_0+\beta_1X_1+\beta_2X_2+\varepsilon$ and its associated simple linear models $Y=\alpha_0+\alpha_1X_1+\varepsilon$ and $Y=\gamma_0+\gamma_2X_2+\varepsilon$. Assume that we have a sample $(X_{11},X_{12},Y_1),\ldots, (X_{n1},X_{n2},Y_n)$. Then, in general, $\hat\alpha_0\neq\hat\beta_0$, $\hat\alpha_1\neq\hat\beta_1$, $\hat\gamma_0\neq\hat\beta_0$ and $\hat\gamma_1\neq\hat\beta_1$. This is: **the inclusion of a new predictor in general changes the coefficient estimates**.
+```
+
+```{r, multmarg, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The regression plane (blue) and its relation with the simple linear regressions (green lines). '}
+knitr::include_graphics("images/R/multmarg.png")
+```
+
+The data employed in Figure \@ref(fig:multmarg) is:
+```{r, echo = TRUE, collapse = TRUE}
+set.seed(212542)
+n <- 100
+x1 <- rnorm(n, sd = 2)
+x2 <- rnorm(n, mean = x1, sd = 3)
+y <- 1 + 2 * x1 - x2 + rnorm(n, sd = 1)
+data <- data.frame(x1 = x1, x2 = x2, y = y)
+``` 
+
+```{block, type = 'rmdexercise'}
+With the above `data`, cheek how the fitted coefficients change for `y ~ x1`, `y ~ x2` and `y ~ x1 + x2`.
+```
+
+## Assumptions of the model {#assumptionsmult}
+
+Some probabilistic assumptions are required for performing inference on the model parameters. In other words, to infer properties about the *unknown* population coefficients $\boldsymbol\beta$ from the sample $(\mathbf{X}_1, Y_1),\ldots,(\mathbf{X}_n, Y_n)$.
+
+```{r, linearmodel2, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The key concepts of the multiple linear model when $k=2$. The space between the yellow planes denotes where the 95% of the data is, according to the model.'}
+knitr::include_graphics("images/R/linearmodel2.png")
+```
+
+The assumptions of the multiple linear model are an extension of the simple linear model:
+
+i. **Linearity**: $\mathbb{E}[Y|X_1=x_1,\ldots,X_k=x_k]=\beta_0+\beta_1x_1+\ldots+\beta_kx_k$.
+ii. **Homocedasticity**: $\mathbb{V}\text{ar}(\varepsilon_i)=\sigma^2$, with $\sigma^2$ constant for $i=1,\ldots,n$.
+iii. **Normality**: $\varepsilon_i\sim\mathcal{N}(0,\sigma^2)$ for $i=1,\ldots,n$.
+iv. **Independence of the errors**: $\varepsilon_1,\ldots,\varepsilon_n$ are independent (or uncorrelated, $\mathbb{E}[\varepsilon_i\varepsilon_j]=0$, $i\neq j$, since they are assumed to be Normal).
+
+A good one-line summary of the linear model is the following (independence is assumed)
+\begin{align}
+Y|(X_1=x_1,\ldots,X_k=x_k)\sim \mathcal{N}(\beta_0+\beta_1x_1+\ldots+\beta_kx_k,\sigma^2)(\#eq:condnorm)
+\end{align}
+
+```{block2, type = 'rmdinsight'}
+Recall:
+
+- Compared with simple liner regression, the only **different assumption is linearity**.
+
+- Nothing is said about the distribution of $X_1,\ldots,X_k$. They could be deterministic or random. They could be discrete or continuous. 
+
+- $X_1,\ldots,X_k$ are **not required to be independent** between them.
+
+- **$Y$ has to be continuous**, since the errors are normal -- recall \@ref(eq:1).
+
+```
+
+Figure \@ref(fig:linearmodelassump) represent situations where the assumptions of the model are respected and violated, for the situation with two predictors. Clearly, the inspection of the scatterplots for identifying strange patterns is more complicated than in simple linear regression -- and here we are dealing only with two predictors. In Section \@ref(diagnostics) we will see more sophisticated methods for checking whether the assumptions hold or not for an arbitrary number of predictors. 
+
+```{r, linearmodelassump, echo = FALSE, fig.cap = 'Valid (all the assumptions are verified) and problematic (a single assumption does not hold) multiple linear models, when there are two predictors.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+knitr::include_app('https://egarpor.shinyapps.io/assump-lm-3D/', height = '700px')
+```
+
+To conclude this section, let's see how to make a 3D scatterplot with the regression plane, in order to evaluate visually how good the fit of the model is. We will do it with the `iris` dataset, that can be imported in `R` simply by running `data(iris)`. In `R Commander` go to `'Graphs' -> '3D Graphs' -> '3D scatterplot...'`. A window like Figures \@ref(fig:scatter3d1) and \@ref(fig:scatter3d2) will pop-up. The options are similar to the ones for `'Graphs' -> 'Scatterplot...'`.
+
+```{r, scatter3d1, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = '3D scatterplot window, `\'Data\'` panel.'}
+knitr::include_graphics("images/screenshots/scatterplot3d1.png")
+```
+```{r, scatter3d2, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = '3D scatterplot window, `\'Options\'` panel. Remember to tick the `\'linear least-squares fit\'` box in order to display the fitted regression plane'}
+knitr::include_graphics("images/screenshots/scatterplot3d2.png")
+```
+
+If you select the options as shown in Figures \@ref(fig:scatter3d1) and \@ref(fig:scatter3d2), you should get something like this:
+```{r echo=FALSE}
+# include this code chunk as-is to enable 3D graphs
+library(rgl)
+knitr::knit_hooks$set(webgl = hook_webgl)
+```
+```{r, webgl=TRUE, message=FALSE}
+data(iris)
+scatter3d(Petal.Length ~ Petal.Width + Sepal.Length, data = iris, fit = "linear", 
+          residuals = TRUE, bg = "white", axis.scales = TRUE, grid = TRUE, 
+          ellipsoid = FALSE, id.method = 'mahal', id.n = 2)
+```
 
 ## Inference for model parameters
 
+The assumptions introduced in the previous section allow to specify what is the distribution of the *random vector* $\hat{\boldsymbol{\beta}}$. The distribution is derived conditionally on the sample predictors $\mathbf{X}_1,\ldots,\mathbf{X}_n$. In other words, we assume that the randomness of $\mathbf{Y}=\mathbf{X}\boldsymbol{\beta}+\boldsymbol\varepsilon$ comes only from the error terms and not from the predictors. To denote this, we employ lowercase for the sample predictors $\mathbf{x}_1,\ldots,\mathbf{x}_n$.
+
 ### Distributions of the fitted coefficients
+
+The distribution of $\hat{\boldsymbol{\beta}}$ is:
+\begin{align}
+\hat{\boldsymbol{\beta}}\sim\mathcal{N}_{k+1}\left(\boldsymbol\beta,\sigma^2(\mathbf{X}^T\mathbf{X})^{-1}\right)
+(\#eq:normp)
+\end{align}
+where $\mathcal{N}_{m}$ is the $m$-dimensional Normal, this is, the extension of the usual Normal distribution to deal with $m$ random variables^[With $m=1$, the density of a $\mathcal{N}_{m}$ corresponds to a bell-shaped *curve* With $m=2$, the density is a *surface* similar to a bell.]. The interpretation of \@ref(eq:normp) is not so easy as in the simple linear case. Here are some broad remarks:
+
+- **Bias**. Both estimates are unbiased. 
+- **Variance**. Depending on:
+
+    - *Sample size $n$*. Hidden inside $\mathbf{X}^T\mathbf{X}$. As $n$ grows, the precision of the estimators increases.
+    - *Error variance $\sigma^2$*. The larger $\sigma^2$ is, the less precise $\hat{\boldsymbol{\beta}}$ is.
+    - *Predictor sparsity $(\mathbf{X}^T\mathbf{X})^{-1}$*. The more *sparse* the predictor is (small $|(\mathbf{X}^T\mathbf{X})^{-1}|$), the more precise $\hat{\boldsymbol{\beta}}$ is.
+    
+
+The problem with \@ref(eq:normp) is that *$\sigma^2$ is unknown* in practice, so we need to estimate $\sigma^2$ from the data. We do so by computing a rescaled sample variance of the fitted residuals $\hat\varepsilon_1,\ldots,\hat\varepsilon_n$:
+\begin{align*}
+\hat\sigma^2=\frac{\sum_{i=1}^n\hat\varepsilon_i^2}{n-k-1}.
+\end{align*}
+Note the $n-k-1$ in the denominator. Now $n-k-1$ are the *degrees of freedom*, the number of data points minus the number of already fitted parameters ($k$ slopes and $1$ intercept). As in simple linear regression, *the mean of the fitted residuals $\hat\varepsilon_1,\ldots,\hat\varepsilon_n$ is zero*.
+
+If we use the estimate $\hat\sigma^2$ instead of $\sigma^2$, we get more useful distributions, this time for the *individual* $\beta_j$'s:
+\begin{align}
+\frac{\hat\beta_j-\beta_j}{\hat{\mathrm{SE}}(\hat\beta_j)}\sim t_{n-k-1},\quad\hat{\mathrm{SE}}(\hat\beta_j)^2=\hat\sigma^2v_j^2(\#eq:normp2)
+\end{align}
+where $t_{n-k-1}$ represents the Student's $t$ distribution with $n-k-1$ degrees of freedom and 
+\[
+v_j\text{ is the $j$-th element of the diagonal of }(\mathbf{X}^T\mathbf{X})^{-1}.
+\]
+The LHSs of \@ref(eq:normp2) are the $t$-statistics for $\beta_j$, $j=0,\ldots,k$. They are employed for building confidence intervals and hypothesis tests. 
+
 
 ### Confidence intervals for the coefficients
 
+Thanks to \@ref(eq:normp2), we can have the $100(1-\alpha)\%$ CI for the coefficient $\beta_j$, $j=0,\ldots,k$:
+\begin{align}
+\left(\hat\beta_j\pm\hat{\mathrm{SE}}(\hat\beta_j)t_{n-k-1;\alpha/2}\right)(\#eq:cip)
+\end{align}
+where $t_{n-k-1;\alpha/2}$ is the *$\alpha/2$-upper quantile of the distribution $t_{n-k-1}$*. Note that with $k=1$ we have same CI as in \@ref(eq:ci).
+
+Let's see how we can compute the CIs. We retake the `wine` dataset, so in case you do not have it loaded, you can download it [here](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/wine.RData) as an `.RData` file. We analyse the CI for the coefficients of `Price ~ Age + WinterRain`.
+```{r, collapse = TRUE}
+# Fit model
+mod <- lm(Price ~ Age + WinterRain, data = wine)
+
+# Confidence intervals at 95%
+confint(mod)
+
+# Confidence intervals at other levels
+confint(mod, level = 0.90)
+confint(mod, level = 0.99)
+```
+In this example, the 95% confidence interval for $\beta_0$ is $(4.3067, 7.6594)$. For $\beta_1$ is $(0.0024, 0.0745)$ and $\beta_2$ is $(-0.0017, 0.0032)$. Therefore, we can say that, with a 95% confidence, *the coefficients of `Age` and `WinterRain` are non-significant*. But in Section \@ref(mult) we saw that they *were significant* in the model `Price ~ Age + AGST + HarvestRain + WinterRain`! How is this possible? The answer is that the presence of extra predictors affects the coefficient estimates, as we saw in Figure \@ref(fig:multmarg). Therefore, the precise statement to make is: **in the model `Price ~ Age + WinterRain`**, with a 95% confidence, the coefficients of `Age` and `WinterRain` are non-significant. Note that this **does not** mean that they will be always non-significant: in `Price ~ Age + AGST + HarvestRain + WinterRain` they become significant.
+
+```{block, type = 'rmdexercise'}
+Compute and interpret the CIs for the coefficients, at levels $\alpha=0.10,0.05,0.01$, for the following regressions:
+
+- `medv ~ . - lstat - chas - zn - crim` (`Boston`)
+- `nox ~ chas + zn + indus + lstat + dis + rad` (`Boston`)
+- `Price ~ WinterRain + HarvestRain + AGST` (`wine`)
+- `AGST ~ Year + FrancePop` (`wine`)
+```
+
 ### Testing on the coefficients
+
+
+The distributions in \@ref(eq:normp2) also allow to conduct a formal hypothesis test on the coefficients $\beta_j$, $j=0,\ldots,k$. For example the *test for significance* is specially important, that is, the test of the hypotheses
+\begin{align*}
+H_0:\beta_j=0
+\end{align*}
+for $j=0,\ldots,k$. The test of $H_0:\beta_j=0$ with $j\geq1$ is specially interesting, since it allows to answer whether *the variable $X_j$ has a significant linear effect on $Y$*. The statistic used for testing for significance is the $t$-statistic
+\begin{align*}
+\frac{\hat\beta_j-0}{\hat{\mathrm{SE}}(\hat\beta_j)},
+\end{align*}
+which is distributed as a $t_{n-k-1}$ *under the (veracity of) the null hypothesis*. $H_0$ is tested *against* the *bilateral* alternative hypothesis $H_1:\beta_j\neq 0$.
+
+Remember two important insights regarding hypothesis testing.
+
+```{block, type = 'rmdinsight'}
+In an hypothesis test, the *$p$-value measures the degree of veracity of $H_0$ according to the data*. The rule of thumb is the following:
+
+**Is the $p$-value lower than $\alpha$?**
+
+- **Yes $\rightarrow$ reject $H_0$**. 
+- **No $\rightarrow$ do not reject $H_0$**.
+```
+
+```{block, type = 'rmdinsight'}
+The unilateral test $H_0:\beta_j\geq (\leq)0$ vs $H_1:\beta_j<(>)0$ can be done by means of the CI for $\beta_j$. If $H_0$ is rejected, they allow to conclude that *$\hat\beta_j$ is significantly negative (positive)* and that * for the considered regression model, $X_j$ has a significant negative (positive) effect on $Y$*. We have been doing them using the following rule of thumb:
+
+**Is the CI for $\beta_j$ below (above) $0$ at level $\alpha$?**
+
+- **Yes $\rightarrow$ reject $H_0$ at level $\alpha$. Conclude $X_j$ has a significant negative (positive) effect on $Y$ at level $\alpha$**. 
+- **No $\rightarrow$ the criterion is not conclusive**.
+```
+
+The tests for significance are built-in in the `summary` function, as we saw in Section \@ref(eamult). For `mod`, the regression of `Price ~ Age + WinterRain`, we have:
+```{r, collapse = TRUE}
+summary(mod)
+```
 
 ## Prediction
 
--->
+As in the simple linear model, the forecast of $Y$ from $\mathbf{X}=\mathbf{x}$ (this is, $X_1=x_1,\ldots,X_k=x_k$) is approached by two different ways:
+
+1. Inference on the **conditional mean** of $Y$ given $\mathbf{X}=\mathbf{x}$, $\mathbb{E}[Y|\mathbf{X}=\mathbf{x}]$. This is a deterministic quantity, which equals $\beta_0+\beta_1x_1+\ldots+\beta_{k+1}x_k$.
+2. Prediction of the **conditional response** $Y|\mathbf{X}=\mathbf{x}$. This is a random variable distributed as $\mathcal{N}(\beta_0+\beta_1x_1+\ldots+\beta_{k+1}x_k,\sigma^2)$.
+
+The prediction and computation of CIs can be done with the `R` function `predict` (unfortunately, there is no `R Commander` shortcut for his one). The objects required for `predict` are: first, the output of `lm`; second, a `data.frame` containing the locations $\mathbf{x}=(x_1,\ldots,x_k)$ where we want to predict $\beta_0+\beta_1x_1+\ldots+\beta_{k+1}x_k$. 
+
+```{block, type = 'rmdcaution'}
+It is mandatory to name the columns of the data frame with the same names of the predictors used in `lm`. Otherwise `predict` will generate an error, see below.
+```
+
+To illustrate the use of `predict`, we retake the `wine` dataset. 
+
+```{r, collapse = TRUE}
+# Fit a linear model for the price on WinterRain, HarvestRain and AGST
+modelW <- lm(Price ~ WinterRain + HarvestRain + AGST, data = wine)
+summary(modelW)
+
+# Data for which we want a prediction
+# Important! You have to name the column with the predictor name!
+weather <- data.frame(WinterRain = 500, HarvestRain = 123, 
+                      AGST = 18)
+
+## Prediction of the mean
+
+# Prediction of the mean at 95% - the defaults
+predict(modelW, newdata = weather)
+
+# Prediction of the with 95% confidence interval (the default)
+# CI: (lwr, upr)
+predict(modelW, newdata = weather, interval = "confidence")
+predict(modelW, newdata = weather, interval = "confidence", level = 0.95)
+
+# Other levels
+predict(modelW, newdata = weather, interval = "confidence", level = 0.90)
+predict(modelW, newdata = weather, interval = "confidence", level = 0.99)
+
+## Prediction of the response
+
+# Prediction of the mean at 95% - the defaults
+predict(modelW, newdata = weather)
+
+# Prediction of the with 95% confidence interval (the default)
+# CI: (lwr, upr)
+predict(modelW, newdata = weather, interval = "prediction")
+predict(modelW, newdata = weather, interval = "prediction", level = 0.95)
+
+# Other levels
+predict(modelW, newdata = weather, interval = "prediction", level = 0.90)
+predict(modelW, newdata = weather, interval = "prediction", level = 0.99)
+
+# Predictions for several values
+weather2 <- data.frame(WinterRain = c(500, 200), HarvestRain = c(123, 200), 
+                       AGST = c(17, 18))
+predict(modelW, newdata = weather2, interval = "prediction")
+```
+
+```{block, type = 'rmdexercise'}
+For the `wine` dataset, do the following:
+
+- Regress `WinterRain` on `HarvestRain` and `AGST`. Name the fitted model `modExercise`.
+- Compute the estimate for the conditional mean of ``WinterRain` for `HarvestRain`$=123.0$ and `AGST`$=16.15$. What is the CI at $\alpha=0.01$?
+- Compute the estimate for the conditional response for `HarvestRain`$=125.0$ and `AGST`$=15$. What is the CI at $\alpha=0.10$?
+- Check that `modExercise\$fitted.values` is the same as `predict(modExercise, newdata = data.frame(WinterRain = wine\$WinterRain, AGST = wine\$AGST))`. Why is so?
+```
+
+```{block, type = 'rmdinsight'}
+Similarities and differences in the prediction of the conditional mean $\mathbb{E}[Y|\mathbf{X}=\mathbf{x}]$ and conditional response $Y|\mathbf{X}=\mathbf{x}$:
+
+- *Similarities*. The estimate is the same, $\hat y=\hat\beta_0+\hat\beta_1x_1+\ldots+\hat\beta_kx_k$. Both CI are centered in $\hat y$.
+- *Differences*. $\mathbb{E}[Y|\mathbf{X}=\mathbf{x}]$ is deterministic and $Y|\mathbf{X}=\mathbf{x}$ is random. Therefore, the variance is larger for the prediction of $Y|\mathbf{X}=\mathbf{x}$ than for the prediction of $\mathbb{E}[Y|\mathbf{X}=\mathbf{x}]$.
+```
 
 <!--
 ## Assessing model fit and ANOVA
 
-## Model selection
+The RSS always decreases as more variables are added to the mode, hence the $R^2$ always increases as more variables are added. Why is so? Because the flexibility of the model increases.
 
-## Nonlinear relationships and qualitative predictors
+\[
+R^2=\frac{\text{SSR}}{\text{SST}}=\frac{\text{SST}-\text{SSE}}{\text{SST}}=1-\frac{\text{SSE}}{\text{SST}}
+\]
+
+\[
+R^2_\text{Adj}=1-\frac{\text{RSS}/(n-k-1)}{\text{TSS}/(n-1)}
+\]
+Once all of the correct variables have been included in the mode, adding additional *noise* variables will lead to only a very small decrease in RSS
+Illustration $R^2$ and garbage
+
+Graph $R^2$ and $R^2_\text{Adj}$ vs $k$
+
+
+## Model selection {#selection}
+
+## Nonlinear relationships and qualitative predictors {#nonlinear}
 
 Qualitative predictors (one level and more than two levels)
 
 Extensions and interactions
--->
 
-<!--
-## Model diagnostics and multicollinearity
+## Model diagnostics and multicollinearity {#diagnostics}
 
 Animation:
 - Insight into straight line in 3D
 
--->
 
 
 ## Exercises and case studies
@@ -291,7 +709,7 @@ Animation:
 TBA
 ```
 
-<!--
+
 
 College
 Wage
