@@ -2,9 +2,9 @@
 # Simple linear regression {#simp}
 
 The simple linear regression is a *simple* but useful statistical model. In short, it allows to analyse the (assumed) linear relation between two variables, $X$ and $Y$ in a proper way. It does it by considering the model
-$$
+\[
 Y=\beta_0+\beta_1X+\varepsilon
-$$
+\]
 which in Chapter \@ref(mult) will be extended to multiple linear regression.
 
 To convince you why simple linear regression is useful, let's begin by seeing what it can do in real-case scenarios!
@@ -720,12 +720,17 @@ knitr::include_app('https://egarpor.shinyapps.io/least-squares/', height = '900p
 
 The data of the figure has been generated with the following code:
 ```{r}
+# Generates 50 points from a N(0, 1): predictor and error
 set.seed(34567) # Fixes the seed for the random generator
-x <- rnorm(n = 50) # Generates 50 points from a N(0, 1)
-eps <- rnorm(n = 50) # Generates 50 points from a N(0, 1)
+x <- rnorm(n = 50) 
+eps <- rnorm(n = 50) 
+
+# Responses
 yLin <- -0.5 + 1.5 * x + eps
 yQua <- -0.5 + 1.5 * x^2 + eps
 yExp <- -0.5 + 1.5 * 2^x + eps
+
+# Data
 leastSquares <- data.frame(x = x, yLin = yLin, yQua = yQua, yExp = yExp)
 ```
 
@@ -742,7 +747,7 @@ The *population regression coefficients*, $(\beta_0,\beta_1)$, **are not the sam
 In an abuse of notation, the term *regression line* is often used to denote both the *theoretical* ($y=\beta_0+\beta_1x$) and the *estimated* ($y=\hat\beta_0+\hat\beta_1x$) regression lines.
 ```
 
-Once we have the least squares estimates $(\beta_0,\beta_1)$, we can define the next two concepts:
+Once we have the least squares estimates $(\hat\beta_0,\hat\beta_1)$, we can define the next two concepts:
 
 - The *fitted values* $\hat Y_1,\ldots,\hat Y_n$, where 
 \begin{align*}
@@ -754,7 +759,7 @@ They are the vertical projections of $Y_1,\ldots,Y_n$ into the fitted line (see 
 \begin{align*}
 \hat\varepsilon_i=Y_i-\hat Y_i,\quad i=1,\ldots,n.
 \end{align*}
-They are the vertical distances between actual data and fitted data. Hence, another way of writing the minimum RSS is $\sum_{i=1}^n(Y_i-\hat\beta_0-\hat\beta_1Y_i)^2=\sum_{i=1}^n\hat\varepsilon_i^2$.
+They are the vertical distances between actual data and fitted data. Hence, another way of writing the minimum RSS is $\sum_{i=1}^n(Y_i-\hat\beta_0-\hat\beta_1X_i)^2=\sum_{i=1}^n\hat\varepsilon_i^2$.
 
 To conclude this section, we check that the regression coefficients given by `lm` are indeed the ones given in \@ref(eq:3).
 
@@ -788,7 +793,7 @@ Adapt the code conveniently for doing the same checking with
 
 Why do we need assumptions? To make **inference** on the model parameters. In other words, to infer properties about the *unknown* population coefficients $\beta_0$ and $\beta_1$ from the sample $(X_1,Y_1),\ldots,(X_n,Y_n)$.
 
-```{r, linearmodel, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The key concepts of the linear model.'}
+```{r, linearmodel, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The key concepts of the simple linear model. The yellow band denotes where the 95% of the data is, according to the model.'}
 knitr::include_graphics("images/R/linearmodel.png")
 ```
 
@@ -797,7 +802,7 @@ The assumptions of the linear model are:
 i. **Linearity**: $\mathbb{E}[Y|X=x]=\beta_0+\beta_1x$.
 ii. **Homocedasticity**: $\mathbb{V}\text{ar}(\varepsilon_i)=\sigma^2$, with $\sigma^2$ constant for $i=1,\ldots,n$.
 iii. **Normality**: $\varepsilon_i\sim\mathcal{N}(0,\sigma^2)$ for $i=1,\ldots,n$.
-iv. **Independence of the errors**: $\varepsilon_1,\ldots,\varepsilon_n$ are independent (or uncorrelated, $\mathbb{E}[\varepsilon_i\varepsilon_j]=0$, $i\neq j$, since they are assumed to be Normal by iii).
+iv. **Independence of the errors**: $\varepsilon_1,\ldots,\varepsilon_n$ are independent (or uncorrelated, $\mathbb{E}[\varepsilon_i\varepsilon_j]=0$, $i\neq j$, since they are assumed to be Normal).
 
 A good one-line summary of the linear model is (independence is assumed)
 \begin{align*}
@@ -814,11 +819,11 @@ Recall:
 
 Figures \@ref(fig:linearmodelgood) and \@ref(fig:linearmodelbad) represent situations where the assumptions of the model are respected and violated, respectively. For the moment, we will focus on building the intuition for checking the assumptions visually. In Chapter \@ref(mult) we will see more sophisticated methods for checking the assumptions. We will see also what are the possible fixes to the failure of assumptions.
 
-```{r, linearmodelgood, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Perfectly valid linear models (all the assumptions are verified).'}
+```{r, linearmodelgood, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Perfectly valid simple linear models (all the assumptions are verified).'}
 knitr::include_graphics("images/R/linearmodelgood.png")
 ```
 
-```{r, linearmodelbad, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Problematic linear models (a single assumption does not hold).'}
+```{r, linearmodelbad, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Problematic simple linear models (a single assumption does not hold).'}
 knitr::include_graphics("images/R/linearmodelbad.png")
 ```
 
@@ -1180,7 +1185,7 @@ The ANOVA decomposition considers the following measures of variation related wi
 
 - $\text{SST}=\sum_{i=1}^n\left(Y_i-\bar Y\right)^2$, the **total sum of squares**. This is the *total variation* of $Y_1,\ldots,Y_n$, since $\text{SST}=ns_y^2$, where $s_y^2$ is the sample variance of $Y_1,\ldots,Y_n$.
 - $\text{SSR}=\sum_{i=1}^n\left(\hat Y_i-\bar Y\right)^2$, the **regression sum of squares**^[Recall that SSR is different from RSS (Residual Sum of Squares, Section \@ref(modelsimp)).]. This is the variation explained by the regression line, that is, *the variation from $\bar Y$ that is explained by the conditional mean $\hat Y_i=\hat\beta_0+\hat\beta_1X_i$*. $\text{SSR}=ns_{\hat y}^2$, where $s_{\hat y}^2$ is the sample variance of $\hat Y_1,\ldots,\hat Y_n$.
-- $\text{SSE}=\sum_{i=1}^n\left(Y_i-\hat Y_i\right)^2$, the **sum of squared errors**^[Recal that SSE and RSS (for $(\hat \beta_0,\hat \beta_1)$) are just different names for referring to the same quantity: $\text{SSE}=\sum_{i=1}^n\left(Y_i-\hat Y_i\right)^2=\sum_{i=1}^n\left(Y_i-\hat \beta_0-\hat \beta_1X_i\right)^2=\mathrm{RSS}\left(\hat \beta_0,\hat \beta_1\right)$.]. Is the variation around the conditional mean. Recall that $\text{SSE}=\sum_{i=1}^n \hat\varepsilon_i^2=(n-2)\hat\sigma^2$, where $\hat\sigma^2$ is the sample variance of $\hat \varepsilon_1,\ldots,\hat \varepsilon_n$. 
+- $\text{SSE}=\sum_{i=1}^n\left(Y_i-\hat Y_i\right)^2$, the **sum of squared errors**^[Recall that SSE and RSS (for $(\hat \beta_0,\hat \beta_1)$) are just different names for referring to the same quantity: $\text{SSE}=\sum_{i=1}^n\left(Y_i-\hat Y_i\right)^2=\sum_{i=1}^n\left(Y_i-\hat \beta_0-\hat \beta_1X_i\right)^2=\mathrm{RSS}\left(\hat \beta_0,\hat \beta_1\right)$.]. Is the variation around the conditional mean. Recall that $\text{SSE}=\sum_{i=1}^n \hat\varepsilon_i^2=(n-2)\hat\sigma^2$, where $\hat\sigma^2$ is the sample variance of $\hat \varepsilon_1,\ldots,\hat \varepsilon_n$. 
 
 The ANOVA decomposition is
 \begin{align}
@@ -1242,9 +1247,9 @@ $R^2$ measures the **proportion of variation** of the response variable $Y$ that
 
 ```{block, type = 'rmdinsight'}
 The ANOVA decomposition gives another interpretation of the least-squares estimates: **$(\hat\beta_0,\hat\beta_1)$ are the estimated coefficients that maximize the $R^2$** (among all the possible estimates we could think about). Recall that
-$$
+\[
 R^2=\frac{\text{SSR}}{\text{SST}}=\frac{\text{SST} - \text{SSE}}{\text{SST}}=\frac{\text{SST} - \text{RSS}(\hat\beta_0,\hat\beta_1)}{\text{SST}},
-$$
+\]
 so if $\text{RSS}(\hat\beta_0,\hat\beta_1)=\min_{\beta_0,\beta_1}\text{RSS}(\beta_0,\beta_1)$, then $R^2$ is maximal for $(\hat\beta_0,\hat\beta_1)$.
 ```
 
