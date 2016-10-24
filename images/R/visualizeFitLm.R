@@ -8,7 +8,7 @@
 #' @param nGrid number of cuts used to produce the XY grid.
 #' @param zTop upper z-limit of the 3D bounding box.
 #' @inheritParams graphics::persp
-#' @param alpha desired level for the theoretical confidence intervals.
+#' @param alpha desired level for the theoretical confidence intervals. If set to \code{0}, no confidence intervals are plotted.
 #' @return
 #' Nothing. The function is called to produce a plot.
 #' @examples
@@ -19,7 +19,7 @@
 #'
 #' par(mar = rep(0, 4), oma = rep(0, 4))
 #' visualizeFitLm(data = data)
-#' visualizeFitLm(data = data, alpha = 0.01)
+#' visualizeFitLm(data = data, alpha = 0)
 #' @author Eduardo García-Portugués (\email{edgarcia@est-econ.uc3m.es}), based on the original code from Arthur Charpentier (\url{http://freakonometrics.hypotheses.org/9593}).
 #' @export
 visualizeFitLm <- function(data, nGrid = 6, zTop = 0.5, theta = -30, phi = 20,
@@ -45,24 +45,29 @@ visualizeFitLm <- function(data, nGrid = 6, zTop = 0.5, theta = -30, phi = 20,
   zeros <- rep(0, lx)
   new <- data.frame(X = x)
   pred <- predict(mod, newdata = new, type = "response")
-
-  # Compute theoretical confidence bands
-  sigma <- summary(mod)$sigma
-  yDown <- qnorm(alpha/2, pred, sigma)
-  yUp <- qnorm(1 - alpha/2, pred, sigma)
-  yDownCut <- pmax(yDown, gY[1])
-  yUpCut <- pmin(yUp, gY[nGrid])
-  yDown[yDown < gY[1]] <- NA
-  yUp[yUp > gY[nGrid]] <- NA
   pred[pred < gY[1]] <- NA
   pred[pred > gY[nGrid]] <- NA
+  
+  # Compute theoretical confidence bands
+  if (alpha > 0) {
+    
+    # Limits
+    sigma <- summary(mod)$sigma
+    yDown <- qnorm(alpha/2, pred, sigma)
+    yUp <- qnorm(1 - alpha/2, pred, sigma)
+    yDownCut <- pmax(yDown, gY[1])
+    yUpCut <- pmin(yUp, gY[nGrid])
+    yDown[yDown < gY[1]] <- NA
+    yUp[yUp > gY[nGrid]] <- NA
+    
+    # Plot confidence region
+    polygon(trans3d(c(x, rev(x)), c(yDownCut, rev(yUpCut)), rep(0, 2 * lx),
+                    gridMat), border = NA, col = "yellow", density = 40)
+    lines(trans3d(x, yDown, zeros, gridMat), lty = 2)
+    lines(trans3d(x, yUp, zeros, gridMat), lty = 2)
 
-  # Plot confidence region
-  polygon(trans3d(c(x, rev(x)), c(yDownCut, rev(yUpCut)), rep(0, 2 * lx),
-                  gridMat), border = NA, col = "yellow", density = 40)
-  lines(trans3d(x, yDown, zeros, gridMat), lty = 2)
-  lines(trans3d(x, yUp, zeros, gridMat), lty = 2)
-
+  }
+  
   # Plot regression curve
   lines(trans3d(x, pred, zeros, gridMat), lwd = 2)
 
@@ -97,8 +102,8 @@ visualizeFitLm <- function(data, nGrid = 6, zTop = 0.5, theta = -30, phi = 20,
 #' @param nGrid (approximate) number of cuts used to produce the XYZ grid. Computed to match the effective \code{nticks} in \code{\link[graphics]{persp}}.
 #' @inheritParams visualizeFitLm
 #' @inheritParams graphics::persp
-#' @param alpha desired level for the theoretical confidence intervals.
 #' @param basalScatter Add the projections of points in the XY plane?
+#' @param lmLaterals Add the projections of points in the XZ and YZ planes, with a (marginal) regression line?
 #' @return
 #' Nothing. The function is called to produce a plot.
 #' @examples
@@ -109,12 +114,25 @@ visualizeFitLm <- function(data, nGrid = 6, zTop = 0.5, theta = -30, phi = 20,
 #' data <- data.frame(X = X, Y = Y, Z = Z)
 #'
 #' par(mar = rep(0, 4), oma = rep(0, 4))
-#' visualizeFitLm3D(data = data)
-#' visualizeFitLm3D(data = data, phi = 10)
+#' visualizeFitLm3D(data = data, lmLaterals = FALSE)
+#' visualizeFitLm3D(data = data, phi = 10, lmLaterals = FALSE)
+#' 
+#' # Illustrate marginal regression lines
+#' set.seed(212542)
+#' n <- 100
+#' x <- rnorm(n, sd = 2)
+#' y <- rnorm(n, mean = x, sd = 3)
+#' z <- 1 + 2 * x - y + rnorm(n, sd = 1)
+#' summary(lm(z ~ x))
+#' summary(lm(z ~ y))
+#' summary(lm(z ~ x + y))
+#' data <- data.frame(X = x, Y = y, Z = z)
+#' visualizeFitLm3D(data = data, alpha = 0, theta = -45, phi = 20)
 #' @author Eduardo García-Portugués (\email{edgarcia@est-econ.uc3m.es}).
 #' @export
 visualizeFitLm3D <- function(data, nGrid = 5, theta = -30, phi = 20,
-                             alpha = 0.05, basalScatter = TRUE) {
+                             alpha = 0.05, basalScatter = TRUE, 
+                             lmLaterals = TRUE) {
   
   # Estimate lm
   mod <- lm(Z ~ X + Y, data = data)
@@ -138,12 +156,17 @@ visualizeFitLm3D <- function(data, nGrid = 5, theta = -30, phi = 20,
   xy <- expand.grid(x = x, y = y)
   new <- data.frame(X = xy$x, Y = xy$y)
   pred <- predict(mod, newdata = new, type = "response")
+  gZ <- seq(min(c(gZ, pred)), max(c(gZ, pred)), length = nGrid)
   
   # Compute theoretical confidence bands
-  sigma <- summary(mod)$sigma
-  zDown <- qnorm(alpha/2, pred, sigma)
-  zUp <- qnorm(1 - alpha/2, pred, sigma)
-  gZ <- seq(min(c(gZ, zDown)), max(c(gZ, zUp)), length = nGrid)
+  if (alpha > 0) {
+    
+    sigma <- summary(mod)$sigma
+    zDown <- qnorm(alpha/2, pred, sigma)
+    zUp <- qnorm(1 - alpha/2, pred, sigma)
+    gZ <- seq(min(c(gZ, zDown)), max(c(gZ, zUp)), length = nGrid)
+
+  }
   
   # Plot data and regression
   require(plot3D)
@@ -158,22 +181,47 @@ visualizeFitLm3D <- function(data, nGrid = 5, theta = -30, phi = 20,
       
     }
     
+    # Plot points projection in the basal plane
+    if (lmLaterals) {
+      
+      XZ <- trans3D(data$X, rep(gY[nGrid], n), data$Z, pmat = pmat)
+      scatter2D(XZ$x, XZ$y, pch = 16, cex = 0.5, add = TRUE, 
+                colkey = FALSE, col = 1)
+      mod <- lm(Z ~ X, data = data)
+      lines(trans3D(gX, rep(gY[nGrid], nGrid), 
+                    mod$coefficients[1] + mod$coefficients[2] * gX, pmat),
+            col = 3, lwd = 2)
+      
+      YZ <- trans3D(rep(gX[nGrid], n), data$Y, data$Z, pmat = pmat)
+      scatter2D(YZ$x, YZ$y, pch = 16, cex = 0.5, add = TRUE, 
+                colkey = FALSE, col = 1)
+      mod <- lm(Z ~ Y, data = data)
+      lines(trans3D(rep(gX[nGrid], nGrid), gY,
+                    mod$coefficients[1] + mod$coefficients[2] * gY, pmat),
+            col = 3, lwd = 2)
+      
+    }
+    
   }
   gridMat <- scatter3D(data$X, data$Y, data$Z, pch = 16, theta = theta, phi = phi, 
                        bty = "g", axes = FALSE, colkey = FALSE, col = 2, 
                        xlim = range(gX), ylim = range(gY), zlim = range(gZ), 
-                       panel.first = panelFirst, nticks = nGrid)
+                       panel.first = panelFirst, nticks = nGrid, cex= 0.75)
   text(x = trans3d(median(gX), gY[1], gZ[1], gridMat), labels = "x1", pos = 1)
   text(x = trans3d(gX[1], median(gY), gZ[1], gridMat), labels = "x2", pos = 2)
   text(x = trans3d(gX[1], gY[nGrid], median(gZ), gridMat), labels = "y", pos = 2)
   
   # Plot confidence region
   M <- mesh(x, y)
-  surf3D(x = M$x, y = M$y, z = matrix(zUp, nrow = lx, ncol = ly), col = "yellow", 
-         alpha = 0.1, add = TRUE, border = "yellow2")
-  surf3D(x = M$x, y = M$y, z = matrix(zDown, nrow = lx, ncol = ly), col = "yellow", 
-         alpha = 0.1, add = TRUE, border = "yellow2")
+  if (alpha > 0) {
+    
+    surf3D(x = M$x, y = M$y, z = matrix(zUp, nrow = lx, ncol = ly), col = "yellow", 
+           alpha = 0.1, add = TRUE, border = "yellow2")
+    surf3D(x = M$x, y = M$y, z = matrix(zDown, nrow = lx, ncol = ly), col = "yellow", 
+           alpha = 0.1, add = TRUE, border = "yellow2")
+    
+  }
   surf3D(x = M$x, y = M$y, z = matrix(pred, nrow = lx, ncol = ly), col = "lightblue", 
-         alpha = 0.3, border = gray(0.5), add = TRUE)
+         alpha = 0.2, border = gray(0.5), add = TRUE)
   
 }
