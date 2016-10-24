@@ -52,11 +52,11 @@ projPlane = function(x, coefs, intercept) {
 set.seed(34567)
 x1 <- rnorm(50)
 x2 <- rnorm(50)
-x1Col <- x1 + rnorm(50, sd = 0.05)
+x3 <- x1 + rnorm(50, sd = 0.05)
 eps <- rnorm(50)
 yLin <- -0.5 + 0.5 * x1 + 0.5 * x2 + eps
 yQua <- -0.5 + x1^2 + 0.5 * x2 + eps
-yExp <- -0.5 + 0.5 * exp(x2) + x1Col + eps
+yExp <- -0.5 + 0.5 * exp(x2) + x3 + eps
 
 # Choices for type of distance
 choices <- 1:4
@@ -90,7 +90,6 @@ ui <- fluidPage(align = "center",
 
 # Server logic
 server <- function(input, output) {
-  
   
   output$regressionPlot <- renderRglwidget({
 
