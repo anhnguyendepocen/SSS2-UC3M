@@ -598,7 +598,7 @@ summary(mod)
 
 
 ```{block, type = 'rmdinsight'}
-The unilateral test $H_0:\beta_j\geq (\leq)0$ vs $H_1:\beta_j<(>)0$ can be done by means of the CI for $\beta_j$. If $H_0$ is rejected, they allow to conclude that *$\hat\beta_j$ is significantly negative (positive)* and that * for the considered regression model, $X_j$ has a significant negative (positive) effect on $Y$*. We have been doing them using the following rule of thumb:
+The unilateral test $H_0:\beta_j\geq (\leq)0$ vs $H_1:\beta_j<(>)0$ can be done by means of the CI for $\beta_j$. If $H_0$ is rejected, they allow to conclude that *$\hat\beta_j$ is significantly negative (positive)* and that *for the considered regression model, $X_j$ has a significant negative (positive) effect on $Y$*. We have been doing them using the following rule of thumb:
 
 **Is the CI for $\beta_j$ below (above) $0$ at level $\alpha$?**
 
