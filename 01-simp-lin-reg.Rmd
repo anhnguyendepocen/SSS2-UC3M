@@ -1027,8 +1027,8 @@ The connection of a $t$-test for $H_0:\beta_j=0$ and the CI for $\beta_j$, both 
 
 **Is $0$ inside the CI for $\beta_j$?**
 
-- **Yes $\rightarrow$ do not reject $H_0$**. 
-- **No $\rightarrow$ reject $H_0$**.
+- **Yes $\leftrightarrow$ do not reject $H_0$**. 
+- **No $\leftrightarrow$ reject $H_0$**.
 ```
 
 The tests for significance are built-in in the `summary` function, as we glimpsed in Section \@ref(euus). For `mod1`, we have:

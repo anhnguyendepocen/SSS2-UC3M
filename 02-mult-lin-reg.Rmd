@@ -267,7 +267,7 @@ knitr::include_app('https://egarpor.shinyapps.io/least-squares-3D/', height = '7
 
 The estimation of $\beta_0,\beta_1,\ldots,\beta_k$ is done as in simple linear regression, by minimizing the Residual Sum of Squares (RSS). First we need to introduce some helpful *matrix notation*. In the following, **bold face** are used for distinguishing vectors and matrices from scalars:
 
-- We denote by $\mathbf{X}=(X_1,\ldots,X_k)$ to the collection of random variables acting as predictors. $\mathbf{X}$ is a *random vector*. Hence, a sample of $(\mathbf{X},Y)$ is $(\mathbf{X}_1,Y_1),\ldots,(\mathbf{X}_n,Y_n)$. $\mathbf{X}_i=(X_{i1},\ldots,X_{ik})$ is the $i$-th observation of $\mathbf{X}$. $X_{ij}$ denotes the $i$-th observation of the $j$-th predictor $X_j$.
+- A sample of $(X_1,\ldots,X_k,Y)$ is $(X_{11},\ldots,X_{1k},Y_1),\ldots,(X_{n1},\ldots,X_{nk},Y_n)$, where $X_{ij}$ denotes the $i$-th observation of the $j$-th predictor $X_j$. We denote with $\mathbf{X}_i=(X_{i1},\ldots,X_{ik})$ to the $i$-th observation of $(X_1,\ldots,X_k)$, so the sample simplifies to $(\mathbf{X}_{1},Y_1),\ldots,(\mathbf{X}_{n},Y_n)$
 
 - The *design matrix* contains all the information of the predictors and a column of ones
 \[
@@ -546,7 +546,7 @@ confint(mod)
 confint(mod, level = 0.90)
 confint(mod, level = 0.99)
 ```
-In this example, the 95% confidence interval for $\beta_0$ is $(4.3067, 7.6594)$, for $\beta_1$ is $(-0.0024, 0.0745)$ and for $\beta_2$ is $(-0.0017, 0.0032)$. Therefore, we can say with a 95% confidence that *the coefficients of `Age` and `WinterRain` are non-significant*. But in Section \@ref(mult) we saw that they *were significant* in the model `Price ~ Age + AGST + HarvestRain + WinterRain`! How is this possible? The answer is that the presence of extra predictors affects the coefficient estimates, as we saw in Figure \@ref(fig:multmarg). Therefore, the precise statement to make is: **in the model `Price ~ Age + WinterRain`**, with a 95% confidence, the coefficients of `Age` and `WinterRain` are non significant. Note that this **does not** mean that they will be always non significant: in `Price ~ Age + AGST + HarvestRain + WinterRain` they are significant.
+In this example, the 95% confidence interval for $\beta_0$ is $(4.7460, 7.2201)$, for $\beta_1$ is $(0.0077, 0.0644)$ and for $\beta_2$ is $(-0.0010, 0.0026)$. Therefore, we can say with a 95% confidence that *the coefficient of `WinterRain` is non significant*. But in Section \@ref(mult) we saw that it *was significant* in the model `Price ~ Age + AGST + HarvestRain + WinterRain`! How is this possible? The answer is that the presence of extra predictors affects the coefficient estimate, as we saw in Figure \@ref(fig:multmarg). Therefore, the precise statement to make is: **in the model `Price ~ Age + WinterRain`**, with a 95% confidence, the coefficient of `WinterRain` is non significant. Note that this **does not** mean that it will be always non significant: in `Price ~ Age + AGST + HarvestRain + WinterRain` it is.
 
 ```{block, type = 'rmdexercise'}
 Compute and interpret the CIs for the coefficients, at levels $\alpha=0.10,0.05,0.01$, for the following regressions:
@@ -558,7 +558,6 @@ Compute and interpret the CIs for the coefficients, at levels $\alpha=0.10,0.05,
 ```
 
 ### Testing on the coefficients
-
 
 The distributions in \@ref(eq:normp2) also allow to conduct a formal hypothesis test on the coefficients $\beta_j$, $j=0,\ldots,k$. For example the *test for significance* is specially important, that is, the test of the hypotheses
 \begin{align*}
@@ -587,8 +586,8 @@ The connection of a $t$-test for $H_0:\beta_j=0$ and the CI for $\beta_j$, both 
 
 **Is $0$ inside the CI for $\beta_j$?**
 
-- **Yes $\rightarrow$ do not reject $H_0$**. 
-- **No $\rightarrow$ reject $H_0$**.
+- **Yes $\leftrightarrow$ do not reject $H_0$**. 
+- **No $\leftrightarrow$ reject $H_0$**.
 ```
 
 The tests for significance are built-in in the `summary` function, as we saw in Section \@ref(eamult). For `mod`, the regression of `Price ~ Age + WinterRain`, we have:
@@ -620,7 +619,7 @@ The prediction and computation of CIs can be done with the `R` function `predict
 It is mandatory to name the columns of the data frame with the same names of the predictors used in `lm`. Otherwise `predict` will generate an error, see below.
 ```
 
-To illustrate the use of `predict`, we retake the `wine` dataset. 
+To illustrate the use of `predict`, we return to the `wine` dataset. 
 
 ```{r, collapse = TRUE}
 # Fit a linear model for the price on WinterRain, HarvestRain and AGST
@@ -685,7 +684,7 @@ Similarities and differences in the prediction of the conditional mean $\mathbb{
 <!--
 ## Assessing model fit and ANOVA
 
-The RSS always decreases as more variables are added to the mode, hence the $R^2$ always increases as more variables are added. Why is so? Because the flexibility of the model increases.
+The RSS always decreases as more variables are added to the model, hence the $R^2$ always increases as more variables are added. Why is so? Because the flexibility of the model increases.
 
 \[
 R^2=\frac{\text{SSR}}{\text{SST}}=\frac{\text{SST}-\text{SSE}}{\text{SST}}=1-\frac{\text{SSE}}{\text{SST}}
@@ -694,11 +693,10 @@ R^2=\frac{\text{SSR}}{\text{SST}}=\frac{\text{SST}-\text{SSE}}{\text{SST}}=1-\fr
 \[
 R^2_\text{Adj}=1-\frac{\text{RSS}/(n-k-1)}{\text{TSS}/(n-1)}
 \]
-Once all of the correct variables have been included in the mode, adding additional *noise* variables will lead to only a very small decrease in RSS
+Once all of the correct variables have been included in the model, adding additional *noise* variables will lead to only a very small decrease in RSS
 Illustration $R^2$ and garbage
 
 Graph $R^2$ and $R^2_\text{Adj}$ vs $k$
-
 
 ## Model selection {#selection}
 
@@ -713,8 +711,6 @@ Extensions and interactions
 Animation:
 - Insight into straight line in 3D
 
-
-
 ## Exercises and case studies
 
 ### Computing multiple linear regressions
@@ -723,15 +719,16 @@ Animation:
 TBA
 ```
 
-
-
 College
 Wage
 USArrests
 Boston
 
-### Case study I: 
+### Case study I: *a marketing plan*
+
+(Case study from )
 
 ### Case study II: 
+
 
 -->
