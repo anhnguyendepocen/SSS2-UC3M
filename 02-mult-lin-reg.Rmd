@@ -546,7 +546,7 @@ confint(mod)
 confint(mod, level = 0.90)
 confint(mod, level = 0.99)
 ```
-In this example, the 95% confidence interval for $\beta_0$ is $(4.3067, 7.6594)$, for $\beta_1$ is $(0.0024, 0.0745)$ and for $\beta_2$ is $(-0.0017, 0.0032)$. Therefore, we can say with a 95% confidence that *the coefficients of `Age` and `WinterRain` are non-significant*. But in Section \@ref(mult) we saw that they *were significant* in the model `Price ~ Age + AGST + HarvestRain + WinterRain`! How is this possible? The answer is that the presence of extra predictors affects the coefficient estimates, as we saw in Figure \@ref(fig:multmarg). Therefore, the precise statement to make is: **in the model `Price ~ Age + WinterRain`**, with a 95% confidence, the coefficients of `Age` and `WinterRain` are non significant. Note that this **does not** mean that they will be always non significant: in `Price ~ Age + AGST + HarvestRain + WinterRain` they are significant.
+In this example, the 95% confidence interval for $\beta_0$ is $(4.3067, 7.6594)$, for $\beta_1$ is $(-0.0024, 0.0745)$ and for $\beta_2$ is $(-0.0017, 0.0032)$. Therefore, we can say with a 95% confidence that *the coefficients of `Age` and `WinterRain` are non-significant*. But in Section \@ref(mult) we saw that they *were significant* in the model `Price ~ Age + AGST + HarvestRain + WinterRain`! How is this possible? The answer is that the presence of extra predictors affects the coefficient estimates, as we saw in Figure \@ref(fig:multmarg). Therefore, the precise statement to make is: **in the model `Price ~ Age + WinterRain`**, with a 95% confidence, the coefficients of `Age` and `WinterRain` are non significant. Note that this **does not** mean that they will be always non significant: in `Price ~ Age + AGST + HarvestRain + WinterRain` they are significant.
 
 ```{block, type = 'rmdexercise'}
 Compute and interpret the CIs for the coefficients, at levels $\alpha=0.10,0.05,0.01$, for the following regressions:
@@ -670,7 +670,7 @@ predict(modelW, newdata = weather2, interval = "prediction")
 For the `wine` dataset, do the following:
 
 - Regress `WinterRain` on `HarvestRain` and `AGST`. Name the fitted model `modExercise`.
-- Compute the estimate for the conditional mean of ``WinterRain` for `HarvestRain`$=123.0$ and `AGST`$=16.15$. What is the CI at $\alpha=0.01$?
+- Compute the estimate for the conditional mean of `WinterRain` for `HarvestRain`$=123.0$ and `AGST`$=16.15$. What is the CI at $\alpha=0.01$?
 - Compute the estimate for the conditional response for `HarvestRain`$=125.0$ and `AGST`$=15$. What is the CI at $\alpha=0.10$?
 - Check that `modExercise\$fitted.values` is the same as `predict(modExercise, newdata = data.frame(WinterRain = wine\$WinterRain, AGST = wine\$AGST))`. Why is so?
 ```
