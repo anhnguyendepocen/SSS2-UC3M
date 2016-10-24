@@ -257,11 +257,11 @@ since $\mathbb{E}[\varepsilon|X_1=x_1,\ldots,X_k=x_k]=0$.
 The LHS of \@ref(eq:k2) is the conditional expectation of $Y$ given $X_1,\ldots,X_k$. It represents how the mean of the random variable $Y$ is changing according to particular values, denoted by $x_1,\ldots,x_k$, of the random variables $X_1,\ldots,X_k$. With the RHS, what we are saying is that the mean of $Y$ is changing in a *linear* fashion with respect to the value of $X$. Hence the interpretation of the coefficients:
 
 - $\beta_0$: is the mean of $Y$ when $X_1=\ldots=X_k=0$.
-- $\beta_j$, $j\geq1$: is the increment in mean of $Y$ for an increment of one unit in $X_j=x_j$, provided that the remaining variables $X_1,\ldots,X_{j-1},X_{j+1},\ldots,X_k$ do not change.
+- $\beta_j$, $j\geq1$: is the increment in mean of $Y$ for an increment of one unit in $X_j=x_j$, provided that the remaining variables $X_1,\ldots,X_{j-1},X_{j+1},\ldots,X_k$ *do not change*.
 
-Figure \@ref(fig:leastsquares2) illustrates the geometrical interpretation of a multiple linear model: a plane in the $k$-dimensional space. If $k=1$, the plane is the regression line for simple linear regression. If $k=2$, then the plane can be visualized in a three-dimensional plot
+Figure \@ref(fig:leastsquares2) illustrates the geometrical interpretation of a multiple linear model: a plane in the $(k+1)$-dimensional space. If $k=1$, the plane is the regression line for simple linear regression. If $k=2$, then the plane can be visualized in a three-dimensional plot
 
-```{r, leastsquares2, echo = FALSE, fig.cap = 'The least squares regression plane $y=\\hat\\beta_0+\\hat\\beta_1x_1+\\hat\\beta_2x_2$ and its dependence on the kind of distance in the error criterion.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+```{r, leastsquares2, echo = FALSE, fig.cap = 'The least squares regression plane $y=\\hat\\beta_0+\\hat\\beta_1x_1+\\hat\\beta_2x_2$ and its dependence on the kind of squared distance considered.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
 knitr::include_app('https://egarpor.shinyapps.io/least-squares-3D/', height = '700px')
 ```
 
@@ -278,7 +278,7 @@ The estimation of $\beta_0,\beta_1,\ldots,\beta_k$ is done as in simple linear r
 \end{pmatrix}_{n\times(k+1)}
 \]
 
-- The *vector of responses* $\mathbf{Y}$, the *vector of coefficients* $\boldsymbol\beta$ and *vector of errors* are, respectively^[The vectors are regarded as column matrices.],
+- The *vector of responses* $\mathbf{Y}$, the *vector of coefficients* $\boldsymbol\beta$ and the *vector of errors* are, respectively^[The vectors are regarded as column matrices.],
 \[
 \mathbf{Y}=\begin{pmatrix}
 Y_1 \\
@@ -334,7 +334,7 @@ Luckily, thanks to the matrix form of \@ref(eq:rss), it is simple to compute a c
 \end{align}
 
 ```{block2, type = 'rmdinsight'}
-There are some similarities between \@ref(eq:k3) and $\hat\beta_1=(s_x^2)^{-1}s_{xy}$ from the simple linear model: both measure the covariance between $\mathbf{X}$ and $Y$ weighted by the variance of $\mathbf{X}$.
+There are some similarities between \@ref(eq:k3) and $\hat\beta_1=(s_x^2)^{-1}s_{xy}$ from the simple linear model: both are related to the covariance between $\mathbf{X}$ and $Y$ weighted by the variance of $\mathbf{X}$.
 ```
 
 The data of the illustration has been generated with the following code:
@@ -352,7 +352,8 @@ yQua <- -0.5 + x1^2 + 0.5 * x2 + eps
 yExp <- -0.5 + 0.5 * exp(x2) + x3 + eps
 
 # Data
-leastSquares3D <- data.frame(x1 = x1, x2 = x2, yLin = yLin, yQua = yQua, yExp = yExp)
+leastSquares3D <- data.frame(x1 = x1, x2 = x2, yLin = yLin, 
+                             yQua = yQua, yExp = yExp)
 ```
 
 Let's check that indeed the coefficients given by `lm` are the ones given by equation \@ref(eq:k3) for the regression `yLin ~ x1 + x2`.
@@ -364,10 +365,11 @@ X <- cbind(1, x1, x2)
 Y <- yLin
 
 # Coefficients 
-solve(t(X) %*% X) %*% t(X) %*% Y
+beta <- solve(t(X) %*% X) %*% t(X) %*% Y
 # %*% multiplies matrices
 # solve() computes the inverse of a matrix
 # t() transposes a matrix
+beta
 
 # Output from lm
 mod <- lm(yLin ~ x1 + x2, data = leastSquares3D)
@@ -404,10 +406,10 @@ They are the vertical distances between actual data and fitted data.
 We conclude with an insight on the relation of multiple and simple linear regressions. It is illustrated in Figure \@ref(fig:multmarg).
 
 ```{block, type = 'rmdinsight'}
-Consider the multiple linear model $Y=\beta_0+\beta_1X_1+\beta_2X_2+\varepsilon$ and its associated simple linear models $Y=\alpha_0+\alpha_1X_1+\varepsilon$ and $Y=\gamma_0+\gamma_2X_2+\varepsilon$. Assume that we have a sample $(X_{11},X_{12},Y_1),\ldots, (X_{n1},X_{n2},Y_n)$. Then, in general, $\hat\alpha_0\neq\hat\beta_0$, $\hat\alpha_1\neq\hat\beta_1$, $\hat\gamma_0\neq\hat\beta_0$ and $\hat\gamma_1\neq\hat\beta_1$. This is: **the inclusion of a new predictor in general changes the coefficient estimates**.
+Consider the multiple linear model $Y=\beta_0+\beta_1X_1+\beta_2X_2+\varepsilon$ and its associated simple linear models $Y=\alpha_0+\alpha_1X_1+\varepsilon$ and $Y=\gamma_0+\gamma_1X_2+\varepsilon$. Assume that we have a sample $(X_{11},X_{12},Y_1),\ldots, (X_{n1},X_{n2},Y_n)$. Then, in general, $\hat\alpha_0\neq\hat\beta_0$, $\hat\alpha_1\neq\hat\beta_1$, $\hat\gamma_0\neq\hat\beta_0$ and $\hat\gamma_1\neq\hat\beta_1$. This is, in general, **the inclusion of a new predictor changes the coefficient estimates**.
 ```
 
-```{r, multmarg, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The regression plane (blue) and its relation with the simple linear regressions (green lines). '}
+```{r, multmarg, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The regression plane (blue) and its relation with the simple linear regressions (green lines). The red points represent the sample for $(X_1,X_2,Y)$ and the black points the subsamples for $(X_1,X_2)$ (bottom), $(X_1,Y)$ (left) and $(X_2,Y)$ (right).'}
 knitr::include_graphics("images/R/multmarg.png")
 ```
 
@@ -469,7 +471,7 @@ To conclude this section, let's see how to make a 3D scatterplot with the regres
 ```{r, scatter3d1, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = '3D scatterplot window, `\'Data\'` panel.'}
 knitr::include_graphics("images/screenshots/scatterplot3d1.png")
 ```
-```{r, scatter3d2, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = '3D scatterplot window, `\'Options\'` panel. Remember to tick the `\'linear least-squares fit\'` box in order to display the fitted regression plane'}
+```{r, scatter3d2, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = '3D scatterplot window, `\'Options\'` panel. Remember to tick the `\'Linear least-squares fit\'` box in order to display the fitted regression plane'}
 knitr::include_graphics("images/screenshots/scatterplot3d2.png")
 ```
 
@@ -479,7 +481,7 @@ If you select the options as shown in Figures \@ref(fig:scatter3d1) and \@ref(fi
 library(rgl)
 knitr::knit_hooks$set(webgl = hook_webgl)
 ```
-```{r, webgl=TRUE, message=FALSE}
+```{r, webgl = TRUE, message = FALSE, warning = FALSE}
 data(iris)
 scatter3d(Petal.Length ~ Petal.Width + Sepal.Length, data = iris, fit = "linear", 
           residuals = TRUE, bg = "white", axis.scales = TRUE, grid = TRUE, 
@@ -532,7 +534,7 @@ Thanks to \@ref(eq:normp2), we can have the $100(1-\alpha)\%$ CI for the coeffic
 \end{align}
 where $t_{n-k-1;\alpha/2}$ is the *$\alpha/2$-upper quantile of the distribution $t_{n-k-1}$*. Note that with $k=1$ we have same CI as in \@ref(eq:ci).
 
-Let's see how we can compute the CIs. We retake the `wine` dataset, so in case you do not have it loaded, you can download it [here](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/wine.RData) as an `.RData` file. We analyse the CI for the coefficients of `Price ~ Age + WinterRain`.
+Let's see how we can compute the CIs. We return to the `wine` dataset, so in case you do not have it loaded, you can download it [here](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/wine.RData) as an `.RData` file. We analyse the CI for the coefficients of `Price ~ Age + WinterRain`.
 ```{r, collapse = TRUE}
 # Fit model
 mod <- lm(Price ~ Age + WinterRain, data = wine)
@@ -544,7 +546,7 @@ confint(mod)
 confint(mod, level = 0.90)
 confint(mod, level = 0.99)
 ```
-In this example, the 95% confidence interval for $\beta_0$ is $(4.3067, 7.6594)$. For $\beta_1$ is $(0.0024, 0.0745)$ and $\beta_2$ is $(-0.0017, 0.0032)$. Therefore, we can say that, with a 95% confidence, *the coefficients of `Age` and `WinterRain` are non-significant*. But in Section \@ref(mult) we saw that they *were significant* in the model `Price ~ Age + AGST + HarvestRain + WinterRain`! How is this possible? The answer is that the presence of extra predictors affects the coefficient estimates, as we saw in Figure \@ref(fig:multmarg). Therefore, the precise statement to make is: **in the model `Price ~ Age + WinterRain`**, with a 95% confidence, the coefficients of `Age` and `WinterRain` are non-significant. Note that this **does not** mean that they will be always non-significant: in `Price ~ Age + AGST + HarvestRain + WinterRain` they become significant.
+In this example, the 95% confidence interval for $\beta_0$ is $(4.3067, 7.6594)$, for $\beta_1$ is $(0.0024, 0.0745)$ and for $\beta_2$ is $(-0.0017, 0.0032)$. Therefore, we can say with a 95% confidence that *the coefficients of `Age` and `WinterRain` are non-significant*. But in Section \@ref(mult) we saw that they *were significant* in the model `Price ~ Age + AGST + HarvestRain + WinterRain`! How is this possible? The answer is that the presence of extra predictors affects the coefficient estimates, as we saw in Figure \@ref(fig:multmarg). Therefore, the precise statement to make is: **in the model `Price ~ Age + WinterRain`**, with a 95% confidence, the coefficients of `Age` and `WinterRain` are non significant. Note that this **does not** mean that they will be always non significant: in `Price ~ Age + AGST + HarvestRain + WinterRain` they are significant.
 
 ```{block, type = 'rmdexercise'}
 Compute and interpret the CIs for the coefficients, at levels $\alpha=0.10,0.05,0.01$, for the following regressions:
@@ -579,6 +581,22 @@ In an hypothesis test, the *$p$-value measures the degree of veracity of $H_0$ a
 - **No $\rightarrow$ do not reject $H_0$**.
 ```
 
+
+```{block, type = 'rmdinsight'}
+The connection of a $t$-test for $H_0:\beta_j=0$ and the CI for $\beta_j$, both at level $\alpha$, is the following.
+
+**Is $0$ inside the CI for $\beta_j$?**
+
+- **Yes $\rightarrow$ do not reject $H_0$**. 
+- **No $\rightarrow$ reject $H_0$**.
+```
+
+The tests for significance are built-in in the `summary` function, as we saw in Section \@ref(eamult). For `mod`, the regression of `Price ~ Age + WinterRain`, we have:
+```{r, collapse = TRUE}
+summary(mod)
+```
+
+
 ```{block, type = 'rmdinsight'}
 The unilateral test $H_0:\beta_j\geq (\leq)0$ vs $H_1:\beta_j<(>)0$ can be done by means of the CI for $\beta_j$. If $H_0$ is rejected, they allow to conclude that *$\hat\beta_j$ is significantly negative (positive)* and that * for the considered regression model, $X_j$ has a significant negative (positive) effect on $Y$*. We have been doing them using the following rule of thumb:
 
@@ -588,10 +606,6 @@ The unilateral test $H_0:\beta_j\geq (\leq)0$ vs $H_1:\beta_j<(>)0$ can be done 
 - **No $\rightarrow$ the criterion is not conclusive**.
 ```
 
-The tests for significance are built-in in the `summary` function, as we saw in Section \@ref(eamult). For `mod`, the regression of `Price ~ Age + WinterRain`, we have:
-```{r, collapse = TRUE}
-summary(mod)
-```
 
 ## Prediction
 
