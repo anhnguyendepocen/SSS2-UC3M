@@ -7,9 +7,9 @@ Y=\beta_0+\beta_1X_1+\beta_2X_2+\ldots+\beta_kX_k+\varepsilon
 \]
 To convince you why is useful, let's begin by seeing what it can deliver in real-case scenarios!
 
-## Examples and applications {#eamult}
+## Examples and applications 
 
-### Case study I: *The Bordeaux equation*
+### Case study I: *The Bordeaux equation* {#wine}
 
 > Calculate the winter rain and the harvest rain (in millimeters). Add summer heat in the vineyard (in degrees centigrade). Subtract 12.145. And what do you have? A very, very passionate argument over wine.
 >
@@ -476,7 +476,7 @@ knitr::include_graphics("images/screenshots/scatterplot3d2.png")
 ```
 
 If you select the options as shown in Figures \@ref(fig:scatter3d1) and \@ref(fig:scatter3d2), you should get something like this:
-```{r echo=FALSE}
+```{r echo = FALSE, warning = FALSE}
 # include this code chunk as-is to enable 3D graphs
 library(rgl)
 knitr::knit_hooks$set(webgl = hook_webgl)
@@ -501,7 +501,7 @@ The distribution of $\hat{\boldsymbol{\beta}}$ is:
 \end{align}
 where $\mathcal{N}_{m}$ is the $m$-dimensional Normal, this is, the extension of the usual Normal distribution to deal with $m$ random variables^[With $m=1$, the density of a $\mathcal{N}_{m}$ corresponds to a bell-shaped *curve* With $m=2$, the density is a *surface* similar to a bell.]. The interpretation of \@ref(eq:normp) is not so easy as in the simple linear case. Here are some broad remarks:
 
-- **Bias**. Both estimates are unbiased. 
+- **Bias**. The estimates are unbiased. 
 - **Variance**. Depending on:
 
     - *Sample size $n$*. Hidden inside $\mathbf{X}^T\mathbf{X}$. As $n$ grows, the precision of the estimators increases.
@@ -546,7 +546,7 @@ confint(mod)
 confint(mod, level = 0.90)
 confint(mod, level = 0.99)
 ```
-In this example, the 95% confidence interval for $\beta_0$ is $(4.7460, 7.2201)$, for $\beta_1$ is $(0.0077, 0.0644)$ and for $\beta_2$ is $(-0.0010, 0.0026)$. Therefore, we can say with a 95% confidence that *the coefficient of `WinterRain` is non significant*. But in Section \@ref(mult) we saw that it *was significant* in the model `Price ~ Age + AGST + HarvestRain + WinterRain`! How is this possible? The answer is that the presence of extra predictors affects the coefficient estimate, as we saw in Figure \@ref(fig:multmarg). Therefore, the precise statement to make is: **in the model `Price ~ Age + WinterRain`**, with a 95% confidence, the coefficient of `WinterRain` is non significant. Note that this **does not** mean that it will be always non significant: in `Price ~ Age + AGST + HarvestRain + WinterRain` it is.
+In this example, the 95% confidence interval for $\beta_0$ is $(4.7460, 7.2201)$, for $\beta_1$ is $(0.0077, 0.0644)$ and for $\beta_2$ is $(-0.0010, 0.0026)$. Therefore, we can say with a 95% confidence that *the coefficient of `WinterRain` is non significant*. But in Section \@ref(wine) we saw that it *was significant* in the model `Price ~ Age + AGST + HarvestRain + WinterRain`! How is this possible? The answer is that the presence of extra predictors affects the coefficient estimate, as we saw in Figure \@ref(fig:multmarg). Therefore, the precise statement to make is: **in the model `Price ~ Age + WinterRain`**, with $\alpha=0.05$, the coefficient of `WinterRain` is non significant. Note that this **does not** mean that it will be always non significant: in `Price ~ Age + AGST + HarvestRain + WinterRain` it is.
 
 ```{block, type = 'rmdexercise'}
 Compute and interpret the CIs for the coefficients, at levels $\alpha=0.10,0.05,0.01$, for the following regressions:
@@ -610,10 +610,10 @@ The unilateral test $H_0:\beta_j\geq (\leq)0$ vs $H_1:\beta_j<(>)0$ can be done 
 
 As in the simple linear model, the forecast of $Y$ from $\mathbf{X}=\mathbf{x}$ (this is, $X_1=x_1,\ldots,X_k=x_k$) is approached by two different ways:
 
-1. Inference on the **conditional mean** of $Y$ given $\mathbf{X}=\mathbf{x}$, $\mathbb{E}[Y|\mathbf{X}=\mathbf{x}]$. This is a deterministic quantity, which equals $\beta_0+\beta_1x_1+\ldots+\beta_{k+1}x_k$.
-2. Prediction of the **conditional response** $Y|\mathbf{X}=\mathbf{x}$. This is a random variable distributed as $\mathcal{N}(\beta_0+\beta_1x_1+\ldots+\beta_{k+1}x_k,\sigma^2)$.
+1. Inference on the **conditional mean** of $Y$ given $\mathbf{X}=\mathbf{x}$, $\mathbb{E}[Y|\mathbf{X}=\mathbf{x}]$. This is a deterministic quantity, which equals $\beta_0+\beta_1x_1+\ldots+\beta_{k}x_k$.
+2. Prediction of the **conditional response** $Y|\mathbf{X}=\mathbf{x}$. This is a random variable distributed as $\mathcal{N}(\beta_0+\beta_1x_1+\ldots+\beta_{k}x_k,\sigma^2)$.
 
-The prediction and computation of CIs can be done with the `R` function `predict` (unfortunately, there is no `R Commander` shortcut for his one). The objects required for `predict` are: first, the output of `lm`; second, a `data.frame` containing the locations $\mathbf{x}=(x_1,\ldots,x_k)$ where we want to predict $\beta_0+\beta_1x_1+\ldots+\beta_{k+1}x_k$. 
+The prediction and computation of CIs can be done with the `R` function `predict` (unfortunately, there is no `R Commander` shortcut for his one). The objects required for `predict` are: first, the output of `lm`; second, a `data.frame` containing the locations $\mathbf{x}=(x_1,\ldots,x_k)$ where we want to predict $\beta_0+\beta_1x_1+\ldots+\beta_{k}x_k$. The prediction is $\hat\beta_0+\hat\beta_1x_1+\ldots+\hat\beta_{k}x_k$
 
 ```{block, type = 'rmdcaution'}
 It is mandatory to name the columns of the data frame with the same names of the predictors used in `lm`. Otherwise `predict` will generate an error, see below.
@@ -671,7 +671,7 @@ For the `wine` dataset, do the following:
 - Regress `WinterRain` on `HarvestRain` and `AGST`. Name the fitted model `modExercise`.
 - Compute the estimate for the conditional mean of `WinterRain` for `HarvestRain`$=123.0$ and `AGST`$=16.15$. What is the CI at $\alpha=0.01$?
 - Compute the estimate for the conditional response for `HarvestRain`$=125.0$ and `AGST`$=15$. What is the CI at $\alpha=0.10$?
-- Check that `modExercise\$fitted.values` is the same as `predict(modExercise, newdata = data.frame(WinterRain = wine\$WinterRain, AGST = wine\$AGST))`. Why is so?
+- Check that `modExercise\$fitted.values` is the same as `predict(modExercise, newdata = data.frame(WinterRain = wine\$HarvestRain, AGST = wine\$AGST))`. Why is so?
 ```
 
 ```{block, type = 'rmdinsight'}
