@@ -21,8 +21,8 @@ ui <- fluidPage(align = "center",
 
     inputPanel(
 
-      actionButton(inputId = "newSample", label = h5("sample!"), 
-                   icon = h5("Get a new")),
+      actionButton(inputId = "newSample",
+                   label = HTML("<h5>Get a new<br> sample!</h5>")),
       selectInput(inputId = "n", label = "Sample size:",
                   choices = c(10, 50, 100, 200, 500), selected = 100),
       sliderInput(inputId = "beta0", label = "Intercept:",
