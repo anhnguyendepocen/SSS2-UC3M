@@ -52,5 +52,285 @@ The useful commands for performing **simple and multiple linear regression** are
 
 <!--
 # Reporting with `R Commander`
+
+A nice feature of `R Commander` is that integrates seamless with `R Markdown`, which is able to create `.html`, `.pdf` and `.docx` reports directly from the outputs of `R`. Depending on the kind of report that we want, we will need the following auxiliary software.
+
+- `.html`
+- `.docx`
+- `.pdf` (no recommended). An installa
+
+The workflow is really simple. Once you have done some statistical analysis, either by using `R Commander`'s menus or `R` code directly, you will end up with an `R` script containing all the commands run in the process. Suppose we were analyszing the `Boston` dataset, as we did in Section \@ref(sec:boston). Ideally (i.e., assuming we have written all the ) our final script would look like this:
+```{r, eval = FALSE}
+# With this script we reproduce the multiple linear analysis of the Boston dataset
+
+# Not necessary if we are in R Commander
+library(RcmdrMisc)
+
+# Import data
+library(MASS)
+data(Boston)
+
+# Make a multiple linear regression od medv in the rest of variables
+mod <- lm(medv ~ ., data = Boston)
+summary(mod)
+
+# Check the diagnostic plots
+plot(mod, 1)
+
+# Seems like there is some non-linearity!
+
+# Let's consider the transformations given in Harrison and Rubinfeld (1978)
+modTransf <- lm(I(log(medv * 1000)) ~ I(rm^2) + age + log(dis) +
+                  log(rad) + tax + ptratio + I(black / 1000) +
+                  I(log(lstat / 100)) + crim + zn + indus + chas +
+                  I((10*nox)^2), data = Boston)
+summary(modTransf)
+
+# Check the diagnostic plots
+plot(modTransf, 1)
+# The non-linearity is more subtle now
+
+# Look for the best model in terms of the BIC
+modTransfBIC <- stepwise(modTransf)
+summary(modTransfBIC)
+
+# Let's explore the most significant variables, to see if the model can be
+# reduced drastically in complexity
+mod3D <- lm(I(log(medv * 1000)) ~ I(log(lstat / 100)) + crim, data = Boston)
+summary(mod3D)
+
+# With only 2 variables, we explain the 72% of variability. 
+# Compared with the 80% with 10 variables, it is an important improvement 
+# in terms of simplicity.
+
+# Let's add these variables to the dataset, so we can call scatterplotMatrix 
+# and scatter3d through R Commander's menu
+Boston$logMedv <- log(Boston$medv * 1000)
+Boston$logLstat <- log(Boston$lstat / 100)
+
+# Visualize the pair-by-pair relations of the response and two predictors
+scatterplotMatrix(~ crim + logLstat + logMedv, reg.line = lm, smooth = FALSE,
+                  spread = FALSE, span = 0.5, ellipse = FALSE,
+                  levels = c(.5, .9), id.n = 0, diagonal = 'histogram',
+                  data = Boston)
+
+# Visualize the full relation between the response and the two predictors
+scatter3d(logMedv ~ crim + logLstat, data = Boston, fit = "linear",
+          residuals = TRUE, bg = "white", axis.scales = TRUE, grid = TRUE,
+          ellipsoid = FALSE)
+
+```
+You can download the script [here](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/reporting/script.R).
+
+The reports are really easily produced. It will result into something like this:
+```{r, eval = FALSE}
+
+---
+title: "Replace with Main Title"
+author: "Your Name"
+date: "AUTOMATIC"
+---
+
+
+` ``{r echo=FALSE, message=FALSE}
+# include this code chunk as-is to set options
+knitr::opts_chunk$set(comment=NA, prompt=TRUE)
+library(Rcmdr)
+library(car)
+library(RcmdrMisc)
+` ``
+
+
+` ``{r echo=FALSE}
+# include this code chunk as-is to enable 3D graphs
+library(rgl)
+knitr::knit_hooks$set(webgl = hook_webgl)
+` ``
+
+
+` ``{r}
+# With this script we reproduce the multiple linear analysis of the Boston dataset
+` ``
+
+
+` ``{r}
+# Import data
+` ``
+
+
+` ``{r}
+library(MASS)
+` ``
+
+
+` ``{r}
+data(Boston)
+` ``
+
+
+` ``{r}
+# Make a multiple linear regression od medv in the rest of variables
+` ``
+
+
+` ``{r}
+mod <- lm(medv ~ ., data = Boston)
+` ``
+
+
+` ``{r}
+summary(mod)
+` ``
+
+
+` ``{r}
+# Check the diagnostic plots
+` ``
+
+
+` ``{r}
+plot(mod, 1)
+` ``
+
+
+` ``{r}
+# Seems like there is some non-linearity!
+` ``
+
+
+` ``{r}
+# Let's consider the transformations given in Harrison and Rubinfeld (1978)
+` ``
+
+
+` ``{r}
+modTransf <- lm(I(log(medv * 1000)) ~ I(rm^2) + age + log(dis) +
+                  log(rad) + tax + ptratio + I(black / 1000) +
+                  I(log(lstat / 100)) + crim + zn + indus + chas +
+                  I((10*nox)^2), data = Boston)
+` ``
+
+
+` ``{r}
+summary(modTransf)
+` ``
+
+
+` ``{r}
+# Check the diagnostic plots
+` ``
+
+
+` ``{r}
+plot(modTransf, 1)
+` ``
+
+
+` ``{r}
+# The non-linearity is more subtle now
+` ``
+
+
+` ``{r}
+# Look for the best model in terms of the BIC
+` ``
+
+
+` ``{r}
+modTransfBIC <- stepwise(modTransf)
+` ``
+
+
+` ``{r}
+summary(modTransfBIC)
+` ``
+
+
+` ``{r}
+# Let's explore the most significant variables, to see if the model can be
+` ``
+
+
+` ``{r}
+# reduced drastically in complexity
+` ``
+
+
+` ``{r}
+mod3D <- lm(I(log(medv * 1000)) ~ I(log(lstat / 100)) + crim, data = Boston)
+` ``
+
+
+` ``{r}
+summary(mod3D)
+` ``
+
+
+` ``{r}
+# With only 2 variables, we explain the 72% of variability. 
+` ``
+
+
+` ``{r}
+# Compared with the 80% with 10 variables, it is an important improvement 
+` ``
+
+
+` ``{r}
+# in terms of simplicity.
+` ``
+
+
+` ``{r}
+# Let's add these variables to the dataset, so we can call scatterplotMatrix 
+` ``
+
+
+` ``{r}
+# and scatter3d through R Commander's menu
+` ``
+
+
+` ``{r}
+Boston$logMedv <- log(Boston$medv * 1000)
+` ``
+
+
+` ``{r}
+Boston$logLstat <- log(Boston$lstat / 100)
+` ``
+
+
+` ``{r}
+# Visualize the pair-by-pair relations of the response and two predictors
+` ``
+
+
+` ``{r}
+scatterplotMatrix(~ crim + logLstat + logMedv, reg.line = lm, smooth = FALSE,
+                  spread = FALSE, span = 0.5, ellipse = FALSE,
+                  levels = c(.5, .9), id.n = 0, diagonal = 'histogram',
+                  data = Boston)
+` ``
+
+
+` ``{r}
+# Visualize the full relation between the response and the two predictors
+` ``
+
+
+` ``{r}
+scatter3d(logMedv ~ crim + logLstat, data = Boston, fit = "linear",
+          residuals = TRUE, bg = "white", axis.scales = TRUE, grid = TRUE,
+          ellipsoid = FALSE)
+` ``
+
+
+
+
+```
+
+
+
 -->
 

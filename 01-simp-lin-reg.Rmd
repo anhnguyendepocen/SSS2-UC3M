@@ -800,7 +800,7 @@ knitr::include_graphics("images/R/linearmodel.png")
 The assumptions of the linear model are:
 
 i. **Linearity**: $\mathbb{E}[Y|X=x]=\beta_0+\beta_1x$.
-ii. **Homocedasticity**: $\mathbb{V}\text{ar}(\varepsilon_i)=\sigma^2$, with $\sigma^2$ constant for $i=1,\ldots,n$.
+ii. **Homoscedasticity**: $\mathbb{V}\text{ar}(\varepsilon_i)=\sigma^2$, with $\sigma^2$ constant for $i=1,\ldots,n$.
 iii. **Normality**: $\varepsilon_i\sim\mathcal{N}(0,\sigma^2)$ for $i=1,\ldots,n$.
 iv. **Independence of the errors**: $\varepsilon_1,\ldots,\varepsilon_n$ are independent (or uncorrelated, $\mathbb{E}[\varepsilon_i\varepsilon_j]=0$, $i\neq j$, since they are assumed to be Normal).
 
@@ -1175,7 +1175,9 @@ Redo the third and fourth points of the previous exercise with CIs for the condi
 
 ## ANOVA and model fit {#fit}
 
-As we have seen in Sections \@ref(inference) and \@ref(prediction), the variance of the error, $\sigma^2$, plays a fundamental role in the inference for the model coefficients and prediction. In this section we will see how the variance of $Y$ is decomposed into a part twat corresponds to the regression and another that corresponds to the error. This decomposition is called the *ANalysis Of VAriance* (ANOVA). 
+### ANOVA
+
+As we have seen in Sections \@ref(inference) and \@ref(prediction), the variance of the error, $\sigma^2$, plays a fundamental role in the inference for the model coefficients and prediction. In this section we will see how the variance of $Y$ is decomposed into two parts, each one corresponding to the regression and to the error, respectively. This decomposition is called the *ANalysis Of VAriance* (ANOVA). 
 
 Before explaining ANOVA, it is important to recall an interesting result: *the mean of the fitted values $\hat Y_1,\ldots,\hat Y_n$ is the mean of $Y_1,\ldots, Y_n$*. This is easily seen if we plug-in the expression of $\hat\beta_0$:
 \begin{align*}
@@ -1184,16 +1186,16 @@ Before explaining ANOVA, it is important to recall an interesting result: *the m
 The ANOVA decomposition considers the following measures of variation related with the response:
 
 - $\text{SST}=\sum_{i=1}^n\left(Y_i-\bar Y\right)^2$, the **total sum of squares**. This is the *total variation* of $Y_1,\ldots,Y_n$, since $\text{SST}=ns_y^2$, where $s_y^2$ is the sample variance of $Y_1,\ldots,Y_n$.
-- $\text{SSR}=\sum_{i=1}^n\left(\hat Y_i-\bar Y\right)^2$, the **regression sum of squares**^[Recall that SSR is different from RSS (Residual Sum of Squares, Section \@ref(modelsimp)).]. This is the variation explained by the regression line, that is, *the variation from $\bar Y$ that is explained by the conditional mean $\hat Y_i=\hat\beta_0+\hat\beta_1X_i$*. $\text{SSR}=ns_{\hat y}^2$, where $s_{\hat y}^2$ is the sample variance of $\hat Y_1,\ldots,\hat Y_n$.
+- $\text{SSR}=\sum_{i=1}^n\left(\hat Y_i-\bar Y\right)^2$, the **regression sum of squares**^[Recall that SSR is different from RSS (Residual Sum of Squares, Section \@ref(modelsimp)).]. This is the variation explained by the regression line, that is, *the variation from $\bar Y$ that is explained by the estimated conditional mean $\hat Y_i=\hat\beta_0+\hat\beta_1X_i$*. $\text{SSR}=ns_{\hat y}^2$, where $s_{\hat y}^2$ is the sample variance of $\hat Y_1,\ldots,\hat Y_n$.
 - $\text{SSE}=\sum_{i=1}^n\left(Y_i-\hat Y_i\right)^2$, the **sum of squared errors**^[Recall that SSE and RSS (for $(\hat \beta_0,\hat \beta_1)$) are just different names for referring to the same quantity: $\text{SSE}=\sum_{i=1}^n\left(Y_i-\hat Y_i\right)^2=\sum_{i=1}^n\left(Y_i-\hat \beta_0-\hat \beta_1X_i\right)^2=\mathrm{RSS}\left(\hat \beta_0,\hat \beta_1\right)$.]. Is the variation around the conditional mean. Recall that $\text{SSE}=\sum_{i=1}^n \hat\varepsilon_i^2=(n-2)\hat\sigma^2$, where $\hat\sigma^2$ is the sample variance of $\hat \varepsilon_1,\ldots,\hat \varepsilon_n$. 
 
 The ANOVA decomposition is
 \begin{align}
-\underbrace{\text{SST}}_{\text{Variation of }Y_i's} = \underbrace{\text{SSR}}_{\text{Variation of }\hat Y_i's} + \underbrace{\text{SSE}}_{\text{Variation of }\hat \epsilon_i's} (\#eq:anova)
+\underbrace{\text{SST}}_{\text{Variation of }Y_i's} = \underbrace{\text{SSR}}_{\text{Variation of }\hat Y_i's} + \underbrace{\text{SSE}}_{\text{Variation of }\hat \varepsilon_i's} (\#eq:anova)
 \end{align}
 or, equivalently (dividing by $n$ in \@ref(eq:anova)),
 \begin{align*}
-\underbrace{s_y^2}_{\text{Variance of $Y_i$'s}} = \underbrace{s_{\hat y}^2}_{\text{Variance of $\hat Y_i$'s}} + \underbrace{(n-2)/n\hat\sigma^2}_{\text{Variance of $\hat\varepsilon_i$'s}}.
+\underbrace{s_y^2}_{\text{Variance of $Y_i$'s}} = \underbrace{s_{\hat y}^2}_{\text{Variance of $\hat Y_i$'s}} + \underbrace{(n-2)/n\times\hat\sigma^2}_{\text{Variance of $\hat\varepsilon_i$'s}}.
 \end{align*}
 The graphical interpretation of \@ref(eq:anova) is shown in Figures \@ref(fig:anova) and \@ref(fig:anovaillus).
 
@@ -1227,9 +1229,9 @@ The "$F$-value" of the ANOVA table represents the value of the $F$-statistic $\f
 \begin{align*}
 H_0:\beta_1=0\quad\text{vs.}\quad H_1:\beta_1\neq 0,
 \end{align*}
-that is, the hypothesis of no linear dependence of $Y$ on $X$. The result of this test is completely equivalent to the $t$-test for $\beta_1$ that we saw in Section \@ref(inference) (this is something *specific for simple linear regression* -- the $F$-test will not be equivalent to the $t$-test for $\beta_1$ in Chapter \@ref(mult)). Under $H_0$,
+that is, the hypothesis of no linear dependence of $Y$ on $X$. The result of this test is completely equivalent to the $t$-test for $\beta_1$ that we saw in Section \@ref(inference) (this is something *specific for simple linear regression* -- the $F$-test will not be equivalent to the $t$-test for $\beta_1$ in Chapter \@ref(mult)). I It happens that
 \begin{align*}
-F=\frac{\text{SSR}/1}{\text{SSE}/(n-2)}\stackrel{H_0}{\sim} F_{1,n-2}
+F=\frac{\text{SSR}/1}{\text{SSE}/(n-2)}\stackrel{H_0}{\sim} F_{1,n-2},
 \end{align*}
 where $F_{1,n-2}$ is the *Snedecor's $F$ distribution*^[The $F_{n,m}$ distribution arises as the quotient of two independent random variables $\chi^2_n$ and $\chi^2_m$, $\frac{\chi^2_n/n}{\chi^2_m/m}$.] with $1$ and $n-2$ degrees of freedom. If $H_0$ is true, then $F$ is expected to be *small* since SSR will be close to zero. The $p$-value of this test is the same as the $p$-value of the $t$-test for $H_0:\beta_1=0$.
 
@@ -1239,19 +1241,13 @@ Recall that the $F$-statistic, its $p$-value and the degrees of freedom are also
 For the `y6 ~ x6` and `y7 ~ x7` in the `assumptions` dataset, compute their ANOVA tables. Check that the $p$-values of the $t$-test for $\beta_1$ and the $F$-test are the same.
 ```
 
+### The $R^2$
+
 The *coefficient of determination* $R^2$ is closely related with the ANOVA decomposition. $R^2$ is defined as
 \begin{align*}
-R^2=\frac{\text{SSR}}{\text{SST}}=\frac{\text{SSR}}{\text{SSR}+\text{SSE}}=\frac{\text{SSR}}{\text{SSR}+(n-2)\hat\sigma^2}
+R^2=\frac{\text{SSR}}{\text{SST}}=\frac{\text{SSR}}{\text{SSR}+\text{SSE}}=\frac{\text{SSR}}{\text{SSR}+(n-2)\hat\sigma^2}.
 \end{align*}
-$R^2$ measures the **proportion of variation** of the response variable $Y$ that is **explained** by the predictor $X$ through the regression. The proportion of total variation of $Y$ that is not explained is $1-R^2=\frac{\text{SSE}}{\text{SST}}$. Intuitively, $R^2$ measures the **tightness of the data cloud around the regression line**, since is related directly with $\hat\sigma^2$. Check in Figure \@ref(fig:anovaillus) how changing the value of $\sigma^2$ (not $\hat\sigma^2$, but $\hat\sigma^2$ this is obviously dependent on $\sigma^2$) affects the $R^2$.
-
-```{block, type = 'rmdinsight'}
-The ANOVA decomposition gives another interpretation of the least-squares estimates: **$(\hat\beta_0,\hat\beta_1)$ are the estimated coefficients that maximize the $R^2$** (among all the possible estimates we could think about). Recall that
-\[
-R^2=\frac{\text{SSR}}{\text{SST}}=\frac{\text{SST} - \text{SSE}}{\text{SST}}=\frac{\text{SST} - \text{RSS}(\hat\beta_0,\hat\beta_1)}{\text{SST}},
-\]
-so if $\text{RSS}(\hat\beta_0,\hat\beta_1)=\min_{\beta_0,\beta_1}\text{RSS}(\beta_0,\beta_1)$, then $R^2$ is maximal for $(\hat\beta_0,\hat\beta_1)$.
-```
+$R^2$ measures the **proportion of variation** of the response variable $Y$ that is **explained** by the predictor $X$ through the regression. The proportion of total variation of $Y$ that is not explained is $1-R^2=\frac{\text{SSE}}{\text{SST}}$. Intuitively, $R^2$ measures the **tightness of the data cloud around the regression line**, since is related directly with $\hat\sigma^2$. Check in Figure \@ref(fig:anovaillus) how changing the value of $\sigma^2$ (not $\hat\sigma^2$, but $\hat\sigma^2$ is obviously dependent on $\sigma^2$) affects the $R^2$.
 
 The $R^2$ is related with the sample *correlation coefficient*
 \begin{align*}
@@ -1314,15 +1310,15 @@ Trusting blindly the $R^2$ can lead to catastrophic conclusions, since the model
 # 2) the error is heteroskedastic
 x <- seq(0.15, 1, l = 100)
 set.seed(123456)
-eps3 <- rnorm(n = 100, sd = 0.25 * x^2)
-y3 <- 1 - 2 * x * (1 + 0.25 * sin(4 * pi * x)) + eps3
+eps <- rnorm(n = 100, sd = 0.25 * x^2)
+y <- 1 - 2 * x * (1 + 0.25 * sin(4 * pi * x)) + eps
 
 # Great R^2!?
-reg3 <- lm(y3 ~ x)
-summary(reg3)
+reg <- lm(y ~ x)
+summary(reg)
 
 # But prediction is obviously problematic
-scatterplot(y3 ~ x, smooth = FALSE)
+scatterplot(y ~ x, smooth = FALSE)
 ```
 
 So remember:
