@@ -51,7 +51,7 @@ par(mfrow = c(2, 2), mar = c(4, 4, 2, 1) + 0.1)
 plot(x, y2 + eps, pch = 16, xlab = "x", ylab = "y", main = "No linearity")
 abline(lm(I(y2 + eps) ~ x)$coefficients, col = 2, lwd = 2)
 plot(x, y + epsNoHomo, pch = 16, xlab = "x", ylab = "y",
-     main = "No homcedasticity")
+     main = "No homoscedasticity")
 abline(lm(I(y + epsNoHomo) ~ x)$coefficients, col = 2, lwd = 2)
 plot(x, y + epsNoNorm, pch = 16, xlab = "x", ylab = "y",
      main = "No normality")

@@ -42,7 +42,7 @@ server <- function(input, output) {
                  "X1 discrete and X2 continuous",
                  "High dispersion")
   namesFalse <- c("No linearity",
-                  "No homocedasticity",
+                  "No homoscedasticity",
                   "No normality",
                   "No independence")
 

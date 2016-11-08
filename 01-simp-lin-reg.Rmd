@@ -759,7 +759,7 @@ They are the vertical projections of $Y_1,\ldots,Y_n$ into the fitted line (see 
 \begin{align*}
 \hat\varepsilon_i=Y_i-\hat Y_i,\quad i=1,\ldots,n.
 \end{align*}
-They are the vertical distances between actual data and fitted data. Hence, another way of writing the minimum RSS is $\sum_{i=1}^n(Y_i-\hat\beta_0-\hat\beta_1X_i)^2=\sum_{i=1}^n\hat\varepsilon_i^2$.
+They are the vertical distances between actual data $(X_i,Y_i)$ and fitted data $(X_i,\hat Y_i)$. Hence, another way of writing the minimum RSS is $\sum_{i=1}^n(Y_i-\hat\beta_0-\hat\beta_1X_i)^2=\sum_{i=1}^n\hat\varepsilon_i^2$.
 
 To conclude this section, we check that the regression coefficients given by `lm` are indeed the ones given in \@ref(eq:3).
 
@@ -1278,7 +1278,7 @@ y <- -1 + 2 * x + eps
 reg <- lm(y ~ x)
 yHat <- reg$fitted.values
 
-# Sumamry
+# Summary
 summary(reg)
 
 # Square of the correlation coefficient
