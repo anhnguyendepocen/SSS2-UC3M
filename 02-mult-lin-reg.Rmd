@@ -929,8 +929,8 @@ In Section \@ref(wine) we briefly saw that **the inclusion of more predictors is
 
 The interpretation of this fact is simple if we think on the geometry for $k=1$ and $k=2$:
 
-- If $k=1$, we need at least $n=2$ points to fit uniquely a line. However,this line is depends entirely on two random points, $\hat\sigma^2=\infty$. Therefore we need at least $n=3$ points, or in other words $n\geq k + 2=3$.
-- If $k=2$, we need at least $n=3$ points to fit uniquely a plane. But this plane depends entirely on two random points and as a consequence $\hat\sigma^2=\infty$. Therefore we need $n\geq k + 2=4$.
+- If $k=1$, we need at least $n=2$ points to fit uniquely a line. However, this line gives no information on the vertical variation around it and hence $\hat\sigma^2$ can not be estimated (applying its formula, we would have $\hat\sigma^2=\infty$). Therefore we need at least $n=3$ points, or in other words $n\geq k + 2=3$.
+- If $k=2$, we need at least $n=3$ points to fit uniquely a plane. But this this plane gives no information on the variation of the data around it and hence $\hat\sigma^2$ can not be estimated. Therefore we need $n\geq k + 2=4$.
 
 Another interpretation is the following:
 
