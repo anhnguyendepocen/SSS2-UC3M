@@ -1046,7 +1046,7 @@ We will focus only in three plots:
     plot(mod, 2)
     ```
     
-   **Under normality, we expect the points** (sample quantiles of the standardized residuals vs. theoretical quantiles of a $\mathcal{N}(0,1)$) **to align with the diagonal line**, which represents the ideal position of the points if those were sampled from a $\mathcal{N}(0,1)$. It is usual to have larger departures from the diagonal in the extremes than in the center, even under normality, although these departures are more clear if the data is non-normal.
+    **Under normality, we expect the points** (sample quantiles of the standardized residuals vs. theoretical quantiles of a $\mathcal{N}(0,1)$) **to align with the diagonal line**, which represents the ideal position of the points if those were sampled from a $\mathcal{N}(0,1)$. It is usual to have larger departures from the diagonal in the extremes than in the center, even under normality, although these departures are more clear if the data is non-normal.
 
 3. **Scale-location plot**. Serves for checking the **homoscedasticity**. It is similar to the first diagnostic plot, but now with the residuals standardized and transformed by a square root (of the absolute value). This change transforms the task of spotting heteroskedasticity by looking into irregular vertical dispersion patterns into spotting for nonlinearities, which is somehow simpler.
 

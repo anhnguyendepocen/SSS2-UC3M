@@ -1,6 +1,6 @@
 #
 # Shiny web application for illustrating the Confidence Interval (CI) for the
-# mean and response in the linear model, for different parameters
+# mean and response in the logistic model, for different parameters
 #
 
 library(shiny)
@@ -18,8 +18,8 @@ ui <- fluidPage(align = "center",
 
   # Vertical layout with:
   # - action buttom for generating a new sample
-  # - select inputs for sample size, type of CI and significance level
-  # - the slider inputs for the variance of error and predictor
+  # - select inputs for sample size and significance level
+  # - the slider input for the variance of predictor
 
   verticalLayout(
 
@@ -29,12 +29,8 @@ ui <- fluidPage(align = "center",
                    label = HTML("<h5>Get a new<br> sample!</h5>")),
       selectInput(inputId = "n", label = "Sample size:",
                   choices = c(10, 50, 100, 200, 500), selected = 100),
-      selectInput(inputId = "ciType", label = "CI type:",
-                  choices = c("Mean", "Response"), selected = "Mean"),
       selectInput(inputId = "alpha", label = "alpha:",
                   choices = c("0.25", "0.10", "0.05", "0.01"), selected = "0.05"),
-      sliderInput(inputId = "sigma2", label = "Error variance:",
-                  min = 0, max = 3, value = 1, step = 0.1),
       sliderInput(inputId = "sigma2x", label = "Predictor variance:",
                   min = 0.1, max = 3, value = 1, step = 0.1)
 
@@ -80,31 +76,42 @@ server <- function(input, output) {
 
     # Response's data
     x <- sqrt(input$sigma2x) * xData[1:input$n]
-    regX <- 0.5 + x
-    y <- regX + sqrt(input$sigma2) * error[1:input$n]
+    regX <- 1 + x
+    regX <- exp(regX) / (1 + exp(regX))
+    y <- rbinom(n = input$n, size = 1, prob = regX)
+
+
+    # Model
+    mod <- glm(y ~ x, family = "binomial")
+    xx <- seq(-5, 5, l = 200)
+    real <- 1 + xx
+    real <- exp(real) / (1 + exp(real))
+    est <- predict(mod, newdata = data.frame(x = xx))
+    est <- exp(est) / (1 + exp(est))
 
     # CIs
-    mod <- lm(y ~ x)
-    interval <- switch(input$ciType,
-                       Mean = "confidence",
-                       Response = "prediction")
     a <- as.numeric(input$alpha)
     confs <- predict(mod, newdata = data.frame(x = xNew), level = 1 - a,
-                     interval = interval)
+                     se.fit = TRUE)
+    confs$lower <- confs$fit + qnorm(p = a/2) * confs$se.fit
+    confs$lower <- exp(confs$lower) / (1 + exp(confs$lower))
+    confs$upper <- confs$fit - qnorm(p = a/2) * confs$se.fit
+    confs$upper <- exp(confs$upper) / (1 + exp(confs$upper))
+    confs$se.fit <- exp(confs$se.fit) / (1 + exp(confs$se.fit))
 
     # Plot
     par(mar = c(4, 4, 1, 1) + 0.1, oma = rep(0, 4))
-    plot(x, y, xlim = c(-5, 5), ylim = c(-5, 5), pch = 16, xlab = "x", ylab = "y")
-    abline(a = 0.5, b = 1, col = 1, lwd = 3)
-    abline(mod$coefficients, col = 2, lwd = 3)
-    segments(x0 = xNew[coarse], y0 = confs[coarse, 2], x1 = xNew[coarse],
-             y1 = confs[coarse, 3], lwd = 2, col = blue)
-    points(xNew[coarse], confs[coarse, 1], col = 2, pch = 16)
-    lines(xNew, confs[, 2], col = blue, lty = 2, lwd = 2)
-    lines(xNew, confs[, 3], col = blue, lty = 2, lwd = 2)
+    plot(x, y, xlim = c(-5, 5), ylim = c(0, 1), pch = 16, xlab = "x", ylab = "y")
+    lines(xx, est, col = 2, lwd = 3)
+    lines(xx, real, col = 1, lwd = 3)
+    segments(x0 = xNew[coarse], y0 = confs$lower[coarse], x1 = xNew[coarse],
+             y1 = confs$upper[coarse], lwd = 2, col = blue)
+    points(xNew[coarse], exp(confs$fit[coarse]) / (1 + exp(confs$fit[coarse])),
+           col = 2, pch = 16)
+    lines(xNew, confs$lower, col = blue, lty = 2, lwd = 2)
+    lines(xNew, confs$upper, col = blue, lty = 2, lwd = 2)
     legend("bottomright", legend = c("True regression", "Fitted regression",
-                                     ifelse(input$ciType == "Mean", "CI for mean",
-                                            "CI for response")),
+                                     "CI for mean"),
            lwd = 3, col = c(1:2, blue), cex = 1.5)
 
   }, width = 650, height = 650)
