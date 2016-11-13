@@ -26,9 +26,9 @@ ui <- fluidPage(align = "center",
       selectInput(inputId = "n", label = "Sample size:",
                   choices = c(10, 50, 100, 200, 500), selected = 100),
       sliderInput(inputId = "beta0", label = "Intercept:",
-                  min = -3, max = 3, value = 0, step = 0.5),
+                  min = -10, max = 10, value = 0, step = 0.5),
       sliderInput(inputId = "beta1", label = "Slope:",
-                  min = -3, max = 3, value = 0.5, step = 0.5),
+                  min = -10, max = 10, value = 0.5, step = 0.5),
       sliderInput(inputId = "sigma2x", label = "Predictor variance:",
                   min = 0.1, max = 3, value = 1, step = 0.1)
 
@@ -51,32 +51,24 @@ server <- function(input, output) {
 
   })
 
-  # Error sampling
-  eps <- eventReactive(input$newSample, {
-
-    rnorm(500)
-
-  })
-
   output$logisticPlot <- renderPlot({
-
-    # Check if the buttom was clicked
-    if (values$default == 0){
-
-      set.seed(423432)
-      error <- rnorm(500)
-
-    } else {
-
-      error <- eps()
-
-    }
 
     # Response's data
     x <- sqrt(input$sigma2x) * xData[1:input$n]
     regX <- input$beta0 + input$beta1 * x
     regX <- exp(regX) / (1 + exp(regX))
-    y <- rbinom(n = input$n, size = 1, prob = regX)
+
+    # Check if the buttom was clicked
+    if (values$default == 0){
+
+      set.seed(423432)
+      y <- rbinom(n = input$n, size = 1, prob = regX)
+
+    } else {
+
+      y <- rbinom(n = input$n, size = 1, prob = regX)
+
+    }
 
     # Model
     fit <- glm(y ~ x, family = "binomial")
@@ -87,7 +79,7 @@ server <- function(input, output) {
 
     # Plot
     par(mar = c(4, 4, 1, 1) + 0.1, oma = rep(0, 4))
-    plot(x, y, xlim = c(-5, 5), ylim = c(0, 1), pch = 16, xlab = "x", ylab = "y")
+    plot(x, y, xlim = c(-5, 5), ylim = c(-0.15, 1), pch = 16, xlab = "x", ylab = "y")
     lines(xx, est, col = 2, lwd = 3)
     lines(xx, real, col = 1, lwd = 3)
     legend("bottomright", legend = c("True regression", "Fitted regression"),

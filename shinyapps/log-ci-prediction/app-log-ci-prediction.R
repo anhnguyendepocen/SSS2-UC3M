@@ -53,33 +53,24 @@ server <- function(input, output) {
 
   })
 
-  # Error sampling
-  eps <- eventReactive(input$newSample, {
-
-    rnorm(500)
-
-  })
-
   output$ciPlot <- renderPlot({
-
-    # Check if the buttom was clicked
-    if (values$default == 0) {
-
-      set.seed(423432)
-      error <- rnorm(500)
-
-    } else {
-
-      error <- eps()
-
-    }
 
     # Response's data
     x <- sqrt(input$sigma2x) * xData[1:input$n]
     regX <- 1 + x
     regX <- exp(regX) / (1 + exp(regX))
-    y <- rbinom(n = input$n, size = 1, prob = regX)
 
+    # Check if the buttom was clicked
+    if (values$default == 0){
+
+      set.seed(423432)
+      y <- rbinom(n = input$n, size = 1, prob = regX)
+
+    } else {
+
+      y <- rbinom(n = input$n, size = 1, prob = regX)
+
+    }
 
     # Model
     mod <- glm(y ~ x, family = "binomial")
@@ -101,7 +92,7 @@ server <- function(input, output) {
 
     # Plot
     par(mar = c(4, 4, 1, 1) + 0.1, oma = rep(0, 4))
-    plot(x, y, xlim = c(-5, 5), ylim = c(0, 1), pch = 16, xlab = "x", ylab = "y")
+    plot(x, y, xlim = c(-5, 5), ylim = c(-0.15, 1), pch = 16, xlab = "x", ylab = "y")
     lines(xx, est, col = 2, lwd = 3)
     lines(xx, real, col = 1, lwd = 3)
     segments(x0 = xNew[coarse], y0 = confs$lower[coarse], x1 = xNew[coarse],
