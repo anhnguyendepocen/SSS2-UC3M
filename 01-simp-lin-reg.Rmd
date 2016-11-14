@@ -554,7 +554,7 @@ Do the following:
 
 ```
 
-### Functions
+### Some functions
 
 ```{r, echo = TRUE, collapse = TRUE, error = TRUE}
 # Functions take arguments between parenthesis and transform them into an output
