@@ -49,10 +49,10 @@ visualizeFitLm <- function(data, nGrid = 6, zTop = 0.5, theta = -30, phi = 20,
   pred[pred > gY[nGrid]] <- NA
 
   # Compute theoretical confidence bands
+  sigma <- summary(mod)$sigma
   if (alpha > 0) {
 
     # Limits
-    sigma <- summary(mod)$sigma
     yDown <- qnorm(alpha/2, pred, sigma)
     yUp <- qnorm(1 - alpha/2, pred, sigma)
     yDownCut <- pmax(yDown, gY[1])
@@ -88,6 +88,77 @@ visualizeFitLm <- function(data, nGrid = 6, zTop = 0.5, theta = -30, phi = 20,
             border = NA, col = "light blue", density = 40)
     lines(trans3d(x, y, z0, gridMat), col = "light blue", lty = 2)
     lines(trans3d(x, y, z, gridMat), col = "blue")
+
+  }
+
+}
+
+
+#' @title Visualize the fit of a logistic model
+#'
+#' @description Generates a plot illustrating the key concepts for a fitted logistic model: linear trend, model-based confidence bands and normality around the mean.
+#'
+#' @param data a \code{data.frame} containing \code{X} and \code{Y} as variables.
+#' @param nGrid number of cuts used to produce the XY grid.
+#' @inheritParams graphics::persp
+#' @return
+#' Nothing. The function is called to produce a plot.
+#' @examples
+#' # Generate data
+#' X <- rnorm(100)
+#' L <- 0.5 - 1.5 * X
+#' Y <- rbinom(100, size = 1, p = exp(L) / (1 + exp(L)))
+#' data <- data.frame(X = X, Y = Y)
+#'
+#' par(mar = rep(0, 4), oma = rep(0, 4))
+#' visualizeFitLog(data = data)
+#' @author Eduardo García-Portugués (\email{edgarcia@est-econ.uc3m.es}), based on the original code from Arthur Charpentier (\url{http://freakonometrics.hypotheses.org/9593}).
+#' @export
+visualizeFitLog <- function(data, nGrid = 10, theta = -30, phi = 20) {
+
+  # Estimate glm
+  n <- length(data$X)
+  mod <- glm(Y ~ X, data = data, family = "binomial")
+
+  # Create and plot initial XY-grid
+  sdX <- sd(data$X)
+  gX <- seq(min(data$X) - sdX, max(data$X) + sdX, length = nGrid)
+  gY <- seq(-1/(nGrid - 3), 1 + 1/(nGrid - 3), length = nGrid)
+  gridMat <- persp(gX, gY, matrix(0, nGrid, nGrid), zlim = c(0, 1),
+                   theta = theta, phi = phi, box = FALSE, border = gray(0.75))
+  text(x = trans3d(median(gX), min(gY), 0, gridMat), labels = "x", pos = 1)
+  text(x = trans3d(min(gX), median(gY), 0, gridMat), labels = "y", pos = 2)
+
+  # Compute regression curve
+  lx <- 501
+  x <- seq(gX[1], gX[nGrid], length = lx)
+  zeros <- rep(0, lx)
+  new <- data.frame(X = x)
+  pred <- predict.glm(mod, newdata = new, type = "response")
+
+  # Plot regression curve
+  lines(trans3d(x, pred, zeros, gridMat), lwd = 2)
+
+  # Plot data
+  points(trans3d(data$X, data$Y, rep(0, n), gridMat), pch = 16, col = "red",
+         cex = 0.75)
+
+  # Plot bars
+  mgig <- predict(mod, newdata = data.frame(X = gX), type = "response")
+  nGridDens <- 251
+  y <- c(0, 1)
+  for (j in (nGrid - 1):2) {
+
+    bar <- gX[j] + c(-1, 1) * (gX[2] - gX[1]) / 10
+    z <- dbinom(x = y, size = 1, prob = mgig[j])
+    polygon(trans3d(c(bar, rev(bar)), 1, c(0, 0, rep(z[2], 2)), gridMat),
+            border = NA, col = "light blue", density = 40)
+    lines(trans3d(rep(bar, each = 2), 1, c(0, z[2], z[2], 0), gridMat),
+          col = "blue")
+    polygon(trans3d(c(bar, rev(bar)), 0, c(0, 0, rep(z[1], 2)), gridMat),
+            border = NA, col = "light blue", density = 40)
+    lines(trans3d(rep(bar, each = 2), 0, c(0, z[1], z[1], 0), gridMat),
+          col = "blue")
 
   }
 
