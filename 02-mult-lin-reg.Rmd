@@ -150,7 +150,7 @@ Although these were known facts, keep in mind that the model allows to *quantify
 ```{block, type = 'rmdexercise'}
 Create a new variable in `wine` named `PriceOrley`, defined as `Price - 8.4937`. Check that the model `PriceOrley ~ . - FrancePop - Price` *kind of* coincides with the formula given in the second paragraph of the [Financial Times article](http://www.ft.com/cms/s/0/1e9cb152-5824-11dc-8c65-0000779fd2ac.html) ([Google's cache](https://webcache.googleusercontent.com/search?q=cache:1mRF68v_Uz4J:https://www.ft.com/content/1e9cb152-5824-11dc-8c65-0000779fd2ac)). (There are a couple of typos in the article's formula: the `Age` term is missing and the `ACGS` coefficient has an extra zero. Emailed the author, his answer: "Thanks for the heads up on this. Ian Ayres.".)
 
-```{r, video2, echo = FALSE, fig.align = 'center', fig.cap = 'ABC interview to Orley Ashenfelter, broadcasted in 1992.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE}
+```{r, video2, echo = FALSE, fig.align = 'center', fig.cap = 'ABC interview to Orley Ashenfelter, broadcasted in 1992.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE}
 knitr::include_url("https://www.youtube.com/embed/Ec8hPHLMyzY")
 ```
 
@@ -261,7 +261,7 @@ The LHS of \@ref(eq:k2) is the conditional expectation of $Y$ given $X_1,\ldots,
 
 Figure \@ref(fig:leastsquares2) illustrates the geometrical interpretation of a multiple linear model: a plane in the $(k+1)$-dimensional space. If $k=1$, the plane is the regression line for simple linear regression. If $k=2$, then the plane can be visualized in a three-dimensional plot
 
-```{r, leastsquares2, echo = FALSE, fig.cap = 'The least squares regression plane $y=\\hat\\beta_0+\\hat\\beta_1x_1+\\hat\\beta_2x_2$ and its dependence on the kind of squared distance considered.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+```{r, leastsquares2, echo = FALSE, fig.cap = 'The least squares regression plane $y=\\hat\\beta_0+\\hat\\beta_1x_1+\\hat\\beta_2x_2$ and its dependence on the kind of squared distance considered.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
 knitr::include_app('https://egarpor.shinyapps.io/least-squares-3D/', height = '700px')
 ```
 
@@ -429,9 +429,9 @@ With the above `data`, cheek how the fitted coefficients change for `y ~ x1`, `y
 
 ## Assumptions of the model {#assumptionsmult}
 
-Some probabilistic assumptions are required for performing inference on the model parameters. In other words, to infer properties about the *unknown* population coefficients $\boldsymbol\beta$ from the sample $(\mathbf{X}_1, Y_1),\ldots,(\mathbf{X}_n, Y_n)$.
+Some probabilistic assumptions are required for performing inference on the model parameters. In other words, to infer properties about the *unknown* population coefficients $\boldsymbol{\beta}$ from the sample $(\mathbf{X}_1, Y_1),\ldots,(\mathbf{X}_n, Y_n)$.
 
-```{r, linearmodel2, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The key concepts of the multiple linear model when $k=2$. The space between the yellow planes denotes where the 95% of the data is, according to the model.'}
+```{r, linearmodel2, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The key concepts of the multiple linear model when $k=2$. The space between the yellow planes denotes where the $95\\%$ of the data is, according to the model.'}
 knitr::include_graphics("images/R/linearmodel2.png")
 ```
 
@@ -462,7 +462,7 @@ Recall:
 
 Figure \@ref(fig:linearmodelassump) represent situations where the assumptions of the model are respected and violated, for the situation with two predictors. Clearly, the inspection of the scatterplots for identifying strange patterns is more complicated than in simple linear regression -- and here we are dealing only with two predictors. In Section \@ref(diagnostics) we will see more sophisticated methods for checking whether the assumptions hold or not for an arbitrary number of predictors. 
 
-```{r, linearmodelassump, echo = FALSE, fig.cap = 'Valid (all the assumptions are verified) and problematic (a single assumption does not hold) multiple linear models, when there are two predictors.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+```{r, linearmodelassump, echo = FALSE, fig.cap = 'Valid (all the assumptions are verified) and problematic (a single assumption does not hold) multiple linear models, when there are two predictors.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
 knitr::include_app('https://egarpor.shinyapps.io/assump-lm-3D/', height = '700px')
 ```
 
@@ -476,12 +476,12 @@ knitr::include_graphics("images/screenshots/scatterplot3d2.png")
 ```
 
 If you select the options as shown in Figures \@ref(fig:scatter3d1) and \@ref(fig:scatter3d2), you should get something like this:
-```{r echo = FALSE, warning = FALSE}
+```{r echo = FALSE, warning = FALSE, eval = FALSE}
 # include this code chunk as-is to enable 3D graphs
 library(rgl)
 knitr::knit_hooks$set(webgl = hook_webgl)
 ```
-```{r, webgl = TRUE, message = FALSE, warning = FALSE}
+```{r, eval = FALSE}
 data(iris)
 scatter3d(Petal.Length ~ Petal.Width + Sepal.Length, data = iris, fit = "linear", 
           residuals = TRUE, bg = "white", axis.scales = TRUE, grid = TRUE, 
@@ -709,7 +709,7 @@ Notice the $n-k-1$ instead of simple linear regression's $n-2$, which is the mai
 knitr::include_graphics("images/R/anova3D.png")
 ```
 
-```{r, anovaillus3D, echo = FALSE, fig.cap = 'Illustration of the ANOVA decomposition and its dependence on $\\sigma^2$ and $\\hat\\sigma^2$.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+```{r, anovaillus3D, echo = FALSE, fig.cap = 'Illustration of the ANOVA decomposition and its dependence on $\\sigma^2$ and $\\hat\\sigma^2$.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
 knitr::include_app('https://egarpor.shinyapps.io/anova-3D/', height = '900px')
 ```
 

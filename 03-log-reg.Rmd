@@ -1,7 +1,7 @@
 
 # Logistic regression {#log-reg}
 
-As we saw in Chapters \@ref(simp) and \@ref(mult), linear regression assumes that the response variable $Y$ is *continuous*. In this chapter we will see ho *logistic regression* can deal with a *discrete* response $Y$. The simplest case is with $Y$ being a *binary* response, that is, a variable encoding two categories. In general, we assume that we have $X_1,\ldots,X_k$ predictors for explaining $Y$ (*multiple* logistic regression) and cover the peculiarities for $k=1$ as particular cases.
+As we saw in Chapters \@ref(simp) and \@ref(mult), linear regression assumes that the response variable $Y$ is *continuous*. In this chapter we will see how *logistic regression* can deal with a *discrete* response $Y$. The simplest case is with $Y$ being a *binary* response, that is, a variable encoding two categories. In general, we assume that we have $X_1,\ldots,X_k$ predictors for explaining $Y$ (*multiple* logistic regression) and cover the peculiarities for $k=1$ as particular cases.
 
 ## More `R` basics
 
@@ -373,7 +373,7 @@ addLine(x, beta0 = 0.1, beta1 = 0)
 
 The *Challenger* disaster occurred on the 28th January of 1986, when the NASA Space Shuttle orbiter *Challenger* broke apart and disintegrated at 73 seconds into its flight, leading to the deaths of its seven crew members. The accident deeply shocked the US society, in part due to the attention the mission had received because of the presence of Christa McAuliffe, who would have been the first astronaut-teacher. Because of this, NASA TV broadcasted live the launch to US public schools, which resulted in millions of school children witnessing the accident. The accident had serious consequences for the NASA credibility and resulted in an interruption of 32 months in the shuttle program. The Presidential *Rogers Commission* (formed by astronaut Neil A. Armstrong and Nobel laureate Richard P. Feynman, among others) was created to investigate the disaster.
 
-```{r, video3, echo = FALSE, fig.align = 'center', fig.cap = 'Challenger launch and posterior explosion, as broadcasted live by NBC in 28/01/1986.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE}
+```{r, video3, echo = FALSE, fig.align = 'center', fig.cap = 'Challenger launch and posterior explosion, as broadcasted live by NBC in 28/01/1986.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE}
 knitr::include_url("https://www.youtube.com/embed/fSTrmJtHLFU")
 ```
 
@@ -491,62 +491,6 @@ Be aware that `type = "response"` has a different meaning in logistic regression
 Recall that there is a serious problem of **extrapolation** in the prediction, which makes it less precise (or more variable). But this extrapolation, together with the evidences raised by a simple analysis like we did, should have been strong arguments for postponing the launch.
 
 To conclude this section, we refer to a funny and comprehensive exposition by Juan Cuesta (University of Cantabria) on the flawed statistical analysis that contributed to the Challenger disaster.
-```{r, video4, echo = FALSE, fig.align = 'center', fig.cap = 'The Challenger disaster and other elegant applications of statistics in complex problems.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE}
+```{r, video4, echo = FALSE, fig.align = 'center', fig.cap = 'The Challenger disaster and other elegant applications of statistics in complex problems.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE}
 knitr::include_url("https://www.youtube.com/embed/MOeDbQlF5Tw?start=552")
 ```
-
-<!--
-
-## Model formulation and estimation {#log-reg-model-estimation}
-
-```{r, maximumlikelihood, echo = FALSE, fig.cap = 'The effect of the kind of distance in the error criterion. The choices of intercept and slope that minimize the sum of squared distances for a kind of distance are not the optimal for a different kind of distance.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
-knitr::include_app('https://egarpor.shinyapps.io/log-maximum-likelihood/', height = '900px')
-```
-
-## Assumptions {#log-reg-assumptions}
-
-Some probabilistic assumptions are required for performing inference on the model parameters $\boldsymbol\beta$ from the sample $(\mathbf{X}_1, Y_1),\ldots,(\mathbf{X}_n, Y_n)$. The are somehow simpler than the ones for linear regression.
-
-```{r, logisticmodel, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The key concepts of the multiple linear model when $k=2$. The space between the yellow planes denotes where the 95% of the data is, according to the model.'}
-knitr::include_graphics("images/R/logisticmodel.png")
-```
-
-The assumptions of the multiple linear model are an extension of the simple linear model:
-
-i. **Linearity in the log-odds**: $\mathrm{logit}(\pi(\mathbf{x},\boldsymbol\beta))=\beta_0+\beta_1x_1+\ldots+\beta_kx_k$.
-ii. **Binomial**: $Y_1,\ldots,Y_n$ are binary variables.
-iii. **Independence**: $Y_1,\ldots,Y_n$ are independent.
-
-A good one-line summary of the logistic model is the following (independence is assumed)
-\begin{align}
-Y|\mathbf{X}=\mathbf{x}\sim\mathrm{Ber}(\pi(\mathbf{x},\boldsymbol{\beta})),\quad \pi(\mathbf{x},\boldsymbol{\beta})=\frac{e^{\beta_0+\beta_1x_1+\ldots+\beta_kx_k}}{1+e^{\beta_0+\beta_1x_1+\ldots+\beta_kx_k}}(\#eq:condber)
-\end{align}
-
-
-## Model fit {#log-reg-fit}
-
-## Inference for model parameters {#log-reg-inference}
-
-
-```{r, lograndomcoefs, echo = FALSE, fig.cap = 'Illustration of the randomness of the fitted coefficients $(\\hat\\beta_0,\\hat\\beta_1)$ and the influence of $n$, $\\sigma^2$ and  $s_x^2$. The sample predictors $x_1,\\ldots,x_n$ are fixed and new responses $Y_1,\\ldots,Y_n$ are generated each time from a linear model $Y=\\beta_0+\\beta_1X+\\varepsilon$.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
-knitr::include_app('https://egarpor.shinyapps.io/log-random/', height = '1000px')
-```
-
-
-## Prediction {#log-reg-prediction}
-
-
-```{r, logcipred, echo = FALSE, fig.cap = 'Illustration of the CIs for the conditional mean and response. Note how the length of the CIs is influenced by $x$, specially for the conditional mean.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
-knitr::include_app('https://egarpor.shinyapps.io/log-ci-prediction/', height = '1000px')
-```
-
-residuals dont have to add zero
-odds ratio
-map to a linear problem
-
-## Qualitative predictors {#qua}
-
-Qualitative predictors (one level and more than two levels)
-
-
--->
