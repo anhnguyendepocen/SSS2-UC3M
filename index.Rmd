@@ -38,7 +38,7 @@ Be advised that these notes are *neither an exhaustive, rigorous nor comprehensi
     - Continuous evaluation is 60% of the final grade. Scored by 2 partial exams and 1 group project, each accounting for a 20%.
     - Final exam is 40%, covers contents mostly from the theoretical lectures.
 - Partials. Cover contents from labs and lectures. The first will (likely) cover Topics 1-2. The second, Topics 3-5.
-- Group project. The students must team up in groups of 4 ($\pm1$) in order to produce a report. This report must apply the methodology presented to a dataset of their choice. As a rule of thumb, all students in a group will be graded evenly and according to the ratio "quality project"/"group size". Specific details in Appendix \@ref(sec:group-project).
+- Group project. The students must team up in groups of 4 ($\pm1$) in order to produce a report. This report must apply the methodology presented to a dataset of their choice. As a rule of thumb, all students in a group will be graded evenly and according to the ratio "quality project"/"group size". Specific details in Appendix \@ref(group-project).
 
 ## Software employed
 

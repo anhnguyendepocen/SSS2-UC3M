@@ -353,7 +353,7 @@ lmSummary <- function(formula, data) {
 lmSummary(Sepal.Length ~ Petal.Width, iris)
 
 # Recall: there is no variable called model in the workspace. 
-# The function works on its own!
+# The function works on its own workspace!
 model
 
 # Add a line to a plot
@@ -422,7 +422,7 @@ scatterplot(nfails.field ~ temp, reg.line = lm, smooth = FALSE, spread = FALSE,
             boxplots = FALSE, data = challenger)
 ```
 
-There is a fundamental problem in using linear regression for this data: **the response is not continuous**. As a consequence, there is no linearity and the errors around the mean are not normal (indeed, they are strongly non normal). Let's check this with the corresponding agnostic plots:
+There is a fundamental problem in using linear regression for this data: **the response is not continuous**. As a consequence, there is no linearity and the errors around the mean are not normal (indeed, they are strongly non normal). Let's check this with the corresponding diagnostic plots:
 ```{r, collapse=TRUE}
 mod <- lm(nfails.field ~ temp, data = challenger)
 par(mfrow = 1:2)
@@ -439,15 +439,15 @@ Instead of trying to predict the number of incidents, we will concentrate on mod
 $$
 \pi(x)=\mathbb{P}(\text{incident}=1|\text{temperature}=x)
 $$
-from `fail.field` and `temp`. This probability can not be properly modeled as a linear function like $\beta_0+\beta_1x$, since inevitably will fall outside $[0,1]$ for some value of $x$ (some will have negative probabilities or probabilities larger than one). The technique that solves this problem is the **logistic regression**. The idea behind is quite simple: transform a linear model in such a way that the response is in $[0,1]$. This is achieved by the *logit function* 
+from `fail.field` and `temp`. This probability can not be properly modeled as a linear function like $\beta_0+\beta_1x$, since inevitably will fall outside $[0,1]$ for some value of $x$ (some will have negative probabilities or probabilities larger than one). The technique that solves this problem is the **logistic regression**. The idea behind is quite simple: transform a linear model $\beta_0+\beta_1x$ - which is aimed for a response in $\mathbb{R}$ - so that it yields a value in $[0,1]$. This is achieved by the *logit function* 
 \begin{align}
 \text{logit}(t)=\frac{e^t}{1+e^t}.(\#eq:log)
 \end{align}
-The logistic function acts as a link between $[0,1]$ into $\mathbb{R}$, although the *link function* stands for the inverse of the logit function, which is the *logistic function*: $\text{logis}(p)=\log\frac{p}{1-p}$. The logistic model in this case is simply
+The *logistic function* is the inverse of the logit function, $\text{logit}^{-1}(p)=\log\frac{p}{1-p}$, and is also called the *link function* between $[0,1]$ and $\mathbb{R}$. The logistic model in this case is
 $$
 \mathbb{P}(\text{incident}=1|\text{temperature}=x)=\text{logit}(\beta_0+\beta_1x)=\frac{e^{\beta_0+\beta_1x}}{1+e^{\beta_0+\beta_1x}},
 $$
-with $\beta_0$ and $\beta_1$ unknown.
+with $\beta_0$ and $\beta_1$ unknown. Let's fit the model to the data by estimating $\beta_0$ and $\beta_1$.
 
 In order to fit a logistic regression to the data, go to `'Statistics' -> 'Fit models' -> 'Generalized linear model...'`. A window like Figure \@ref(fig:glm) will pop-up, which you should fill as indicated.
 
@@ -458,11 +458,11 @@ A code like this will be generated:
 ```{r, collapse=TRUE}
 nasa <- glm(fail.field ~ temp, family = "binomial", data = challenger)
 summary(nasa)
-exp(coef(nasa))  # Exponentiated coefficients ("odds ratios")
+exp(coef(nasa)) # Exponentiated coefficients ("odds ratios")
 ```
-The summary of the logistic model is notably different from the linear regression, as the methodology behind is quite different. Nevertheless, we have tests for the significance of each coefficient. Here we obtain that `temp` is significantly different from zero, at least at a level $\alpha=0.05$. Therefore we can conclude that **the temperature is indeed affecting the probability of an incident with the O-rings** (answers Q1). The precise interpretation of the coefficients will be given in the next section. For now, the coefficient of `temp`, $\hat\beta_1$, can be regarded the "correlation between the temperature and the probability of having at least one incident". These correlation, as evidenced by the sign of $\hat\beta_1$, is negative.
+The summary of the logistic model is notably different from the linear regression, as the methodology behind is quite different. Nevertheless, we have tests for the significance of each coefficient. Here we obtain that `temp` is significantly different from zero, at least at a level $\alpha=0.05$. Therefore we can conclude that **the temperature is indeed affecting the probability of an incident with the O-rings** (answers Q1). 
 
-Let's plot the fitted logistic curve to see that indeed the probability of incident and temperature are negatively correlated:
+The precise interpretation of the coefficients will be given in the next section. For now, the coefficient of `temp`, $\hat\beta_1$, can be regarded the "correlation between the temperature and the probability of having at least one incident". These correlation, as evidenced by the sign of $\hat\beta_1$, is negative. Let's plot the fitted logistic curve to see that indeed the probability of incident and temperature are negatively correlated:
 ```{r, collapse=TRUE}
 # Plot data
 plot(challenger$temp, challenger$fail.field, xlim = c(-1, 30), xlab = "Temperature", 
@@ -488,7 +488,7 @@ predict(nasa, newdata = data.frame(temp = -0.6), type = "response")
 ```
 Be aware that `type = "response"` has a different meaning in logistic regression. As you can see it does not return a CI for the prediction as in linear models. Instead, `type = "response"` means that the *probability* should be returned, instead of the value of the link function, which is returned with `type = "link"` (the default). 
 
-Recall that there is a serious problem of **extrapolation** in the prediction. But this extrapolation, together with the evidences raised by a simple analysis like we did, should have been strong arguments for postponing the launch.
+Recall that there is a serious problem of **extrapolation** in the prediction, which makes it less precise (or more variable). But this extrapolation, together with the evidences raised by a simple analysis like we did, should have been strong arguments for postponing the launch.
 
 To conclude this section, we refer to a funny and comprehensive exposition by Juan Cuesta (University of Cantabria) on the flawed statistical analysis that contributed to the Challenger disaster.
 ```{r, video4, echo = FALSE, fig.align = 'center', fig.cap = 'The Challenger disaster and other elegant applications of statistics in complex problems.', screenshot.opts = list(delay = 10), dev = 'png', cache = TRUE}

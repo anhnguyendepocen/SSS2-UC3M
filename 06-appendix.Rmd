@@ -51,7 +51,7 @@ The useful commands for performing **simple and multiple linear regression** are
 | **Compare model coefficients** | `compareCoefs(model1, model2)` |
 | **Diagnostic plots** | `plot(model, num)` |
 
-# Group project {#group-project}
+# Group project
 
 #### Groups {-}
 
