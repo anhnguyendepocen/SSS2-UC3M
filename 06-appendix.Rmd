@@ -121,3 +121,258 @@ Evidences of academic fraud will have serious consequences, such as a zero grade
 
 Send the reports before December the 23rd at 23:59 through Aula Global. **Not by email**. Reports received after the deadline will not be evaluated.
 
+# Reporting with `R` and `R Commander`
+
+A nice feature of `R Commander` is that integrates seamless with `R Markdown`, which is able to create `.html`, `.pdf` and `.docx` reports directly from the outputs of `R`. Depending on the kind of report that we want, we will need the following auxiliary software^[Alternatively, the `'Tools' -> 'Install auxiliary software [if not already installed]'` will redirect you to the download links for the auxiliary software.]:
+
+- `.html`. No extra software is required.
+- `.docx` and `.rtf`. You must install `Pandoc`, a document converter software. Download it [here](http://pandoc.org/installing.html). 
+- `.pdf` (only recommended for experts). An installation of $\LaTeX$, additionally to `pandoc`, is needed. Download $\LaTeX$ [here](https://www.latex-project.org/get/).
+
+The workflow is simple. Once you have done some statistical analysis, either by using `R Commander`'s menus or `R` code directly, you will end up with an `R` script, on the `'R Script'` tab, that contains all the commands you have run so far. Switch then to the `'R Markdown'` tab and you will see the commands you have entered in a different layout, which essentially encapsulates the code into chunks delimited by `` ```{r}`` and `` ``` ``. This will generate a report once you click in the `'Generate report'` button.
+
+Let's illustrate this process through an example. Suppose we were analyzing the `Boston` dataset, as we did in Section \@ref(boston). *Ideally*^[This is, assuming we have performed the right steps in the analysis without making any mistake] our final script would be something like this:
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
+library(RcmdrMisc)
+```
+```{r, eval = FALSE}
+# A simple and non-exhaustive analysis for the price of the houses in the Boston
+# dataset. The purpose is to quantify, by means of a multiple linear model, 
+# the effect of 14 variables in the price of a house in the suburbs of Boston. 
+
+# Import data
+library(MASS)
+data(Boston)
+
+# Make a multiple linear regression od medv in the rest of variables
+mod <- lm(medv ~ ., data = Boston)
+summary(mod)
+
+# Check the linearty assumption
+plot(mod, 1) # Clear non-linearity
+
+# Let's consider the transformations given in Harrison and Rubinfeld (1978)
+modTransf <- lm(I(log(medv * 1000)) ~ I(rm^2) + age + log(dis) +
+                  log(rad) + tax + ptratio + I(black / 1000) +
+                  I(log(lstat / 100)) + crim + zn + indus + chas +
+                  I((10 * nox)^2), data = Boston)
+summary(modTransf)
+
+# The non-linearity is more subtle now
+plot(modTransf, 1)
+
+# Look for the best model in terms of the BIC
+modTransfBIC <- stepwise(modTransf)
+summary(modTransfBIC)
+
+# Let's explore the most significant variables, to see if the model can be
+# reduced drastically in complexity
+mod3D <- lm(I(log(medv * 1000)) ~ I(log(lstat / 100)) + crim, data = Boston)
+summary(mod3D)
+
+# With only 2 variables, we explain the 72% of variability.
+# Compared with the 80% with 10 variables, it is an important improvement
+# in terms of simplicity.
+
+# Let's add these variables to the dataset, so we can call scatterplotMatrix
+# and scatter3d through R Commander's menu
+Boston$logMedv <- log(Boston$medv * 1000)
+Boston$logLstat <- log(Boston$lstat / 100)
+
+# Visualize the pair-by-pair relations of the response and two predictors
+scatterplotMatrix(~ crim + logLstat + logMedv, reg.line = lm, smooth = FALSE,
+                  spread = FALSE, span = 0.5, ellipse = FALSE,
+                  levels = c(.5, .9), id.n = 0, diagonal = 'histogram',
+                  data = Boston)
+
+# Visualize the full relation between the response and the two predictors
+scatter3d(logMedv ~ crim + logLstat, data = Boston, fit = "linear",
+          residuals = TRUE, bg = "white", axis.scales = TRUE, grid = TRUE,
+          ellipsoid = FALSE)
+```
+This contains all the major points in the analysis, that now can be expanded and detailed. You can download the script [here](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/reporting/report-script.R), open it through `'File' -> 'Open script file...'` and run it by yourself in `R Commander`. If you so, and then switch to the `R Markdown` tab, you will see this:
+```{r, eval = FALSE}
+---
+title: "Replace with Main Title"
+author: "Your Name"
+date: "AUTOMATIC"
+---
+
+
+```{r echo=FALSE, message=FALSE}
+# include this code chunk as-is to set options
+knitr::opts_chunk$set(comment=NA, prompt=TRUE)
+library(Rcmdr)
+library(car)
+library(RcmdrMisc)
+```
+
+
+```{r echo=FALSE}
+# include this code chunk as-is to enable 3D graphs
+library(rgl)
+knitr::knit_hooks$set(webgl = hook_webgl)
+```
+
+
+```{r}
+# A simple and non-exhaustive analysis for the price of the houses in the Boston
+```
+
+
+```{r}
+# dataset. The purpose is to quantify, by means of a multiple linear model,
+```
+
+
+```{r}
+# the effect of 14 variables in the price of a house in the suburbs of Boston.
+```
+
+
+```{r}
+# Import data
+```
+
+
+```{r}
+library(MASS)
+```
+
+
+```{r}
+data(Boston)
+```
+
+
+```{r}
+# Make a multiple linear regression od medv in the rest of variables
+```
+
+
+```{r}
+mod <- lm(medv ~ ., data = Boston)
+```
+
+
+```{r}
+summary(mod)
+```
+
+[More outputs - omitted]
+```
+
+The complete, lengthy, file can be downloaded [here](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/reporting/crude-report.Rmd). This is an `R Markdown` file, which has extension `.Rmd`. As you can see, by default, `R Commander` will generate a *code chunk* like
+```{r,eval=FALSE}
+```{r}
+code line
+```
+```
+for each `code line` you run in `R Commander`. You probably will want to modify this *crude* report manually by merging chunks of code, removing comments or adding more information in between chunks of code. To do so, go to `'Edit' -> 'Edit Markdown document'`. In this place you can also
+
+For example, this could be a final report:
+
+```{r, eval = FALSE}
+
+---
+title: "What makes a house valuable?"
+subtitle: "A reproducible analysis in the Boston suburbs"
+author: "Awesome student 1, Awesome student 2 and Awesome student 3"
+date: "31/11/16"
+---
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# include this code chunk as-is to set options
+knitr::opts_chunk$set(comment=NA, prompt=TRUE)
+library(Rcmdr)
+library(car)
+library(RcmdrMisc)
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# include this code chunk as-is to enable 3D graphs
+library(rgl)
+knitr::knit_hooks$set(webgl = hook_webgl)
+```
+
+This short report shows a simple and non-exhaustive analysis for the price of the houses in the `Boston` dataset. The purpose is to quantify, by means of a multiple linear model, the effect of 14 variables in the price of a house in the suburbs of Boston. 
+
+We start by importing the data into `R` and considering a multiple linear regression of `medv` (median house value) in the rest of variables:
+```{r}
+# Import data
+library(MASS)
+data(Boston)
+```
+
+```{r}
+mod <- lm(medv ~ ., data = Boston)
+summary(mod)
+```
+The variables `indus` and `age` are non-significant in this model. Also, although the adjusted R-squared is high, there seems to be a*clear non-linearity:
+```{r}
+plot(mod, 1)
+```
+
+In order to bypass the non-linearity, we are going to consider the non-linear transformations given in Harrison and Rubinfeld (1978) for both the response and the predictors:
+```{r}
+modTransf <- lm(I(log(medv * 1000)) ~ I(rm^2) + age + log(dis) +
+                  log(rad) + tax + ptratio + I(black / 1000) +
+                  I(log(lstat / 100)) + crim + zn + indus + chas +
+                  I((10*nox)^2), data = Boston)
+summary(modTransf)
+```
+The adjusted R-squared is now higher and, what is more important, the non-linearity now is more subtle (it is still not linear but closer than before):
+```{r}
+plot(modTransf, 1)
+```
+
+However, `modTransf` has more non-significant variables. Let's see if we can improve over the previous model by removing some of the non-significant variables. To that aim, we look for the best model in terms of the Bayesian Information Criterion (BIC) by `stepwise`:
+```{r}
+modTransfBIC <- stepwise(modTransf, trace = 0)
+summary(modTransfBIC)
+```
+The resulting model has a slightly higher adjusted R-squared than `modTransf` with all the variables significant.
+
+We explore the most significant variables to see if the model can be reduced drastically in complexity.
+```{r}
+mod3D <- lm(I(log(medv * 1000)) ~ I(log(lstat / 100)) + crim, data = Boston)
+summary(mod3D)
+```
+
+It turns out that **with only 2 variables, we explain the 72% of variability**. Compared with the 80% with 10 variables, it is an important improvement in terms of simplicity: the logarithm of `lstat` (percent of lower status of the population) and `crim` (crime rate) alone explain the 72% of the variability in the house prices. We add these variables to the dataset, so we can call `scatterplotMatrix` and `scatter3d` through `R Commander`,
+```{r}
+Boston$logMedv <- log(Boston$medv * 1000)
+Boston$logLstat <- log(Boston$lstat / 100)
+```
+and conclude with the visualization of: 
+
+1. the pair-by-pair relations of the response and the two predictors;
+2. the full relation between the response and the two predictors.
+```{r}
+# 1
+scatterplotMatrix(~ crim + logLstat + logMedv, reg.line = lm, smooth = FALSE,
+                  spread = FALSE, span = 0.5, ellipse = FALSE,
+                  levels = c(.5, .9), id.n = 0, diagonal = 'histogram',
+                  data = Boston)
+```
+```{r webgl=TRUE}
+# 2
+scatter3d(logMedv ~ crim + logLstat, data = Boston, fit = "linear",
+          residuals = TRUE, bg = "white", axis.scales = TRUE, grid = TRUE,
+          ellipsoid = FALSE)
+```
+
+```
+This file can be downloaded [here](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/reporting/report.Rmd). When we click on `'Generate report'`, we should get the following output files:
+
+- `.html`: [visualize and download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/reporting/report.html). This file is difficult to modify. Very easy to distribute.
+- `.docx`: [visualize and download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/reporting/report.docx). Easy to modify and distribute.
+- `.rtf`: [visualize and download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/reporting/report.rtf). Easy to modify, not very elegant.
+- `.pdf`: [visualize and download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/reporting/report.pdf). Elegant and easy to distribute, but not easy to modify.
+
+```{block, type = 'rmdtip'}
+For advanced users, there is a lot of information on mastering `R Markdown` [here](http://rmarkdown.rstudio.com/lesson-1.html) by using `RStudio`, a more advanced framework than `R Commander`.
+```
+
+

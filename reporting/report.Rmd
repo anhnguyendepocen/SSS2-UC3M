@@ -1,0 +1,88 @@
+---
+title: "What makes a house valuable?"
+author: "Outstanding student 1, Awesome student 2 and Great student 3"
+date: "31/11/16"
+subtitle: A reproducible analysis for the Boston housing data
+---
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# include this code chunk as-is to set options
+knitr::opts_chunk$set(comment=NA, prompt=TRUE)
+library(Rcmdr)
+library(car)
+library(RcmdrMisc)
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# include this code chunk as-is to enable 3D graphs
+library(rgl)
+knitr::knit_hooks$set(webgl = hook_webgl)
+```
+
+This short report shows a simple and non-exhaustive analysis for the price of the houses in the `Boston` dataset. The purpose is to quantify, by means of a multiple linear model, the effect of 14 variables in the price of a house in the suburbs of Boston. 
+
+We start by importing the data into `R` and considering a multiple linear regression of `medv` (median house value) in the rest of variables:
+```{r}
+# Import data
+library(MASS)
+data(Boston)
+```
+
+```{r}
+mod <- lm(medv ~ ., data = Boston)
+summary(mod)
+```
+The variables `indus` and `age` are non-significant in this model. Also, although the adjusted R-squared is high, there seems to be a*clear non-linearity:
+```{r}
+plot(mod, 1)
+```
+
+In order to bypass the non-linearity, we are going to consider the non-linear transformations given in Harrison and Rubinfeld (1978) for both the response and the predictors:
+```{r}
+modTransf <- lm(I(log(medv * 1000)) ~ I(rm^2) + age + log(dis) +
+                  log(rad) + tax + ptratio + I(black / 1000) +
+                  I(log(lstat / 100)) + crim + zn + indus + chas +
+                  I((10*nox)^2), data = Boston)
+summary(modTransf)
+```
+The adjusted R-squared is now higher and, what is more important, the non-linearity now is more subtle (it is still not linear but closer than before):
+```{r}
+plot(modTransf, 1)
+```
+
+However, `modTransf` has more non-significant variables. Let's see if we can improve over the previous model by removing some of the non-significant variables. To that aim, we look for the best model in terms of the Bayesian Information Criterion (BIC) by `stepwise`:
+```{r}
+modTransfBIC <- stepwise(modTransf, trace = 0)
+summary(modTransfBIC)
+```
+The resulting model has a slightly higher adjusted R-squared than `modTransf` with all the variables significant.
+
+We explore the most significant variables to see if the model can be reduced drastically in complexity.
+```{r}
+mod3D <- lm(I(log(medv * 1000)) ~ I(log(lstat / 100)) + crim, data = Boston)
+summary(mod3D)
+```
+
+It turns out that **with only 2 variables, we explain the 72% of variability**. Compared with the 80% with 10 variables, it is an important improvement in terms of simplicity: the logarithm of `lstat` (percent of lower status of the population) and `crim` (crime rate) alone explain the 72% of the variability in the house prices. We add these variables to the dataset, so we can call `scatterplotMatrix` and `scatter3d` through `R Commander`,
+```{r}
+Boston$logMedv <- log(Boston$medv * 1000)
+Boston$logLstat <- log(Boston$lstat / 100)
+```
+and conclude with the visualization of: 
+
+1. the pair-by-pair relations of the response and the two predictors;
+2. the full relation between the response and the two predictors.
+```{r}
+# 1
+scatterplotMatrix(~ crim + logLstat + logMedv, reg.line = lm, smooth = FALSE,
+                  spread = FALSE, span = 0.5, ellipse = FALSE,
+                  levels = c(.5, .9), id.n = 0, diagonal = 'histogram',
+                  data = Boston)
+```
+```{r webgl=TRUE}
+# 2
+scatter3d(logMedv ~ crim + logLstat, data = Boston, fit = "linear",
+          residuals = TRUE, bg = "white", axis.scales = TRUE, grid = TRUE,
+          ellipsoid = FALSE)
+```
