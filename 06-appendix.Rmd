@@ -127,7 +127,7 @@ A nice feature of `R Commander` is that integrates seamless with `R Markdown`, w
 
 - `.html`. No extra software is required.
 - `.docx` and `.rtf`. You must install `Pandoc`, a document converter software. Download it [here](http://pandoc.org/installing.html). 
-- `.pdf` (only recommended for experts). An installation of $\LaTeX$, additionally to `pandoc`, is needed. Download $\LaTeX$ [here](https://www.latex-project.org/get/).
+- `.pdf` (only recommended for experts). An installation of $\rm\LaTeX$, additionally to `Pandoc`, is needed. Download $\rm\LaTeX$ [here](https://www.latex-project.org/get/).
 
 The workflow is simple. Once you have done some statistical analysis, either by using `R Commander`'s menus or `R` code directly, you will end up with an `R` script, on the `'R Script'` tab, that contains all the commands you have run so far. Switch then to the `'R Markdown'` tab and you will see the commands you have entered in a different layout, which essentially encapsulates the code into chunks delimited by `` ```{r}`` and `` ``` ``. This will generate a report once you click in the `'Generate report'` button.
 
@@ -265,7 +265,7 @@ The following file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC
 ---
 title: "What makes a house valuable?"
 subtitle: "A reproducible analysis in the Boston suburbs"
-author: "Awesome student 1, Awesome student 2 and Awesome student 3"
+author: "Outstanding student 1, Awesome student 2 and Great student 3"
 date: "31/11/16"
 ---
 
@@ -335,7 +335,8 @@ summary(modTransfBIC)
 The resulting model has a slightly higher adjusted R-squared than `modTransf`
 with all the variables significant.
 
-We explore the most significant variables to see if the model can be reduced drastically in complexity.
+We explore the most significant variables to see if the model can be reduced 
+drastically in complexity.
 ```{r}
 mod3D <- lm(I(log(medv * 1000)) ~ I(log(lstat / 100)) + crim, data = Boston)
 summary(mod3D)

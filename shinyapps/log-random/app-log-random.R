@@ -56,7 +56,7 @@ server <- function(input, output) {
     # Response's data
     x <- sqrt(input$sigma2x) * xData[1:input$n]
     regX <- input$beta0 + input$beta1 * x
-    regX <- exp(regX) / (1 + exp(regX))
+    regX <- 1 / (1 + exp(-regX))
 
     # Check if the buttom was clicked
     if (values$default == 0){
@@ -74,7 +74,7 @@ server <- function(input, output) {
     fit <- glm(y ~ x, family = "binomial")
     xx <- seq(-5, 5, l = 200)
     real <- input$beta0 + input$beta1 * xx
-    real <- exp(real) / (1 + exp(real))
+    real <- 1 / (1 + exp(-real))
     est <- predict(fit, newdata = data.frame(x = xx), type = "response")
 
     # Plot

@@ -11,9 +11,9 @@ x <- rnorm(50, sd = 1.5)
 y1 <- -0.5 + 3 * x
 y2 <- 0.5 - 2 * x
 y3 <- -2 + 5 * x
-y1 <- rbinom(50, size = 1, prob = exp(y1) / (1 + exp(y1)))
-y2 <- rbinom(50, size = 1, prob = exp(y2) / (1 + exp(y2)))
-y3 <- rbinom(50, size = 1, prob = exp(y3) / (1 + exp(y3)))
+y1 <- rbinom(50, size = 1, prob = 1 / (1 + exp(-y1)))
+y2 <- rbinom(50, size = 1, prob = 1 / (1 + exp(-y2)))
+y3 <- rbinom(50, size = 1, prob = 1 / (1 + exp(-y3)))
 
 # UI for application
 ui <- fluidPage(align = "center",
@@ -61,7 +61,7 @@ server <- function(input, output) {
     # Plot
     par(mar = c(4, 4, 3, 1) + 0.1, oma = rep(0, 4))
     plot(x, y, xlim = c(-5, 5), ylim = c(-0.1, 1), pch = 16)
-    title(main = paste("Likelihood:",
+    title(main = paste("Log-likelihood:",
                        sprintf("%.3f", sum(y * log(prob) + (1 - y) * log(1 - prob)))),
           cex.main = 1.5)
     lines(xx, real, col = 2, lwd = 3)
