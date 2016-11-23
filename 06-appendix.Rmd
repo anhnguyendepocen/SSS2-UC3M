@@ -113,7 +113,7 @@ Evidences of academic fraud will have serious consequences, such as a zero grade
 	* Is there a binary variable that you would like to predict from others? (logistic regression)
 	* Would you like to assess which combination of variables explain most of the variability of your data, so you can visualize it in 2D or 3D? (principal component analysis)
 	* Would you like aggregate individuals according to several characteristics in order to classify them? (clustering)
-- Use `R Commander`'s report mode (Appendix \@ref(reporting-with-r-commander)) to simplify the generation of graphs and summaries directly from the statistical analysis. Use that code to make the analysis reproducible.
+- Use `R Commander`'s report mode (Appendix \@ref(reporting-with-r-and-r-commander)) to simplify the generation of graphs and summaries directly from the statistical analysis. Use that code to make the analysis reproducible.
 - Make use of office hours before it is too late.
 - Pro-tip: if you come to my office with a printed draft of the project, I can provide you some quick feedback on what could be improved.
 
@@ -252,7 +252,7 @@ summary(mod)
 ```
 
 The complete, lengthy, file can be downloaded [here](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/reporting/crude-report.Rmd). This is an `R Markdown` file, which has extension `.Rmd`. As you can see, by default, `R Commander` will generate a *code chunk* like
-```{r,eval=FALSE}
+```
 ```{r}
 code line
 ```

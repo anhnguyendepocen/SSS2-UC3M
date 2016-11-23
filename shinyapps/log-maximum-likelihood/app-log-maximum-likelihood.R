@@ -54,9 +54,9 @@ server <- function(input, output) {
     # Model
     xx <- seq(-5, 5, l = 200)
     prob <- input$beta0 + input$beta1 * x
-    prob <- exp(prob) / (1 + exp(prob))
+    prob <- 1 / (1 + exp(-prob))
     real <- input$beta0 + input$beta1 * xx
-    real <- exp(real) / (1 + exp(real))
+    real <- 1 / (1 + exp(-real))
 
     # Plot
     par(mar = c(4, 4, 3, 1) + 0.1, oma = rep(0, 4))

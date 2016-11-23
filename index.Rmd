@@ -2,7 +2,7 @@
 title: "Lab notes for *Statistics for Social Sciences II: Multivariate Techniques*"
 subtitle: "BSc in International Studies and BSc in International Studies	&	Political	Science, Carlos III University of Madrid"
 author: "Eduardo García Portugués"
-date: "`r Sys.Date()`, v8.0"
+date: "`r Sys.Date()`, v9.1"
 knit: "bookdown::render_book"
 documentclass: book
 bibliography: SSS2-UC3M.bib
@@ -121,7 +121,7 @@ You are allowed to bring your own laptop to the labs. This may have a series of 
 If you plan to use your personal laptop, **you** are responsible for the right setup of the software (and laptop) *prior* to the lab lesson.
 ```
 
-Regardless of your choice, at some point you will probably need to run the software outside UC3M computer labs. This is what you have to do in order to install `R` + `R Commander` in your own computer^[If there is any Linux user, kindly follow the corresponding instructions [here](https://cran.r-project.org/) and [here](http://socserv.mcmaster.ca/jfox/Misc/Rcmdr/installation-notes.html).]:
+Regardless of your choice, at some point you will probably need to run the software outside UC3M computer labs. This is what you have to do in order to install `R` + `R Commander` in your own computer:
 
 1. In Mac OS X, download and install first [`XQuartz`](https://www.xquartz.org/) and log out and back on your Mac OS X account (this is an **important** step). Be sure that your Mac OS X system is up-to-date.
 2. Download the latest version of `R` for [Windows](https://cran.r-project.org/bin/windows/base/release.html) or [Mac OS X](https://cran.r-project.org/bin/macosx/R-3.3.1.pkg). 
@@ -144,6 +144,8 @@ Regardless of your choice, at some point you will probably need to run the softw
 ```{block, type = 'rmdcaution'}
 **Mac OS X users**. To prevent an occasional freezing of `R` and `R Commander` by the OS, go to `'Tools' -> 'Manage Mac OS X app nap for R.app...'` and select `'off (recommended)'`.
 ```
+
+If there is any Linux user, kindly follow the corresponding instructions [here](https://cran.r-project.org/) and [here](http://socserv.mcmaster.ca/jfox/Misc/Rcmdr/installation-notes.html).
 
 By default `R` and `R Commander` will have menus and messages in the language of your OS. If you want them in English, a simple option is to change the OS language to English and reboot. If you want to stick with your OS language, another options are:
 

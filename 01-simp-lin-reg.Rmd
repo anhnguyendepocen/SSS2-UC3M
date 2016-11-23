@@ -707,6 +707,11 @@ where:
 - $s_x^2=\frac{1}{n}\sum_{i=1}^n(X_i-\bar{X})^2$ is the *sample variance*. The sample standard deviation is $s_x=\sqrt{s_x^2}$.
 - $s_{xy}=\frac{1}{n}\sum_{i=1}^n(X_i-\bar{X})(Y_i-\bar{Y})$ is the *sample covariance*. It measures the degree of linear association between $X_1,\ldots,X_n$ and $Y_1,\ldots,Y_n$. Once scaled by $s_xs_y$, it gives the *sample correlation coefficient*, $r_{xy}=\frac{s_{xy}}{s_xs_y}$.
 
+```{block, type = 'rmdinsight'}
+As a consequence of $\hat\beta_1=r_{xy}\frac{s_y}{s_x}$, $\hat\beta_1$ has aways the same sign as $r_{xy}$.
+```
+
+
 There are some important points hidden behind the election of RSS as the error criterion for obtaining $(\hat\beta_0,\hat\beta_1)$:
 
 - *Why the vertical distances and not horizontal or perpendicular?* Because we want to minimize the error in the *prediction* of $Y$! Note that the treatment of the variables is *not symmetrical*^[In Chapter 5 we will consider perpendicular distances.].
@@ -889,7 +894,7 @@ where $t_{n-2}$ represents the *Student's $t$ distribution*^[The Student's $t$ d
 \begin{align}
 \hat{\mathrm{SE}}(\hat\beta_0)^2=\frac{\hat\sigma^2}{n}\left[1+\frac{\bar X^2}{s_x^2}\right],\quad \hat{\mathrm{SE}}(\hat\beta_1)^2=\frac{\hat\sigma^2}{ns_x^2}(\#eq:se2)
 \end{align}
-are the estimates of $\mathrm{SE}(\hat\beta_0)^2$ and $\mathrm{SE}(\hat\beta_1)^2$. The LHSs of \@ref(eq:norm3) are called *$t$-statistics* because of their distribution. The interpretation of \@ref(eq:se2) is analogous to the one of \@ref(eq:se1).
+are the estimates of $\mathrm{SE}(\hat\beta_0)^2$ and $\mathrm{SE}(\hat\beta_1)^2$. The LHS of \@ref(eq:norm3) is called the *$t$-statistic* because of its distribution. The interpretation of \@ref(eq:se2) is analogous to the one of \@ref(eq:se1).
 
 ### Confidence intervals for the coefficients
 
@@ -897,7 +902,7 @@ Due to \@ref(eq:norm3) and \@ref(eq:se2), we can have the $100(1-\alpha)\%$ Conf
 \begin{align}
 \left(\hat\beta_j\pm\hat{\mathrm{SE}}(\hat\beta_j)t_{n-2;\alpha/2}\right),\quad j=0,1,(\#eq:ci)
 \end{align}
-where $t_{n-2;\alpha/2}$ is the *$\alpha/2$-upper quantile of the distribution $t_{n-2}$* (see Figure \@ref(fig:ttest)). Usually, $\alpha=0.10,0.05,0.01$ are considered.
+where $t_{n-2;\alpha/2}$ is the *$\alpha/2$-upper quantile of the $t_{n-2}$* (see Figure \@ref(fig:ttest)). Usually, $\alpha=0.10,0.05,0.01$ are considered.
 
 ```{r, ttest, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The Student\'s $t$ distribution for the $t$-statistics associated to null intercept and slope, for the `y1 ~ x1` regression of the `assumptions` dataset.'}
 knitr::include_graphics("images/R/ttest.png")

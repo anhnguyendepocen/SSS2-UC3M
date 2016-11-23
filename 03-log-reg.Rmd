@@ -496,9 +496,9 @@ knitr::include_url("https://www.youtube.com/embed/MOeDbQlF5Tw?start=552")
 ```
 
 
-## Model formulation and estimation {#log-reg-model-estimation}
+## Model formulation and estimation by maximum likelihood {#log-reg-model-estimation}
 
-As saw in Section \@ref(modelmult), the multiple linear model described the relation between the random variables $X_1,\ldots,X_k$ and $Y$ by assuming that the linear relation
+As saw in Section \@ref(modelmult), the multiple linear model described the relation between the random variables $X_1,\ldots,X_k$ and $Y$ by assuming the linear relation
 \begin{align*}
 Y = \beta_0 + \beta_1 X_1 + \ldots + \beta_k X_k + \varepsilon.
 \end{align*}
@@ -508,7 +508,7 @@ Since we assume $\mathbb{E}[\varepsilon|X_1=x_1,\ldots,X_k=x_k]=0$, the previous
 \end{align}
 where $\mathbb{E}[Y|X_1=x_1,\ldots,X_k=x_k]$ is the mean of $Y$ for a particular value of the set of predictors. As remarked in Section \@ref(assumptionsmult), it was a *necessary condition that $Y$ was continuous in order to satisfy the normality of the errors*, hence the linear model assumptions. Or in other words, **the linear model is designed for a contiuous response**.
 
-The situation when $Y$ is *discrete* (naturally ordered values; e.g. number of fails, number of students) or *categorical* (non-ordered categories; e.g. territorial divisions, ethnic groups). The simplest situation is when $Y$ is *binary* (or *dichotomic*): it can only take two values, codified for convenience as $0$ (success) and $1$ (failure). For example, in the Challenger case study we used `fail.field` as an *indicator* of whether "there was at least an incident with the O-rings" (`1` = yes, `0` = no). A binary variable is also a situation where there is no fundamental distinction between the treatment of discrete and categorical variables.
+The situation when $Y$ is *discrete* (naturally ordered values; e.g. number of fails, number of students) or *categorical* (non-ordered categories; e.g. territorial divisions, ethnic groups) requires a special treatment. The simplest situation is when $Y$ is *binary* (or *dichotomic*): it can only take two values, codified for convenience as $0$ (success) and $1$ (failure). For example, in the Challenger case study we used `fail.field` as an *indicator* of whether "there was at least an incident with the O-rings" (`1` = yes, `0` = no). For binary variables there is no fundamental distinction between the treatment of discrete and categorical variables.
 
 More formally, a binary variable is known as a *Bernoulli variable*, which is the simplest non-trivial random variable. We say that $Y\sim\mathrm{Ber}(p)$, $0\leq p\leq1$, if 
 \[
@@ -518,12 +518,17 @@ or, equivalently, if $\mathbb{P}[Y=1]=p$ and $\mathbb{P}[Y=0]=1-p$, which can be
 \begin{align}
 \mathbb{P}[Y=y]=p^y(1-p)^{1-y},\quad y=0,1.(\#eq:ber)
 \end{align}
-Recall that a *binomial variable with size $n$ and probability $p$*, $\mathrm{Bi}(n,p)$, was obtained by adding $n$ independent $\mathrm{Ber}(p)$ (so $\mathrm{Ber}(p)$ is the same as $\mathrm{Bi}(1,p)$).
+Recall that a *binomial variable with size $n$ and probability $p$*, $\mathrm{Bi}(n,p)$, is obtained by summing $n$ independent $\mathrm{Ber}(p)$ (so $\mathrm{Ber}(p)$ is the same as $\mathrm{Bi}(1,p)$). This is why we need to use a `family = "binomial"` in `glm`, to indicate that the response is binomial.
 
 ```{block, type='rmdinsight'}
-A Bernoulli variable $Y$ is completely determined by $p$. **So its mean and variance**: $\mathbb{E}[Y]=p\times1+(1-p)\times0=p$ and $\mathbb{V}\mathrm{ar}[Y]=p(1-p)$. In particular, recall that $\mathbb{P}[Y=1]=\mathbb{E}[Y]=p$.
+A Bernoulli variable $Y$ is completely determined by the probability $p$. **So do its mean and variance**: 
 
-This is something relatively uncommon. For example, for a $\mathcal{N}(\mu,\sigma^2)$, $\mu$ determines the mean and $\sigma^2$ the variance.
+- $\mathbb{E}[Y]=p\times1+(1-p)\times0=p$
+- $\mathbb{V}\mathrm{ar}[Y]=p(1-p)$
+
+In particular, recall that $\mathbb{P}[Y=1]=\mathbb{E}[Y]=p$.
+
+This is something relatively uncommon (or a $\mathcal{N}(\mu,\sigma^2)$, $\mu$ determines the mean and $\sigma^2$ the variance) that has important consequences for the logistic model: we do not need a $\sigma^2$.
 ```
 
 ```{block, type='rmdexercise'}
@@ -537,15 +542,15 @@ Are these Bernoulli variables? If so, which is the value of $p$ and what could t
 
 ```
 
-Assume then that $Y$ is a binary/Bernoulli variable and that $X_1,\ldots,X_k$ are predictors associated to them (no particular assumptions on them). The purpose in *logistic regression* is to estimate
+Assume then that $Y$ is a binary/Bernoulli variable and that $X_1,\ldots,X_k$ are predictors associated to $Y$ (no particular assumptions on them). The purpose in *logistic regression* is to estimate
 \[
 p(x_1,\ldots,x_k)=\mathbb{P}[Y=1|X_1=x_1,\ldots,X_k=x_k]=\mathbb{E}[Y|X_1=x_1,\ldots,X_k=x_k],
 \]
-this is, how the probability of $Y=1$ is changing according to particular values, denoted by $x_1,\ldots,x_k$, of the random variables $X_1,\ldots,X_k$. At sight of \@ref(eq:eq-lm), a tempting possibility is to consider the model
+this is, how the probability of $Y=1$ is changing according to particular values, denoted by $x_1,\ldots,x_k$, of the random variables $X_1,\ldots,X_k$. $p(x_1,\ldots,x_k)=\mathbb{P}[Y=1|X_1=x_1,\ldots,X_k=x_k]$ stands for the *conditional probability of $Y=1$ given $X_1,\ldots,X_k$*. At sight of \@ref(eq:eq-lm), a tempting possibility is to consider the model
 \[
 p(x_1,\ldots,x_k)=\beta_0+\beta_1x_1+\ldots+\beta_kx_k.
 \]
-However, such a model will run into problems inevitably: negative probabilities and probabilities larger than one. The solution is to consider a function to encapsulate the value of $z=\beta_0+\beta_1x_1+\ldots+\beta_kx_k$, in $\mathbb{R}$, and map it to $[0,1]$. There are several alternatives to do so, based on distribution functions $F:\mathbb{R}\longrightarrow[0,1]$ that deliver $y=F(z)\in[0,1]$ (see Figure \@ref(fig:logitprobit)). Some model alternatives are:
+However, such a model will run into serious problems inevitably: negative probabilities and probabilities larger than one. The solution is to consider a function to encapsulate the value of $z=\beta_0+\beta_1x_1+\ldots+\beta_kx_k$, in $\mathbb{R}$, and map it back to $[0,1]$. There are several alternatives to do so, based on distribution functions $F:\mathbb{R}\longrightarrow[0,1]$ that deliver $y=F(z)\in[0,1]$ (see Figure \@ref(fig:logitprobit)). Different choices of $F$ give rise to different models:
 
 - **Uniform**. Truncate $z$ to $0$ and $1$ when $z<0$ and $z>1$, respectively.
 - **Logit**. Consider the *logistic distribution function*:
@@ -583,32 +588,32 @@ The **logistic** transformation is the most employed due to its **tractability, 
 \[
 \mathrm{logit}(p)=\mathrm{logistic}^{-1}(p)=\log\frac{p}{1-p}.
 \]
-This is a *link function*, this is, a function that maps a given space (in this case $[0,1]$) into $\mathbb{R}$. We will concentrate exclusively on it. Therefore, the *logistic model* is
+This is a *link function*, this is, a function that maps a given space (in this case $[0,1]$) into $\mathbb{R}$. The term link function is employed in *generalized linear models*, which follow exactly the same philosophy of the logistic regression -- mapping the domain of $Y$ to $\mathbb{R}$ in order to apply there a linear model. We will concentrate here exclusively on the logit as a link function. Therefore, the *logistic model* is
 \begin{align}
-p(x_1,\ldots,x_k)=\mathrm{logit}(\beta_0+\beta_1x_1+\ldots+\beta_kx_k)=\frac{1}{1+e^{-(\beta_0+\beta_1x_1+\ldots+\beta_kx_k)}}.(\#eq:eq-log)
+p(x_1,\ldots,x_k)=\mathrm{logistic}(\beta_0+\beta_1x_1+\ldots+\beta_kx_k)=\frac{1}{1+e^{-(\beta_0+\beta_1x_1+\ldots+\beta_kx_k)}}.(\#eq:eq-log)
 \end{align}
-The linear form has a clear interpretation:
+The linear form inside the exponent has a clear interpretation:
 
 - If $\beta_0+\beta_1x_1+\ldots+\beta_kx_k=0$, then $p(x_1,\ldots,x_k)=\frac{1}{2}$ ($Y=1$ and $Y=0$ are equally likely).
 - If $\beta_0+\beta_1x_1+\ldots+\beta_kx_k<0$, then $p(x_1,\ldots,x_k)<\frac{1}{2}$ ($Y=1$ less likely).
 - If $\beta_0+\beta_1x_1+\ldots+\beta_kx_k>0$, then $p(x_1,\ldots,x_k)>\frac{1}{2}$ ($Y=1$ more likely).
 
-To be more precise on the interpretation of the coefficients $\beta_0,\ldots,\beta_k$ we need to introduce the *odds*. The **odds is an equivalent way of expressing the distribution of probabilities in a binary variable**. Since $\mathbb{P}[Y=1]=p$ and $\mathbb{P}[Y=1]=1-p$, both the success and failure probabilities can be inferred from $p$. Instead of using $p$ to characterize the distribution of $Y$ we can use 
+To be more precise on the interpretation of the coefficients $\beta_0,\ldots,\beta_k$ we need to introduce the *odds*. The **odds is an equivalent way of expressing the distribution of probabilities in a binary variable**. Since $\mathbb{P}[Y=1]=p$ and $\mathbb{P}[Y=0]=1-p$, both the success and failure probabilities can be inferred from $p$. Instead of using $p$ to characterize the distribution of $Y$, we can use 
 \begin{align}
 \mathrm{odds}(Y)=\frac{p}{1-p}=\frac{\mathbb{P}[Y=1]}{\mathbb{P}[Y=0]}.(\#eq:eq-odds)
 \end{align}
-The odds is the *ratio between the probability of success and the probability of fail*. It is extensively used in betting^[Recall that the result of a bet is binary: you win or lose the bet.] due to its better interpretability. For example, if a horse $Y$ has a probability $p=2/3$ of winning a race ($Y=1$), then the odds of the horse is
+The odds is the *ratio between the probability of success and the probability of failure*. It is extensively used in betting^[Recall that the result of a bet is binary: you win or lose the bet.] due to its better interpretability. For example, if a horse $Y$ has a probability $p=2/3$ of winning a race ($Y=1$), then the odds of the horse is
 \[
 \text{odds}=\frac{p}{1-p}=\frac{2/3}{1/3}=2.
 \]
-This means that the horse has a *probability of winning twice larger than the probability of losing*. This is sometimes written as a $2:1$ or $2 \times 1$ ratio ("two-to-one"). Conversely, if the odds of $Y$ is given, we can easily know what is the probability of success $p$, using the inverse of \@ref(eq:eq-odds):
+This means that the horse has a *probability of winning that is twice larger than the probability of losing*. This is sometimes written as a $2:1$ or $2 \times 1$ (spelled "two-to-one"). Conversely, if the odds of $Y$ is given, we can easily know what is the probability of success $p$, using the inverse of \@ref(eq:eq-odds):
 \[
 p=\mathbb{P}[Y=1]=\frac{\text{odds}(Y)}{1+\text{odds}(Y)}.
 \]
 For example, if the odds of the horse were $5$, that would correspond to a probability of winning $p=5/6$.
 
 ```{block, type ='rmdinsight'}
-Recall that the odds is a number in $[0,+\infty]$. The $0$ and $+\infty$ values are attained for $p=0$ and $p=1$, respectively. The log-odds is a number in $[-\infty,+\infty]$.
+Recall that the odds is a number in $[0,+\infty]$. The $0$ and $+\infty$ values are attained for $p=0$ and $p=1$, respectively. The log-odds (or logit) is a number in $[-\infty,+\infty]$.
 ```
 We can rewrite \@ref(eq:eq-log) in terms of the odds \@ref(eq:eq-odds). If we do so, we have:
 \begin{align}
@@ -628,15 +633,15 @@ The conditional log-odds \@ref(eq:eq-odds-log2) play here the role of the condit
 The log-odds is not so easy to interpret as the odds. For that reason, an equivalent way of interpreting the coefficients, this time based on \@ref(eq:eq-odds-log1), is:
 
 - $e^{\beta_0}$: is the odds when $X_1=\ldots=X_k=0$.
-- $e^{\beta_j}$, $j\geq1$: is the **multiplicative** increment of the odds for an increment of one unit in $X_j=x_j$, provided that the remaining variables $X_1,\ldots,X_{j-1},X_{j+1},\ldots,X_k$ *do not change*. If the increment in $X_j$ is of $r$ units, then the multiplicative increment in the odds is $e^{r\beta_j}$.
+- $e^{\beta_j}$, $j\geq1$: is the **multiplicative** increment of the odds for an increment of one unit in $X_j=x_j$, provided that the remaining variables $X_1,\ldots,X_{j-1},X_{j+1},\ldots,X_k$ *do not change*. If the increment in $X_j$ is of $r$ units, then the multiplicative increment in the odds is $(e^{\beta_j})^r$.
 
 As a consequence of this last interpretation, we have:
 ```{block2, type = 'rmdinsight'}
-If $\beta_j>0$ ($\beta_j<0$) then $e^{\beta_j}>1$ ($e^{\beta_j}<1$) in \@ref(eq:eq-odds-log1). Therefore an increment of one unit in $X_j$, provided that the remaining variables $X_1,\ldots,X_{j-1},X_{j+1},\ldots,X_k$ do not change, results in an increment (decrement) of the odds, this is, in an increment (decrement) of $\mathbb{P}[Y=1]$. 
+If $\beta_j>0$ (respectively, $\beta_j<0$) then $e^{\beta_j}>1$ ($e^{\beta_j}<1$) in \@ref(eq:eq-odds-log1). Therefore, an increment of one unit in $X_j$, provided that the remaining variables $X_1,\ldots,X_{j-1},X_{j+1},\ldots,X_k$ do not change, results in an increment (decrement) of the odds, this is, in an increment (decrement) of $\mathbb{P}[Y=1]$. 
 ```
 
 ```{block, type='rmdcaution'}
-Since the relationship between $p(X_1,\ldots,X_k)$ and $X_1,\ldots,X_k$ is not linear, $\beta_j$ does *not* correspond to the change in $p(X_1,\ldots,X_k)$ associated with a one-unit increase in $X_j$.
+Since the relationship between $p(X_1,\ldots,X_k)$ and $X_1,\ldots,X_k$ is not linear, **$\beta_j$ does not correspond to the change in $p(X_1,\ldots,X_k)$ associated with a one-unit increase in $X_j$**.
 ```
 
 Let's visualize this concepts quickly with the the output of the Challenger case study:
@@ -662,10 +667,10 @@ text(-0.6, 1, labels = "Challenger", pos = 4)
 
 The exponentials of the estimated coefficients are:
 
-- $e^{\hat\beta_0}=1965.974$. This means that, *when the temperature is zero*, the fitted odds is $1965.974$, so the probability of having an incident ($Y=1$) is $1965.974$ times larger than the probability of not having an incident ($Y=1$). In other words, the probability of having an incident at temperature zero is $\frac{1965.974}{1965.974+1}=0.999$.
+- $e^{\hat\beta_0}=1965.974$. This means that, *when the temperature is zero*, the fitted odds is $1965.974$, so the probability of having an incident ($Y=1$) is $1965.974$ times larger than the probability of not having an incident ($Y=0$). In other words, the probability of having an incident at temperature zero is $\frac{1965.974}{1965.974+1}=0.999$.
 - $e^{\hat\beta_1}=0.659$. This means that each Celsius degree increase in the temperature *reduce* the fitted odds by a factor of $0.659\approx\frac{2}{3}$. 
 
-The estimation of $\boldsymbol{\beta}=(\beta_0,\beta_1,\ldots,\beta_k)$ from a sample $(\mathbf{X}_{1},Y_1),\ldots,(\mathbf{X}_{n},Y_n)$ is different than in linear regression. It is not based on minimizing the RSS but on the principle of **Maximum Likelihood Estimation** (MLE). MLE is based on the following *leitmotiv*: **what are the coefficients $\boldsymbol{\beta}$ that make the sample more likely?** Since $Y_i\sim \mathrm{Ber}(p(\mathbf{X}_i))$, $i=1,\ldots,n$, the likelihood of $\boldsymbol{\beta}$ is
+The estimation of $\boldsymbol{\beta}=(\beta_0,\beta_1,\ldots,\beta_k)$ from a sample $(\mathbf{X}_{1},Y_1),\ldots,(\mathbf{X}_{n},Y_n)$ is different than in linear regression. It is not based on minimizing the RSS but on the principle of *Maximum Likelihood Estimation* (MLE). MLE is based on the following *leitmotiv*: **what are the coefficients $\boldsymbol{\beta}$ that make the sample more likely?** Since $Y_i\sim \mathrm{Ber}(p(\mathbf{X}_i))$, $i=1,\ldots,n$, the likelihood of $\boldsymbol{\beta}$ is
 \[
 l(\boldsymbol{\beta})=\prod_{i=1}^np(\mathbf{X}_i)^{Y_i}(1-p(\mathbf{X}_i))^{1-Y_i}.
 \]
@@ -710,24 +715,23 @@ mod$coefficients
 ```{block2, type = 'rmdexercise'}
 For the regressions `y ~ x2` and `y ~ x3`, do the following:
 
-- Check that $\boldsymbol{\beta}$ is indeed maximizing the likelihood comparing it with Figure \@ref(fig:maximumlikelihood).
+- Check that $\boldsymbol{\beta}$ is indeed maximizing the likelihood as compared with Figure \@ref(fig:maximumlikelihood).
 - plot the fitted logistic curve and compare it with the one in Figure \@ref(fig:maximumlikelihood).
 
 ```
 
 ```{block, type = 'rmdinsight'}
-In linear regression we relied least squares estimation, in other words, the minimization of the RSS. Why do we need MLE in logistic regression and not least squares? The answer is two-fold:
+In linear regression we relied on least squares estimation, in other words, the minimization of the RSS. *Why do we need MLE in logistic regression and not least squares?* The answer is two-fold:
 
 1. **MLE is asymptotically optimal** when estimating unknown parameters in a model. That means that when the sample size $n$ is large, it is **guaranteed to perform better than any other estimation method**. Therefore, considering a least squares approach for logistic regression will result in suboptimal estimates.
 2. In **multiple linear regression**, due to the *normality* assumption, **MLE and least squares estimation coincide**. So MLE is hidden under the form of the least squares, which is a more intuitive estimation procedure. Indeed, the maximized likelihood $l(\hat{\boldsymbol{\beta}})$ in the linear model and the RSS are intimately related.
 ```
 
-We conclude with an insight on the relation of multiple and simple linear regressions. 
 ```{block, type = 'rmdinsight'}
 As in the linear model, **the inclusion of a new predictor changes the coefficient estimates of the logistic model**.  
 ```
 
-## Assumptions {#log-reg-assumptions}
+## Assumptions of the model {#log-reg-assumptions}
 
 Some probabilistic assumptions are required for performing inference on the model parameters $\boldsymbol\beta$ from the sample $(\mathbf{X}_1, Y_1),\ldots,(\mathbf{X}_n, Y_n)$. These assumptions are somehow simpler than the ones for linear regression.
 
@@ -744,51 +748,328 @@ iii. **Independence**: $Y_1,\ldots,Y_n$ are independent.
 
 A good one-line summary of the logistic model is the following (independence is assumed)
 \begin{align}
-Y|\mathbf{X}=\mathbf{x}\sim\mathrm{Ber}\left(\frac{1}{1+e^{-(\beta_0+\beta_1x_1+\ldots+\beta_kx_k)}}\right).(\#eq:condber)
+Y|(X_1=x_1,\ldots,X_k=x_k)&\sim\mathrm{Ber}\left(\mathrm{logistic}(\beta_0+\beta_1x_1+\ldots+\beta_kx_k)\right)\nonumber\\
+&=\mathrm{Ber}\left(\frac{1}{1+e^{-(\beta_0+\beta_1x_1+\ldots+\beta_kx_k)}}\right).(\#eq:condber)
 \end{align}
 
 There are three important points of the linear model assumptions  missing in the ones for the logistic model:
 
-- *Why is homocedasticity not required?* As seen in the previous section, Bernoulli variables are determined only by the probability of success, in this case $p(\mathbf{x})$. That determines also the variance. In the lienar model, we have to control $\sigma^2$ explictly due to the higher flexibility of the normal.
-- *Where are the errors? The errors played a fundamental role in the linear model assumptions, but are not employed in logistic regression.* The errors are not fundamental for building the linear model but just a heplful concept related to least squares. The linear model can be constructed without errors as \@ref(eq:condnorm), which has a logist analogous in \@ref(eq:condber).
-- *Why is normality not present?* A Normal is not adequate to replace the Bernoulli random variable in \@ref(eq:condber) since the response $Y$ *has to be binary* and the Normal or other continuous distributiou would put yield illegal values for $Y$.
+- *Why is homoscedasticity not required?* As seen in the previous section, Bernoulli variables are determined only by the probability of success, in this case $p(\mathbf{x})$. That determines also the variance, which is variable, so **there is heteroskedasticity**. In the linear model, we have to control $\sigma^2$ explicitly due to the higher flexibility of the normal.
+- *Where are the errors? The errors played a fundamental role in the linear model assumptions, but are not employed in logistic regression.* The errors are not fundamental for building the linear model but just a helpful concept related to least squares. The linear model can be constructed without errors as \@ref(eq:condnorm), which has a logistic analogous in \@ref(eq:condber).
+- *Why is normality not present?* A normal distribution is not adequate to replace the Bernoulli distribution in \@ref(eq:condber) since the response $Y$ *has to be binary* and the Normal or other continuous distribution would put yield illegal values for $Y$.
 
 
 ```{block, type='rmdinsight'}
-Finally, recall that:
+Recall that:
 
 - Nothing is said about the distribution of $X_1,\ldots,X_k$. They could be deterministic or random. They could be discrete or continuous. 
 - $X_1,\ldots,X_k$ are **not required to be independent** between them.
 ```
-<!--
 
 ## Inference for model parameters {#log-reg-inference}
 
-```{r, lograndomcoefs, echo = FALSE, fig.cap = 'Illustration of the randomness of the fitted coefficients $(\\hat\\beta_0,\\hat\\beta_1)$ and the influence of $n$, $\\sigma^2$ and  $s_x^2$. The sample predictors $x_1,\\ldots,x_n$ are fixed and new responses $Y_1,\\ldots,Y_n$ are generated each time from a linear model $Y=\\beta_0+\\beta_1X+\\varepsilon$.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+The assumptions on which the logistic model is constructed allow to specify what is the *asymptotic* distribution of the *random vector* $\hat{\boldsymbol{\beta}}$. Again, the distribution is derived conditionally on the sample predictors $\mathbf{X}_1,\ldots,\mathbf{X}_n$. In other words, we assume that the randomness of $Y$ comes only from $Y|(X_1=x_1,\ldots,X_k=x_k)\sim\mathrm{Ber}(p(\mathbf{x}))$ and not from the predictors. To denote this, we employ lowercase for the sample predictors $\mathbf{x}_1,\ldots,\mathbf{x}_n$.
+
+There is an important difference between the inference results for the linear model and for logistic regression: 
+
+- **In linear regression the inference is exact**. This is due to the nice properties of the normal, least squares estimation and linearity. As a consequence, the distributions of the coefficients are perfectly known assuming that the assumptions hold.
+- **In logistic regression the inference is asymptotic**. This means that the distributions of the coefficients are unknown except for large sample sizes $n$, for which we have approximations. The reason is the more complexity of the model in terms of non-linearity. This is the usual situation for the majority of the regression models.
+
+### Distributions of the fitted coefficients {#log-reg-distributions}
+
+The distribution of $\hat{\boldsymbol{\beta}}$ is given by the asymptotic theory of MLE:
+\begin{align}
+\hat{\boldsymbol{\beta}}\sim\mathcal{N}_{k+1}\left(\boldsymbol\beta,I(\hat{\boldsymbol{\beta}})^{-1}\right)
+(\#eq:mle1)
+\end{align}
+where $\sim$ must be understood as *approximately distributed as [...] when $n\to\infty$* for the rest of this chapter. $I(\boldsymbol\beta)$ is known as the *Fisher information matrix*, and receives that name because *it measures the information available in the sample for estimating $\boldsymbol\beta$*. Therefore, the *larger* the matrix is, the more precise is the estimation of $\boldsymbol\beta$, because that results in smaller variances in \@ref(eq:mle1). The inverse of the Fisher information matrix is
+\begin{align}
+I(\hat{\boldsymbol{\beta}})^{-1}=(\mathbf{X}^T\mathbf{V}\mathbf{X})^{-1},
+(\#eq:mle2)
+\end{align}
+where $\mathbf{V}$ is a diagonal matrix containing the *different* variances for each $Y_i$ (remember that $p(\mathbf{x})=1/(1+e^{-(\beta_0+\beta_1x_1+\ldots+\beta_kx_k)})$):
+\[
+\mathbf{V}=\begin{pmatrix}
+p(\mathbf{X}_1)(1-p(\mathbf{X}_1)) & & &\\
+& p(\mathbf{X}_2)(1-p(\mathbf{X}_2)) & & \\
+& & \ddots & \\
+& & & p(\mathbf{X}_n)(1-p(\mathbf{X}_n))
+\end{pmatrix}
+\]
+In the case of the multiple linear regression, $I(\hat{\boldsymbol{\beta}})^{-1}=\sigma^2(\mathbf{X}^T\mathbf{X})^{-1}$ (see \@ref(eq:normp)), so the presence of $\mathbf{V}$ here is revealing the heteroskedasticity of the model.
+
+The interpretation of \@ref(eq:mle1) and \@ref(eq:mle2) give some useful insights on what concepts affect the quality of the estimation:
+
+- **Bias**. The estimates are *asymptotically* unbiased. 
+- **Variance**. It depends on:
+
+    - *Sample size $n$*. Hidden inside $\mathbf{X}^T\mathbf{V}\mathbf{X}$. As $n$ grows, the precision of the estimators increases.
+    - *Weighted predictor sparsity $(\mathbf{X}^T\mathbf{V}\mathbf{X})^{-1}$*. The more *sparse* the predictor is (small $|(\mathbf{X}^T\mathbf{V}\mathbf{X})^{-1}|$), the more precise $\hat{\boldsymbol{\beta}}$ is.
+    
+
+```{block2, type='rmdinsight'}
+**The precision of $\hat{\boldsymbol{\beta}}$ is affected by the value of $\boldsymbol{\beta}$**, which is hidden inside $\mathbf{V}$. This contrasts sharply with the linear model, where the precision of the least squares estimator was not affected by the value of the unknown coefficients (see \@ref(eq:normp)). The reason is partially due to the **heteroskedasticity** of logistic regression, which implies a dependence of the variance of $Y$ in the logistic curve, hence in $\boldsymbol{\beta}$.
+```
+
+```{r, lograndomcoefs, echo = FALSE, fig.cap = 'Illustration of the randomness of the fitted coefficients $(\\hat\\beta_0,\\hat\\beta_1)$ and the influence of $n$, $(\\beta_0,\\beta_1)$ and $s_x^2$. The sample predictors $x_1,\\ldots,x_n$ are fixed and new responses $Y_1,\\ldots,Y_n$ are generated each time from a logistic model $Y\\sim\\mathrm{Ber}(p(X))$.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
 knitr::include_app('https://egarpor.shinyapps.io/log-random/', height = '1000px')
 ```
 
-not exact
+Similar to linear regression, the problem with \@ref(eq:mle1) and \@ref(eq:mle2) is that *$\mathbf{V}$ is unknown* in practice because it depends on $\boldsymbol{\beta}$. Plugging-in the estimate $\hat{\boldsymbol{\beta}}$ to $\boldsymbol{\beta}$ in $\mathbf{V}$ results in $\hat{\mathbf{V}}$. Now we can use $\hat{\mathbf{V}}$ to get 
+\begin{align}
+\frac{\hat\beta_j-\beta_j}{\hat{\mathrm{SE}}(\hat\beta_j)}\sim \mathcal{N}(0,1),\quad\hat{\mathrm{SE}}(\hat\beta_j)^2=v_j^2(\#eq:mle3)
+\end{align}
+where 
+\[
+v_j\text{ is the $j$-th element of the diagonal of }(\mathbf{X}^T\hat{\mathbf{V}}\mathbf{X})^{-1}.
+\]
+The LHS of \@ref(eq:normp2) is the **Wald statistic** for $\beta_j$, $j=0,\ldots,k$. They are employed for building confidence intervals and hypothesis tests. 
 
-coefs
+### Confidence intervals for the coefficients {#log-reg-confidence}
+
+Thanks to \@ref(eq:mle3), we can have the $100(1-\alpha)\%$ CI for the coefficient $\beta_j$, $j=0,\ldots,k$:
+\begin{align}
+\left(\hat\beta_j\pm\hat{\mathrm{SE}}(\hat\beta_j)z_{\alpha/2}\right)(\#eq:ciplog)
+\end{align}
+where $z_{\alpha/2}$ is the *$\alpha/2$-upper quantile of the $\mathcal{N}(0,1)$*. In case we are interested in the CI for $e^{\beta_j}$, we can just simply take the exponential on the above CI. So the $100(1-\alpha)\%$ CI for $e^{\beta_j}$, $j=0,\ldots,k$, is
+\[
+e^{\left(\hat\beta_j\pm\hat{\mathrm{SE}}(\hat\beta_j)z_{\alpha/2}\right)}.
+\]
+Of course, this CI is **not** the same as $\left(e^{\hat\beta_j}\pm e^{\hat{\mathrm{SE}}(\hat\beta_j)z_{\alpha/2}}\right)$.
+
+Let's see how we can compute the CIs. We return to the `challenger` dataset, so in case you do not have it loaded, you can download it [here](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/challenger.txt). We analyse the CI for the coefficients of `fail.field ~ temp`.
+```{r, collapse = TRUE}
+# Fit model
+nasa <- glm(fail.field ~ temp, family = "binomial", data = challenger)
+
+# Confidence intervals at 95%
+confint(nasa)
+
+# Confidence intervals at other levels
+confint(nasa, level = 0.90)
+
+# Confidence intervals for the factors affecting the odds
+exp(confint(nasa))
+```
+In this example, the 95% confidence interval for $\beta_0$ is $(1.3364, 17.7834)$ and for $\beta_1$ is $(-0.9238 -0.1090)$. For $e^{\beta_0}$ and $e^{\beta_1}$, the CIs are $(3.8053, 5.2874\times10^7)$ and $(0.3070, 0.8967)$, respectively. Therefore, we can say with a 95% confidence that:
+
+- When `temp`=0, the probability of `fail.field`=1 is significantly lager than the probability of `fail.field`=0 (using the CI for $\beta_0$). Indeed, `fail.field`=1 is between $3.8053$ and $5.2874\times10^7$ more likely than `fail.field`=0 (using the CI for $e^{\beta_0}$).
+- `temp` has a significantly negative effect in the probability of `fail.field`=1  (using the CI for $\beta_1$). Indeed, each unit increase in `temp` produces a reduction of the odds of `fail.field` by a factor between $0.3070$ and $0.8967$ (using the CI for $e^{\beta_1}$).
+
+```{block2, type = 'rmdexercise'}
+Compute and interpret the CIs for the the exponentiated coefficients, at level $\alpha=0.05$, for the following regressions (`challenger` dataset):
+
+- `fail.field ~ temp + pres.field`
+- `fail.nozzle ~ temp + pres.nozzle`
+- `fail.field ~ temp + pres.nozzle`
+- `fail.nozzle ~ temp + pres.field`
+
+The interpretation of the variables is given above Table \@ref(tab:challengertable). 
+```
+
+### Testing on the coefficients {#log-reg-testing}
+
+The distributions in \@ref(eq:mle3) also allow to conduct a formal hypothesis test on the coefficients $\beta_j$, $j=0,\ldots,k$. For example, the test for significance:
+\begin{align*}
+H_0:\beta_j=0
+\end{align*}
+for $j=0,\ldots,k$. The test of $H_0:\beta_j=0$ with $j\geq1$ is specially interesting, since it allows to answer whether *the variable $X_j$ has a significant effect on $\mathbb{P}[Y=1]$*. The statistic used for testing for significance is the Wald statistic
+\begin{align*}
+\frac{\hat\beta_j-0}{\hat{\mathrm{SE}}(\hat\beta_j)},
+\end{align*}
+which is asymptotically distributed as a $\mathcal{N}(0,1)$ *under the (veracity of) the null hypothesis*. $H_0$ is tested *against* the *bilateral* alternative hypothesis $H_1:\beta_j\neq 0$.
+
+The tests for significance are built-in in the `summary` function. However, a note of caution is required when applying the rule of thumb:
+
+> Is the CI for $\beta_j$ below (above) $0$ at level $\alpha$?
+>
+>- Yes $\rightarrow$ reject $H_0$ at level $\alpha$.
+>- No $\rightarrow$ the criterion is not conclusive.
+
+```{block, type = 'rmdcaution'}
+The significances given in `summary` and the output of `confint` are *slightly* incoherent and the previous rule of thumb **does not apply**. The reason is because `MASS`'s `confint` is using a more sophisticated method (profile likelihood) to estimate the standard error of $\hat\beta_j$, $\hat{\mathrm{SE}}(\hat\beta_j)$, and not the asymptotic distribution behind Wald statistic. 
+
+By changing `confint` to `R`'s default `confint.default`, the results of the latter will be completely equivalent to the significances in `summary`, and the rule of thumb still be completely valid. For the contents of this course we prefer `confint.default` due to its better interpretability.
+```
+
+To illustrate this we consider the regression of `fail.field ~ temp + pres.field`:
+```{r, collapse = TRUE}
+# Significances with asymptotic approximation for the standard errors
+nasa2 <- glm(fail.field ~ temp + pres.field, family = "binomial", 
+             data = challenger)
+summary(nasa2)
+
+# CIs with asymptotic approximation - coherent with summary
+confint.default(nasa2, level = 0.90)
+confint.default(nasa2, level = 0.99)
+
+# CIs with profile likelihood - incoherent with summary
+confint(nasa2, level = 0.90) # intercept still significant
+confint(nasa2, level = 0.99) # temp still significant
+```
+
+```{block, type = 'rmdexercise'}
+For the previous exercise, check the differences of using `confint` or `confint.default` for computing the CIs.
+```
 
 ## Prediction {#log-reg-prediction}
 
-```{r, logcipred, echo = FALSE, fig.cap = 'Illustration of the CIs for the conditional mean and response. Note how the length of the CIs is influenced by $x$, specially for the conditional mean.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+*Prediction* in logistic regression focuses mainly on predicting the values of the logistic curve
+\[
+p(x_1,\ldots,x_k)=\mathbb{P}[Y=1|X_1=x_1,\ldots,X_k=x_k]=\frac{1}{1+e^{-(\beta_0+\beta_1x_1+\ldots+\beta_kx_k)}}
+\]
+by means of 
+\[
+\hat p(x_1,\ldots,x_k)=\hat{\mathbb{P}}[Y=1|X_1=x_1,\ldots,X_k=x_k]=\frac{1}{1+e^{-(\hat\beta_0+\hat\beta_1x_1+\ldots+\hat\beta_kx_k)}}.
+\]
+From the perspective of the linear model, this is the same as predicting the **conditional mean** (not the conditional response) of the response, but this time this conditional mean is also a **conditional probability**. The prediction of the conditional response is not so interesting since it follows intermediate from $\hat p(x_1,\ldots,x_k)$:
+\[
+Y|(X_1=x_1,\ldots,X_k=x_k)=\left\{\begin{array}{ll}1,&\text{with probability }\hat p(x_1,\ldots,x_k),\\0,&\text{with probability }1-\hat p(x_1,\ldots,x_k).\end{array}\right.
+\]
+As a consequence, we can predict $Y$ as $1$ if $\hat p(x_1,\ldots,x_k)>\frac{1}{2}$ and as $0$ if $\hat p(x_1,\ldots,x_k)<\frac{1}{2}$.
+
+Let's focus then on how to make predictions and compute CIs in practice with `predict`. Similarly to the linear model, the objects required for `predict` are: first, the output of `glm`; second, a `data.frame` containing the locations $\mathbf{x}=(x_1,\ldots,x_k)$ where we want to predict $p(x_1,\ldots,x_k)$. However, there are **two changes in the arguments** with respect to the use of `predict` for `lm`:
+
+- `type`. If equal to `type = "link"`, gives the predictions in the log-odds, this is, returns $\log\frac{\hat p(x_1,\ldots,x_k)}{1-\hat p(x_1,\ldots,x_k)}$. If `type = "response"`, gives the predictions in the response space, this is, returns $\hat p(x_1,\ldots,x_k)$. Recall that `type = "response"` is the equivalent of `type = "confidence"` for the linear model!
+- `se.fit = TRUE`. If we want the standard errors of the predictions, required for computing the CIs. 
+
+Since it is a bit cumbersome to compute by yourself the CIs, we can code the function `predictLogistic` instead of, see below.
+```{r, collapse = TRUE}
+# Data for which we want a prediction
+# Important! You have to name the column with the predictor name!
+newdata <- data.frame(temp = -0.6)
+
+# Prediction of the conditional log-odds - the default
+predict(nasa, newdata = newdata, type = "link")
+
+# Prediction of the conditional probability
+predict(nasa, newdata = newdata, type = "response")
+
+# Manually computing the predictions and CIs for the conditional probability
+predictLogistic <- function(object, newdata, level = 0.95) {
+  
+    # Compute predictions in the log-odds
+    pred <- predict(object = object, newdata = newdata, se.fit = TRUE)
+    
+    # CI in the log-odds
+    za <- qnorm(p = (1 - level) / 2)
+    lwr <- pred$fit + za * pred$se.fit
+    upr <- pred$fit - za * pred$se.fit
+    
+    # Transform to probabilities
+    fit <- 1 / (1 + exp(-pred$fit))
+    lwr <- 1 / (1 + exp(-lwr))
+    upr <- 1 / (1 + exp(-upr))
+    
+    # Return a matrix with column names "fit", "lwr" and "upr"
+    result <- cbind(fit, lwr, upr)
+    colnames(result) <- c("fit", "lwr", "upr")
+    return(result)
+ 
+}
+
+# Simple call
+predictLogistic(nasa, newdata = newdata)
+# The CI is large because there is no data around temp = -0.6 and
+# that makes the prediction more variable (and also because we only 
+# have 23 observations)
+```
+
+```{block, type = 'rmdexercise'}
+For the `challenger` dataset, do the following:
+
+- Regress `fail.nozzle` on `temp` and `pres.nozzle`.
+- Compute the predicted probability of `fail.nozzle=1` for `temp`$=15$ and `pres.nozzle`$=200$. What is the predicted probability for `fail.nozzle=0`?
+- Compute the confidence interval for the two predicted probabilities at level $95\%$.
+
+```
+
+Finally, Figure \@ref(fig:logcipred) gives an interactive visualization of the CIs for the conditional probability in simple logistic regression. Their interpretation is very similar to the CIs for the conditional mean in the simple linear model, see Section \@ref(prediction) and Figure \@ref(fig:cipred).
+
+```{r, logcipred, echo = FALSE, fig.cap = 'Illustration of the CIs for the conditional probability in the simple logistic regression. ', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
 knitr::include_app('https://egarpor.shinyapps.io/log-ci-prediction/', height = '1000px')
 ```
 
-residuals do not have to add zero
-odds ratio
-map to a linear problem
-
 <!--
-## Model fit {#log-reg-fit}
+## Deviance and model fit {#log-reg-deviance}
 
-Predictive accuracy
+Deviance
+**Predictive accuracy**
 
-## Qualitative predictors {#qua}
+*training dataset* and *test dataset*
+
+## Model selection {#log-reg-selection}
+
+likelihood
+BIC
+stepwise
+
+Now that we have added more light into the problem of having an excess of predictors, we turn the focus into **selecting the most adequate predictors for a logistic regression model**. This is a challenging task without a unique solution, and what is worse, without a method that is guaranteed to work in all the cases. However, there is a well-established procedure that usually gives good results: the *stepwise regression*. Its principle is to compare multiple linear regression models with different predictors (and, of course, with the same responses).
+
+Before introducing the method, we need to understand what is an **information criterion**. An information criterion balances the fitness of a model with the number of predictors employed. Hence, it determines objectively the best model as the one that *minimizes the information criterion*. Tho common criteria are the *Bayesian Information Criterion* (BIC) and the *Akaike Information Criterion* (AIC). Both are based on a **balance between the model fitness and its complexity**:
+\begin{align}
+\text{BIC}(\text{model}) = \underbrace{-2\times\log(\text{lik(model)})}_{\text{Model fitness}} + \underbrace{\text{npar(model)}\times\log(n)}_{\text{Complexity}}, (\#eq:bic)
+\end{align}
+where $\text{lik(model)}$ is the *likelihood of the model* (how well the model fits the data) and $\text{npar(model)}$ is the number of parameters of the model, $k+2$ in the case of a multiple linear regression model with $k$ predictors. The AIC replaces $\log(n)$ by $2$ in \@ref(eq:bic), so it **penalizes less complexer models**. This is one of the reasons why BIC is preferred by some practitioners for model comparison. Also, because is *consistent* in selecting the true model: if enough data is provided, the BIC is guaranteed to select the data-generating model among a list of candidate models.
+
+The BIC and AIC can be computed in `R` through the functions `BIC` and `AIC`. They take a model as the input.
+```{r, collapse=TRUE}
+# Load iris dataset
+data(iris)
+
+# Two models with different predictors
+mod1 <- lm(Petal.Length ~ Sepal.Width, data = iris)
+mod2 <- lm(Petal.Length ~ Sepal.Width + Petal.Width, data = iris)
+
+# BICS
+BIC(mod1)
+BIC(mod2) # Smaller -> better
+
+# Check the summaries
+summary(mod1)
+summary(mod2)
+```
+
+Let's go back to the selection of predictors. If we have $k$ predictors, a naive procedure would be to check *all the possible* models that can be constructed with them and then select the best one in terms of BIC/AIC. The problem is that there are $2^{k+1}$ possible models! Fortunately, the `stepwise` procedure helps us navigating this ocean of models. The function takes as input a *model employing all the available predictors*.
+
+```{r, collapse=TRUE}
+# Explain NOx in Boston dataset
+mod <- lm(nox ~ ., data = Boston)
+
+# With BIC
+modBIC <- stepwise(mod, trace = 0)
+summary(modBIC)
+
+# Different search directions
+stepwise(mod, trace = 0, direction = "forward")
+stepwise(mod, trace = 0, direction = "backward")
+
+
+# With AIC
+modAIC <- stepwise(mod, trace = 0, criterion = "AIC")
+summary(modAIC)
+```
+
+The model selected by `stepwise` is a good starting point for further additions or deletions of predictors. For example, in `modAIC` we could remove `crim`.
+
+```{block, type='rmdtip'}
+When applying `stepwise` for BIC/AIC, different final models might be selected depending on the choice of `direction`. This is the interpretation:
+
+- `"backward"`: starts from the full model, *removes* predictors sequentially.
+- `"forward"`: starts a simple model, *adds* predictors sequentially.
+- `"backward/forward"` (default) and `"forward/backward"`: combination of the above.
+
+The **advice** is to try several of these methods and retain the one with minimum BIC/AIC. Set `trace = 0` to omit lengthy outputs of information of the search procedure. 
+```
+
+## Qualitative predictors {#log-reg-qualitative}
 
 Qualitative predictors (one level and more than two levels)
+
+*dummyfycation*
+
+## Nonlinear relationships {#log-reg-nonlinear}
+
+Assumptions: 3 plots everything fine, 3 plots wrong, focus on non-linearity on the logit
 
 -->
