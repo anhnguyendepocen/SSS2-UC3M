@@ -1,5 +1,5 @@
 #
-# Shiny web application for illustrating non-linear transformations of the  
+# Shiny web application for illustrating non-linear transformations of the
 # predictor in linear regression
 #
 
@@ -11,7 +11,7 @@ n <- 100
 x <- runif(n, 1, 10)
 eps <- rnorm(n)
 y1 <- -0.5 + 1.5 * x + eps
-y2 <- -0.5 - 0.25 * x^2 + 2 * eps
+y2 <- -0.5 - 0.5 * x^2 + 2 * eps
 y3 <- 1 + 5 * sqrt(x) + 0.5 * eps
 y4 <- 5 - 10 * log(x) + 2 * eps
 y5 <- -0.5 + 0.005 * exp(x) + 2 * eps
@@ -30,7 +30,7 @@ ui <- fluidPage(align = "center",
                   choices = c("Linear", "Quadratic", "Square root", "Logarithm",
                               "Exponential", "Negative exponential")),
       selectInput(inputId = "transfType", label = "Transform x into:",
-                  choices = c("x", "x^2", "sqrt(x)", "log(x)", 
+                  choices = c("x", "x^2", "sqrt(x)", "log(x)",
                               "exp(x)", "exp(-x)"))
 
     ),
@@ -67,7 +67,7 @@ server <- function(input, output) {
     # Model regressions
     mod <- lm(y ~ x)
     modTransf <- lm(y ~ xTransf)
-    
+
     # Plot
     par(mfrow = c(1, 2), mar = c(4, 4, 3, 1) + 0.1, oma = rep(0, 4))
     plot(x, y, pch = 16)
