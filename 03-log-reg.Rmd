@@ -670,18 +670,18 @@ The exponentials of the estimated coefficients are:
 - $e^{\hat\beta_0}=1965.974$. This means that, *when the temperature is zero*, the fitted odds is $1965.974$, so the probability of having an incident ($Y=1$) is $1965.974$ times larger than the probability of not having an incident ($Y=0$). In other words, the probability of having an incident at temperature zero is $\frac{1965.974}{1965.974+1}=0.999$.
 - $e^{\hat\beta_1}=0.659$. This means that each Celsius degree increase in the temperature *reduce* the fitted odds by a factor of $0.659\approx\frac{2}{3}$. 
 
-The estimation of $\boldsymbol{\beta}=(\beta_0,\beta_1,\ldots,\beta_k)$ from a sample $(\mathbf{X}_{1},Y_1),\ldots,(\mathbf{X}_{n},Y_n)$ is different than in linear regression. It is not based on minimizing the RSS but on the principle of *Maximum Likelihood Estimation* (MLE). MLE is based on the following *leitmotiv*: **what are the coefficients $\boldsymbol{\beta}$ that make the sample more likely?** Since $Y_i\sim \mathrm{Ber}(p(\mathbf{X}_i))$, $i=1,\ldots,n$, the likelihood of $\boldsymbol{\beta}$ is
-\[
-l(\boldsymbol{\beta})=\prod_{i=1}^np(\mathbf{X}_i)^{Y_i}(1-p(\mathbf{X}_i))^{1-Y_i}.
-\]
-The interpretation of $l(\boldsymbol{\beta})$ is the following:
+The estimation of $\boldsymbol{\beta}=(\beta_0,\beta_1,\ldots,\beta_k)$ from a sample $(\mathbf{X}_{1},Y_1),\ldots,(\mathbf{X}_{n},Y_n)$ is different than in linear regression. It is not based on minimizing the RSS but on the principle of *Maximum Likelihood Estimation* (MLE). MLE is based on the following *leitmotiv*: **what are the coefficients $\boldsymbol{\beta}$ that make the sample more likely?** Or in other words, **what coefficients make the model more probable, based on the sample**. Since $Y_i\sim \mathrm{Ber}(p(\mathbf{X}_i))$, $i=1,\ldots,n$, the likelihood of $\boldsymbol{\beta}$ is
+\begin{align}
+\text{lik}(\boldsymbol{\beta})=\prod_{i=1}^np(\mathbf{X}_i)^{Y_i}(1-p(\mathbf{X}_i))^{1-Y_i}.(\#eq:eq-lik)
+\end{align}
+$\text{lik}(\boldsymbol{\beta})$ is the **probability of the data based on the model**. Therefore, it is a number between $0$ and $1$. Its detailed interpretation is the following:
 
 - $\prod_{i=1}^n$ appears because the sample elements are assumed to be independent and we are computing the probability of observing the whole sample $(\mathbf{X}_{1},Y_1),\ldots,(\mathbf{X}_{n},Y_n)$. This probability is equal to the product of the *probabilities of observing each $(\mathbf{X}_{i},Y_i)$*.
 - $p(\mathbf{X}_i)^{Y_i}(1-p(\mathbf{X}_i))^{1-Y_i}$ is the probability of observing  $(\mathbf{X}_{i},Y_i)$, as given by \@ref(eq:ber). Remember that $p$ depends on $\boldsymbol{\beta}$ due to \@ref(eq:eq-log).
 
 Usually, the log-likelihood is considered instead of the likelihood for stability reasons -- the estimates obtained are exactly the same and are
 \[
-\hat{\boldsymbol{\beta}}=\arg\max_{\boldsymbol{\beta}\in\mathbb{R}^{k+1}}\log l(\boldsymbol{\beta}).
+\hat{\boldsymbol{\beta}}=\arg\max_{\boldsymbol{\beta}\in\mathbb{R}^{k+1}}\log \text{lik}(\boldsymbol{\beta}).
 \]
 Unfortunately, due to the non-linearity of the optimization problem there are no explicit expressions for $\hat{\boldsymbol{\beta}}$. These have to be obtained numerically by means of an iterative procedure (the number of iterations required is printed in the output of `summary`). In low sample situations with perfect classification, the iterative procedure may not converge. 
 
@@ -724,7 +724,7 @@ For the regressions `y ~ x2` and `y ~ x3`, do the following:
 In linear regression we relied on least squares estimation, in other words, the minimization of the RSS. *Why do we need MLE in logistic regression and not least squares?* The answer is two-fold:
 
 1. **MLE is asymptotically optimal** when estimating unknown parameters in a model. That means that when the sample size $n$ is large, it is **guaranteed to perform better than any other estimation method**. Therefore, considering a least squares approach for logistic regression will result in suboptimal estimates.
-2. In **multiple linear regression**, due to the *normality* assumption, **MLE and least squares estimation coincide**. So MLE is hidden under the form of the least squares, which is a more intuitive estimation procedure. Indeed, the maximized likelihood $l(\hat{\boldsymbol{\beta}})$ in the linear model and the RSS are intimately related.
+2. In **multiple linear regression**, due to the *normality* assumption, **MLE and least squares estimation coincide**. So MLE is hidden under the form of the least squares, which is a more intuitive estimation procedure. Indeed, the maximized likelihood $\text{lik}(\hat{\boldsymbol{\beta}})$ in the linear model and the RSS are intimately related.
 ```
 
 ```{block, type = 'rmdinsight'}
@@ -933,7 +933,7 @@ Let's focus then on how to make predictions and compute CIs in practice with `pr
 - `type`. If equal to `type = "link"`, gives the predictions in the log-odds, this is, returns $\log\frac{\hat p(x_1,\ldots,x_k)}{1-\hat p(x_1,\ldots,x_k)}$. If `type = "response"`, gives the predictions in the response space, this is, returns $\hat p(x_1,\ldots,x_k)$. Recall that `type = "response"` is the equivalent of `type = "confidence"` for the linear model!
 - `se.fit = TRUE`. If we want the standard errors of the predictions, required for computing the CIs. 
 
-Since it is a bit cumbersome to compute by yourself the CIs, we can code the function `predictLogistic` instead of, see below.
+Since it is a bit cumbersome to compute by yourself the CIs, we can code the function `predictCIsLogistic` instead of, see below.
 ```{r, collapse = TRUE}
 # Data for which we want a prediction
 # Important! You have to name the column with the predictor name!
@@ -946,30 +946,30 @@ predict(nasa, newdata = newdata, type = "link")
 predict(nasa, newdata = newdata, type = "response")
 
 # Manually computing the predictions and CIs for the conditional probability
-predictLogistic <- function(object, newdata, level = 0.95) {
+predictCIsLogistic <- function(object, newdata, level = 0.95) {
   
-    # Compute predictions in the log-odds
-    pred <- predict(object = object, newdata = newdata, se.fit = TRUE)
-    
-    # CI in the log-odds
-    za <- qnorm(p = (1 - level) / 2)
-    lwr <- pred$fit + za * pred$se.fit
-    upr <- pred$fit - za * pred$se.fit
-    
-    # Transform to probabilities
-    fit <- 1 / (1 + exp(-pred$fit))
-    lwr <- 1 / (1 + exp(-lwr))
-    upr <- 1 / (1 + exp(-upr))
-    
-    # Return a matrix with column names "fit", "lwr" and "upr"
-    result <- cbind(fit, lwr, upr)
-    colnames(result) <- c("fit", "lwr", "upr")
-    return(result)
+  # Compute predictions in the log-odds
+  pred <- predict(object = object, newdata = newdata, se.fit = TRUE)
+  
+  # CI in the log-odds
+  za <- qnorm(p = (1 - level) / 2)
+  lwr <- pred$fit + za * pred$se.fit
+  upr <- pred$fit - za * pred$se.fit
+  
+  # Transform to probabilities
+  fit <- 1 / (1 + exp(-pred$fit))
+  lwr <- 1 / (1 + exp(-lwr))
+  upr <- 1 / (1 + exp(-upr))
+  
+  # Return a matrix with column names "fit", "lwr" and "upr"
+  result <- cbind(fit, lwr, upr)
+  colnames(result) <- c("fit", "lwr", "upr")
+  return(result)
  
 }
 
 # Simple call
-predictLogistic(nasa, newdata = newdata)
+predictCIsLogistic(nasa, newdata = newdata)
 # The CI is large because there is no data around temp = -0.6 and
 # that makes the prediction more variable (and also because we only 
 # have 23 observations)
@@ -986,90 +986,256 @@ For the `challenger` dataset, do the following:
 
 Finally, Figure \@ref(fig:logcipred) gives an interactive visualization of the CIs for the conditional probability in simple logistic regression. Their interpretation is very similar to the CIs for the conditional mean in the simple linear model, see Section \@ref(prediction) and Figure \@ref(fig:cipred).
 
-```{r, logcipred, echo = FALSE, fig.cap = 'Illustration of the CIs for the conditional probability in the simple logistic regression. ', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+```{r, logcipred, echo = FALSE, fig.cap = 'Illustration of the CIs for the conditional probability in the simple logistic regression.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
 knitr::include_app('https://egarpor.shinyapps.io/log-ci-prediction/', height = '1000px')
 ```
 
-<!--
 ## Deviance and model fit {#log-reg-deviance}
 
-Deviance
-**Predictive accuracy**
+The **deviance** is a key concept in logistic regression. Intuitively, it measures the **deviance of the fitted logistic model with respect to a perfect model for $\mathbb{P}[Y=1|X_1=x_1,\ldots,X_k=x_k]$**. This perfect model, known as the *saturated model*, denotes an abstract model that fits perfectly the sample, this is, the model such that
+\[
+\hat{\mathbb{P}}[Y=1|X_1=X_{i1},\ldots,X_k=X_{ik}]=Y_i,\quad i=1,\ldots,n.
+\]
+This model assigns probability $0$ or $1$ to $Y$ depending on the actual value of $Y_i$. To clarify this concept, Figure \@ref(fig:saturated) shows a saturated model and a fitted logistic regression.
+```{r, saturated, echo = FALSE, results = 'hide', out.width = '70%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Fitted logistc regression versus *a* saturated model (several are possible depending on the interpolation between points).'}
+set.seed(45671231)
+x <- runif(50, 0, 1)
+y <- rbinom(n = 50, size = 1, prob = 1/(1 + exp(-(1 - 6 * x))))
+mod <- glm(y ~ x, family = "binomial")
+xx <- seq(0, 1, l = 200)
+o <- order(x)
+plot(x, y, pch = 16)
+lines(x[o], y[o], col = 4, lwd = 2)
+lines(xx, 1/(1 + exp(-(mod$coefficients[1] + mod$coefficients[2] * xx))), col = 2, lwd = 2)
+legend("topright", legend = c("Fitted logistic model", "A saturated model"), lwd = 2, col = c(2, 4))
+```
+More precisely, the deviance is defined as the difference of likelihoods between the fitted model and the saturated model:
+\[
+D=-2\log\text{lik}(\hat{\boldsymbol{\beta}})+2\log\text{lik}(\text{saturated model}).
+\]
+Since the likelihood of the saturated model is exactly one^[The probability of the sample according to the saturated is one -- replace $p(\mathbf{X}_i)=Y_i$ in \@ref(eq:eq-lik).], then the deviance is simply another expression of the likelihood:
+\[
+D=-2\log\text{lik}(\hat{\boldsymbol{\beta}}).
+\]
+As as consequence, **the deviance is always larger or equal than zero, being zero only if the fit is perfect**. 
 
-*training dataset* and *test dataset*
+A benchmark for evaluating the magnitude of the deviance is the **null deviance**, 
+\[
+D_0=-2\log\text{lik}(\hat{\beta}_0),
+\]
+which is the deviance of the fitted model without any predictor, but just the intercept:
+\[
+Y|(X_1=x_1,\ldots,X_k=x_k)\sim \mathrm{Ber}(\mathrm{logistic}(\beta_0)).
+\]
+In this case, $\hat\beta_0=\mathrm{logit}(\frac{m}{n})=\log\frac{\frac{m}{n}}{1-\frac{m}{n}}$ where $m$ is the number of $1$'s in $Y_1,\ldots,Y_n$. 
 
-## Model selection {#log-reg-selection}
-
-likelihood
-BIC
-stepwise
-
-Now that we have added more light into the problem of having an excess of predictors, we turn the focus into **selecting the most adequate predictors for a logistic regression model**. This is a challenging task without a unique solution, and what is worse, without a method that is guaranteed to work in all the cases. However, there is a well-established procedure that usually gives good results: the *stepwise regression*. Its principle is to compare multiple linear regression models with different predictors (and, of course, with the same responses).
-
-Before introducing the method, we need to understand what is an **information criterion**. An information criterion balances the fitness of a model with the number of predictors employed. Hence, it determines objectively the best model as the one that *minimizes the information criterion*. Tho common criteria are the *Bayesian Information Criterion* (BIC) and the *Akaike Information Criterion* (AIC). Both are based on a **balance between the model fitness and its complexity**:
+The null deviance serves for comparing how much the model has improved by adding the predictors $X_1,\ldots,X_k$. This can be done by means of the **$R^2$ statistic**, which is a *generalization* of the determination coefficient in multiple linear regression:
 \begin{align}
-\text{BIC}(\text{model}) = \underbrace{-2\times\log(\text{lik(model)})}_{\text{Model fitness}} + \underbrace{\text{npar(model)}\times\log(n)}_{\text{Complexity}}, (\#eq:bic)
+R^2=1-\frac{D}{D_0}.(\#eq:log-r2)
 \end{align}
-where $\text{lik(model)}$ is the *likelihood of the model* (how well the model fits the data) and $\text{npar(model)}$ is the number of parameters of the model, $k+2$ in the case of a multiple linear regression model with $k$ predictors. The AIC replaces $\log(n)$ by $2$ in \@ref(eq:bic), so it **penalizes less complexer models**. This is one of the reasons why BIC is preferred by some practitioners for model comparison. Also, because is *consistent* in selecting the true model: if enough data is provided, the BIC is guaranteed to select the data-generating model among a list of candidate models.
+This global measure of fit is *similar* indeed shares some important properties with the  determination coefficient in linear regression:
 
-The BIC and AIC can be computed in `R` through the functions `BIC` and `AIC`. They take a model as the input.
-```{r, collapse=TRUE}
-# Load iris dataset
-data(iris)
+1. It is a quantity between $0$ and $1$.
+2. If the fit is perfect, then $D=0$ and $R^2=1$. If the predictors do not add anything to the regression, then $D=D_0$ and $R^2=0$.
 
-# Two models with different predictors
-mod1 <- lm(Petal.Length ~ Sepal.Width, data = iris)
-mod2 <- lm(Petal.Length ~ Sepal.Width + Petal.Width, data = iris)
+```{block, type='rmdinsight'}
+In logistic regression, $R^2$ does not have the same interpretation as in linear regression:
 
-# BICS
-BIC(mod1)
-BIC(mod2) # Smaller -> better
+- Is **not the percentage of variance explained by the logistic model**, but rather a ratio indicating how close is the fit to being perfect.
+- It is not related to any correlation coefficient.
 
-# Check the summaries
-summary(mod1)
-summary(mod2)
 ```
 
-Let's go back to the selection of predictors. If we have $k$ predictors, a naive procedure would be to check *all the possible* models that can be constructed with them and then select the best one in terms of BIC/AIC. The problem is that there are $2^{k+1}$ possible models! Fortunately, the `stepwise` procedure helps us navigating this ocean of models. The function takes as input a *model employing all the available predictors*.
+```{block2, type='rmdinsight'}
+The $R^2$ in \@ref(eq:log-r2) is valid for the whole family of *generalized linear models*, for which linear regression is a particular case. The connexion between \@ref(eq:log-r2) and the determination coefficient is given by the expressions of the deviance and null the deviance for the linear model:
+\[
+D=\mathrm{SSE}\text{ (or $D=\mathrm{RSS}$) and }D_0=\mathrm{SST}.
+\]
+```
+
+Let's see how these concepts are given by the `summary` function:
+```{r, collapse=TRUE}
+# Summary of model
+nasa <- glm(fail.field ~ temp, family = "binomial", data = challenger)
+summaryLog <- summary(nasa)
+summaryLog # 'Residual deviance' is the deviance; 'Null deviance' the null deviance
+
+# Null model - only intercept
+null <- glm(fail.field ~ 1, family = "binomial", data = challenger)
+summaryNull <- summary(null)
+summaryNull
+
+# Computation of the R^2 with a function - useful for repetitive computations
+r2Log <- function(model) {
+  
+  summaryLog <- summary(model)
+  1 - summaryLog$deviance / summaryLog$null.deviance
+  
+}
+
+# R^2
+r2Log(nasa)
+r2Log(null)
+```
+
+Another way of evaluating the model fit is its **predictive accuracy**. The motivation is that most of the times we are interested simply in *classifying*, for an observation of the predictors, the value of $Y$ as either $0$ or $1$, but not in predicting the value of $p(x_1,\ldots,x_k)=\mathbb{P}[Y=1|X_1=x_1,\ldots,X_k=x_k]$. The classification in prediction is simply done by the rule
+\[
+\hat{Y}=\left\{\begin{array}{ll}
+1,&\hat{p}(x_1,\ldots,x_k)>\frac{1}{2},\\
+0,&\hat{p}(x_1,\ldots,x_k)<\frac{1}{2}.
+\end{array}\right.
+\]
+The overall predictive accuracy can be summarized with the **hit matrix**
+
+| Reality \ Classified | $\hat Y=0$ | $\hat Y=1$ |
+|----------------------|------------|------------|
+| $Y=0$ | Correct$_{0}$ | Incorrect$_{01}$ |
+| $Y=1$ | Incorrect$_{10}$ | Correct$_{1}$ |
+
+and with the **hit ratio** $\frac{\text{Correct}_0+\text{Correct}_1}{n}$. The hit matrix is easily computed with the `table` function. The function, whenever called with two vectors, computes the cross-table between the two vectors.
+```{r, collapse=TRUE}
+# Fitted probabilities for Y = 1
+nasa$fitted.values
+
+# Classified Y's
+yHat <- nasa$fitted.values > 0.5
+
+# Hit matrix:
+# - 16 correctly classified as 0
+# - 4 correclty classified as 1
+# - 3 incorrectly classified as 0
+tab <- table(challenger$fail.field, yHat)
+tab
+
+# Hit ratio (ratio of correct classification)
+(16 + 4) / 23 # Manually
+sum(diag(tab)) / sum(tab) # Automatically
+```
+
+It is important to recall that the hit matrix will be always *biased towards unrealistc good classification rates* if it is computed in the same sample used for fitting the logistic model. A familiar analogy is asking to your mother (data) whether you (model) are a good-looking human being (good predictive accuracy) -- the answer will be highly positively biased. To get a fair hit matrix, the right approach is to split randomly the sample into two: a *training dataset*, used for fitting the model, and a *test dataset*, used for evaluating the predictive accuracy.
+
+## Model selection and multicollinearity {#log-reg-selection}
+
+The same discussion we did in Section \@ref(selection) is applicable to logistic regression with small changes:
+
+1. The **deviance** of the model (reciprocally the likelihood and the $R^2$) **always decreases** (increase) with the inclusion of more predictors -- no matter whether they are significant or not.
+2. The **excess of predictors** in the model is paid by a larger variability in the estimation of the model which results in less precise prediction. 
+3. **Multicollinearity** may hide significant variables, change the sign of them and result in an increase of the variability of the estimation at the expense of little improvement in .
+
+The use of information criteria, `stepwise` and `vif` allow to efficiently fight back these issues. Let's review them quickly from the perspective of logistic regression.
+
+First, remember that the BIC/AIC information criteria are based on a **balance between the model fitness, given by the likelihood, and its complexity**. In the logistic regression, the BIC is
+\begin{align*}
+\text{BIC}(\text{model}) &= -2\log \text{lik}(\hat{\boldsymbol{\beta}}) + (k + 1)\times\log n\\
+&=D+(k+1)\times \log n,
+\end{align*}
+where $\text{lik}(\hat{\boldsymbol{\beta}})$ is the *likelihood of the model*. The AIC replaces $\log n$ by $2$, hence penalizing less model complexity. The BIC and AIC can be computed in `R` through the functions `BIC` and `AIC`, and we can check manually that they match with its definition.
+```{r, collapse=TRUE}
+# Models
+nasa <- glm(fail.field ~ temp, family = "binomial", data = challenger)
+nasa2 <- glm(fail.field ~ temp + pres.field, family = "binomial", 
+             data = challenger)
+
+# nasa
+summary1 <- summary(nasa)
+summary1
+BIC(nasa)
+summary1$deviance + 2 * log(dim(challenger)[1])
+AIC(nasa)
+summary1$deviance + 2 * 2
+
+# nasa2
+summary2 <- summary(nasa2)
+summary2
+BIC(nasa2)
+summary2$deviance + 3 * log(dim(challenger)[1])
+AIC(nasa2)
+summary2$deviance + 3 * 2
+```
+Second, `stepwise` works analogously to the linear regression situation. Here is an illustration for a binary variable that measures whether a Boston suburb (`Boston` dataset) is wealth or not. The binary variable is `medv > 25`: it is `TRUE` (`1`) for suburbs with median house value larger than 25000\$) and `FALSE` (`0`) otherwise. The cutoff 25000\$ corresponds to the 25\% richest suburbs.
 
 ```{r, collapse=TRUE}
-# Explain NOx in Boston dataset
-mod <- lm(nox ~ ., data = Boston)
+# Boston dataset
+data(Boston)
 
-# With BIC
+# Model whether a suburb has a median house value larger than 25000$
+mod <- glm(I(medv > 25) ~ ., data = Boston, family = "binomial")
+summary(mod)
+r2Log(mod)
+
+# With BIC - wnds up with only the significant variables and a similar R^2
 modBIC <- stepwise(mod, trace = 0)
 summary(modBIC)
-
-# Different search directions
-stepwise(mod, trace = 0, direction = "forward")
-stepwise(mod, trace = 0, direction = "backward")
-
-
-# With AIC
-modAIC <- stepwise(mod, trace = 0, criterion = "AIC")
-summary(modAIC)
+r2Log(modBIC)
 ```
 
-The model selected by `stepwise` is a good starting point for further additions or deletions of predictors. For example, in `modAIC` we could remove `crim`.
+Finally, **multicollinearity can also be present in logistic regression**. Despite the nonlinear logistic curve, the predictors are combined linearly in \@ref(eq:eq-log). Due to this, if two or more predictors are highly correlated between them, the fit of the model will be compromised since the individual linear effect of each predictor is hard to disentangle from the rest of correlated predictors. 
 
-```{block, type='rmdtip'}
-When applying `stepwise` for BIC/AIC, different final models might be selected depending on the choice of `direction`. This is the interpretation:
+In addition to inspecting the correlation matrix and look for high correlations, a powerful tool to detect multicollinearity is the *generalized* Variance Inflation Factor (gVIF) of each coefficient $\hat\beta_j$. This is a *measure of how much the variability in the estimation has increased due to the addition of the predictor $X_j$*. The next rule of thumb gives direct insight into which predictors are multicollinear:
 
-- `"backward"`: starts from the full model, *removes* predictors sequentially.
-- `"forward"`: starts a simple model, *adds* predictors sequentially.
-- `"backward/forward"` (default) and `"forward/backward"`: combination of the above.
+- gVIF close to 1: absence of multicollinearity.
+- **gVIF larger than 5 or 10: problematic amount of multicollinearity**. Advised to remove the predictor with largest gVIF.
 
-The **advice** is to try several of these methods and retain the one with minimum BIC/AIC. Set `trace = 0` to omit lengthy outputs of information of the search procedure. 
+Here is an example illustrating the use of gVIF, through `vif`, in practice. It also shows also how the simple inspection of the covariance matrix is not enough for detecting collinearity in tricky situations.
+```{r, collapse=TRUE}
+# Create predictors with multicollinearity: x4 depends on the rest
+set.seed(45678)
+x1 <- rnorm(100)
+x2 <- 0.5 * x1 + rnorm(100)
+x3 <- 0.5 * x2 + rnorm(100)
+x4 <- -x1 + x2 + rnorm(100, sd = 0.25)
+
+# Response
+z <- 1 + 0.5 * x1 + 2 * x2 - 3 * x3 - x4
+y <- rbinom(n = 100, size = 1, prob = 1/(1 + exp(-z)))
+data <- data.frame(x1 = x1, x2 = x2, x3 = x3, x4 = x4, y = y)
+
+# Correlations - none seems suspicius
+cor(data)
+
+# Generalized variance inflation factors anormal: largest for x4, we remove it
+modMultiCo <- glm(y ~ x1 + x2 + x3 + x4, family = "binomial")
+vif(modMultiCo)
+
+# Without x4
+modClean <- glm(y ~ x1 + x2 + x3, family = "binomial")
+
+# Comparison
+summary(modMultiCo)
+summary(modClean)
+r2Log(modMultiCo)
+r2Log(modClean)
+
+# Genralized variance inflation factors normal
+vif(modClean)
 ```
 
+```{block, type = 'rmdexercise'}
+For the `Boston` dataset, do the following:
+
+1. Compute the hit matrix and hit ratio for the regression `I(medv > 25) ~ .` (hint: do `table(medv > 25, ...)`).
+2. Fit `I(medv > 25) ~ .` but now using only the first 300 observations of `Boston`, the *training dataset* (hint: use `subset`).
+3. For the previous model, predict the probability of the responses and classify them into `0` or `1` in the last 206 observations, the *testing dataset* (hint: use `predict` on that subset).
+4. Compute the hit matrix and hit ratio for the new predictions. Check that the hit ratio is smaller than the one in the first point. The hit ratio on the testing dataset, and not the first hit rate, is an estimator of how well the model is going to classify future observations. 
+
+```
+
+<!--
 ## Qualitative predictors {#log-reg-qualitative}
 
 Qualitative predictors (one level and more than two levels)
 
-*dummyfycation*
+*dummyfication*
+
+(one level and more than two levels)
+
+Extensions and interactions
 
 ## Nonlinear relationships {#log-reg-nonlinear}
 
 Assumptions: 3 plots everything fine, 3 plots wrong, focus on non-linearity on the logit
 
+```{r, log-reg-transf, echo = FALSE, fig.cap = 'Illustration of the choice of the polynomial transformation.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+knitr::include_app('https://egarpor.shinyapps.io/log-reg-non-lin/', height = '1000px')
+```
 -->

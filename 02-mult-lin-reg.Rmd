@@ -962,9 +962,9 @@ Now that we have added more light into the problem of having an excess of predic
 
 Before introducing the method, we need to understand what is an **information criterion**. An information criterion balances the fitness of a model with the number of predictors employed. Hence, it determines objectively the best model as the one that *minimizes the information criterion*. Tho common criteria are the *Bayesian Information Criterion* (BIC) and the *Akaike Information Criterion* (AIC). Both are based on a **balance between the model fitness and its complexity**:
 \begin{align}
-\text{BIC}(\text{model}) = \underbrace{-2\times\log(\text{lik(model)})}_{\text{Model fitness}} + \underbrace{\text{npar(model)}\times\log(n)}_{\text{Complexity}}, (\#eq:bic)
+\text{BIC}(\text{model}) = \underbrace{-2\log\text{lik(model)}}_{\text{Model fitness}} + \underbrace{\text{npar(model)}\times\log n}_{\text{Complexity}}, (\#eq:bic)
 \end{align}
-where $\text{lik(model)}$ is the *likelihood of the model* (how well the model fits the data) and $\text{npar(model)}$ is the number of parameters of the model, $k+2$ in the case of a multiple linear regression model with $k$ predictors. The **AIC** replaces $\log(n)$ by $2$ in \@ref(eq:bic), so it **penalizes less complexer models**. This is one of the reasons why BIC is preferred by some practitioners for model comparison. Also, because is *consistent* in selecting the true model: if enough data is provided, the BIC is guaranteed to select the data-generating model among a list of candidate models.
+where $\text{lik(model)}$ is the *likelihood of the model* (how well the model fits the data) and $\text{npar(model)}$ is the number of parameters of the model, $k+2$ in the case of a multiple linear regression model with $k$ predictors. The **AIC** replaces $\log n$ by $2$ in \@ref(eq:bic), so it **penalizes less complexer models**. This is one of the reasons why BIC is preferred by some practitioners for model comparison. Also, because is *consistent* in selecting the true model: if enough data is provided, the BIC is guaranteed to select the data-generating model among a list of candidate models.
 
 The BIC and AIC can be computed in `R` through the functions `BIC` and `AIC`. They take a model as the input.
 ```{r, collapse=TRUE}
@@ -975,7 +975,7 @@ data(iris)
 mod1 <- lm(Petal.Length ~ Sepal.Width, data = iris)
 mod2 <- lm(Petal.Length ~ Sepal.Width + Petal.Width, data = iris)
 
-# BICS
+# BICs
 BIC(mod1)
 BIC(mod2) # Smaller -> better
 
@@ -1110,7 +1110,7 @@ x4 <- -x1 + x2 + rnorm(100, sd = 0.25)
 y <- 1 + 0.5 * x1 + 2 * x2 - 3 * x3 - x4 + rnorm(100)
 data <- data.frame(x1 = x1, x2 = x2, x3 = x3, x4 = x4, y = y)
 
-# Correlations - none is seems suspicius
+# Correlations - none seems suspicius
 cor(data)
 ```
 
@@ -1118,7 +1118,7 @@ A better approach is to compute the **Variance Inflation Factor** (VIF) of each 
 \[
 \text{VIF}(\hat\beta_j)=\frac{1}{1-R^2_{X_j|X_{-j}}}
 \]
-where $R^2_{X_j|X_{-j}}$ is the $R^2$ from a regression of $X_j$ into the remaining predictors. This gives a direct insight into which predictors are multicollinear with the next rules-of-thumb:
+where $R^2_{X_j|X_{-j}}$ is the $R^2$ from a regression of $X_j$ into the remaining predictors. The next rule of thumb gives direct insight into which predictors are multicollinear:
 
 - VIF close to 1: absence of multicollinearity.
 - **VIF larger than 5 or 10: problematic amount of multicollinearity**. Advised to remove the predictor with largest VIF.
@@ -1142,11 +1142,12 @@ vif(modClean)
 
 <!--
 
-## Nonlinear relationships and qualitative predictors {#nonlinear}
+## Polynomial fitting {#mult-poly}
 
-Qualitative predictors (one level and more than two levels)
 
-Extensions and interactions
+```{r, mult-transf, echo = FALSE, fig.cap = 'Illustration of the choice of the polynomial transformation.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+knitr::include_app('https://egarpor.shinyapps.io/mult-non-lin/', height = '1000px')
+```
 
 -->
 

@@ -129,8 +129,9 @@ Regardless of your choice, at some point you will probably need to run the softw
 4. Open `R` (`'R x64 X.X.X'` in 64-bit Windows, `'R i386 X.X.X'` in 32-bit Windows and `'R.app'` in Mac OS X) and type:
 
     ```{r, eval = FALSE}
-    install.packages(c("Rcmdr", "RcmdrPlugin.TeachingDemos", "RcmdrPlugin.FactoMineR", 
-                       "RcmdrPlugin.KMggplot2"), dep = TRUE)
+    install.packages(c("Rcmdr", "RcmdrMisc", "RcmdrPlugin.TeachingDemos",
+                       "RcmdrPlugin.FactoMineR", "RcmdrPlugin.KMggplot2"), 
+                     dep = TRUE)
     ```
     
     Say `'Yes'` to the pop-ups regarding the installation of the personal library and choose the CRAN mirror (the server from which you will download packages). `'Spain (A Coruña) [https]'`, usually works fine -- try a different one if you experience problems.
