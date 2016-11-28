@@ -2,7 +2,7 @@
 title: "Lab notes for *Statistics for Social Sciences II: Multivariate Techniques*"
 subtitle: "BSc in International Studies and BSc in International Studies	&	Political	Science, Carlos III University of Madrid"
 author: "Eduardo García Portugués"
-date: "`r Sys.Date()`, v9.1"
+date: "`r Sys.Date()`, v10.0"
 knit: "bookdown::render_book"
 documentclass: book
 bibliography: SSS2-UC3M.bib
@@ -222,3 +222,4 @@ This is a handy list with a small description and download link for all the rele
 
 - `challenger.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/challenger.txt)). Contains data for 23 Space-Shuttle launches. The data consists of 23 shuttle flights. There are 8 variables. Among them: `temp`, the temperature in Celsius degrees at the time of launch, and `fail.field`	and `fail.nozzle`, indicators of whether there were an incidents in the O-rings of the field joints and nozzles of the solid rocket boosters. 
 
+- `eurodist.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/eurodist.txt)). Contains data for employement in 26 European countries. There are 9 variables, giving the percentage of employements in 9 sectors: `Agr` (Agriculture), `Min` (Mining), `Man` (Manufacture), `Pow` (Power), `Con` (Construction), `Ser` (Sevices), `Fin` (Finance), `Soc` (Social) and `Tra` (Transport). 

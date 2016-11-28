@@ -31,6 +31,13 @@
 }
 }
 
+@Book{Bartholomew2008,
+  Title                    = {Analysis of multivariate social science data},
+  Author                   = {Bartholomew, David J and Steele, Fiona and Galbraith, Jane and Moustaki, Irini},
+  Publisher                = {CRC press},
+  Year                     = {2008}
+}
+
 @Article{Dalal1989,
   Title                    = {Risk Analysis of the Space Shuttle: Pre-Challenger Prediction of Failure},
   Author                   = {Siddhartha R. Dalal and Edward B. Fowlkes and Bruce Hoadley},
@@ -61,6 +68,13 @@
   Year                     = {2011},
 
   Url                      = {http://www.europarl.europa.eu/thinktank/en/document.html?reference=IPOL-AFCO_NT(2011)432760}
+}
+
+@Book{Hand1993,
+  Title                    = {A handbook of small data sets},
+  Author                   = {Hand, David J and Daly, Fergus and McConway, K and Lunn, D and Ostrowski, E},
+  Publisher                = {CRC Press},
+  Year                     = {1993}
 }
 
 @Article{Harrison1978,
@@ -126,7 +140,7 @@
 }
 
 @Book{Roberts1986,
-  Title                    = {Report of the Presidential Commission on the Space, Shuttle Challenger Accident (Vols. 1 \& 2)},
+  Title                    = {Report of the Presidential Commission on the Space Shuttle Challenger Accident (Vols. 1 \& 2)},
   Author                   = {{Presidential Commission on the Space Shuttle Challenger Accident}},
   Year                     = {1986},
 

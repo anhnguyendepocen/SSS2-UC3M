@@ -1,0 +1,131 @@
+# Principal component analysis {#pca}
+
+Principal Component Analysis (PCA) is a powerful multivariate technique designed to summarize the most important features and relations of $k$ continuous random variables $X_1,\ldots,X_k$. PCA does *dimension reduction* of the original dataset by computing a new set of variables, the principal components $\text{PC}_1,\ldots \text{PC}_k$, which explain the same information as $X_1,\ldots,X_k$ but in an *ordered* way: $\text{PC}_1$ explains the most of the information and $\text{PC}_k$ the least.
+
+There is no response $Y$ or particular variable in PCA that deserves a particular attention -- all variables are treated equally.
+
+## Examples and applications
+
+### Case study: *Employement in European countries in the late 70s* 
+
+The purpose of this case study, motivated by @Hand1994 and @Bartholomew2008, is to reveal the structure of the job market and economy in different developed countries. The final aim is to have a meaningful and rigorous plot that is able to show the most important features of the countries in a concise form.
+
+The dataset `eurodist` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/eurodist.txt)) contains the data employed in this case study. It contains the percentage of workforce employed in 1979 in 9 industries for 26 European countries. The industries measured are:
+
+- Agriculture (`Agr`)
+- Mining (`Min`)
+- Manufacturing (`Man`)
+- Power supply industries `(Pow`)
+- Construction (`Con`)
+- Service industries (`Ser`)
+- Finance (`Fin`)
+- Social and personal services (`Soc`)
+- Transport and communications (`Tra`)
+
+If the dataset is imported into `R` and the case names are set as `Country` (important in order to have only continuous variables), then the data should look like this:
+```{r, eurotable, echo = FALSE, out.width = '90%', fig.align = 'center'}
+eurojob <- read.table(file = "datasets/eurojob.txt", header = TRUE)
+knitr::kable(
+  eurojob,
+  booktabs = TRUE,
+  longtable = TRUE,
+  caption = 'The `eurojob` dataset.'
+)
+row.names(eurojob) <- eurojob$Country
+eurojob$Country <- NULL
+```
+
+So far, we know how to compute summaries for *each variable*, and how to quantify and visualize relations between variables with the correlation matrix and the scatterplot matrix. But even for a moderate number of variables like this, their results are hard to process. 
+
+```{r, collapse= TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1}
+# Summary of the data - marginal
+summary(eurojob)
+
+# Correlation matrix
+cor(eurojob)
+
+# Scatterplot matrix
+scatterplotMatrix(eurojob, reg.line = lm, smooth = FALSE, spread = FALSE, 
+                  span = 0.5, ellipse = FALSE, levels = c(.5, .9), id.n = 0, 
+                  diagonal = 'histogram')
+```
+We definitely need a way of visualizing and quantifying the relations between variables for a moderate to large amount of variables. PCA will be a handy way. In a nutshell, what PCA does is:
+
+1. Takes the data for the variables $X_1,\ldots,X_k$.
+2. Using this data, loos for new variables $\text{PC}_1,\ldots \text{PC}_k$ such that:
+    - $\text{PC}_j$ is a **linear combination** of $X_1,\ldots,X_k$, $1\leq j\leq k$. This is, $\text{PC}_j=a_{1j}X_1+a_{2j}X_2+\ldots+a_{kj}X_k$.
+    - $\text{PC}_1,\ldots \text{PC}_k$ are **sorted decreasingly in terms of variance**. Hence $\text{PC}_j$ has more variance than $\text{PC}_{j+1}$, $1\leq j\leq k-1$,
+    - $\text{PC}_{j_1}$ and $\text{PC}_{j_2}$ are **uncorrelated**, for $j_1\neq j_2$.
+    - $\text{PC}_1,\ldots \text{PC}_k$ have the **same information**, measured in terms of **total variance**, as $X_1,\ldots,X_k$.
+3. Produces three key objects:
+    - **Variances of the PCs**. They are sorted decreasingly and give an idea of which PCs are contain most of the information of the data (the ones with more variance).
+    - **Weights of the variables in the PCs**. They give the interpretation of the PCs in terms of the original variables, as they are the coefficients of the linear combination. In `R`, they are called `loadings`.
+    - **Scores of the data in the PCs**: this is the data with $\text{PC}_1,\ldots \text{PC}_k$ variables instead of $X_1,\ldots,X_k$. The **scores are uncorrelated**. Useful for knowing which PCs have more effect on a certain observation.
+
+Hence, PCA rearranges our variables in an information-equivalent, but more convenient, layout where the variables are **sorted according to the ammount of information they are able to explain**. From this position, the next step is clear: **stick only with a limited number of PCs such that they explain most of the information** (e.g., 70\% of the total variance) and do *dimension reduction*. The effectiveness of PCA in practice varies from the structure present in the dataset. For example, in the case of highly dependent data, it could explain more than the 90\% of variability of a dataset with tens of variables with just two PCs.
+
+Let's see how to compute a full PCA in `R`.
+```{r, collapse = TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1}
+# The main function - use cor = TRUE to avoid scale distortions
+pca <- princomp(eurojob, cor = TRUE) 
+
+# What is inside?
+str(pca)
+
+# The standard deviation of each PC
+pca$sdev
+
+# Weights: the expression of the original variables in the PCs
+# E.g. Agr = -0.524 * PC1 + 0.213 * PC5 - 0.152 * PC6 + 0.806 * PC9
+# And also: PC1 = -0.524 * Agr + 0.347 * Man + 0256 * Pow + 0.325 * Con + ...
+# (Because the matrix is orthogonal, so the transpose is the inverse)
+pca$loadings
+
+# Scores of the data on the PCs: how is the data reexpressed into PCs
+head(pca$scores, 10)
+
+# Scatterplot matrix of the scores - they are uncorrelated!
+scatterplotMatrix(pca$scores, reg.line = lm, smooth = FALSE, spread = FALSE, 
+                  span = 0.5, ellipse = FALSE, levels = c(.5, .9), id.n = 0, 
+                  diagonal = 'histogram')
+
+# Means of the variables - before PCA the variables are centered
+pca$center
+
+# Rescalation done to each variable 
+# - if cor = FALSE (default), a vector of ones
+# - if cor = TRUE, a vector with the standard deviations of the variables
+pca$scale
+
+# Summary of the importance of components - the third row is key
+summary(pca)
+
+# Scree plot - the variance of each component
+plot(pca)
+
+# With connected lines - useful for looking for the "elbow"
+plot(pca, type = "l")
+
+# PC1 and PC2
+pca$loadings[, 1:2]
+```
+
+Based on the weights of the variables on the PCs, we can extract the following interpretation:
+
+- PC1 is roughly a linear combination of `Agr`, with *negative* weight, and (`Man`, `Pow`, `Con`, `Ser`, `Soc`, `Tra`), with *positive* weights. So it can be interpreted as an *indicator* of the kind of economy of the country: agricultural (negative values) or industrial (positive values).
+- PC2 has *negative* weights on (`Min`, `Man`, `Pow`, `Tra`) and *positive* weights in (`Ser`, `Fin`, `Soc`). It can be interpreted as the contrast between relatively large or small service sectors. So it tends to be negative in communist countries and positive in capitalist countries.
+
+```{block, type="rmdtip"}
+The interpretation of the PCs involves inspecting the weights and interpreting the linear combination of the original variables, which might be separting between two clear characteristics of the data
+```
+
+To conclude, let's see how we can represent our original data into a plot called *biplot* that summarizes all the analysis for two PCs.
+```{r, out.width = '90%', fig.align = 'center', fig.asp = 1}
+# Biplot - plot together the scores for PC1 and PC2 and the 
+# variables expressed in terms of PC1 and PC2
+biplot(pca)
+```
+
+ 
+
+
