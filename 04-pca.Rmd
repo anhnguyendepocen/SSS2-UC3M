@@ -2,7 +2,7 @@
 
 Principal Component Analysis (PCA) is a powerful multivariate technique designed to summarize the most important features and relations of $k$ continuous random variables $X_1,\ldots,X_k$. PCA does *dimension reduction* of the original dataset by computing a new set of variables, the principal components $\text{PC}_1,\ldots \text{PC}_k$, which explain the same information as $X_1,\ldots,X_k$ but in an *ordered* way: $\text{PC}_1$ explains the most of the information and $\text{PC}_k$ the least.
 
-There is no response $Y$ or particular variable in PCA that deserves a particular attention -- all variables are treated equally.
+There is *no response* $Y$ or particular variable in PCA that deserves a particular attention -- all variables are treated equally.
 
 ## Examples and applications
 
@@ -10,7 +10,7 @@ There is no response $Y$ or particular variable in PCA that deserves a particula
 
 The purpose of this case study, motivated by @Hand1994 and @Bartholomew2008, is to reveal the structure of the job market and economy in different developed countries. The final aim is to have a meaningful and rigorous plot that is able to show the most important features of the countries in a concise form.
 
-The dataset `eurodist` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/eurodist.txt)) contains the data employed in this case study. It contains the percentage of workforce employed in 1979 in 9 industries for 26 European countries. The industries measured are:
+The dataset `eurojob` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/eurojob.txt)) contains the data employed in this case study. It contains the percentage of workforce employed in 1979 in 9 industries for 26 European countries. The industries measured are:
 
 - Agriculture (`Agr`)
 - Mining (`Min`)

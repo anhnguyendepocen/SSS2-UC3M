@@ -2,6 +2,8 @@
 
 # Glossary of important `R` commands
 
+#### Basic usage {-}
+
 The following table contains important `R` commands for its **basic usage**.
 
 |             Description         |        `R`       |              Example                |
@@ -21,6 +23,7 @@ The following table contains important `R` commands for its **basic usage**.
 | ... list | `$`| `list(x = 2, y = 7:0)$y` |
 | **Summarize any object** | `summary` | `summary(1:10)` |
 
+#### Linear regression {-}
 
 The useful commands for performing **simple and multiple linear regression** are given in the next table. We assume that:
 
@@ -33,6 +36,7 @@ The useful commands for performing **simple and multiple linear regression** are
 - `model` is the result of applying `lm`
 - `newPreds` is a `data.frame` with variables named as the predictors
 - `num` is `1`, `2` or `3`
+- `level` is a number between 0 and 1
 
 |               Description          |              `R`             |
 |------------------------------------|------------------------------|
@@ -48,8 +52,77 @@ The useful commands for performing **simple and multiple linear regression** are
 | **CIs predicted mean** | `predict(model, newdata = new, interval = "confidence", level = level)` |
 | **CIs predicted response** | `predict(model, newdata = new, interval = "prediction", level = level)` |
 | **Variable selection** | `stepwise(model)` |
+| **Multicollinearity detection** | `vif(model)` |
 | **Compare model coefficients** | `compareCoefs(model1, model2)` |
 | **Diagnostic plots** | `plot(model, num)` |
+
+#### More basic usage {-}
+
+The following table contains important `R` commands for its **basic usage**. We assume the following dataset is available:
+```{r}
+data <- data.frame(x = 1:10, y = c(-1, 2, 3, 0, 3, 1, -1, 3, 0, -1))
+```
+
+
+|             Description         |        `R`       |              Example                |
+|---------------------------------|------------------|-------------------------------------|
+| **Data frame management** | | |
+| variable names | `names` | `names(data)` |
+| structure | `str` | `str(data)` |
+| dimensions | `dim` | `dim(data)` |
+| beginning | `head` | `head(data)` |
+| **Vector related functions** | | |
+| create sequences | `seq` | `seq(0, 1, l = 10); seq(0, 1, by = 0.25)` |
+| reverse a vector | `rev` | `rev(1:5)` |
+| length of a vectors | `length` | `length(1:5)` |
+| count repetitions in a vector | `table` | `table(c(1:5, 4:2))` |
+| **Logical conditions** | | |
+| relational operators | `<`, `<=`, `>`, `>=`, `==`, `!=` | `1 < 0; 1 <= 1; 2 > 1; 3 >= 4; 1 == 0; 1 != 0` | 
+| "and" | `&` | `TRUE & FALSE` |
+| "or" | `|` | `TRUE | FALSE` |
+| **Subsetting** | | |
+| vector | | `data$x[data$x > 0]; data$x[data$x > 2 & data$x < 8]` |
+| data frame| | `data[data$x > 0, ]; data[data$x < 2 | data$x > 8, ]` |
+| **Distributions** | | |
+| sampling | `rxxxx` | `rnorm(n = 10, mean = 0, sd = 1)` |
+| density | `dxxxx` | `x <- seq(-4, 4, l = 20); dnorm(x = x, mean = 0, sd = 1)` |
+| distribution | `pxxxx` | `x <- seq(-4, 4, l = 20); pnorm(q = x, mean = 0, sd = 1)` |
+| quantiles | `qxxxx` | `p <- seq(0.1, 0.9, l = 10); qnorm(p = p, mean = 0, sd = 1)` |
+| **Plotting** | | |
+| scatterplot | `plot` | `plot(rnorm(100), rnorm(100))` |
+| plot a curve | `plot`, `seq` | `x <- seq(0, 1, l = 100); plot(x, x^2, type = "l")` |
+| add lines | `lines`, | `x <- seq(0, 1, l = 100); plot(x, x^2 + rnorm(100, sd = 0.1)); lines(x, x^2, col = 2, lwd = 2)` |
+
+#### Logistic regression {-}
+
+The useful commands for performing **logistic regression** are given in the next table. We assume that:
+
+- `dataset` is an imported dataset such that
+    - `resp` is the response binary variable
+    - `pred1` is first predictor
+    - `pred2` is second predictor
+    - ...
+    - `predk` is the last predictor
+- `model` is the result of applying `glm`
+- `newPreds` is a `data.frame` with variables named as the predictors
+- `level` is a number between 0 and 1
+
+|               Description          |              `R`             |
+|------------------------------------|------------------------------|
+| **Fit a simple logistic model ** | `glm(response ~ pred1, data = dataset, family = "binomial")` |
+| **Fit a multiple logistic model... ** | |
+| ... on two predictors | `glm(response ~ pred1 + pred2, data = dataset, family = "binomial")` |
+| ... on all predictors | `glm(response ~ ., data = dataset, family = "binomial")` |
+| ... on all predictors except `pred1` | `glm(response ~ . - pred1, data = dataset, family = "binomial")` |
+|  **Summarize logistic model**: coefficient estimates, standard errors, Wald statistics (`'z value'`), $p$-values for $H_0:\beta_j=0$, Null deviance, deviance (`'Residual deviance'`), AIC, number of iterations | `summary(model)` |
+| **CIs coefficients** | `confint(model, level = level); confint.default(model, level = level)` |
+| **CIs exp-coefficients** | `exp(confint(model, level = level)); exp(confint.default(model, level = level))` |
+| **Prediction** | `predict(model, newdata = new, type = "response")` |
+| **CIs predicted probability** | Not inmediate. Use `predictCIsLogistic(model, newdata = new, level = level)` as seen in Section \@ref(log-reg-prediction) |
+| **Variable selection** | `stepwise(model)` |
+| **Multicollinearity detection** | `vif(model)` |
+| **$R^2$** | Not inmediate. Use `r2Log(model = model)` as seen in Section \@ref(log-reg-selection) |
+| **Hit matrix** | `table(data$resp, model$fitted.values > 0.5)` |
 
 # Group project
 

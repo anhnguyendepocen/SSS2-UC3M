@@ -922,18 +922,18 @@ by means of
 \[
 \hat p(x_1,\ldots,x_k)=\hat{\mathbb{P}}[Y=1|X_1=x_1,\ldots,X_k=x_k]=\frac{1}{1+e^{-(\hat\beta_0+\hat\beta_1x_1+\ldots+\hat\beta_kx_k)}}.
 \]
-From the perspective of the linear model, this is the same as predicting the **conditional mean** (not the conditional response) of the response, but this time this conditional mean is also a **conditional probability**. The prediction of the conditional response is not so interesting since it follows intermediate from $\hat p(x_1,\ldots,x_k)$:
+From the perspective of the linear model, this is the same as predicting the **conditional mean** (not the conditional response) of the response, but this time this conditional mean is also a **conditional probability**. The prediction of the conditional response is not so interesting since it follows inmmediately from $\hat p(x_1,\ldots,x_k)$:
 \[
-Y|(X_1=x_1,\ldots,X_k=x_k)=\left\{\begin{array}{ll}1,&\text{with probability }\hat p(x_1,\ldots,x_k),\\0,&\text{with probability }1-\hat p(x_1,\ldots,x_k).\end{array}\right.
+\hat{Y}|(X_1=x_1,\ldots,X_k=x_k)=\left\{\begin{array}{ll}1,&\text{with probability }\hat p(x_1,\ldots,x_k),\\0,&\text{with probability }1-\hat p(x_1,\ldots,x_k).\end{array}\right.
 \]
 As a consequence, we can predict $Y$ as $1$ if $\hat p(x_1,\ldots,x_k)>\frac{1}{2}$ and as $0$ if $\hat p(x_1,\ldots,x_k)<\frac{1}{2}$.
 
 Let's focus then on how to make predictions and compute CIs in practice with `predict`. Similarly to the linear model, the objects required for `predict` are: first, the output of `glm`; second, a `data.frame` containing the locations $\mathbf{x}=(x_1,\ldots,x_k)$ where we want to predict $p(x_1,\ldots,x_k)$. However, there are **two changes in the arguments** with respect to the use of `predict` for `lm`:
 
-- `type`. If equal to `type = "link"`, gives the predictions in the log-odds, this is, returns $\log\frac{\hat p(x_1,\ldots,x_k)}{1-\hat p(x_1,\ldots,x_k)}$. If `type = "response"`, gives the predictions in the response space, this is, returns $\hat p(x_1,\ldots,x_k)$. Recall that `type = "response"` is the equivalent of `type = "confidence"` for the linear model!
+- `type`. If equal to `type = "link"`, gives the predictions in the log-odds, this is, returns $\log\frac{\hat p(x_1,\ldots,x_k)}{1-\hat p(x_1,\ldots,x_k)}$. If `type = "response"`, gives the predictions in the probability space $[0,1]$, this is, returns $\hat p(x_1,\ldots,x_k)$. Recall that `type = "response"` is the equivalent of `type = "confidence"` for the linear model!
 - `se.fit = TRUE`. If we want the standard errors of the predictions, required for computing the CIs. 
 
-Since it is a bit cumbersome to compute by yourself the CIs, we can code the function `predictCIsLogistic` instead of, see below.
+Since it is a bit cumbersome to compute by yourself the CIs, we can code the function `predictCIsLogistic` so that it compute them automatically for you, see below.
 ```{r, collapse = TRUE}
 # Data for which we want a prediction
 # Important! You have to name the column with the predictor name!
@@ -945,7 +945,7 @@ predict(nasa, newdata = newdata, type = "link")
 # Prediction of the conditional probability
 predict(nasa, newdata = newdata, type = "response")
 
-# Manually computing the predictions and CIs for the conditional probability
+# Function for computing the predictions and CIs for the conditional probability
 predictCIsLogistic <- function(object, newdata, level = 0.95) {
   
   # Compute predictions in the log-odds
@@ -1013,7 +1013,7 @@ More precisely, the deviance is defined as the difference of likelihoods between
 \[
 D=-2\log\text{lik}(\hat{\boldsymbol{\beta}})+2\log\text{lik}(\text{saturated model}).
 \]
-Since the likelihood of the saturated model is exactly one^[The probability of the sample according to the saturated is one -- replace $p(\mathbf{X}_i)=Y_i$ in \@ref(eq:eq-lik).], then the deviance is simply another expression of the likelihood:
+Since the likelihood of the saturated model is exactly one^[The probability of the sample according to the saturated is $1$ -- replace $p(\mathbf{X}_i)=Y_i$ in \@ref(eq:eq-lik).], then the deviance is simply another expression of the likelihood:
 \[
 D=-2\log\text{lik}(\hat{\boldsymbol{\beta}}).
 \]
@@ -1023,7 +1023,7 @@ A benchmark for evaluating the magnitude of the deviance is the **null deviance*
 \[
 D_0=-2\log\text{lik}(\hat{\beta}_0),
 \]
-which is the deviance of the fitted model without any predictor, but just the intercept:
+which is the deviance of **the worst model, the one fitted without any predictor, and the perfect model*:
 \[
 Y|(X_1=x_1,\ldots,X_k=x_k)\sim \mathrm{Ber}(\mathrm{logistic}(\beta_0)).
 \]
@@ -1047,7 +1047,7 @@ In logistic regression, $R^2$ does not have the same interpretation as in linear
 ```
 
 ```{block2, type='rmdinsight'}
-The $R^2$ in \@ref(eq:log-r2) is valid for the whole family of *generalized linear models*, for which linear regression is a particular case. The connexion between \@ref(eq:log-r2) and the determination coefficient is given by the expressions of the deviance and null the deviance for the linear model:
+The $R^2$ in \@ref(eq:log-r2) is valid for the whole family of *generalized linear models*, for which linear and logistic regression are particular cases. The connexion between \@ref(eq:log-r2) and the determination coefficient is given by the expressions of the deviance and null the deviance for the linear model:
 \[
 D=\mathrm{SSE}\text{ (or $D=\mathrm{RSS}$) and }D_0=\mathrm{SST}.
 \]
@@ -1058,7 +1058,7 @@ Let's see how these concepts are given by the `summary` function:
 # Summary of model
 nasa <- glm(fail.field ~ temp, family = "binomial", data = challenger)
 summaryLog <- summary(nasa)
-summaryLog # 'Residual deviance' is the deviance; 'Null deviance' the null deviance
+summaryLog # 'Residual deviance' is the deviance; 'Null deviance' is the null deviance
 
 # Null model - only intercept
 null <- glm(fail.field ~ 1, family = "binomial", data = challenger)
@@ -1087,8 +1087,8 @@ Another way of evaluating the model fit is its **predictive accuracy**. The moti
 \]
 The overall predictive accuracy can be summarized with the **hit matrix**
 
-| Reality \ Classified | $\hat Y=0$ | $\hat Y=1$ |
-|----------------------|------------|------------|
+| Reality vs. classified | $\hat Y=0$ | $\hat Y=1$ |
+|----------|----------|----------|
 | $Y=0$ | Correct$_{0}$ | Incorrect$_{01}$ |
 | $Y=1$ | Incorrect$_{10}$ | Correct$_{1}$ |
 
