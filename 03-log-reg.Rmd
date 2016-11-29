@@ -668,7 +668,7 @@ text(-0.6, 1, labels = "Challenger", pos = 4)
 The exponentials of the estimated coefficients are:
 
 - $e^{\hat\beta_0}=1965.974$. This means that, *when the temperature is zero*, the fitted odds is $1965.974$, so the probability of having an incident ($Y=1$) is $1965.974$ times larger than the probability of not having an incident ($Y=0$). In other words, the probability of having an incident at temperature zero is $\frac{1965.974}{1965.974+1}=0.999$.
-- $e^{\hat\beta_1}=0.659$. This means that each Celsius degree increase in the temperature *reduce* the fitted odds by a factor of $0.659\approx\frac{2}{3}$. 
+- $e^{\hat\beta_1}=0.659$. This means that each Celsius degree increment in the temperature multiplies the fitted odds by a factor of $0.659\approx\frac{2}{3}$, hence reducing it.
 
 The estimation of $\boldsymbol{\beta}=(\beta_0,\beta_1,\ldots,\beta_k)$ from a sample $(\mathbf{X}_{1},Y_1),\ldots,(\mathbf{X}_{n},Y_n)$ is different than in linear regression. It is not based on minimizing the RSS but on the principle of *Maximum Likelihood Estimation* (MLE). MLE is based on the following *leitmotiv*: **what are the coefficients $\boldsymbol{\beta}$ that make the sample more likely?** Or in other words, **what coefficients make the model more probable, based on the sample**. Since $Y_i\sim \mathrm{Ber}(p(\mathbf{X}_i))$, $i=1,\ldots,n$, the likelihood of $\boldsymbol{\beta}$ is
 \begin{align}
@@ -835,7 +835,7 @@ where $z_{\alpha/2}$ is the *$\alpha/2$-upper quantile of the $\mathcal{N}(0,1)$
 \[
 e^{\left(\hat\beta_j\pm\hat{\mathrm{SE}}(\hat\beta_j)z_{\alpha/2}\right)}.
 \]
-Of course, this CI is **not** the same as $\left(e^{\hat\beta_j}\pm e^{\hat{\mathrm{SE}}(\hat\beta_j)z_{\alpha/2}}\right)$.
+Of course, this CI is **not** the same as $\left(e^{\hat\beta_j}\pm e^{\hat{\mathrm{SE}}(\hat\beta_j)z_{\alpha/2}}\right)$, which is not a CI for $e^{\hat\beta_j}$.
 
 Let's see how we can compute the CIs. We return to the `challenger` dataset, so in case you do not have it loaded, you can download it [here](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/challenger.txt). We analyse the CI for the coefficients of `fail.field ~ temp`.
 ```{r, collapse = TRUE}
@@ -851,7 +851,7 @@ confint(nasa, level = 0.90)
 # Confidence intervals for the factors affecting the odds
 exp(confint(nasa))
 ```
-In this example, the 95% confidence interval for $\beta_0$ is $(1.3364, 17.7834)$ and for $\beta_1$ is $(-0.9238 -0.1090)$. For $e^{\beta_0}$ and $e^{\beta_1}$, the CIs are $(3.8053, 5.2874\times10^7)$ and $(0.3070, 0.8967)$, respectively. Therefore, we can say with a 95% confidence that:
+In this example, the 95% confidence interval for $\beta_0$ is $(1.3364, 17.7834)$ and for $\beta_1$ is $(-0.9238, -0.1090)$. For $e^{\beta_0}$ and $e^{\beta_1}$, the CIs are $(3.8053, 5.2874\times10^7)$ and $(0.3070, 0.8967)$, respectively. Therefore, we can say with a 95% confidence that:
 
 - When `temp`=0, the probability of `fail.field`=1 is significantly lager than the probability of `fail.field`=0 (using the CI for $\beta_0$). Indeed, `fail.field`=1 is between $3.8053$ and $5.2874\times10^7$ more likely than `fail.field`=0 (using the CI for $e^{\beta_0}$).
 - `temp` has a significantly negative effect in the probability of `fail.field`=1  (using the CI for $\beta_1$). Indeed, each unit increase in `temp` produces a reduction of the odds of `fail.field` by a factor between $0.3070$ and $0.8967$ (using the CI for $e^{\beta_1}$).
@@ -922,7 +922,7 @@ by means of
 \[
 \hat p(x_1,\ldots,x_k)=\hat{\mathbb{P}}[Y=1|X_1=x_1,\ldots,X_k=x_k]=\frac{1}{1+e^{-(\hat\beta_0+\hat\beta_1x_1+\ldots+\hat\beta_kx_k)}}.
 \]
-From the perspective of the linear model, this is the same as predicting the **conditional mean** (not the conditional response) of the response, but this time this conditional mean is also a **conditional probability**. The prediction of the conditional response is not so interesting since it follows inmmediately from $\hat p(x_1,\ldots,x_k)$:
+From the perspective of the linear model, this is the same as predicting the **conditional mean** (not the conditional response) of the response, but this time this conditional mean is also a **conditional probability**. The prediction of the conditional response is not so interesting since it follows immediately from $\hat p(x_1,\ldots,x_k)$:
 \[
 \hat{Y}|(X_1=x_1,\ldots,X_k=x_k)=\left\{\begin{array}{ll}1,&\text{with probability }\hat p(x_1,\ldots,x_k),\\0,&\text{with probability }1-\hat p(x_1,\ldots,x_k).\end{array}\right.
 \]
