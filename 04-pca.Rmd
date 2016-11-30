@@ -52,7 +52,7 @@ scatterplotMatrix(eurojob, reg.line = lm, smooth = FALSE, spread = FALSE,
 We definitely need a way of visualizing and quantifying the relations between variables for a moderate to large amount of variables. PCA will be a handy way. In a nutshell, what PCA does is:
 
 1. Takes the data for the variables $X_1,\ldots,X_k$.
-2. Using this data, loos for new variables $\text{PC}_1,\ldots \text{PC}_k$ such that:
+2. Using this data, looks for new variables $\text{PC}_1,\ldots \text{PC}_k$ such that:
     - $\text{PC}_j$ is a **linear combination** of $X_1,\ldots,X_k$, $1\leq j\leq k$. This is, $\text{PC}_j=a_{1j}X_1+a_{2j}X_2+\ldots+a_{kj}X_k$.
     - $\text{PC}_1,\ldots \text{PC}_k$ are **sorted decreasingly in terms of variance**. Hence $\text{PC}_j$ has more variance than $\text{PC}_{j+1}$, $1\leq j\leq k-1$,
     - $\text{PC}_{j_1}$ and $\text{PC}_{j_2}$ are **uncorrelated**, for $j_1\neq j_2$.

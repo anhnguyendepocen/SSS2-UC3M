@@ -15,7 +15,7 @@ bookdown::gitbook:
       position: fixed
     edit:
       link: https://github.com/egarpor/SSS2-UC3M/edit/master/%s
-    download: [pdf, epub, mobi]
+    download: [pdf, epub]
     search: true
     fontsettings:
       theme: white

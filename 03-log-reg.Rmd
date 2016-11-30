@@ -506,9 +506,9 @@ Since we assume $\mathbb{E}[\varepsilon|X_1=x_1,\ldots,X_k=x_k]=0$, the previous
 \begin{align}
 \mathbb{E}[Y|X_1=x_1,\ldots,X_k=x_k]=\beta_0+\beta_1x_1+\ldots+\beta_kx_k,(\#eq:eq-lm)
 \end{align}
-where $\mathbb{E}[Y|X_1=x_1,\ldots,X_k=x_k]$ is the mean of $Y$ for a particular value of the set of predictors. As remarked in Section \@ref(assumptionsmult), it was a *necessary condition that $Y$ was continuous in order to satisfy the normality of the errors*, hence the linear model assumptions. Or in other words, **the linear model is designed for a contiuous response**.
+where $\mathbb{E}[Y|X_1=x_1,\ldots,X_k=x_k]$ is the mean of $Y$ for a particular value of the set of predictors. As remarked in Section \@ref(assumptionsmult), it was a *necessary condition that $Y$ was continuous in order to satisfy the normality of the errors*, hence the linear model assumptions. Or in other words, **the linear model is designed for a continuous response**.
 
-The situation when $Y$ is *discrete* (naturally ordered values; e.g. number of fails, number of students) or *categorical* (non-ordered categories; e.g. territorial divisions, ethnic groups) requires a special treatment. The simplest situation is when $Y$ is *binary* (or *dichotomic*): it can only take two values, codified for convenience as $0$ (success) and $1$ (failure). For example, in the Challenger case study we used `fail.field` as an *indicator* of whether "there was at least an incident with the O-rings" (`1` = yes, `0` = no). For binary variables there is no fundamental distinction between the treatment of discrete and categorical variables.
+The situation when $Y$ is *discrete* (naturally ordered values; e.g. number of fails, number of students) or *categorical* (non-ordered categories; e.g. territorial divisions, ethnic groups) requires a special treatment. The simplest situation is when $Y$ is *binary* (or *dichotomic*): it can only take two values, codified for convenience as $1$ (success) and $0$ (failure). For example, in the Challenger case study we used `fail.field` as an *indicator* of whether "there was at least an incident with the O-rings" (`1` = yes, `0` = no). For binary variables there is no fundamental distinction between the treatment of discrete and categorical variables.
 
 More formally, a binary variable is known as a *Bernoulli variable*, which is the simplest non-trivial random variable. We say that $Y\sim\mathrm{Ber}(p)$, $0\leq p\leq1$, if 
 \[
@@ -928,10 +928,10 @@ From the perspective of the linear model, this is the same as predicting the **c
 \]
 As a consequence, we can predict $Y$ as $1$ if $\hat p(x_1,\ldots,x_k)>\frac{1}{2}$ and as $0$ if $\hat p(x_1,\ldots,x_k)<\frac{1}{2}$.
 
-Let's focus then on how to make predictions and compute CIs in practice with `predict`. Similarly to the linear model, the objects required for `predict` are: first, the output of `glm`; second, a `data.frame` containing the locations $\mathbf{x}=(x_1,\ldots,x_k)$ where we want to predict $p(x_1,\ldots,x_k)$. However, there are **two changes in the arguments** with respect to the use of `predict` for `lm`:
+Let's focus then on how to make predictions and compute CIs in practice with `predict`. Similarly to the linear model, the objects required for `predict` are: first, the output of `glm`; second, a `data.frame` containing the locations $\mathbf{x}=(x_1,\ldots,x_k)$ where we want to predict $p(x_1,\ldots,x_k)$. However, there are **two differences** with respect to the use of `predict` for `lm`:
 
-- `type`. If equal to `type = "link"`, gives the predictions in the log-odds, this is, returns $\log\frac{\hat p(x_1,\ldots,x_k)}{1-\hat p(x_1,\ldots,x_k)}$. If `type = "response"`, gives the predictions in the probability space $[0,1]$, this is, returns $\hat p(x_1,\ldots,x_k)$. Recall that `type = "response"` is the equivalent of `type = "confidence"` for the linear model!
-- `se.fit = TRUE`. If we want the standard errors of the predictions, required for computing the CIs. 
+- The argument `type`. `type = "link"`, gives the predictions in the log-odds, this is, returns $\log\frac{\hat p(x_1,\ldots,x_k)}{1-\hat p(x_1,\ldots,x_k)}$. `type = "response"` gives the predictions in the probability space $[0,1]$, this is, returns $\hat p(x_1,\ldots,x_k)$. 
+- There is no `interval` argument for using `predict` for `glm`. That means that there is no easy way of computing CIs for prediction.
 
 Since it is a bit cumbersome to compute by yourself the CIs, we can code the function `predictCIsLogistic` so that it compute them automatically for you, see below.
 ```{r, collapse = TRUE}
@@ -997,7 +997,7 @@ The **deviance** is a key concept in logistic regression. Intuitively, it measur
 \hat{\mathbb{P}}[Y=1|X_1=X_{i1},\ldots,X_k=X_{ik}]=Y_i,\quad i=1,\ldots,n.
 \]
 This model assigns probability $0$ or $1$ to $Y$ depending on the actual value of $Y_i$. To clarify this concept, Figure \@ref(fig:saturated) shows a saturated model and a fitted logistic regression.
-```{r, saturated, echo = FALSE, results = 'hide', out.width = '70%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Fitted logistc regression versus *a* saturated model (several are possible depending on the interpolation between points).'}
+```{r, saturated, echo = FALSE, results = 'hide', out.width = '70%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Fitted logistc regression versus *a* saturated model (several are possible depending on the interpolation between points) and the null model.'}
 set.seed(45671231)
 x <- runif(50, 0, 1)
 y <- rbinom(n = 50, size = 1, prob = 1/(1 + exp(-(1 - 6 * x))))
@@ -1007,7 +1007,8 @@ o <- order(x)
 plot(x, y, pch = 16)
 lines(x[o], y[o], col = 4, lwd = 2)
 lines(xx, 1/(1 + exp(-(mod$coefficients[1] + mod$coefficients[2] * xx))), col = 2, lwd = 2)
-legend("topright", legend = c("Fitted logistic model", "A saturated model"), lwd = 2, col = c(2, 4))
+lines(xx, rep(sum(y == 1)/50, 200), col = 3, lwd = 3)
+legend("topright", legend = c("Fitted logistic model", "A saturated model", "The null model"), lwd = 2, col = c(2, 4, 3))
 ```
 More precisely, the deviance is defined as the difference of likelihoods between the fitted model and the saturated model:
 \[
@@ -1023,15 +1024,15 @@ A benchmark for evaluating the magnitude of the deviance is the **null deviance*
 \[
 D_0=-2\log\text{lik}(\hat{\beta}_0),
 \]
-which is the deviance of **the worst model, the one fitted without any predictor, and the perfect model*:
+which is the **deviance of the worst model, the one fitted without any predictor, and the perfect model**:
 \[
 Y|(X_1=x_1,\ldots,X_k=x_k)\sim \mathrm{Ber}(\mathrm{logistic}(\beta_0)).
 \]
-In this case, $\hat\beta_0=\mathrm{logit}(\frac{m}{n})=\log\frac{\frac{m}{n}}{1-\frac{m}{n}}$ where $m$ is the number of $1$'s in $Y_1,\ldots,Y_n$. 
+In this case, $\hat\beta_0=\mathrm{logit}(\frac{m}{n})=\log\frac{\frac{m}{n}}{1-\frac{m}{n}}$ where $m$ is the number of $1$'s in $Y_1,\ldots,Y_n$ (see Figure \@ref(fig:saturated)).
 
 The null deviance serves for comparing how much the model has improved by adding the predictors $X_1,\ldots,X_k$. This can be done by means of the **$R^2$ statistic**, which is a *generalization* of the determination coefficient in multiple linear regression:
 \begin{align}
-R^2=1-\frac{D}{D_0}.(\#eq:log-r2)
+R^2=1-\frac{D}{D_0}=1-\frac{\text{deviance(fitted logistic, saturated model)}}{\text{deviance(null model, saturated model)}}.(\#eq:log-r2)
 \end{align}
 This global measure of fit is *similar* indeed shares some important properties with the  determination coefficient in linear regression:
 
@@ -1041,7 +1042,7 @@ This global measure of fit is *similar* indeed shares some important properties 
 ```{block, type='rmdinsight'}
 In logistic regression, $R^2$ does not have the same interpretation as in linear regression:
 
-- Is **not the percentage of variance explained by the logistic model**, but rather a ratio indicating how close is the fit to being perfect.
+- Is **not the percentage of variance explained by the logistic model**, but rather a ratio indicating how close is the fit to being perfect or the worst.
 - It is not related to any correlation coefficient.
 
 ```
