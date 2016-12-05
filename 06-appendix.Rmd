@@ -25,7 +25,7 @@ The following table contains important `R` commands for its **basic usage**.
 
 #### Linear regression {-}
 
-The useful commands for performing **simple and multiple linear regression** are given in the next table. We assume that:
+Some useful commands for performing **simple and multiple linear regression** are given in the next table. We assume that:
 
 - `dataset` is an imported dataset such that
     - `resp` is the response variable
@@ -95,7 +95,7 @@ data <- data.frame(x = 1:10, y = c(-1, 2, 3, 0, 3, 1, -1, 3, 0, -1))
 
 #### Logistic regression {-}
 
-The useful commands for performing **logistic regression** are given in the next table. We assume that:
+Some useful commands for performing **logistic regression** are given in the next table. We assume that:
 
 - `dataset` is an imported dataset such that
     - `resp` is the response binary variable
@@ -109,7 +109,7 @@ The useful commands for performing **logistic regression** are given in the next
 
 |               Description          |              `R`             |
 |------------------------------------|------------------------------|
-| **Fit a simple logistic model ** | `glm(response ~ pred1, data = dataset, family = "binomial")` |
+| **Fit a simple logistic model** | `glm(response ~ pred1, data = dataset, family = "binomial")` |
 | **Fit a multiple logistic model... ** | |
 | ... on two predictors | `glm(response ~ pred1 + pred2, data = dataset, family = "binomial")` |
 | ... on all predictors | `glm(response ~ ., data = dataset, family = "binomial")` |
@@ -118,81 +118,240 @@ The useful commands for performing **logistic regression** are given in the next
 | **CIs coefficients** | `confint(model, level = level); confint.default(model, level = level)` |
 | **CIs exp-coefficients** | `exp(confint(model, level = level)); exp(confint.default(model, level = level))` |
 | **Prediction** | `predict(model, newdata = new, type = "response")` |
-| **CIs predicted probability** | Not inmediate. Use `predictCIsLogistic(model, newdata = new, level = level)` as seen in Section \@ref(log-reg-prediction) |
+| **CIs predicted probability** | Not immediate. Use `predictCIsLogistic(model, newdata = new, level = level)` as seen in Section \@ref(log-reg-prediction) |
 | **Variable selection** | `stepwise(model)` |
 | **Multicollinearity detection** | `vif(model)` |
-| **$R^2$** | Not inmediate. Use `r2Log(model = model)` as seen in Section \@ref(log-reg-selection) |
+| **$R^2$** | Not immediate. Use `r2Log(model = model)` as seen in Section \@ref(log-reg-selection) |
 | **Hit matrix** | `table(data$resp, model$fitted.values > 0.5)` |
 
-# Group project
+#### Principal Component Analysis {-}
 
-#### Groups {-}
+Some useful commands for performing **logistic regression** are given in the next table. We assume that:
 
-You will team up in groups of 3 to 5 members. It is up to you to form the groups based on your grade expectations, affinity, complementary skills, etc. You must communicate the group compositions **no later than November the 30th** by a (single) email to <edgarcia@est-econ.uc3m.es> detailing the members of the group and, if you have it, a preliminary description about the topic of the project (~ 3 lines).
+- `dataset` is an imported dataset with several **non-categorical variables** (the variables must be continuous or discrete).
+- `pca` is a PCA object, this is, the output of `princomp`.
 
-#### Aim of the project {-}
+|               Description          |              `R`             |
+|------------------------------------|------------------------------|
+| **Compute a PCA... ** | |
+| ... unnormalized (if variables have the same scale) | `princomp(dataset)` |
+| ... normalized  (if variables have different scales) | `princomp(dataset, cor = TRUE)` |
+|  **Summarize PCA**: standard deviation explained by *each* PC, proportion of variance explained by *each* PC, cumulative proportion of variance explained *up* to a given component | `summary(pca)` |
+| **Weights** | `pca$loadings` |
+| **Scores** | `pca$scores` |
+| **Standard deviations of the PCs** | `pca$sdev` |
+| **Means of the original variables** | `pca$center` |
+| **Screeplot** | `plot(pca); plot(pca, type = "l")` |
+| **Biplot** | `biplot(pca)` |
 
-You will analyse a real dataset of your choice using the statistical methodology that we have seen in the lessons and labs. The purpose is to demonstrate that you know how to apply and interpret some of the studied statistical techniques (such as simple/multiple linear regression, logistic regression, or any other methods covered in the course) in a real-case scenario that is appealing for you.
+# Use of qualitative predictors in regression {#qualitative-predictors}
 
-#### Structure of the report {-}
+An important situation not covered in Chapters \@ref(simp), \@ref(mult) and \@ref(log-reg) is how to deal with *qualitative*, and not *quantitative*, predictors. Qualitative predictors, also known as *categorical* variables or, in `R`'s terminology, *factors*, are ubiquitous in social sciences. Dealing with them requires some care and proper understanding of how these variables are represented in statistical softwares such as `R`.
 
-Use the following *mandatory* structure when writing your report:
+#### Two levels {-}
 
-0. **Abstract**. Provide a concise summary of the project. It must not exceed 250 words.
-1. **Introduction**. State what is the problem to be studied. Provide some context, the question(s) that you want to address, a motivation of its importance, references, etc. Remember how we introduced the case studies covered in the course as a template (but you will need to elaborate more).
-2. **Statistical analysis**. Make use of some of the aforementioned statistical techniques, the ones that are more convenient to your particular case study. You can choose between covering several at a more superficial level, or one or two in more depth. Justify their adequacy and obtain analyses, explaining how you did it, in the form of plots and summaries. Provide a critical discussion about the outputs and give insights about them.
-3. **Conclusions**. Summary of what was addressed in the project and of the most important conclusions. Takeaway messages. The conclusions are not required to be spectacular, but *fair and honest* in terms of what you discovered.
-4. **References**. Refer to the sources of information that you have employed (for the data, for information on the data, for the statistical analyses, etc).
+The simplest case is the situation with **two levels**, this is, the binary case covered in logistic regression. There we saw that a binary variable $C$ with two levels (for example, *a* and *b*) could be represented as
+\[
+D=\left\{\begin{array}{ll}1,&\text{if }C=b,\\0,& \text{if }C=a.\end{array}\right.
+\]
+$D$ now is a *dummy variable*: it **codifies with zeros and ones the two possible levels of the categorical variable**. An example of $C$ could be *gender*, which has levels *male* and *female*. The dummy variable associated is $D=0$ if the gender is male and $D=1$ if the gender is female. 
 
-*Mandatory* format guidelines:
+The advantage of this *dummification* is its interpretability in regression models. Since level *a* corresponds to $0$, it can be seen as the *reference level* to which level *b* is compared. This is the key point in dummification: set one level as the reference and codify the rest as departures from them with ones.
 
-- Structure: title, authors, abstract, first section, second section and so on. Like [this](http://cje.oxfordjournals.org/content/38/2/257.full.pdf+html). Do not use a cover.
-- Font size: 12 points.
-- Spacing: single space, single column.
-- Length limit: less than 5000 words **and** 15 pages. You are **not** required to make use of all the space.
+The previous interpretation translates easily to regression models. Assume that the dummy variable $D$ is available together with other predictors $X_1,\ldots,X_k$. Then:
 
-#### Grading {-}
+- **Linear model**
+\[
+\mathbb{E}[Y|X_1=x_1,\ldots,X_k=x_k,D=d]=\beta_0+\beta_1X_1+\ldots+\beta_kX_k+\beta_{k+1}D.
+\]
+The coefficient associated to $D$ is easily interpretable. $\beta_{k+1}$ is the increment in mean of $Y$ associated to changing $D=0$ (reference) to $D=1$, while the rest of the predictors are fixed. Or in other words, $\beta_{k+1}$ is the increment in mean of $Y$ associated to changing of the level of the categorical variable from *a* to *b*.
 
-All students in a group will be graded evenly. Take this into account when forming the group. The grading is on a scale of 0-10 (plus 2 bonus points) and will be performed according to the following breakdown:
+- **Logistic model**
+\[
+\mathbb{P}[Y=1|X_1=x_1,\ldots,X_k=x_k,D=d]=\text{logisitc}(\beta_0+\beta_1X_1+\ldots+\beta_kX_k+\beta_{k+1}D).
+\]
+We have two interpretations of $\beta_{k+1}$, either in terms of log-odds or odds:
 
-- **Originality** of the problem studied and data acquisition process (up to 2 points).
-- **Statistical analyses presented** and their depth (up to 3 points). At least two different techniques should be employed (simple and multiple linear regression count as different, but the use of other techniques as well is mostly encouraged). Graded depending on their adequacy to the problem studied and the evidence you demonstrate about your knowledge of them.
-- Accuracy of the **interpretation** of the analyses (up to 2 points). Graded depending on the detail and rigor of the insights you elaborate from the statistical analyses.
-- **Reproducibility** of the study (1.5 point). Awarded if the code for reproducing the study, as well as the data, is provided in a ready-to-use way (e.g. the outputs from `R Commander`'s report mode along with the data).
-- **Presentation** of the report (1.5 point). This involves the correct usage of English, the readability, the conciseness and the overall presentation quality.
-- **Excellence** (2 bonus points). Awarded for creativity of the analysis,  use of advanced statistical tools, use of points briefly covered in lessons/labs, advanced insights into the methods, completeness of the report, use of advanced presentation tools, etc. Only awarded if the sum of regular points is above 7.5.
+    - $\beta_{k+1}$ is the *additive* increment in log-odds of $Y$ associated to changing of the level of the categorical variable from *a* (reference, $D=0$) to *b* ($D=1$).
+    - $e^{\beta_{k+1}}$ is the *multiplicative* increment in odds of $Y$ associated to changing of the level of the categorical variable from *a* (reference, $D=0$) to *b* ($D=1$).
 
-The ratio "quality project"/"group size" might be taken into account in extreme cases (e.g. poor report written by 5 people, extremely good report written by 3 people).
+`R` does the dummification automatically (translates a categorical variable $C$ into its dummy version $D$) if it detects that a factor variable is present in the regression model. Let's see an example of this in linear and logistic regression.
+```{r, collapse=TRUE}
+# Load the Boston dataset
+library(MASS)
+data(Boston)
 
-#### Academic fraud {-}
+# Structure of the data
+str(Boston)
+# chas is a dummy variable measuring if the suburb is close to the river (1) 
+# or not (0). In this case it is not codifyed as a factor but as a 0 or 1.
 
-Evidences of academic fraud will have serious consequences, such as a zero grade for the whole group and the reporting of the fraud detection to the pertinent academic authorities. Academic fraud includes (but is not limited to) plagiarism, use of sources without proper credit, project outsourcing and the use of external tutoring not mentioned explicitly.
+# Summary of a linear model 
+mod <- lm(medv ~ chas + crim, data = Boston)
+summary(mod)
+# The coefficient associated to chas is 5.57772. That means that if the suburb
+# is close to the river, the mean of medv increases in 5.57772 units.
+# chas is significant (the presence of the river adds a valuable information 
+# for explaining medv)
 
-#### Tips {-}
+# Create a binary response (1 expensive suburb, 0 inexpensive)
+Boston$expensive <- Boston$medv > 25
 
-- Think about a topic that could be reused for other subjects, or take inspiration from previous projects you did. In that way, this project could serve as the *quantification* of another subject's project. If you do this, **add an explicit mention** in the report.
-- Data sources. Here are some useful data sources:
-	* A [list of all the datasets included in `R`](http://vincentarelbundock.github.io/Rdatasets/datasets.html). See [Section 2.9.1](https://bookdown.org/egarpor/SSS2-UC3M/exercises-and-case-studies.html) of lab notes for how to load them.
-	* [Some datasets employed in the course](https://bookdown.org/egarpor/SSS2-UC3M/datasets-for-the-course.html).
-	* [The World Bank](http://data.worldbank.org) contains a huge collection of economic and sociological variables for countries and regions, for long periods of time.
-	* [SIPRI](https://www.sipri.org/) contains several databases about international transfers of arms.
-	* The [Global Health Observatory](http://www.who.int/gho/database/en/) is the World Health Organization's main health statistics repository.
-	* Sport statistics (teams, players) are a great source if you like sports. Sport webpages usually have a section on statistics.
-- Inspiration for the project's topic.
-	* The case studies covered (and left as exercises) in the lab notes might serve as a good starting point for defining a project.
-	* [The Economist](http://www.economist.com/) usually has some good and up-to-date political/economical analyses that could serve as motivation.
-	* Try to quantify the impact in society of certain laws (traffic, education, gender violence, etc).
-	* Is there a continuous variable that you would like to predict from others? (linear regression)
-	* Is there a binary variable that you would like to predict from others? (logistic regression)
-	* Would you like to assess which combination of variables explain most of the variability of your data, so you can visualize it in 2D or 3D? (principal component analysis)
-	* Would you like aggregate individuals according to several characteristics in order to classify them? (clustering)
-- Use `R Commander`'s report mode (Appendix \@ref(reporting-with-r-and-r-commander)) to simplify the generation of graphs and summaries directly from the statistical analysis. Use that code to make the analysis reproducible.
-- Make use of office hours before it is too late.
-- Pro-tip: if you come to my office with a printed draft of the project, I can provide you some quick feedback on what could be improved.
+# Summary of a logistic model
+mod <- glm(expensive ~ chas + crim, data = Boston, family = "binomial")
+summary(mod)
+# The coefficient associated to chas is 1.04165. That means that if the suburb
+# is close to the river, the log-odds of expensive increases by 1.04165.
+# Alternatively, the odds of expensive increases by a factor of exp(1.04165).
+# chas is significant (the presence of the river adds a valuable information 
+# for explaining medv)
+```
 
-#### Deadline {-}
+#### More than two levels {-}
 
-Send the reports before December the 23rd at 23:59 through Aula Global. **Not by email**. Reports received after the deadline will not be evaluated.
+Let's see now the case with **more than two levels**, for example, a categorical variable $C$ with levels *a*, *b* and *c*. If we take *a* as the reference level, this variable can be represented by *two* dummy variables:
+\[
+D_1=\left\{\begin{array}{ll}1,&\text{if }C=b,\\0,& \text{if }C\neq b\end{array}\right.
+\]
+and
+\[
+D_2=\left\{\begin{array}{ll}1,&\text{if }C=c,\\0,& \text{if }C\neq c.\end{array}\right.
+\]
+Then $C=a$ is represented by $D_1=D_2=0$, $C=b$ is represented by $D_1=1,D_2=0$ and $C=c$ is represented by $D_1=0,D_2=1$. The interpretation of the regression models with the presence of $D_1$ and $D_2$ is the very similar to the one before. For example, for the linear model, the coefficient associated to $D_1$ gives the increment in mean of $Y$ when the category of $C$ changes from *a* to *b*. The coefficient for $D_2$ gives the increment in mean of $Y$ when it changes from *a* to *c*.
+
+In general, if we have a categorical variable with $J$ levels, then the number of dummy variables required is $J-1$. Again, `R` does the dummification automatically for you if it detects that a factor variable is present in the regression model. 
+```{r, collapse=TRUE}
+# Load dataset - factors in the last column
+data(iris)
+summary(iris)
+
+# Summary of a linear model 
+mod1 <- lm(Sepal.Length ~ ., data = iris)
+summary(mod1)
+# Speciesversicolor (D1) coefficient: -0.72356. The average increment of 
+# Sepal.Length when the species is versicolor instead of setosa (reference).
+# Speciesvirginica (D2) coefficient: -1.02350. The average increment of 
+# Sepal.Length when the species is virginica instead of setosa (reference).
+# Both dummy variables are significant
+
+# How to set a different level as reference (versicolor)
+iris$Species <- relevel(iris$Species, ref = "versicolor")
+
+# Same estimates except for the dummy coefficients
+mod2 <- lm(Sepal.Length ~ ., data = iris)
+summary(mod2)
+# Speciessetosa (D1) coefficient: 0.72356. The average increment of 
+# Sepal.Length when the species is setosa instead of versicolor (reference).
+# Speciesvirginica (D2) coefficient: -0.29994.s The average increment of 
+# Sepal.Length when the species is virginica instead of versicolor (reference).
+# Both dummy variables are significant
+
+# Coefficients of the model
+confint(mod2)
+# The coefficients of Speciesversicolor and Speciesvirginica are significantly 
+# negative. Therefore, there are significant 
+```
+
+```{block, type='rmdcaution'}
+**Do not codify a categorical variable as a discrete variable**. This constitutes a major methodological fail that will flaw the subsequent statistical analysis. 
+
+For example if you have a categorical variable `party` with levels `partyA`, `partyB` and `partyC`, do not encode it as a discrete variable taking the values `1`, `2` and `3`, respectively. If you do so:
+
+- You assume implicitly an order in the levels of `party`, since `partyA` is closer to `partyB` than to `partyC`.
+- You assume implicitly that `partyC` is three times larger than `partyA`.
+- The codification is completely arbitrary -- why not considering `1`, `1.5` and `1.75` instead of?
+
+The right way of dealing with categorical variables in regression is to set the variable as a factor and let `R` do internally the dummification.
+```
+
+# Multinomial logistic regression
+
+The logistic model can be generalized to categorical variables $Y$ with more than two possible levels, namely $\{1,\ldots,J\}$. Given the predictors $X_1,\ldots,X_k$,  *multinomial logistic regression* models the probability of each level $j$ of $Y$ by 
+\begin{align}
+p_j(\mathbf{x})=\mathbb{P}[Y=j|X_1=x_1,\ldots,X_k=x_k]=\frac{e^{\beta_{0j}+\beta_{1j}X_1+\ldots+\beta_{kj}X_k}}{1+\sum_{l=1}^{J-1}e^{\beta_{0l}+\beta_{1l}X_1+\ldots+\beta_{kl}X_k}} (\#eq:multinom-1)
+\end{align}
+for $j=1,\ldots,J-1$ and (for the last level $J$)
+\begin{align}
+p_J(\mathbf{x})=\mathbb{P}[Y=J|X_1=x_1,\ldots,X_k=x_k]=\frac{1}{1+\sum_{l=1}^{J-1}e^{\beta_{0l}+\beta_{1l}X_1+\ldots+\beta_{kl}X_k}}. (\#eq:multinom-2)
+\end{align}
+Note that \@ref(eq:multinom-1) and \@ref(eq:multinom-2) implies that $\sum_{j=1}^J p_j(\mathbf{x})=1$ and that there are $(J-1)\times(k+1)$ coefficients ($(J-1)$ intercepts and $(J-1)\times k$ slopes). Also, \@ref(eq:multinom-2) reveals that the last level, $J$, is given a different treatment. This is because it is the *reference level* (it could be a different one, but is tradition to choose the last one).
+
+The multinomial logistic model has an interesting interpretation in terms of logistic regressions. Taking the quotient between \@ref(eq:multinom-1) and \@ref(eq:multinom-2) gives
+\begin{align}
+\frac{p_j(\mathbf{x})}{p_J(\mathbf{x})}=e^{\beta_{0j}+\beta_{1j}X_1+\ldots+\beta_{kj}X_k}(\#eq:multinom-4)
+\end{align}
+for $j=1,\ldots,J-1$. Therefore, applying a logarithm to both sides we have:
+\begin{align}
+\log\frac{p_j(\mathbf{x})}{p_J(\mathbf{x})}=\beta_{0j}+\beta_{1j}X_1+\ldots+\beta_{kj}X_k.(\#eq:multinom-3)
+\end{align}
+This equation is indeed very similar to \@ref(eq:eq-odds-log2). If $J=2$, is the same up to a change in the codes for the levels: the logistic regression giving the probability of $Y=1$ versus $Y=2$. On the LHS of \@ref(eq:multinom-3) we have the log of the ratio of two probabilities and on the RHS a linear combination of the predictors. **If the probabilities on the LHS were complementary** (if they add one), then we would have a **log-odds and hence a logistic regression** for $Y$. This is not the situation, but is close: instead of odds and log-odds, we have *ratios* and *log-ratios* of non complementary probabilities. Also, it gives a good insight on what the multinomial logistic regression is: **a set of $J-1$ independent "logistic regressions" for the probability of $Y=j$ versus the probability of the reference $Y=J$**.
+
+Equation \@ref(eq:multinom-4) gives also interpretation on the coefficients of the model since
+\[
+p_j(\mathbf{x})=e^{\beta_{0j}+\beta_{1j}X_1+\ldots+\beta_{kj}X_k}p_J(\mathbf{x}).
+\]
+Therefore:
+
+- $e^{\beta_{0j}}$: is the ratio between $p_j(\mathbf{0})/p_J(\mathbf{0})$, the probabilities of $Y=j$ and $Y=J$ when $X_1=\ldots=X_k=0$. If $e^{\beta_{0j}}>1$ (equivalently, $\beta_{0j}>0$), then $Y=j$ is more likely than $Y=J$. If $e^{\beta_{0j}}<1$ ($\beta_{0j}<0$), then $Y=j$ is less likely than $Y=J$.
+- $e^{\beta_{lj}}$, $l\geq1$: is the **multiplicative** increment of the ratio between $p_j(\mathbf{x})/p_J(\mathbf{x})$ for an increment of one unit in $X_l=x_l$, provided that the remaining variables $X_1,\ldots,X_{l-1},X_{l+1},\ldots,X_k$ *do not change*. If $e^{\beta_{lj}}>1$ (equivalently, $\beta_{lj}>0$), then $Y=j$ becomes more likely than $Y=J$ for each increment in $X_j$. If $e^{\beta_{lj}}<1$ ($\beta_{lj}<0$), then $Y=j$ becomes less likely than $Y=J$.
+
+The following code illustrates how to compute a basic multinomial regression in `R`.
+```{r, collapse=TRUE}
+# Package included in R that implements multinomial regression
+library(nnet)
+
+# Data from the voting intentions in the 1988 Chilean national plebiscite
+data(Chile)
+summary(Chile)
+# vote is a factor with levels A (abstention), N (against Pinochet), 
+# U (undecided), Y (for Pinochet)
+
+# Fit of the model done by multinom: Response ~ Predictors
+# It is an iterative procedure (maxit sets the maximum number of iterations)
+# Read the documentation in ?multinom for more information
+mod1 <- multinom(vote ~ age + education + statusquo, data = Chile, 
+                 maxit = 1e3)
+
+# Each row of coefficients give the coefficients of the logistic
+# regression of a level versus the reference level (A)
+summary(mod1)
+ 
+# Set a different level as the reference (N) for easening interpretations
+Chile$vote <- relevel(Chile$vote, ref = "N")
+mod2 <- multinom(vote ~ age + education + statusquo, data = Chile, 
+                 maxit = 1e3)
+summary(mod2)
+exp(coef(mod2))
+# Some highlights:
+# - intercepts do not have too much interpretation (correspond to age = 0). 
+#   A possible solution is to center age by its mean (so age = 0 would 
+#   represent the mean of the ages)
+# - both age and statusquo increase the probability of voting Y, A or U 
+#   with respect to voting N -> conservativeness increases with ages
+# - both age and statusquo increase more the probability of voting Y and U 
+#   than A -> elderly and status quo supporters more decided to participate
+# - a PS level of education increases the probability of voting N. Same for
+#   a S level of education, but more prone to A
+
+# Prediction of votes - three profile of voters
+newdata <- data.frame(age = c(23, 40, 50), 
+                      education = c("PS", "S", "P"),
+                      statusquo = c(-1, 0, 2))
+
+# Probabilities of belonging to each class
+predict(mod2, newdata = newdata, type = "probs")
+
+# Predicted class
+predict(mod2, newdata = newdata, type = "class")
+```
+
+```{block, type = "rmdcaution"}
+Multinomial logistic regression will suffer from numerical instabilities and its iterative algorithm might even fail to converge if the levels of the categorical variable are very separated (e.g., two data clouds clearly separated corresponding to a different level of the categorical variable). 
+```
+
+```{block, type = "rmdcaution"}
+The multinomial model employs $(J-1)(k+1)$ parameters. It is easy to end up with **complex models** -- that require a **large sample size** to be fitted properly -- if the response has a few number of levels and there are several predictors. For example, with $5$ levels and $8$ predictors we will have $36$ parameters. Estimating this model with $50-100$ observations will probably result in **overfitting**.
+```
 
 # Reporting with `R` and `R Commander`
 
@@ -310,7 +469,7 @@ This contains all the major points in the analysis, that now can be expanded and
     ```
     
     `r ''````{r}
-    # Make a multiple linear regression od medv in the rest of variables
+    # Make a multiple linear regression of medv in the rest of variables
     ```
     
     `r ''````{r}
@@ -454,3 +613,74 @@ When we click on `'Generate report'` for the above `R Markdown` file, we should 
 ```{block, type = 'rmdtip'}
 For advanced users, there is a lot of information on mastering `R Markdown` [here](http://rmarkdown.rstudio.com/lesson-1.html) by using `RStudio`, a more advanced framework than `R Commander`.
 ```
+
+# Group project
+
+#### Groups {-}
+
+You will team up in groups of 3 to 5 members. It is up to you to form the groups based on your grade expectations, affinity, complementary skills, etc. You must communicate the group compositions **no later than November the 30th** by a (single) email to <edgarcia@est-econ.uc3m.es> detailing the members of the group and, if you have it, a preliminary description about the topic of the project (~ 3 lines).
+
+#### Aim of the project {-}
+
+You will analyse a real dataset of your choice using the statistical methodology that we have seen in the lessons and labs. The purpose is to demonstrate that you know how to apply and interpret some of the studied statistical techniques (such as simple/multiple linear regression, logistic regression, or any other methods covered in the course) in a real-case scenario that is appealing for you.
+
+#### Structure of the report {-}
+
+Use the following *mandatory* structure when writing your report:
+
+0. **Abstract**. Provide a concise summary of the project. It must not exceed 250 words.
+1. **Introduction**. State what is the problem to be studied. Provide some context, the question(s) that you want to address, a motivation of its importance, references, etc. Remember how we introduced the case studies covered in the course as a template (but you will need to elaborate more).
+2. **Statistical analysis**. Make use of some of the aforementioned statistical techniques, the ones that are more convenient to your particular case study. You can choose between covering several at a more superficial level, or one or two in more depth. Justify their adequacy and obtain analyses, explaining how you did it, in the form of plots and summaries. Provide a critical discussion about the outputs and give insights about them.
+3. **Conclusions**. Summary of what was addressed in the project and of the most important conclusions. Takeaway messages. The conclusions are not required to be spectacular, but *fair and honest* in terms of what you discovered.
+4. **References**. Refer to the sources of information that you have employed (for the data, for information on the data, for the statistical analyses, etc).
+
+*Mandatory* format guidelines:
+
+- Structure: title, authors, abstract, first section, second section and so on. Like [this](http://cje.oxfordjournals.org/content/38/2/257.full.pdf+html). Do not use a cover.
+- Font size: 12 points.
+- Spacing: single space, single column.
+- Length limit: less than 5000 words **and** 15 pages. You are **not** required to make use of all the space.
+
+#### Grading {-}
+
+All students in a group will be graded evenly. Take this into account when forming the group. The grading is on a scale of 0-10 (plus 2 bonus points) and will be performed according to the following breakdown:
+
+- **Originality** of the problem studied and data acquisition process (up to 2 points).
+- **Statistical analyses presented** and their depth (up to 3 points). At least two different techniques should be employed (simple and multiple linear regression count as different, but the use of other techniques as well is mostly encouraged). Graded depending on their adequacy to the problem studied and the evidence you demonstrate about your knowledge of them.
+- Accuracy of the **interpretation** of the analyses (up to 2 points). Graded depending on the detail and rigor of the insights you elaborate from the statistical analyses.
+- **Reproducibility** of the study (1.5 point). Awarded if the code for reproducing the study, as well as the data, is provided in a ready-to-use way (e.g. the outputs from `R Commander`'s report mode along with the data).
+- **Presentation** of the report (1.5 point). This involves the correct usage of English, the readability, the conciseness and the overall presentation quality.
+- **Excellence** (2 bonus points). Awarded for creativity of the analysis,  use of advanced statistical tools, use of points briefly covered in lessons/labs, advanced insights into the methods, completeness of the report, use of advanced presentation tools, etc. Only awarded if the sum of regular points is above 7.5.
+
+The ratio "quality project"/"group size" might be taken into account in extreme cases (e.g. poor report written by 5 people, extremely good report written by 3 people).
+
+#### Academic fraud {-}
+
+Evidences of academic fraud will have serious consequences, such as a zero grade for the whole group and the reporting of the fraud detection to the pertinent academic authorities. Academic fraud includes (but is not limited to) plagiarism, use of sources without proper credit, project outsourcing and the use of external tutoring not mentioned explicitly.
+
+#### Tips {-}
+
+- Think about a topic that could be reused for other subjects, or take inspiration from previous projects you did. In that way, this project could serve as the *quantification* of another subject's project. If you do this, **add an explicit mention** in the report.
+- Data sources. Here are some useful data sources:
+	* A [list of all the datasets included in `R`](http://vincentarelbundock.github.io/Rdatasets/datasets.html). See [Section 2.9.1](https://bookdown.org/egarpor/SSS2-UC3M/exercises-and-case-studies.html) of lab notes for how to load them.
+	* [Some datasets employed in the course](https://bookdown.org/egarpor/SSS2-UC3M/datasets-for-the-course.html).
+	* [The World Bank](http://data.worldbank.org) contains a huge collection of economic and sociological variables for countries and regions, for long periods of time.
+	* [SIPRI](https://www.sipri.org/) contains several databases about international transfers of arms.
+	* The [Global Health Observatory](http://www.who.int/gho/database/en/) is the World Health Organization's main health statistics repository.
+	* Sport statistics (teams, players) are a great source if you like sports. Sport webpages usually have a section on statistics.
+- Inspiration for the project's topic.
+	* The case studies covered (and left as exercises) in the lab notes might serve as a good starting point for defining a project.
+	* [The Economist](http://www.economist.com/) usually has some good and up-to-date political/economical analyses that could serve as motivation.
+	* Try to quantify the impact in society of certain laws (traffic, education, gender violence, etc).
+	* Is there a continuous variable that you would like to predict from others? (linear regression)
+	* Is there a binary variable that you would like to predict from others? (logistic regression)
+	* Would you like to assess which combination of variables explain most of the variability of your data, so you can visualize it in 2D or 3D? (principal component analysis)
+	* Would you like aggregate individuals according to several characteristics in order to classify them? (clustering)
+- Use `R Commander`'s report mode (Appendix \@ref(reporting-with-r-and-r-commander)) to simplify the generation of graphs and summaries directly from the statistical analysis. Use that code to make the analysis reproducible.
+- Make use of office hours before it is too late.
+- Pro-tip: if you come to my office with a printed draft of the project, I can provide you some quick feedback on what could be improved.
+
+#### Deadline {-}
+
+Submit the reports before December the 23rd at 23:59 through Aula Global. **Not by email**. Reports received after the deadline will not be evaluated.
+

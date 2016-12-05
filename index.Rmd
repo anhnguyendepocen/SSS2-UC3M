@@ -2,7 +2,7 @@
 title: "Lab notes for *Statistics for Social Sciences II: Multivariate Techniques*"
 subtitle: "BSc in International Studies and BSc in International Studies	&	Political	Science, Carlos III University of Madrid"
 author: "Eduardo García Portugués"
-date: "`r Sys.Date()`, v10.0"
+date: "`r Sys.Date()`, v11.0"
 knit: "bookdown::render_book"
 documentclass: book
 bibliography: SSS2-UC3M.bib
@@ -124,7 +124,7 @@ If you plan to use your personal laptop, **you** are responsible for the right s
 Regardless of your choice, at some point you will probably need to run the software outside UC3M computer labs. This is what you have to do in order to install `R` + `R Commander` in your own computer:
 
 1. In Mac OS X, download and install first [`XQuartz`](https://www.xquartz.org/) and log out and back on your Mac OS X account (this is an **important** step). Be sure that your Mac OS X system is up-to-date.
-2. Download the latest version of `R` for [Windows](https://cran.r-project.org/bin/windows/base/release.html) or [Mac OS X](https://cran.r-project.org/bin/macosx/R-3.3.1.pkg). 
+2. Download the latest version of `R` for [Windows](https://cran.r-project.org/bin/windows/base/release.html) or [Mac OS X](https://cran.r-project.org/bin/macosx/R-3.3.2.pkg). 
 3. Install `R`. In Windows, be sure to select the `'Startup options'` and then choose `'SDI'` in the `'Display Mode'` options. Leave the rest of installation options as default.
 4. Open `R` (`'R x64 X.X.X'` in 64-bit Windows, `'R i386 X.X.X'` in 32-bit Windows and `'R.app'` in Mac OS X) and type:
 
@@ -216,10 +216,22 @@ This is a handy list with a small description and download link for all the rele
 
 - `wine.csv` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/wine.csv)). The dataset is formed by the auction `Price` of 27 red Bordeaux vintages, four vintage descriptors (`WinterRain`, `AGST`, `HarvestRain`, `Age`) and the population of France in the year of the vintage, `FrancePop`.
 
-- `Boston.xlsx` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/Boston.xlsx)). The dataset contains 14 variables describing 506 suburbs in Boston. Among those variables, `medv` is the median house value, `rm` is the average number of rooms per house and `crim` is the per capita crime rate. The full description is available in `?Boston`.
+- `Boston.xlsx` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/Boston.xlsx)). The dataset contains 14 variables describing 506 suburbs in Boston. Among those variables, `medv` is the median house value, `rm` is the average number of rooms per house and `crim` is the per capita crime rate. The full description is available in `?Boston`. 
 
 - `assumptions3D.RData` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/assumptions3D.RData)). Contains the data frame `assumptions3D` with 200 observations of the variables `x1.1`, ..., `x1.8`, `x2.1`, ..., `x2.8` and `y.1`, ..., `y.8`. The purpose of the dataset is to identify which regression `y.1 ~ x1.1 + x2.1`, ..., `y.8 ~ x1.8 + x2.8` fulfills the assumptions of the linear model.
 
 - `challenger.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/challenger.txt)). Contains data for 23 Space-Shuttle launches. The data consists of 23 shuttle flights. There are 8 variables. Among them: `temp`, the temperature in Celsius degrees at the time of launch, and `fail.field`	and `fail.nozzle`, indicators of whether there were an incidents in the O-rings of the field joints and nozzles of the solid rocket boosters. 
 
-- `eurojob.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/eurojob.txt)). Contains data for employement in 26 European countries. There are 9 variables, giving the percentage of employements in 9 sectors: `Agr` (Agriculture), `Min` (Mining), `Man` (Manufacture), `Pow` (Power), `Con` (Construction), `Ser` (Sevices), `Fin` (Finance), `Soc` (Social) and `Tra` (Transport). 
+- `eurojob.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/eurojob.txt)). Contains data for employment in 26 European countries. There are 9 variables, giving the percentage of employments in 9 sectors: `Agr` (Agriculture), `Min` (Mining), `Man` (Manufacture), `Pow` (Power), `Con` (Construction), `Ser` (Sevices), `Fin` (Finance), `Soc` (Social) and `Tra` (Transport). 
+
+- `Chile.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/Chile.txt)). Contains data for 2700 respondents on a survey for the voting intentions in the 1988 Chilean national plebiscite. There are 8 variables: `region`, `population`, `sex`, `age`, `education`, `income`, `statusquo` (scale of support for the status quo) and `vote`. `vote` is a factor with levels `A` (abstention), `N` (against Pinochet), `U` (undecided), `Y` (for Pinochet). Available in `R` through the package `car` and `data(Chile)`.
+
+- `USArrests.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/USArrests.txt)). Arrest statistics for `Assault`, `Murder` and `Rape` in each of the 50 US states in 1973. The percent of the population living in urban areas, `UrbanPop`, is also given. Available in `R` through `data(USArrests)`.
+
+- `USJudgeRatings.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/USJudgeRatings.txt)). Lawyers' ratings of state judges in the US Superior Court. The dataset contains 43 observations of 12 variables measuring the performance of the judge when conducting a trial. Available in `R` through `data(USJudgeRatings)`.
+
+- `la-liga-2015-2016.xlsx` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/la-liga-2015-2016.xlsx)). Contains 19 performance metrics for the 20 football teams in La Liga 2015/2016.
+
+- `pisaUS2009.csv` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/pisaUS2009.csv)). Reading score of 3663 US students in the PISA test, with 23 variables informing about the student profile and family background.
+
+

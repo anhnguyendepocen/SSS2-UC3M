@@ -6,7 +6,7 @@
 library(MASS)
 data(Boston)
 
-# Make a multiple linear regression od medv in the rest of variables
+# Make a multiple linear regression of medv in the rest of variables
 mod <- lm(medv ~ ., data = Boston)
 summary(mod)
 

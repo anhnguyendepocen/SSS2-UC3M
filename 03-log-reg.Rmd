@@ -625,15 +625,15 @@ or, taking logarithms, the *log-odds* (or logit)
 \begin{align}
 \log(\mathrm{odds}(Y|X_1=x_1,\ldots,X_k=x_k))=\beta_0+\beta_1x_1+\ldots+\beta_kx_k.(\#eq:eq-odds-log2)
 \end{align}
-The conditional log-odds \@ref(eq:eq-odds-log2) play here the role of the conditional mean for multiple linear regression. Therefore, we have an analogous interpretation for the coefficients:
+The conditional log-odds \@ref(eq:eq-odds-log2) plays here the role of the conditional mean for multiple linear regression. Therefore, we have an analogous interpretation for the coefficients:
 
 - $\beta_0$: is the log-odds when $X_1=\ldots=X_k=0$.
-- $\beta_j$, $j\geq1$: is the **additive** increment of the log-odds for an increment of one unit in $X_j=x_j$, provided that the remaining variables $X_1,\ldots,X_{j-1},X_{j+1},\ldots,X_k$ *do not change*.
+- $\beta_j$, $1\leq j\leq k$: is the **additive** increment of the log-odds for an increment of one unit in $X_j=x_j$, provided that the remaining variables $X_1,\ldots,X_{j-1},X_{j+1},\ldots,X_k$ *do not change*.
 
 The log-odds is not so easy to interpret as the odds. For that reason, an equivalent way of interpreting the coefficients, this time based on \@ref(eq:eq-odds-log1), is:
 
 - $e^{\beta_0}$: is the odds when $X_1=\ldots=X_k=0$.
-- $e^{\beta_j}$, $j\geq1$: is the **multiplicative** increment of the odds for an increment of one unit in $X_j=x_j$, provided that the remaining variables $X_1,\ldots,X_{j-1},X_{j+1},\ldots,X_k$ *do not change*. If the increment in $X_j$ is of $r$ units, then the multiplicative increment in the odds is $(e^{\beta_j})^r$.
+- $e^{\beta_j}$, $1\leq j\leq k$: is the **multiplicative** increment of the odds for an increment of one unit in $X_j=x_j$, provided that the remaining variables $X_1,\ldots,X_{j-1},X_{j+1},\ldots,X_k$ *do not change*. If the increment in $X_j$ is of $r$ units, then the multiplicative increment in the odds is $(e^{\beta_j})^r$.
 
 As a consequence of this last interpretation, we have:
 ```{block2, type = 'rmdinsight'}
@@ -873,7 +873,7 @@ The distributions in \@ref(eq:mle3) also allow to conduct a formal hypothesis te
 \begin{align*}
 H_0:\beta_j=0
 \end{align*}
-for $j=0,\ldots,k$. The test of $H_0:\beta_j=0$ with $j\geq1$ is specially interesting, since it allows to answer whether *the variable $X_j$ has a significant effect on $\mathbb{P}[Y=1]$*. The statistic used for testing for significance is the Wald statistic
+for $j=0,\ldots,k$. The test of $H_0:\beta_j=0$ with $1\leq j\leq k$ is specially interesting, since it allows to answer whether *the variable $X_j$ has a significant effect on $\mathbb{P}[Y=1]$*. The statistic used for testing for significance is the Wald statistic
 \begin{align*}
 \frac{\hat\beta_j-0}{\hat{\mathrm{SE}}(\hat\beta_j)},
 \end{align*}
@@ -1222,16 +1222,6 @@ For the `Boston` dataset, do the following:
 ```
 
 <!--
-## Qualitative predictors {#log-reg-qualitative}
-
-Qualitative predictors (one level and more than two levels)
-
-*dummyfication*
-
-(one level and more than two levels)
-
-Extensions and interactions
-
 ## Nonlinear relationships {#log-reg-nonlinear}
 
 Assumptions: 3 plots everything fine, 3 plots wrong, focus on non-linearity on the logit

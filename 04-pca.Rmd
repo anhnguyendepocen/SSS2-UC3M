@@ -109,6 +109,13 @@ plot(pca, type = "l")
 # PC1 and PC2
 pca$loadings[, 1:2]
 ```
+```{block, type = 'rmdinsight'}
+PCA produces **uncorrelated** variables from the original set $X_1,\ldots,X_k$. This implies that:
+
+- The PCs are uncorrelated, **but not independent** (uncorrelated does not imply independent).
+- An uncorrelated or independent variable in $X_1,\ldots,X_k$ will get a PC only associated to it. In the extreme case where all the $X_1,\ldots,X_k$ are uncorrelated, these coincide with the PCs (up to sign flips).
+
+```
 
 Based on the weights of the variables on the PCs, we can extract the following interpretation:
 
@@ -116,7 +123,7 @@ Based on the weights of the variables on the PCs, we can extract the following i
 - PC2 has *negative* weights on (`Min`, `Man`, `Pow`, `Tra`) and *positive* weights in (`Ser`, `Fin`, `Soc`). It can be interpreted as the contrast between relatively large or small service sectors. So it tends to be negative in communist countries and positive in capitalist countries.
 
 ```{block, type="rmdtip"}
-The interpretation of the PCs involves inspecting the weights and interpreting the linear combination of the original variables, which might be separting between two clear characteristics of the data
+The interpretation of the PCs involves inspecting the weights and interpreting the linear combination of the original variables, which might be separating between two clear characteristics of the data
 ```
 
 To conclude, let's see how we can represent our original data into a plot called *biplot* that summarizes all the analysis for two PCs.
@@ -126,6 +133,188 @@ To conclude, let's see how we can represent our original data into a plot called
 biplot(pca)
 ```
 
- 
+### Case studies: Analysis of `USArrests`, `USJudgeRatings` and *La Liga 2015/2016 metrics*
 
+The selection of the number of PCs and their interpretation though the weights and biplots are key aspects in a successful application of PCA. In this section we will see examples of both points through the datasets `USArrests`, `USJudgeRatings` and *La Liga 2015/2016* ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/la-liga-2015-2016.xlsx)).
 
+The **selection of the number of components** $l$, $1\leq l\leq k$^[We are implicitly assuming that $n>k$. Otherwise, the maximum number of PCs would be $\min(n-1,k)$.], is a tricky problem without a unique and well-established criterion for what is the *best* number of components. The reason is that that selecting the number of PCs is a trade-off between the variance of the original data that we want to explain and the price we want to pay in terms of a more complex dataset. Obviously, except for particular cases^[For example, if PC$_1$ explains all the variance of $X_1,\ldots,X_k$ or if the variables are *uncorrelated*, in which case the PCs will be equal to the original variables.], none of the extreme situations $l=1$ (potential low explained variance) or $l=k$ (same number of PCs as the original data -- no dimension reduction) is desirable. 
+
+There are several heuristic rules in order to determine the number of components:
+
+1. Select $l$ up to a **threshold of the percentage of variance explained**, such as $70\%$ or $80\%$. We do so by looking into the *third* row of the `summary(...)` of a PCA.
+2. **Plot the variances of the PCs and look for an "elbow" in the graph** whose location gives $l$. Ideally, this elbow appears at the PC for which the next PC variances are *almost similar* and *notably smaller* when compared with the first ones. Use `plot(..., type = "l")` for creating the plot.
+3. Select $l$ based on the **threshold of the individual variance of each component**. For example, select only the PCs with larger variance than the mean of the variances of all the PCs. If we are working with **standardized variables** (`cor = TRUE`), this equals to taking the **PCs with standard deviation larger than one**. We do so by looking into the *first* row of the `summary(...)` of a PCA.
+
+In addition to these three heuristics, in practice we might apply a *justified bias* towards:
+
+4. $l=1,2$, since these are the ones that allow to have a **simple graphical representation of the data**. Even if the variability explained by the $l$ PCs is *low* (lower than $50\%$), these graphical representations are usually insightful. $l=3$ is preferred as a second option since its graphical representation is more cumbersome (see the end of this section).
+5. $l$'s such that they yield **intepretable PCs**. Interpreting PCs is not so straightforward as interpreting the original variables. Furthermore, it becomes more difficult the larger the index of the PC is, since it explains less information of the data.
+
+Let's see these heuristics in practice with the `USArrests` dataset (arrest statistics and population of US states).
+```{r, collapse=TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1}
+# Load data
+data(USArrests)
+
+# Snapshot of the data
+head(USArrests)
+
+# PCA
+pcaUSArrests <- princomp(USArrests, cor = TRUE)
+summary(pcaUSArrests)
+
+# Plot of variances (screeplot)
+plot(pcaUSArrests, type = "l")
+```
+The selections of $l$ for this PCA, based on the previous heuristics, are:
+
+1. $l=2$, since it explains the $86\%$ of the variance and $l=1$ only the $62\%$.
+2. $l=2$, since from $l=2$ onward the variances are very similar.
+3. $l=1$, since the $\text{PC}_2$ has standard deviation smaller than $1$ (limit case).
+4. $l=2$ is fine, it can be easily represented graphically.
+5. $l=2$ is fine, both components are interpretable, as we will see later.
+
+Therefore, we can conclude that *$l=2$ PCs is a good compromise* for representing the `USArrests` dataset.
+
+Let's see what happens for the `USJudgeRatings` dataset (lawyers' ratings of US Superior Court judges).
+```{r, collapse=TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1}
+# Load data
+data(USJudgeRatings)
+
+# Snapshot of the data
+head(USJudgeRatings)
+
+# PCA
+pcaUSJudgeRatings <- princomp(USJudgeRatings, cor = TRUE)
+summary(pcaUSJudgeRatings)
+
+# Plot of variances (screeplot)
+plot(pcaUSJudgeRatings, type = "l")
+```
+The selections of $l$ for this PCA, based on the previous heuristics, are:
+
+1. $l=1$, since it explains alone the $84\%$ of the variance.
+2. $l=1$, since from $l=1$ onward the variances are very similar compared to the first one.
+3. $l=2$, since the $\text{PC}_3$ has standard deviation smaller than $1$.
+4. $l=1,2$ are fine, they can be easily represented graphically.
+5. $l=1,2$ are fine, both components are interpretable, as we will see later.
+
+Based on the previous cirteria, we can conclude that *$l=1$ PC is a reasonable compromise* for representing the `USJudgeRatings` dataset.
+
+We analyse now a slightly more complicated dataset. It contains the standings and team statistics for La Liga 2015/2016:
+```{r, laliga, echo = FALSE, out.width = '90%', fig.align = 'center', message = FALSE, warning = FALSE}
+library(RcmdrMisc)
+laliga <- readXL("datasets/la-liga-2015-2016.xlsx")
+rownames(laliga) <- laliga$Team
+laliga$Team <- NULL
+knitr::kable(
+  laliga[, 1:5],
+  booktabs = TRUE,
+  longtable = TRUE,
+  caption = 'Selection of variables for La Liga 2015/2016 dataset.'
+)
+```
+
+```{r, collapse=TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1}
+# PCA - we remove the second variable, matches played, since it is constant
+pcaLaliga <- princomp(laliga[, -2], cor = TRUE)
+summary(pcaLaliga)
+
+# Plot of variances (screeplot)
+plot(pcaLaliga, type = "l")
+```
+The selections of $l$ for this PCA, based on the previous heuristics, are:
+
+1. $l=2,3$, since they explain the $79\%$ and $86\%$ of the variance (it depends on the threshold of the variance, $70\%$ or $80\%$).
+2. $l=3$, since from $l=1$ onward the variances are very similar compared to the first one.
+3. $l=3$, since the $\text{PC}_4$ has standard deviation smaller than $1$.
+4. $l=2$ is preferred to $l=3$.
+5. $l=1,2$ are fine, both components are interpretable, as we will see later. $l=3$ is harder to interpret.
+
+Based on the previous citeria, we can conclude that *$l=2$ PCs is a reasonable compromise* for representing La Liga 2015/2016 dataset.
+
+Let's focus now on the **interpretation of the PCs**. In addition to the weights present in the `loadings` slot, `biplot` provides a powerful and succinct way of displaying the relevant information for $1\leq l\leq 2$. The biplot shows:
+
+1. The **scores of the data in PC1 and PC2** by points (with optional text labels, depending if there are case names). This is the representation of the data in the first two PCs.
+2. The **variables represented in the PC1 and PC2 by the arrows**. These arrows are centered at $(0, 0)$. 
+
+Let's examine the arrow associated to the variable $X_j$. $X_j$ is expressed in terms of $\text{PC}_1$ and $\text{PC}_2$ by the *weights* $a_{j1}$ and $a_{j2}$:
+\[
+X_j=a_{j1}\text{PC}_{1} + a_{j2}\text{PC}_{2} + \ldots + a_{jk}\text{PC}_{k}\approx a_{j1}\text{PC}_{1} + a_{j2}\text{PC}_{2}.
+\]
+$a_{j1}$ and $a_{j2}$ have the same sign as $\mathrm{Cor}(X_j,\text{PC}_{1})$ and $\mathrm{Cor}(X_j,\text{PC}_{2})$, respectively. The arrow associated to $X_j$ is given by the segment joining $(0,0)$ and $(a_{j1},a_{j2})$. Therefore:
+
+- If the arrow *points right* ($a_{j1}>0$), there is *positive correlation between $X_j$ and $\text{PC}_1$*. Analogous if the arrow points left.
+- If the arrow is *approximately vertical* ($a_{j1}\approx0$), there is *uncorrelation between $X_j$ and $\text{PC}_1$*.
+
+Analogously:
+
+- If the arrow *points up* ($a_{j2}>0$), there is *positive correlation between $X_j$ and $\text{PC}_2$*. Analogous if the arrow points down.
+- If the arrow is *approximately horizontal* ($a_{j2}\approx0$), there is *uncorrelation between $X_j$ and $\text{PC}_2$*.
+
+In addition, the **magnitude of the arrow informs about the correlation**.
+
+The biplot also provides the direct relation between variables, at sight of their expresions in $\text{PC}_1$ and $\text{PC}_2$. The **angle** of the arrows of variable $X_j$ and $X_m$ gives an **approximation to the correlation between them, $\mathrm{Cor}(X_j,X_m)$**:
+
+- If $\text{angle}\approx 0^\circ$, the two variables are highly positively correlated. 
+- If $\text{angle}\approx 90^\circ$, they are approximately uncorrelated. 
+- If $\text{angle}\approx 180^\circ$, the two variables are highly negatively correlated. 
+
+The **approximation to the correlation by means of the arrow angles is as good as the percentage of variance explained** by $\text{PC}_1$ and $\text{PC}_2$.
+
+Let see an in-depth illustration of the previous concepts for `pcaUSArrests`:
+```{r, out.width = '90%', fig.align = 'center', fig.asp = 1}
+# Weights and biplot
+pcaUSArrests$loadings
+biplot(pcaUSArrests)
+```
+We can extract the following conclusions regarding the arrows and PCs:
+
+- `Murder`, `Assault` and `Rape` are negatively correlated with $\text{PC}_1$, which might be regarded as an indicator of the *absence of crime* (positive for less crimes, negative for more). The variables are highly correlated between them and the arrows are:
+\begin{align*}
+\vec{\text{Murder}} = (-0.536, 0.418)\\
+\vec{\text{Assault}} = (-0.583, 0.188)\\
+\vec{\text{Rape}} = (-0.543, -0.167)
+\end{align*}
+
+- `Murder` and `UrbanPop` are approximately uncorrelated.
+- `UrbanPop` is the most correlated variable with $\text{PC}_2$ (positive for low urban population, negative for high). Its arrow is:
+\begin{align*}
+\vec{\text{UrbanPop}} = (-0.278 -0.873).
+\end{align*}
+Therefore, the biplot shows that states like Florida, South Carolina and California have high crime rate, whereas states like North Dakota or Vermont have low crime rate. California, in addition to have a high crime rate has a large urban population, whereas South Carolina has a low urban population. With the biplot, we can visualize the differences between states according to the crime rate and urban population in a simple way.
+
+Let's see now the biplot for the `USJudgeRatings`, which has a clear interpretation:
+```{r, out.width = '90%', fig.align = 'center', fig.asp = 1}
+# Weights and biplot
+pcaUSJudgeRatings$loadings
+biplot(pcaUSJudgeRatings, cex = 0.75)
+```
+The $\text{PC}_1$ gives a *lawyer indicator of how badly the judge conducts a trial*. The variable `CONT`, which measures the number of contacts between judge and lawyer, is almost uncorrelated with the rest of variables and is captured by $\text{PC}_2$ (hence the rates of the lawyers are not affected by the number of contacts with the judge). We can identify the high-rated and low-rated judges in the left and right of the plot, respectively.
+
+Let's see an application of the biplot in a La Liga 2015/2016, a dataset with more variables and a harder interpretation of PCs.
+```{r, out.width = '90%', fig.align = 'center', fig.asp = 1}
+# Weights and biplot
+pcaLaliga$loadings
+biplot(pcaLaliga, cex = 0.75)
+```
+Some interesting highlights:
+
+- $\text{PC}_1$ can be regarded as the *non-performance of a team* during the season. It is negatively correlated with `Wins`, `Points`,\ldots and positively correlated with `Draws`, `Loses`, `Yellow.cards`,\ldots The best performing teams are not surprising: Barcelona, Real Madrid and Atlético Madrid. On the other hand, among the worst-performing teams are Levante, Getafe and Granada.
+- $\text{PC}_2$ can be seen as the *inefficiency of a team* (conceding points with little participation in the game). Using this interpretation we can see that Rayo Vallecano and Real Madrid were the most inefficient teams and Atlético Madrid and Villareal were the most.
+- `Offsides` is approximately uncorrelated with `Red.cards`.
+- $\text{PC}_3$ does not have a clear interpretation.
+
+If you are wondering about the 3D representation of the biplot, it can be computed through:
+```{r, webgl=TRUE}
+# Install this package with install.packages("pca3d")
+library(pca3d)
+pca3d(pcaLaliga, show.labels = TRUE, biplot = TRUE)
+```
+
+Finally, we mention that `R Commander` has a menu entry for performing PCA: `'Statistics' -> 'Dimensional analysis' -> 'Principal-components analysis...'`. Alternatively, the plug-in `FactoMineR` implements a PCA with more options and graphical outputs. It can be loaded (if installed) in `'Tools' -> 'Load Rcmdr plug-in(s)...' -> 'RcmdPlugin.FactoMineR'` (you will need to restart `R Commander`). For performing a PCA in `FactoMineR`, go to `'FactoMineR' -> 'Principal Component Analysis (PCA)'`. In that menu you will have more advanced options than in `R Commander`'s PCA.
+
+<!--
+
+## Geometry behind PCA 
+
+-->

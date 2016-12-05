@@ -714,7 +714,7 @@ As a consequence of $\hat\beta_1=r_{xy}\frac{s_y}{s_x}$, $\hat\beta_1$ has aways
 
 There are some important points hidden behind the election of RSS as the error criterion for obtaining $(\hat\beta_0,\hat\beta_1)$:
 
-- *Why the vertical distances and not horizontal or perpendicular?* Because we want to minimize the error in the *prediction* of $Y$! Note that the treatment of the variables is *not symmetrical*^[In Chapter 5 we will consider perpendicular distances.].
+- *Why the vertical distances and not horizontal or perpendicular?* Because we want to minimize the error in the *prediction* of $Y$! Note that the treatment of the variables is *not symmetrical*^[In Chapter \@ref(pca) we will consider perpendicular distances.].
 - *Why the squares in the distances and not the absolute value?* Due to mathematical convenience. Squares are nice to differentiate and are closely related with the Normal distribution.
 
 Figure \@ref(fig:leastsquares) illustrates the influence of the distance employed in the sum of squares. Try to minimize the sum of squares for the different datasets. Is the best choice of intercept and slope independent of the type of distance?  

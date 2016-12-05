@@ -257,7 +257,7 @@ since $\mathbb{E}[\varepsilon|X_1=x_1,\ldots,X_k=x_k]=0$.
 The LHS of \@ref(eq:k2) is the conditional expectation of $Y$ given $X_1,\ldots,X_k$. It represents how the mean of the random variable $Y$ is changing according to particular values, denoted by $x_1,\ldots,x_k$, of the random variables $X_1,\ldots,X_k$. With the RHS, what we are saying is that the mean of $Y$ is changing in a *linear* fashion with respect to the value of $X$. Hence the interpretation of the coefficients:
 
 - $\beta_0$: is the mean of $Y$ when $X_1=\ldots=X_k=0$.
-- $\beta_j$, $j\geq1$: is the increment in mean of $Y$ for an increment of one unit in $X_j=x_j$, provided that the remaining variables $X_1,\ldots,X_{j-1},X_{j+1},\ldots,X_k$ *do not change*.
+- $\beta_j$, $1\leq j\leq k$: is the increment in mean of $Y$ for an increment of one unit in $X_j=x_j$, provided that the remaining variables $X_1,\ldots,X_{j-1},X_{j+1},\ldots,X_k$ *do not change*.
 
 Figure \@ref(fig:leastsquares2) illustrates the geometrical interpretation of a multiple linear model: a plane in the $(k+1)$-dimensional space. If $k=1$, the plane is the regression line for simple linear regression. If $k=2$, then the plane can be visualized in a three-dimensional plot
 
@@ -476,12 +476,12 @@ knitr::include_graphics("images/screenshots/scatterplot3d2.png")
 ```
 
 If you select the options as shown in Figures \@ref(fig:scatter3d1) and \@ref(fig:scatter3d2), you should get something like this:
-```{r echo = FALSE, warning = FALSE, eval = FALSE}
+```{r echo = FALSE, warning = FALSE, eval = TRUE}
 # include this code chunk as-is to enable 3D graphs
 library(rgl)
 knitr::knit_hooks$set(webgl = hook_webgl)
 ```
-```{r, eval = FALSE}
+```{r, webgl=TRUE}
 data(iris)
 scatter3d(Petal.Length ~ Petal.Width + Sepal.Length, data = iris, fit = "linear", 
           residuals = TRUE, bg = "white", axis.scales = TRUE, grid = TRUE, 
@@ -564,7 +564,7 @@ The distributions in \@ref(eq:normp2) also allow to conduct a formal hypothesis 
 \begin{align*}
 H_0:\beta_j=0
 \end{align*}
-for $j=0,\ldots,k$. The test of $H_0:\beta_j=0$ with $j\geq1$ is specially interesting, since it allows to answer whether *the variable $X_j$ has a significant linear effect on $Y$*. The statistic used for testing for significance is the $t$-statistic
+for $j=0,\ldots,k$. The test of $H_0:\beta_j=0$ with $1\leq j\leq k$ is specially interesting, since it allows to answer whether *the variable $X_j$ has a significant linear effect on $Y$*. The statistic used for testing for significance is the $t$-statistic
 \begin{align*}
 \frac{\hat\beta_j-0}{\hat{\mathrm{SE}}(\hat\beta_j)},
 \end{align*}
