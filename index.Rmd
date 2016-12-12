@@ -234,4 +234,14 @@ This is a handy list with a small description and download link for all the rele
 
 - `pisaUS2009.csv` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/pisaUS2009.csv)). Reading score of 3663 US students in the PISA test, with 23 variables informing about the student profile and family background.
 
+## Main references and credits
+
+The following great reference books have been used extensively for preparing these notes:
+
+- @James2013 (linear regression, logistic regression, PCA, clustering),
+- @Pena2002 (linear regression, logistic regression, PCA, clustering),
+- @Bartholomew2008 (PCA).
+
+The icons used in the notes were designed by [madebyoliver](http://www.flaticon.com/authors/madebyoliver), [freepik](http://www.flaticon.com/authors/freepik) and [roundicons](http://www.flaticon.com/authors/roundicons) from [Flaticon](http://www.flaticon.com/).
+
 

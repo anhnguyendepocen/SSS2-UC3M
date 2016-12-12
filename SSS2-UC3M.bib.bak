@@ -70,11 +70,11 @@
   Url                      = {http://www.europarl.europa.eu/thinktank/en/document.html?reference=IPOL-AFCO_NT(2011)432760}
 }
 
-@Book{Hand1993,
+@Book{Hand1994,
   Title                    = {A handbook of small data sets},
   Author                   = {Hand, David J and Daly, Fergus and McConway, K and Lunn, D and Ostrowski, E},
   Publisher                = {CRC Press},
-  Year                     = {1993}
+  Year                     = {1994}
 }
 
 @Article{Harrison1978,
@@ -97,6 +97,19 @@
 
   Doi                      = {10.1093/cje/bet075},
   Eprint                   = {http://cje.oxfordjournals.org/content/early/2013/12/17/cje.bet075.full.pdf+html}
+}
+
+@Book{James2013,
+  Title                    = {An introduction to statistical learning},
+  Author                   = {James, Gareth and Witten, Daniela and Hastie, Trevor and
+ Tibshirani, Robert},
+  Publisher                = {Springer, New York},
+  Year                     = {2013},
+  Note                     = {With applications in R},
+  Series                   = {Springer Texts in Statistics},
+  Volume                   = {103},
+
+  Doi                      = {10.1007/978-1-4614-7138-7}
 }
 
 @Article{Moore1965,
@@ -137,6 +150,18 @@
   Doi                      = {10.1787/9789264208780-en},
   Owner                    = {Eduardo},
   Timestamp                = {2016.09.12}
+}
+
+@Book{Pena2002,
+  Title                    = {An\'alisis de datos multivariantes},
+  Author                   = {Pe\~na, Daniel},
+  Publisher                = {McGraw-Hill},
+  Year                     = {2002},
+
+  Address                  = {Madrid},
+
+  Owner                    = {Eduardo},
+  Timestamp                = {2016.12.12}
 }
 
 @Book{Roberts1986,
