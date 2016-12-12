@@ -1,16 +1,14 @@
 --- 
-title: "Lab notes for *Statistics for Social Sciences II: Multivariate Techniques*"
+title: "Lab notes for Statistics for Social Sciences II: Multivariate Techniques"
 subtitle: "BSc in International Studies and BSc in International Studies	&	Political	Science, Carlos III University of Madrid"
 author: "Eduardo García Portugués"
-date: "`r Sys.Date()`, v11.0"
+date: "`r Sys.Date()`, v12.0"
 knit: "bookdown::render_book"
 documentclass: book
 bibliography: SSS2-UC3M.bib
 biblio-style: apalike
 link-citations: yes
 site: bookdown::bookdown_site
-description: "Lab notes for *Statistics for Social Sciences II: Multivariate Techniques*"
-github-repo: egarpor/SSS2-UC3M
 ---
 
 # Introduction
@@ -18,6 +16,8 @@ github-repo: egarpor/SSS2-UC3M
 <!--
 (Move up once decided what options)
 cover-image: no
+description: "Lab notes for Statistics for Social Sciences II: Multivariate Techniques"
+github-repo: egarpor/SSS2-UC3M
 apple-touch-icon: "touch-icon.png"
 apple-touch-icon-size: 120
 favicon: "favicon.ico"
