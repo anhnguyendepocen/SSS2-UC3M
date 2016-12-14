@@ -773,7 +773,7 @@ The assumptions on which the logistic model is constructed allow to specify what
 There is an important difference between the inference results for the linear model and for logistic regression: 
 
 - **In linear regression the inference is exact**. This is due to the nice properties of the normal, least squares estimation and linearity. As a consequence, the distributions of the coefficients are perfectly known assuming that the assumptions hold.
-- **In logistic regression the inference is asymptotic**. This means that the distributions of the coefficients are unknown except for large sample sizes $n$, for which we have approximations. The reason is the more complexity of the model in terms of non-linearity. This is the usual situation for the majority of the regression models.
+- **In logistic regression the inference is asymptotic**. This means that the distributions of the coefficients are unknown except for large sample sizes $n$, for which we have **approximations**. The reason is the more complexity of the model in terms of non-linearity. This is the usual situation for the majority of the regression models.
 
 ### Distributions of the fitted coefficients {#log-reg-distributions}
 

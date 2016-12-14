@@ -1,6 +1,6 @@
 # Principal component analysis {#pca}
 
-Principal Component Analysis (PCA) is a powerful multivariate technique designed to summarize the most important features and relations of $k$ continuous random variables $X_1,\ldots,X_k$. PCA does *dimension reduction* of the original dataset by computing a new set of variables, the principal components $\text{PC}_1,\ldots \text{PC}_k$, which explain the same information as $X_1,\ldots,X_k$ but in an *ordered* way: $\text{PC}_1$ explains the most of the information and $\text{PC}_k$ the least.
+Principal Component Analysis (PCA) is a powerful multivariate technique designed to summarize the most important features and relations of $k$ numerical random variables $X_1,\ldots,X_k$. PCA does *dimension reduction* of the original dataset by computing a new set of variables, the principal components $\text{PC}_1,\ldots \text{PC}_k$, which explain the same information as $X_1,\ldots,X_k$ but in an *ordered* way: $\text{PC}_1$ explains the most of the information and $\text{PC}_k$ the least.
 
 There is *no response* $Y$ or particular variable in PCA that deserves a particular attention -- all variables are treated equally.
 
@@ -22,7 +22,7 @@ The dataset `eurojob` ([download](https://raw.githubusercontent.com/egarpor/SSS2
 - Social and personal services (`Soc`)
 - Transport and communications (`Tra`)
 
-If the dataset is imported into `R` and the case names are set as `Country` (important in order to have only continuous variables), then the data should look like this:
+If the dataset is imported into `R` and the case names are set as `Country` (important in order to have only numerical variables), then the data should look like this:
 ```{r, eurotable, echo = FALSE, out.width = '90%', fig.align = 'center'}
 eurojob <- read.table(file = "datasets/eurojob.txt", header = TRUE)
 knitr::kable(
@@ -58,8 +58,8 @@ We definitely need a way of visualizing and quantifying the relations between va
     - $\text{PC}_{j_1}$ and $\text{PC}_{j_2}$ are **uncorrelated**, for $j_1\neq j_2$.
     - $\text{PC}_1,\ldots \text{PC}_k$ have the **same information**, measured in terms of **total variance**, as $X_1,\ldots,X_k$.
 3. Produces three key objects:
-    - **Variances of the PCs**. They are sorted decreasingly and give an idea of which PCs are contain most of the information of the data (the ones with more variance).
-    - **Weights of the variables in the PCs**. They give the interpretation of the PCs in terms of the original variables, as they are the coefficients of the linear combination. In `R`, they are called `loadings`.
+    - **Variances of the PCs**. They are sorted decreasingly and give an idea of which PCs are contain most of the information of the data (the ones with more variance). 
+    - **Weights of the variables in the PCs**. They give the interpretation of the PCs in terms of the original variables, as they are the coefficients of the linear combination. The weights of the variables $X_1,\ldots,X_k$ on the PC$_j$, $a_{1j},\ldots,a_{kj}$, are normalized: $a_{1j}^2+\ldots+a_{kj}^2=1$, $j=1,\ldots,k$. In `R`, they are called `loadings`.
     - **Scores of the data in the PCs**: this is the data with $\text{PC}_1,\ldots \text{PC}_k$ variables instead of $X_1,\ldots,X_k$. The **scores are uncorrelated**. Useful for knowing which PCs have more effect on a certain observation.
 
 Hence, PCA rearranges our variables in an information-equivalent, but more convenient, layout where the variables are **sorted according to the ammount of information they are able to explain**. From this position, the next step is clear: **stick only with a limited number of PCs such that they explain most of the information** (e.g., 70\% of the total variance) and do *dimension reduction*. The effectiveness of PCA in practice varies from the structure present in the dataset. For example, in the case of highly dependent data, it could explain more than the 90\% of variability of a dataset with tens of variables with just two PCs.
