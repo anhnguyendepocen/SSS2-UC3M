@@ -1060,7 +1060,7 @@ We will focus only in three plots:
 If you type `plot(mod)`, several diagnostic plots will be shown sequentially. In order to advance them, hit `'Enter'` in the `R` console.
 ```
 
-The next figures present datasets where the assumptions are satisfied and violated
+The next figures present datasets where the assumptions are satisfied and violated.
 
 ```{r, diagnostics1, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Residuals vs. fitted values plots for datasets respecting (left column) and violating (right column) the linearity assumption.'}
 knitr::include_graphics("images/R/diagnostics1.png")

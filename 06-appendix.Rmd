@@ -312,7 +312,7 @@ summary(Chile)
 mod1 <- multinom(vote ~ age + education + statusquo, data = Chile, 
                  maxit = 1e3)
 
-# Each row of coefficients give the coefficients of the logistic
+# Each row of coefficients gives the coefficients of the logistic
 # regression of a level versus the reference level (A)
 summary(mod1)
  
