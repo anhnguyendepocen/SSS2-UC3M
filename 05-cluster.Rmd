@@ -259,17 +259,17 @@ plot(pca$scores[, 1:2], col = cluster)
 text(x = pca$scores[, 1:2], labels = rownames(pca$scores), pos = 3, col = cluster)
 ```
 If categorical variables are present, replace `dist` by `daisy` from the `cluster` package (you need to do first `library(cluster)`). For example, let's cluster the `iris` dataset.
-```{r, collapse=TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1}
+```{r, collapse=TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1, warning=FALSE}
 # Load data
 data(iris)
 
 # The fifth variable is a factor
 head(iris)
 
-# Compute dissimilarity matrix using the gower dissimilarity measure
+# Compute dissimilarity matrix using the Gower dissimilarity measure
 # This dissimilarity is able to handle both numerical and categorical variables
-# daisy automatically detects wether there are factors present in the data and applies goer
-# otherwise it applies the Euclidean distance
+# daisy automatically detects whether there are factors present in the data and applies Gower
+# (otherwise it applies the Euclidean distance)
 library(cluster)
 d <- daisy(iris)
 tree <- hclust(d)
