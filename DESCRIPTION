@@ -1,5 +1,17 @@
 Package: SSS2UC3M
 Title: SSS2-UC3M
 Version: 0.0.1
-Imports: bookdown, Rcmdr, RcmdrMisc, car, splines, pca3d, rgl, MASS, cluster, nnet, sandwich
+Depends:
+    R (>= 3.1.0),
+    Rcmdr,
+    RcmdrMisc,
+    car,
+    splines,
+    rgl,
+    pca3d,
+    MASS,
+    cluster,
+    nnet,
+    sandwich
+Imports: bookdown
 Remotes: rstudio/bookdown
