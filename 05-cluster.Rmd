@@ -11,7 +11,7 @@ We will see the basics of the most well-known partition method, namely *$k$-mean
 
 The $k$-means clustering looks for **$k$ clusters in the data such that they are as compact as possible and as separated as possible**. In clustering terminology, the clusters minimize the *with-in cluster variation* with respect to the cluster centroid while they maximize the *between cluster variation* among clusters. The distance used for measuring proximity is the usual **Euclidean distance** between points. As a consequence, this clustering method tend to yield spherical or rounded clusters and is not adequate for categorical variables.
 
-```{r, kmeans, echo = FALSE, results = 'hide', out.width = '90%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'The $k$-means partitions for a two-dimensional dataset with $k=1,2,3,4$. Centers of each cluster are displayed with an asterisk.'}
+```{r, kmeans, echo = FALSE, results = 'hide', out.width = '90%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'The $k$-means partitions for a two-dimensional dataset with $k=1,2,3,4$. Centers of each cluster are displayed with an asterisk.', cache = TRUE}
 # Data with 3 clusters
 set.seed(23456789)
 n <- 20
@@ -30,7 +30,7 @@ for (k in 1:4) {
 ```
 Let's analyze the possible clusters in a smaller subset of *La Liga 2015/2016* ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/la-liga-2015-2016.xlsx)) dataset, where the results can be easily visualized. To that end, import the data as `laliga`.
 
-```{r, echo = FALSE, message = FALSE, warning = FALSE}
+```{r, echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE}
 library(RcmdrMisc)
 library(car)
 laliga <- readXL("datasets/la-liga-2015-2016.xlsx")
@@ -38,7 +38,7 @@ rownames(laliga) <- laliga$Team
 laliga$Team <- NULL
 ```
 
-```{r, collapse=TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1}
+```{r, collapse = TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1, cache = TRUE}
 # We consider only a smaller dataset (Points and Yellow.cards)
 head(laliga, 2)
 pointsCards <-  laliga[, c(1, 17)]
@@ -49,8 +49,8 @@ plot(pointsCards)
 set.seed(2345678)
 
 # kmeans call:
-# - centers is the k, the number of clusters. 
-# - nstart indicates how many different starting assignments should be considered 
+# - centers is the k, the number of clusters.
+# - nstart indicates how many different starting assignments should be considered
 # (useful for avoiding suboptimal clusterings)
 k <- 2
 km <- kmeans(pointsCards, centers = k, nstart = 20)
@@ -60,7 +60,7 @@ km
 str(km)
 
 # between_SS / total_SS gives a criterion to select k similar to PCA.
-# Recall that between_SS / total_SS = 100% if k = n 
+# Recall that between_SS / total_SS = 100% if k = n
 
 # Centroids of each cluster
 km$centers
@@ -72,7 +72,7 @@ km$cluster
 plot(pointsCards, col = km$cluster)
 
 # Add the names of the observations above the points
-text(x = pointsCards, labels = rownames(pointsCards), col = km$cluster, 
+text(x = pointsCards, labels = rownames(pointsCards), col = km$cluster,
      pos = 3, cex = 0.75)
 
 # Clustering with k = 3
@@ -80,7 +80,7 @@ k <- 3
 set.seed(2345678)
 km <- kmeans(pointsCards, centers = k, nstart = 20)
 plot(pointsCards, col = km$cluster)
-text(x = pointsCards, labels = rownames(pointsCards), col = km$cluster, 
+text(x = pointsCards, labels = rownames(pointsCards), col = km$cluster,
      pos = 3, cex = 0.75)
 
 # Clustering with k = 4
@@ -88,15 +88,15 @@ k <- 4
 set.seed(2345678)
 km <- kmeans(pointsCards, centers = k, nstart = 20)
 plot(pointsCards, col = km$cluster)
-text(x = pointsCards, labels = rownames(pointsCards), col = km$cluster, 
+text(x = pointsCards, labels = rownames(pointsCards), col = km$cluster,
      pos = 3, cex = 0.75)
 ```
 
-So far, we have only taken the information of two variables for performing clustering. Using PCA, we can visualize the clustering performed with all the available variables in the dataset. 
+So far, we have only taken the information of two variables for performing clustering. Using PCA, we can visualize the clustering performed with all the available variables in the dataset.
 
 By default, `kmeans` **does not standardize variables, which will affect the clustering result**. As a consequence, the clustering of a dataset will be different if one variable is expressed in millions or in tenths. If you want to avoid this distortion, you can use `scale` to automatically center and standardize a data frame (the result will be a matrix, so you need to transform it to a data frame again).
 
-```{r, collapse=TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1}
+```{r, collapse = TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1, cache = TRUE}
 # Work with standardized data (and remove Matches)
 laligaStd <- data.frame(scale(laliga[, -2]))
 
@@ -134,13 +134,13 @@ text(x = pca$scores[, 1:2], labels = rownames(pca$scores), pos = 3, col = kme2$c
 ```
 
 $k$-means can also be performed through the help of `R Commander`. To do so, go to `'Statistics' -> 'Dimensional Analysis' -> 'Clustering' -> 'k-means cluster analysis...'`. If you do this for the `USArrests` dataset after rescaling it, select to `'Assign clusters to the data set'` and name the `'Assignment variable'` as `'KMeans'`, you should get something like this:
-```{r, collapse=TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 # Load data and scale it
 data(USArrests)
 USArrests <- as.data.frame(scale(USArrests))
 
 # Statistics -> Dimensional Analysis -> Clustering -> k-means cluster analysis...
-.cluster <-  KMeans(model.matrix(~-1 + Assault + Murder + Rape + UrbanPop, USArrests), 
+.cluster <-  KMeans(model.matrix(~-1 + Assault + Murder + Rape + UrbanPop, USArrests),
   centers = 2, iter.max = 10, num.seeds = 10)
 .cluster$size # Cluster Sizes
 .cluster$centers # Cluster Centroids
@@ -148,16 +148,16 @@ USArrests <- as.data.frame(scale(USArrests))
 .cluster$tot.withinss # Total Within Sum of Squares
 .cluster$betweenss # Between Cluster Sum of Squares
 remove(.cluster)
-.cluster <-  KMeans(model.matrix(~-1 + Assault + Murder + Rape + UrbanPop, USArrests), 
+.cluster <-  KMeans(model.matrix(~-1 + Assault + Murder + Rape + UrbanPop, USArrests),
   centers = 2, iter.max = 10, num.seeds = 10)
 .cluster$size # Cluster Sizes
 .cluster$centers # Cluster Centroids
 .cluster$withinss # Within Cluster Sum of Squares
 .cluster$tot.withinss # Total Within Sum of Squares
 .cluster$betweenss # Between Cluster Sum of Squares
-biplot(princomp(model.matrix(~-1 + Assault + Murder + Rape + UrbanPop, USArrests)), 
+biplot(princomp(model.matrix(~-1 + Assault + Murder + Rape + UrbanPop, USArrests)),
   xlabs = as.character(.cluster$cluster))
-USArrests$KMeans <- assignCluster(model.matrix(~-1 + Assault + Murder + Rape + UrbanPop, 
+USArrests$KMeans <- assignCluster(model.matrix(~-1 + Assault + Murder + Rape + UrbanPop,
   USArrests), USArrests, .cluster$cluster)
 remove(.cluster)
 ```
@@ -181,7 +181,7 @@ For the `iris` dataset, do sequentially:
 
 ## Agglomerative hierarchical clustering {#hierarchical}
 
-```{r, trees, echo = FALSE, results = 'hide', out.width = '90%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'The hierarchical clustering for a two-dimensional dataset with complete, single and average linkages.'}
+```{r, trees, echo = FALSE, results = 'hide', out.width = '90%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'The hierarchical clustering for a two-dimensional dataset with complete, single and average linkages.', cache = TRUE}
 # Data with 3 clusters
 set.seed(23456789)
 n <- 10
@@ -213,14 +213,14 @@ The linkage employed by hierarchical clustering refers to how the cluster are fu
 - **Complete**. Takes the *maximal dissimilarity* between all the pairwise dissimilarities
 between the observations in cluster A and cluster B.
 - **Single**. Takes the *minimal dissimilarity* between all the pairwise dissimilarities
-between the observations in cluster A and cluster B. 
+between the observations in cluster A and cluster B.
 - **Average**. Takes the *average dissimilarity* between all the pairwise dissimilarities
 between the observations in cluster A and cluster B.
 
 Hierarchical clustering is quite sensible to the kind of dissimilarity employed and the kind of *linkage* used. In addition, the hierarchical property might force the clusters to unnatural behaviors. Particularly, *single* linkage may result in extended, chained clusters in which a single observation is added at a new level. As a consequence, *complete* and *average* are usually recommended in practice.
 
 Let's illustrate how to perform hierarchical clustering in `laligaStd`.
-```{r, collapse=TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1, warning=FALSE}
+```{r, collapse = TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1, warning = FALSE, cache = TRUE}
 # Compute dissimilary matrix - in this case Euclidean distance
 d <- dist(laligaStd)
 
@@ -242,8 +242,8 @@ cutree(treeComp, k = 2) # (Barcelona, Real Madrid) and (rest)
 cutree(treeComp, k = 3) # (Barcelona, Real Madrid), (Atlético Madrid) and (rest)
 
 # Compare differences - treeComp makes more sense than treeAve
-cutree(treeComp, k = 4) 
-cutree(treeAve, k = 4) 
+cutree(treeComp, k = 4)
+cutree(treeAve, k = 4)
 
 # We can plot the results in the first two PCs, as we did in k-means
 cluster <- cutree(treeComp, k = 2)
@@ -259,7 +259,7 @@ plot(pca$scores[, 1:2], col = cluster)
 text(x = pca$scores[, 1:2], labels = rownames(pca$scores), pos = 3, col = cluster)
 ```
 If categorical variables are present, replace `dist` by `daisy` from the `cluster` package (you need to do first `library(cluster)`). For example, let's cluster the `iris` dataset.
-```{r, collapse=TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1, warning=FALSE}
+```{r, collapse = TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1, warning = FALSE, cache = TRUE}
 # Load data
 data(iris)
 
@@ -292,16 +292,13 @@ Despite the general advice, there is not a single and best solution for the prev
 ```
 
 Hierarchical clustering can also be performed through the help of `R Commander`. To do so, go to `'Statistics' -> 'Dimensional Analysis' -> 'Clustering' -> 'Hierar...'`. If you do this for the `USArrests` dataset after rescaling, you should get something like this:
-```{r, collapse=TRUE}
-HClust.1 <- hclust(dist(model.matrix(~-1 + Assault+Murder+Rape+UrbanPop, USArrests)) , 
+```{r, collapse = TRUE, cache = TRUE}
+HClust.1 <- hclust(dist(model.matrix(~-1 + Assault+Murder+Rape+UrbanPop, USArrests)) ,
   method= "complete")
-plot(HClust.1, main= "Cluster Dendrogram for Solution HClust.1", xlab= 
+plot(HClust.1, main= "Cluster Dendrogram for Solution HClust.1", xlab=
   "Observation Number in Data Set USArrests", sub="Method=complete; Distance=euclidian")
 ```
 
 ```{block, type="rmdexercise"}
 Import the `eurojob`  ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/eurojob.txt)) dataset and standardize it properly. Perform a hierarchical clustering analysis for the three kind of linkages seen.
 ```
-
-
-

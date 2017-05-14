@@ -59,7 +59,7 @@ Some useful commands for performing **simple and multiple linear regression** ar
 #### More basic usage {-}
 
 The following table contains important `R` commands for its **basic usage**. We assume the following dataset is available:
-```{r}
+```{r, cache = TRUE}
 data <- data.frame(x = 1:10, y = c(-1, 2, 3, 0, 3, 1, -1, 3, 0, -1))
 ```
 
@@ -77,7 +77,7 @@ data <- data.frame(x = 1:10, y = c(-1, 2, 3, 0, 3, 1, -1, 3, 0, -1))
 | length of a vectors | `length` | `length(1:5)` |
 | count repetitions in a vector | `table` | `table(c(1:5, 4:2))` |
 | **Logical conditions** | | |
-| relational operators | `<`, `<=`, `>`, `>=`, `==`, `!=` | `1 < 0; 1 <= 1; 2 > 1; 3 >= 4; 1 == 0; 1 != 0` | 
+| relational operators | `<`, `<=`, `>`, `>=`, `==`, `!=` | `1 < 0; 1 <= 1; 2 > 1; 3 >= 4; 1 == 0; 1 != 0` |
 | "and" | `&` | `TRUE & FALSE` |
 | "or" | `|` | `TRUE | FALSE` |
 | **Subsetting** | | |
@@ -154,7 +154,7 @@ The simplest case is the situation with **two levels**, this is, the binary case
 \[
 D=\left\{\begin{array}{ll}1,&\text{if }C=b,\\0,& \text{if }C=a.\end{array}\right.
 \]
-$D$ now is a *dummy variable*: it **codifies with zeros and ones the two possible levels of the categorical variable**. An example of $C$ could be *gender*, which has levels *male* and *female*. The dummy variable associated is $D=0$ if the gender is male and $D=1$ if the gender is female. 
+$D$ now is a *dummy variable*: it **codifies with zeros and ones the two possible levels of the categorical variable**. An example of $C$ could be *gender*, which has levels *male* and *female*. The dummy variable associated is $D=0$ if the gender is male and $D=1$ if the gender is female.
 
 The advantage of this *dummification* is its interpretability in regression models. Since level *a* corresponds to $0$, it can be seen as the *reference level* to which level *b* is compared. This is the key point in dummification: set one level as the reference and codify the rest as departures from them with ones.
 
@@ -176,22 +176,22 @@ We have two interpretations of $\beta_{k+1}$, either in terms of log-odds or odd
     - $e^{\beta_{k+1}}$ is the *multiplicative* increment in odds of $Y$ associated to changing of the level of the categorical variable from *a* (reference, $D=0$) to *b* ($D=1$).
 
 `R` does the dummification automatically (translates a categorical variable $C$ into its dummy version $D$) if it detects that a factor variable is present in the regression model. Let's see an example of this in linear and logistic regression.
-```{r, collapse=TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 # Load the Boston dataset
 library(MASS)
 data(Boston)
 
 # Structure of the data
 str(Boston)
-# chas is a dummy variable measuring if the suburb is close to the river (1) 
+# chas is a dummy variable measuring if the suburb is close to the river (1)
 # or not (0). In this case it is not codifyed as a factor but as a 0 or 1.
 
-# Summary of a linear model 
+# Summary of a linear model
 mod <- lm(medv ~ chas + crim, data = Boston)
 summary(mod)
 # The coefficient associated to chas is 5.57772. That means that if the suburb
 # is close to the river, the mean of medv increases in 5.57772 units.
-# chas is significant (the presence of the river adds a valuable information 
+# chas is significant (the presence of the river adds a valuable information
 # for explaining medv)
 
 # Create a binary response (1 expensive suburb, 0 inexpensive)
@@ -203,7 +203,7 @@ summary(mod)
 # The coefficient associated to chas is 1.04165. That means that if the suburb
 # is close to the river, the log-odds of expensive increases by 1.04165.
 # Alternatively, the odds of expensive increases by a factor of exp(1.04165).
-# chas is significant (the presence of the river adds a valuable information 
+# chas is significant (the presence of the river adds a valuable information
 # for explaining medv)
 ```
 
@@ -219,18 +219,18 @@ D_2=\left\{\begin{array}{ll}1,&\text{if }C=c,\\0,& \text{if }C\neq c.\end{array}
 \]
 Then $C=a$ is represented by $D_1=D_2=0$, $C=b$ is represented by $D_1=1,D_2=0$ and $C=c$ is represented by $D_1=0,D_2=1$. The interpretation of the regression models with the presence of $D_1$ and $D_2$ is the very similar to the one before. For example, for the linear model, the coefficient associated to $D_1$ gives the increment in mean of $Y$ when the category of $C$ changes from *a* to *b*. The coefficient for $D_2$ gives the increment in mean of $Y$ when it changes from *a* to *c*.
 
-In general, if we have a categorical variable with $J$ levels, then the number of dummy variables required is $J-1$. Again, `R` does the dummification automatically for you if it detects that a factor variable is present in the regression model. 
-```{r, collapse=TRUE}
+In general, if we have a categorical variable with $J$ levels, then the number of dummy variables required is $J-1$. Again, `R` does the dummification automatically for you if it detects that a factor variable is present in the regression model.
+```{r, collapse = TRUE, cache = TRUE}
 # Load dataset - factors in the last column
 data(iris)
 summary(iris)
 
-# Summary of a linear model 
+# Summary of a linear model
 mod1 <- lm(Sepal.Length ~ ., data = iris)
 summary(mod1)
-# Speciesversicolor (D1) coefficient: -0.72356. The average increment of 
+# Speciesversicolor (D1) coefficient: -0.72356. The average increment of
 # Sepal.Length when the species is versicolor instead of setosa (reference).
-# Speciesvirginica (D2) coefficient: -1.02350. The average increment of 
+# Speciesvirginica (D2) coefficient: -1.02350. The average increment of
 # Sepal.Length when the species is virginica instead of setosa (reference).
 # Both dummy variables are significant
 
@@ -240,20 +240,20 @@ iris$Species <- relevel(iris$Species, ref = "versicolor")
 # Same estimates except for the dummy coefficients
 mod2 <- lm(Sepal.Length ~ ., data = iris)
 summary(mod2)
-# Speciessetosa (D1) coefficient: 0.72356. The average increment of 
+# Speciessetosa (D1) coefficient: 0.72356. The average increment of
 # Sepal.Length when the species is setosa instead of versicolor (reference).
-# Speciesvirginica (D2) coefficient: -0.29994.s The average increment of 
+# Speciesvirginica (D2) coefficient: -0.29994.s The average increment of
 # Sepal.Length when the species is virginica instead of versicolor (reference).
 # Both dummy variables are significant
 
 # Coefficients of the model
 confint(mod2)
-# The coefficients of Speciesversicolor and Speciesvirginica are significantly 
-# negative. Therefore, there are significant 
+# The coefficients of Speciesversicolor and Speciesvirginica are significantly
+# negative. Therefore, there are significant
 ```
 
 ```{block, type='rmdcaution'}
-**Do not codify a categorical variable as a discrete variable**. This constitutes a major methodological fail that will flaw the subsequent statistical analysis. 
+**Do not codify a categorical variable as a discrete variable**. This constitutes a major methodological fail that will flaw the subsequent statistical analysis.
 
 For example if you have a categorical variable `party` with levels `partyA`, `partyB` and `partyC`, do not encode it as a discrete variable taking the values `1`, `2` and `3`, respectively. If you do so:
 
@@ -266,7 +266,7 @@ The right way of dealing with categorical variables in regression is to set the 
 
 # Multinomial logistic regression
 
-The logistic model can be generalized to categorical variables $Y$ with more than two possible levels, namely $\{1,\ldots,J\}$. Given the predictors $X_1,\ldots,X_k$,  *multinomial logistic regression* models the probability of each level $j$ of $Y$ by 
+The logistic model can be generalized to categorical variables $Y$ with more than two possible levels, namely $\{1,\ldots,J\}$. Given the predictors $X_1,\ldots,X_k$,  *multinomial logistic regression* models the probability of each level $j$ of $Y$ by
 \begin{align}
 p_j(\mathbf{x})=\mathbb{P}[Y=j|X_1=x_1,\ldots,X_k=x_k]=\frac{e^{\beta_{0j}+\beta_{1j}X_1+\ldots+\beta_{kj}X_k}}{1+\sum_{l=1}^{J-1}e^{\beta_{0l}+\beta_{1l}X_1+\ldots+\beta_{kl}X_k}} (\#eq:multinom-1)
 \end{align}
@@ -296,45 +296,45 @@ Therefore:
 - $e^{\beta_{lj}}$, $l\geq1$: is the **multiplicative** increment of the ratio between $p_j(\mathbf{x})/p_J(\mathbf{x})$ for an increment of one unit in $X_l=x_l$, provided that the remaining variables $X_1,\ldots,X_{l-1},X_{l+1},\ldots,X_k$ *do not change*. If $e^{\beta_{lj}}>1$ (equivalently, $\beta_{lj}>0$), then $Y=j$ becomes more likely than $Y=J$ for each increment in $X_j$. If $e^{\beta_{lj}}<1$ ($\beta_{lj}<0$), then $Y=j$ becomes less likely than $Y=J$.
 
 The following code illustrates how to compute a basic multinomial regression in `R`.
-```{r, collapse=TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 # Package included in R that implements multinomial regression
 library(nnet)
 
 # Data from the voting intentions in the 1988 Chilean national plebiscite
 data(Chile)
 summary(Chile)
-# vote is a factor with levels A (abstention), N (against Pinochet), 
+# vote is a factor with levels A (abstention), N (against Pinochet),
 # U (undecided), Y (for Pinochet)
 
 # Fit of the model done by multinom: Response ~ Predictors
 # It is an iterative procedure (maxit sets the maximum number of iterations)
 # Read the documentation in ?multinom for more information
-mod1 <- multinom(vote ~ age + education + statusquo, data = Chile, 
+mod1 <- multinom(vote ~ age + education + statusquo, data = Chile,
                  maxit = 1e3)
 
 # Each row of coefficients gives the coefficients of the logistic
 # regression of a level versus the reference level (A)
 summary(mod1)
- 
+
 # Set a different level as the reference (N) for easening interpretations
 Chile$vote <- relevel(Chile$vote, ref = "N")
-mod2 <- multinom(vote ~ age + education + statusquo, data = Chile, 
+mod2 <- multinom(vote ~ age + education + statusquo, data = Chile,
                  maxit = 1e3)
 summary(mod2)
 exp(coef(mod2))
 # Some highlights:
-# - intercepts do not have too much interpretation (correspond to age = 0). 
-#   A possible solution is to center age by its mean (so age = 0 would 
+# - intercepts do not have too much interpretation (correspond to age = 0).
+#   A possible solution is to center age by its mean (so age = 0 would
 #   represent the mean of the ages)
-# - both age and statusquo increase the probability of voting Y, A or U 
+# - both age and statusquo increase the probability of voting Y, A or U
 #   with respect to voting N -> conservativeness increases with ages
-# - both age and statusquo increase more the probability of voting Y and U 
+# - both age and statusquo increase more the probability of voting Y and U
 #   than A -> elderly and status quo supporters more decided to participate
 # - a PS level of education increases the probability of voting N. Same for
 #   a S level of education, but more prone to A
 
 # Prediction of votes - three profile of voters
-newdata <- data.frame(age = c(23, 40, 50), 
+newdata <- data.frame(age = c(23, 40, 50),
                       education = c("PS", "S", "P"),
                       statusquo = c(-1, 0, 2))
 
@@ -346,7 +346,7 @@ predict(mod2, newdata = newdata, type = "class")
 ```
 
 ```{block, type = "rmdcaution"}
-Multinomial logistic regression will suffer from numerical instabilities and its iterative algorithm might even fail to converge if the levels of the categorical variable are very separated (e.g., two data clouds clearly separated corresponding to a different level of the categorical variable). 
+Multinomial logistic regression will suffer from numerical instabilities and its iterative algorithm might even fail to converge if the levels of the categorical variable are very separated (e.g., two data clouds clearly separated corresponding to a different level of the categorical variable).
 ```
 
 ```{block, type = "rmdcaution"}
@@ -364,7 +364,7 @@ A nice feature of `R Commander` is that integrates seamless with `R Markdown`, w
 The workflow is simple. Once you have done some statistical analysis, either by using `R Commander`'s menus or `R` code directly, you will end up with an `R` script, on the `'R Script'` tab, that contains all the commands you have run so far. Switch then to the `'R Markdown'` tab and you will see the commands you have entered in a different layout, which essentially encapsulates the code into chunks delimited by `` ```{r}`` and `` ``` ``. This will generate a report once you click in the `'Generate report'` button.
 
 Let's illustrate this process through an example. Suppose we were analyzing the `Boston` dataset, as we did in Section \@ref(boston). *Ideally*^[This is, assuming we have performed the right steps in the analysis without making any mistake.] our final script would be something like this:
-```{r, echo=FALSE,message=FALSE,warning=FALSE}
+```{r, echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE}
 library(RcmdrMisc)
 ```
 ```{r, eval = FALSE}
@@ -423,13 +423,13 @@ scatter3d(logMedv ~ crim + logLstat, data = Boston, fit = "linear",
           ellipsoid = FALSE)
 ```
 This contains all the major points in the analysis, that now can be expanded and detailed. You can download the script [here](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/reporting/report-script.R), open it through `'File' -> 'Open script file...'` and run it by yourself in `R Commander`. If you so, and then switch to the `R Markdown` tab, you will see this:
-    
+
     ---
     title: "Replace with Main Title"
     author: "Your Name"
     date: "AUTOMATIC"
     ---
-    
+
     `r ''````{r echo=FALSE, message=FALSE}
     # include this code chunk as-is to set options
     knitr::opts_chunk$set(comment=NA, prompt=TRUE)
@@ -437,49 +437,49 @@ This contains all the major points in the analysis, that now can be expanded and
     library(car)
     library(RcmdrMisc)
     ```
-    
+
     `r ''````{r echo=FALSE}
     # include this code chunk as-is to enable 3D graphs
     library(rgl)
     knitr::knit_hooks$set(webgl = hook_webgl)
     ```
-    
+
     `r ''````{r}
     # A simple and non-exhaustive analysis for the price of the houses in the Boston
     ```
-    
+
     `r ''````{r}
     # dataset. The purpose is to quantify, by means of a multiple linear model,
     ```
-    
+
     `r ''````{r}
     # the effect of 14 variables in the price of a house in the suburbs of Boston.
     ```
-    
+
     `r ''````{r}
     # Import data
     ```
-    
+
     `r ''````{r}
     library(MASS)
     ```
-    
+
     `r ''````{r}
     data(Boston)
     ```
-    
+
     `r ''````{r}
     # Make a multiple linear regression of medv in the rest of variables
     ```
-    
+
     `r ''````{r}
     mod <- lm(medv ~ ., data = Boston)
     ```
-    
+
     `r ''````{r}
     summary(mod)
     ```
-    
+
     [More outputs - omitted]
     ```
 
@@ -488,7 +488,7 @@ The complete, lengthy, file can be downloaded [here](https://raw.githubuserconte
     `r ''````{r}
     code line
     ```
-    
+
 for each `code line` you run in `R Commander`. You probably will want to modify this *crude* report manually by merging chunks of code, removing comments or adding more information in between chunks of code. To do so, go to `'Edit' -> 'Edit Markdown document'`. Here you can also remove unnecessary chunks of code resulting from any mistake or irrelevant analyses.
 
 The following file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/reporting/report.Rmd)) could be a final report. Pay attention to the numerous changes with respect to the previous one:
@@ -499,7 +499,7 @@ The following file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC
     author: "Outstanding student 1, Awesome student 2 and Great student 3"
     date: "31/11/16"
     ---
-    
+
     `r ''````{r echo=FALSE, message=FALSE, warning=FALSE}
     # include this code chunk as-is to set options
     knitr::opts_chunk$set(comment=NA, prompt=TRUE)
@@ -507,18 +507,18 @@ The following file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC
     library(car)
     library(RcmdrMisc)
     ```
-    
+
     `r ''````{r echo=FALSE, message=FALSE, warning=FALSE}
     # include this code chunk as-is to enable 3D graphs
     library(rgl)
     knitr::knit_hooks$set(webgl = hook_webgl)
     ```
-    
+
     This short report shows a simple and non-exhaustive analysis for the price of
     the houses in the `Boston` dataset. The purpose is to quantify, by means of a
     multiple linear model, the effect of 14 variables in the price of a house in
     the suburbs of Boston.
-    
+
     We start by importing the data into `R` and considering a multiple linear
     regression of `medv` (median house value) in the rest of variables:
     `r ''````{r}
@@ -526,7 +526,7 @@ The following file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC
     library(MASS)
     data(Boston)
     ```
-    
+
     `r ''````{r}
     mod <- lm(medv ~ ., data = Boston)
     summary(mod)
@@ -537,7 +537,7 @@ The following file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC
     `r ''````{r}
     plot(mod, 1)
     ```
-    
+
     In order to bypass the non-linearity, we are going to consider the
     non-linear transformations given in Harrison and Rubinfeld (1978)
     for both the response and the predictors:
@@ -554,7 +554,7 @@ The following file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC
     `r ''````{r}
     plot(modTransf, 1)
     ```
-    
+
     However, `modTransf` has more non-significant variables. Let\'s see if
     we can improve over the previous model by removing some of the
     non-significant variables? To see this, we look for the best model in
@@ -565,20 +565,20 @@ The following file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC
     ```
     The resulting model has a slightly higher adjusted R-squared than `modTransf`
     with all the variables significant.
-    
+
     We explore the most significant variables to see if the model can be reduced
     drastically in complexity.
     `r ''````{r}
     mod3D <- lm(I(log(medv * 1000)) ~ I(log(lstat / 100)) + crim, data = Boston)
     summary(mod3D)
     ```
-    
+
     It turns out that **with only 2 variables, we explain the 72% of variability**.
     Compared with the 80% with 10 variables, it is an important improvement
     in terms of simplicity: the logarithm of `lstat` (percent of lower status of
     the population) and `crim` (crime rate) alone explain the 72% of the
     variability in the house prices.
-    
+
     We add these variables to the dataset, so we can call `scatterplotMatrix` and
     `scatter3d` through `R Commander`,
     `r ''````{r}
@@ -586,7 +586,7 @@ The following file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC
     Boston$logLstat <- log(Boston$lstat / 100)
     ```
     and conclude with the visualization of:
-    
+
     1. the pair-by-pair relations of the response and the two predictors;
     2. the full relation between the response and the two predictors.
     `r ''````{r}
@@ -596,7 +596,7 @@ The following file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC
                       levels = c(.5, .9), id.n = 0, diagonal = 'histogram',
                       data = Boston)
     ```
-    `r ''````{r webgl=TRUE}
+    `r ''````{r webgl = TRUE}
     # 2
     scatter3d(logMedv ~ crim + logLstat, data = Boston, fit = "linear",
               residuals = TRUE, bg = "white", axis.scales = TRUE, grid = TRUE,
@@ -683,4 +683,3 @@ Evidences of academic fraud will have serious consequences, such as a zero grade
 #### Deadline {-}
 
 Submit the reports before December the 23rd at 16:59 through Aula Global. **Not by email**. Reports received after the deadline will not be evaluated.
-

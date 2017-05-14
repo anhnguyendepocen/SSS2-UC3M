@@ -11,7 +11,7 @@ In the following sections, **type** -- not copy and paste systematically -- the 
 
 ### Data frames revisited
 
-```{r, echo = TRUE, collapse = TRUE, error = TRUE}
+```{r, echo = TRUE, collapse = TRUE, error = TRUE, cache = TRUE}
 # Let's begin importing the iris dataset
 data(iris)
 
@@ -32,15 +32,15 @@ dim(iris)
 # str gives the structure of any object in R
 str(iris)
 
-# Recall the species variable: it is a categorical variable (or factor), 
+# Recall the species variable: it is a categorical variable (or factor),
 # not a numeric variable
 iris$Species[1:10]
 
 # Factors can only take certain values
 levels(iris$Species)
 
-# If a file contains a variable with character strings as observations (either 
-# encapsulated by quotation marks or not), the variable will become a factor 
+# If a file contains a variable with character strings as observations (either
+# encapsulated by quotation marks or not), the variable will become a factor
 # when imported into R
 
 ```
@@ -56,7 +56,7 @@ Do the following:
 
 ### Vector-related functions
 
-```{r, echo = TRUE, collapse = TRUE, error = TRUE}
+```{r, echo = TRUE, collapse = TRUE, error = TRUE, cache = TRUE}
 # The function seq creates sequences of numbers equally separated
 seq(0, 1, by = 0.1)
 seq(0, 1, length.out = 5)
@@ -82,7 +82,7 @@ table(iris$Species)
 ```{block, type = 'rmdexercise'}
 Do the following:
 
-- Create the vector $x=(0.3, 0.6, 0.9, 1.2)$. 
+- Create the vector $x=(0.3, 0.6, 0.9, 1.2)$.
 - Create a vector of length 100 ranging from $0$ to $1$ with entries equally separated.
 - Compute the amount of zeros and ones in `x <- c(0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0)`. Check that they are the same as in `rev(x)`.
 - Compute the vector $(0.1, 1.1, 2.1, ..., 100.1)$ in four different ways using `seq` and `rev`. Do the same but using `:` instead of `seq`. (Hint: add `0.1`)
@@ -91,7 +91,7 @@ Do the following:
 
 ### Logical conditions and subsetting
 
-```{r, echo = TRUE, collapse = TRUE, error = TRUE}
+```{r, echo = TRUE, collapse = TRUE, error = TRUE, cache = TRUE}
 # Relational operators: x < y, x > y, x <= y, x >= y, x == y, x!= y
 # They return TRUE or FALSE
 
@@ -114,8 +114,8 @@ Do the following:
 1 != 0 # Tests iequality
 
 # TRUE is encoded as 1 and FALSE as 0
-TRUE + 1 
-FALSE + 1 
+TRUE + 1
+FALSE + 1
 
 # In a vector-like fashion
 x <- 1:5
@@ -157,7 +157,7 @@ summary(iris[iris$Species == "setosa", ])
 # Subset argument in lm
 lm(Sepal.Width ~ Petal.Length, data = iris, subset = Sepal.Width > 3)
 lm(Sepal.Width ~ Petal.Length, data = iris, subset = iris$Sepal.Width > 3)
-# Both iris$Sepal.Width and Sepal.Width in subset are fine: data = iris 
+# Both iris$Sepal.Width and Sepal.Width in subset are fine: data = iris
 # tells R to look for Sepal.Width in the iris dataset
 
 # Same thing for the subset field in R Commander's menus
@@ -194,7 +194,7 @@ Do the following for the `iris` dataset:
 
 ### Plotting functions
 
-```{r, echo = TRUE, collapse = TRUE, error = TRUE}
+```{r, echo = TRUE, collapse = TRUE, error = TRUE, cache = TRUE}
 # plot is the main function for plotting in R
 # It has a different behaviour depending on the kind of object that it receives
 
@@ -232,7 +232,7 @@ plot(x, y, type = "l")
 ?plot
 ?par
 
-# plot is a first level plotting function. That means that whenever is called, 
+# plot is a first level plotting function. That means that whenever is called,
 # it creates a new plot. If we want to add information to an existing plot, we
 # have to use a second level plotting function such as points, lines or abline
 
@@ -246,10 +246,10 @@ abline(a = 5, b = 1, col = "orange", lwd = 2) # Add a straight line y = a + b * 
 
 The operations on distributions described here are implemented in `R Commander` through the menu `'Distributions'`, but is convenient for you to grasp how are they working.
 
-```{r, echo = TRUE, collapse = TRUE, error = TRUE}
-# R allows to sample [r], compute density/probability mass [d], 
-# compute distribution function [p] and compute quantiles [q] for several 
-# continuous and discrete distributions. The format employed is [rdpq]name, 
+```{r, echo = TRUE, collapse = TRUE, error = TRUE, cache = TRUE}
+# R allows to sample [r], compute density/probability mass [d],
+# compute distribution function [p] and compute quantiles [q] for several
+# continuous and discrete distributions. The format employed is [rdpq]name,
 # where name stands for:
 # - norm -> Normal
 # - unif -> Uniform
@@ -327,7 +327,7 @@ Do the following:
 
 ### Defining functions
 
-```{r, echo = TRUE, collapse = TRUE, error = TRUE}
+```{r, echo = TRUE, collapse = TRUE, error = TRUE, cache = TRUE}
 # A function is a way of encapsulating a block of code so it can be reused easily
 # They are useful for simplifying repetitive tasks and organize the analysis
 # For example, in Setion 3.7 we had to make use of simpleAnova for computing
@@ -352,7 +352,7 @@ lmSummary <- function(formula, data) {
 # Usage
 lmSummary(Sepal.Length ~ Petal.Width, iris)
 
-# Recall: there is no variable called model in the workspace. 
+# Recall: there is no variable called model in the workspace.
 # The function works on its own workspace!
 model
 
@@ -381,7 +381,7 @@ The Rogers Commission elaborated a report [@Roberts1986] with all the findings. 
 
 > "Temperature data [are] not conclusive on predicting primary O-ring blowby."
 
-```{r, rogerts, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Number of incidents in the O-rings (fied joints) versus temperatures. Panel *a* includes only flights with incidents. Panel *b* contains all flights (with and without incidents).', fig.show = 'hold'}
+```{r, rogerts, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Number of incidents in the O-rings (fied joints) versus temperatures. Panel *a* includes only flights with incidents. Panel *b* contains all flights (with and without incidents).', fig.show = 'hold', cache = TRUE}
 knitr::include_graphics("images/figures/challenger.png")
 ```
 
@@ -401,7 +401,7 @@ To try to answer these questions we have the `challenger` dataset ([download](ht
 - `temp`: temperature in the day of launch. Measured in Celsius degrees.
 - `pres.field`,	`pres.nozzle`: leak-check pressure tests of the O-rings. These tests assured that the rings would seal the joint.
 
-```{r, challengertable, echo = FALSE, out.width = '90%', fig.align = 'center'}
+```{r, challengertable, echo = FALSE, out.width = '90%', fig.align = 'center', cache = TRUE}
 challenger <- read.table(file = "datasets/challenger.txt", header = TRUE, sep = "\t")
 knitr::kable(
   challenger[, c(1, 2, 5:7)],
@@ -412,18 +412,18 @@ knitr::kable(
 ```
 
 Let's begin the analysis by replicating Figures \@ref(fig:rogerts)a and \@ref(fig:rogerts)b and checking that linear regression is not the right tool for answering Q1--Q3. For that, we make two scatterplots of `nfails.field` (number of total incidents in the field joints) versus `temp`, the first one excluding the launches without incidents (`subset = nfails.field > 0`) and the second one for all the data. Doing it through `R Commander` as we saw in Chapter \@ref(simp), you should get something similar to:
-```{r, echo=FALSE,message=FALSE,warning=FALSE}
+```{r, echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE}
 library(car)
 ```
-```{r, collapse=TRUE}
-scatterplot(nfails.field ~ temp, reg.line = lm, smooth = FALSE, spread = FALSE, 
+```{r, collapse = TRUE, cache = TRUE}
+scatterplot(nfails.field ~ temp, reg.line = lm, smooth = FALSE, spread = FALSE,
             boxplots = FALSE, data = challenger, subset = nfails.field > 0)
-scatterplot(nfails.field ~ temp, reg.line = lm, smooth = FALSE, spread = FALSE, 
+scatterplot(nfails.field ~ temp, reg.line = lm, smooth = FALSE, spread = FALSE,
             boxplots = FALSE, data = challenger)
 ```
 
 There is a fundamental problem in using linear regression for this data: **the response is not continuous**. As a consequence, there is no linearity and the errors around the mean are not normal (indeed, they are strongly non normal). Let's check this with the corresponding diagnostic plots:
-```{r, collapse=TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 mod <- lm(nfails.field ~ temp, data = challenger)
 par(mfrow = 1:2)
 plot(mod, 1)
@@ -439,7 +439,7 @@ Instead of trying to predict the number of incidents, we will concentrate on mod
 $$
 p(x)=\mathbb{P}(\text{incident}=1|\text{temperature}=x)
 $$
-from `fail.field` and `temp`. This probability can not be properly modeled as a linear function like $\beta_0+\beta_1x$, since inevitably will fall outside $[0,1]$ for some value of $x$ (some will have negative probabilities or probabilities larger than one). The technique that solves this problem is the **logistic regression**. The idea behind is quite simple: transform a linear model $\beta_0+\beta_1x$ -- which is aimed for a response in $\mathbb{R}$ -- so that it yields a value in $[0,1]$. This is achieved by the *logistic function* 
+from `fail.field` and `temp`. This probability can not be properly modeled as a linear function like $\beta_0+\beta_1x$, since inevitably will fall outside $[0,1]$ for some value of $x$ (some will have negative probabilities or probabilities larger than one). The technique that solves this problem is the **logistic regression**. The idea behind is quite simple: transform a linear model $\beta_0+\beta_1x$ -- which is aimed for a response in $\mathbb{R}$ -- so that it yields a value in $[0,1]$. This is achieved by the *logistic function*
 \begin{align}
 \text{logistic}(t)=\frac{e^t}{1+e^t}=\frac{1}{1+e^{-t}}.(\#eq:log)
 \end{align}
@@ -451,21 +451,21 @@ with $\beta_0$ and $\beta_1$ unknown. Let's fit the model to the data by estimat
 
 In order to fit a logistic regression to the data, go to `'Statistics' -> 'Fit models' -> 'Generalized linear model...'`. A window like Figure \@ref(fig:glm) will pop-up, which you should fill as indicated.
 
-```{r, glm, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Window for performing logistic regression.'}
+```{r, glm, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Window for performing logistic regression.', cache = TRUE}
 knitr::include_graphics("images/screenshots/glm.png")
 ```
 A code like this will be generated:
-```{r, collapse=TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 nasa <- glm(fail.field ~ temp, family = "binomial", data = challenger)
 summary(nasa)
 exp(coef(nasa)) # Exponentiated coefficients ("odds ratios")
 ```
-The summary of the logistic model is notably different from the linear regression, as the methodology behind is quite different. Nevertheless, we have tests for the significance of each coefficient. Here we obtain that `temp` is significantly different from zero, at least at a level $\alpha=0.05$. Therefore we can conclude that **the temperature is indeed affecting the probability of an incident with the O-rings** (answers Q1). 
+The summary of the logistic model is notably different from the linear regression, as the methodology behind is quite different. Nevertheless, we have tests for the significance of each coefficient. Here we obtain that `temp` is significantly different from zero, at least at a level $\alpha=0.05$. Therefore we can conclude that **the temperature is indeed affecting the probability of an incident with the O-rings** (answers Q1).
 
 The precise interpretation of the coefficients will be given in the next section. For now, the coefficient of `temp`, $\hat\beta_1$, can be regarded the "correlation between the temperature and the probability of having at least one incident". These correlation, as evidenced by the sign of $\hat\beta_1$, is negative. Let's plot the fitted logistic curve to see that indeed the probability of incident and temperature are negatively correlated:
-```{r, collapse=TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 # Plot data
-plot(challenger$temp, challenger$fail.field, xlim = c(-1, 30), xlab = "Temperature", 
+plot(challenger$temp, challenger$fail.field, xlim = c(-1, 30), xlab = "Temperature",
      ylab = "Incident probability")
 
 # Draw the fitted logistic curve
@@ -479,14 +479,14 @@ points(-0.6, 1, pch = 16)
 text(-0.6, 1, labels = "Challenger", pos = 4)
 ```
 At the sight of this curve and the summary of the model we can conclude that **the temperature was increasing the probability of an O-ring incident** (Q2). Indeed, the confidence intervals for the coefficients show a significative negative correlation at level $\alpha=0.05$:
-```{r,collapse=TRUE,message=FALSE}
+```{r, collapse = TRUE, message = FALSE, cache = TRUE}
 confint(nasa, level = 0.95)
 ```
 Finally, **the probability of having at least one incident with the O-rings in the launch day was $0.9996$ according to the fitted logistic model** (Q3). This is easily obtained:
-```{r,collapse=TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 predict(nasa, newdata = data.frame(temp = -0.6), type = "response")
 ```
-Be aware that `type = "response"` has a different meaning in logistic regression. As you can see it does not return a CI for the prediction as in linear models. Instead, `type = "response"` means that the *probability* should be returned, instead of the value of the link function, which is returned with `type = "link"` (the default). 
+Be aware that `type = "response"` has a different meaning in logistic regression. As you can see it does not return a CI for the prediction as in linear models. Instead, `type = "response"` means that the *probability* should be returned, instead of the value of the link function, which is returned with `type = "link"` (the default).
 
 Recall that there is a serious problem of **extrapolation** in the prediction, which makes it less precise (or more variable). But this extrapolation, together with the evidences raised by a simple analysis like we did, should have been strong arguments for postponing the launch.
 
@@ -510,7 +510,7 @@ where $\mathbb{E}[Y|X_1=x_1,\ldots,X_k=x_k]$ is the mean of $Y$ for a particular
 
 The situation when $Y$ is *discrete* (naturally ordered values; e.g. number of fails, number of students) or *categorical* (non-ordered categories; e.g. territorial divisions, ethnic groups) requires a special treatment. The simplest situation is when $Y$ is *binary* (or *dichotomic*): it can only take two values, codified for convenience as $1$ (success) and $0$ (failure). For example, in the Challenger case study we used `fail.field` as an *indicator* of whether "there was at least an incident with the O-rings" (`1` = yes, `0` = no). For binary variables there is no fundamental distinction between the treatment of discrete and categorical variables.
 
-More formally, a binary variable is known as a *Bernoulli variable*, which is the simplest non-trivial random variable. We say that $Y\sim\mathrm{Ber}(p)$, $0\leq p\leq1$, if 
+More formally, a binary variable is known as a *Bernoulli variable*, which is the simplest non-trivial random variable. We say that $Y\sim\mathrm{Ber}(p)$, $0\leq p\leq1$, if
 \[
 Y=\left\{\begin{array}{ll}1,&\text{with probability }p,\\0,&\text{with probability }1-p,\end{array}\right.
 \]
@@ -521,7 +521,7 @@ or, equivalently, if $\mathbb{P}[Y=1]=p$ and $\mathbb{P}[Y=0]=1-p$, which can be
 Recall that a *binomial variable with size $n$ and probability $p$*, $\mathrm{Bi}(n,p)$, is obtained by summing $n$ independent $\mathrm{Ber}(p)$ (so $\mathrm{Ber}(p)$ is the same as $\mathrm{Bi}(1,p)$). This is why we need to use a `family = "binomial"` in `glm`, to indicate that the response is binomial.
 
 ```{block, type='rmdinsight'}
-A Bernoulli variable $Y$ is completely determined by the probability $p$. **So do its mean and variance**: 
+A Bernoulli variable $Y$ is completely determined by the probability $p$. **So do its mean and variance**:
 
 - $\mathbb{E}[Y]=p\times1+(1-p)\times0=p$
 - $\mathbb{V}\mathrm{ar}[Y]=p(1-p)$
@@ -559,7 +559,7 @@ F(z)=\mathrm{logistic}(z)=\frac{e^z}{1+e^z}=\frac{1}{1+e^{-z}}.
 \]
 - **Probit**. Consider the *normal* distribution function, this is, $F=\Phi$.
 
-```{r, logitprobit, echo = FALSE, results = 'hide', out.width = '70%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Different transformations mapping the response of a simple linear regression $z=\\beta_0+\\beta_1x$ to $[0,1]$.'}
+```{r, logitprobit, echo = FALSE, results = 'hide', out.width = '70%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Different transformations mapping the response of a simple linear regression $z=\\beta_0+\\beta_1x$ to $[0,1]$.', cache = TRUE}
 # Regression
 x <- seq(-3, 3, l = 200)
 z <- 2 * x
@@ -580,11 +580,11 @@ plot(x, z, type = "l", ylim = c(-0.1, 1.1), ylab = "Probability", lwd = 2)
 lines(x, z1, col = "blue", lwd = 2)
 lines(x, z2, col = "red", lwd = 2)
 lines(x, z3, col = "green", lwd = 2)
-legend("topleft", legend = c("Linear regression", "Uniform", "Logit", "Probit"), lwd = 2, 
+legend("topleft", legend = c("Linear regression", "Uniform", "Logit", "Probit"), lwd = 2,
        col = c("black", "blue", "red", "green"))
 ```
 
-The **logistic** transformation is the most employed due to its **tractability, interpretability and smoothness**. Its inverse, $F^{-1}:[0,1]\longrightarrow\mathbb{R}$, known as the *logit function*, is 
+The **logistic** transformation is the most employed due to its **tractability, interpretability and smoothness**. Its inverse, $F^{-1}:[0,1]\longrightarrow\mathbb{R}$, known as the *logit function*, is
 \[
 \mathrm{logit}(p)=\mathrm{logistic}^{-1}(p)=\log\frac{p}{1-p}.
 \]
@@ -598,7 +598,7 @@ The linear form inside the exponent has a clear interpretation:
 - If $\beta_0+\beta_1x_1+\ldots+\beta_kx_k<0$, then $p(x_1,\ldots,x_k)<\frac{1}{2}$ ($Y=1$ less likely).
 - If $\beta_0+\beta_1x_1+\ldots+\beta_kx_k>0$, then $p(x_1,\ldots,x_k)>\frac{1}{2}$ ($Y=1$ more likely).
 
-To be more precise on the interpretation of the coefficients $\beta_0,\ldots,\beta_k$ we need to introduce the *odds*. The **odds is an equivalent way of expressing the distribution of probabilities in a binary variable**. Since $\mathbb{P}[Y=1]=p$ and $\mathbb{P}[Y=0]=1-p$, both the success and failure probabilities can be inferred from $p$. Instead of using $p$ to characterize the distribution of $Y$, we can use 
+To be more precise on the interpretation of the coefficients $\beta_0,\ldots,\beta_k$ we need to introduce the *odds*. The **odds is an equivalent way of expressing the distribution of probabilities in a binary variable**. Since $\mathbb{P}[Y=1]=p$ and $\mathbb{P}[Y=0]=1-p$, both the success and failure probabilities can be inferred from $p$. Instead of using $p$ to characterize the distribution of $Y$, we can use
 \begin{align}
 \mathrm{odds}(Y)=\frac{p}{1-p}=\frac{\mathbb{P}[Y=1]}{\mathbb{P}[Y=0]}.(\#eq:eq-odds)
 \end{align}
@@ -637,21 +637,21 @@ The log-odds is not so easy to interpret as the odds. For that reason, an equiva
 
 As a consequence of this last interpretation, we have:
 ```{block2, type = 'rmdinsight'}
-If $\beta_j>0$ (respectively, $\beta_j<0$) then $e^{\beta_j}>1$ ($e^{\beta_j}<1$) in \@ref(eq:eq-odds-log1). Therefore, an increment of one unit in $X_j$, provided that the remaining variables $X_1,\ldots,X_{j-1},X_{j+1},\ldots,X_k$ do not change, results in an increment (decrement) of the odds, this is, in an increment (decrement) of $\mathbb{P}[Y=1]$. 
+If $\beta_j>0$ (respectively, $\beta_j<0$) then $e^{\beta_j}>1$ ($e^{\beta_j}<1$) in \@ref(eq:eq-odds-log1). Therefore, an increment of one unit in $X_j$, provided that the remaining variables $X_1,\ldots,X_{j-1},X_{j+1},\ldots,X_k$ do not change, results in an increment (decrement) of the odds, this is, in an increment (decrement) of $\mathbb{P}[Y=1]$.
 ```
 
 ```{block, type='rmdcaution'}
 Since the relationship between $p(X_1,\ldots,X_k)$ and $X_1,\ldots,X_k$ is not linear, **$\beta_j$ does not correspond to the change in $p(X_1,\ldots,X_k)$ associated with a one-unit increase in $X_j$**.
 ```
 
-Let's visualize this concepts quickly with the the output of the Challenger case study:
-```{r, collapse=TRUE}
+Let's visualize this concepts quickly with the output of the Challenger case study:
+```{r, collapse = TRUE, cache = TRUE}
 nasa <- glm(fail.field ~ temp, family = "binomial", data = challenger)
 summary(nasa)
 exp(coef(nasa)) # Exponentiated coefficients ("odds ratios")
 
 # Plot data
-plot(challenger$temp, challenger$fail.field, xlim = c(-1, 30), xlab = "Temperature", 
+plot(challenger$temp, challenger$fail.field, xlim = c(-1, 30), xlab = "Temperature",
      ylab = "Incident probability")
 
 # Draw the fitted logistic curve
@@ -683,7 +683,7 @@ Usually, the log-likelihood is considered instead of the likelihood for stabilit
 \[
 \hat{\boldsymbol{\beta}}=\arg\max_{\boldsymbol{\beta}\in\mathbb{R}^{k+1}}\log \text{lik}(\boldsymbol{\beta}).
 \]
-Unfortunately, due to the non-linearity of the optimization problem there are no explicit expressions for $\hat{\boldsymbol{\beta}}$. These have to be obtained numerically by means of an iterative procedure (the number of iterations required is printed in the output of `summary`). In low sample situations with perfect classification, the iterative procedure may not converge. 
+Unfortunately, due to the non-linearity of the optimization problem there are no explicit expressions for $\hat{\boldsymbol{\beta}}$. These have to be obtained numerically by means of an iterative procedure (the number of iterations required is printed in the output of `summary`). In low sample situations with perfect classification, the iterative procedure may not converge.
 
 Figure \@ref(fig:maximumlikelihood) shows how the log-likelihood changes with respect to the values for $(\beta_0,\beta_1)$ in three data patterns.
 ```{r, maximumlikelihood, echo = FALSE, fig.cap = 'The logistic regression fit and its dependence on $\\beta_0$ (horizontal displacement) and $\\beta_1$ (steepness of the curve). Recall the effect of the sign of $\\beta_1$ in the curve: if positive, the logistic curve has an \'s\' form; if negative, the form is a reflected \'s\'.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
@@ -691,7 +691,7 @@ knitr::include_app('https://egarpor.shinyapps.io/log-maximum-likelihood/', heigh
 ```
 
 The data of the illustration has been generated with the following code:
-```{r}
+```{r, cache = TRUE}
 # Data
 set.seed(34567)
 x <- rnorm(50, sd = 1.5)
@@ -707,7 +707,7 @@ dataMle <- data.frame(x = x, y1 = y1, y2 = y2, y3 = y3)
 ```
 
 Let's check that indeed the coefficients given by `glm` are the ones that maximize the likelihood given in the animation of Figure \@ref(fig:maximumlikelihood). We do so for `y ~ x1`.
-```{r, echo = TRUE, collapse = TRUE}
+```{r, echo = TRUE, collapse = TRUE, cache = TRUE}
 mod <- glm(y1 ~ x, family = "binomial", data = dataMle)
 mod$coefficients
 ```
@@ -735,7 +735,7 @@ As in the linear model, **the inclusion of a new predictor changes the coefficie
 
 Some probabilistic assumptions are required for performing inference on the model parameters $\boldsymbol\beta$ from the sample $(\mathbf{X}_1, Y_1),\ldots,(\mathbf{X}_n, Y_n)$. These assumptions are somehow simpler than the ones for linear regression.
 
-```{r, logisticmodel, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The key concepts of the logistic model.'}
+```{r, logisticmodel, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The key concepts of the logistic model.', cache = TRUE}
 knitr::include_graphics("images/R/logisticmodel.png")
 ```
 
@@ -762,7 +762,7 @@ There are three important points of the linear model assumptions  missing in the
 ```{block, type='rmdinsight'}
 Recall that:
 
-- Nothing is said about the distribution of $X_1,\ldots,X_k$. They could be deterministic or random. They could be discrete or continuous. 
+- Nothing is said about the distribution of $X_1,\ldots,X_k$. They could be deterministic or random. They could be discrete or continuous.
 - $X_1,\ldots,X_k$ are **not required to be independent** between them.
 ```
 
@@ -770,7 +770,7 @@ Recall that:
 
 The assumptions on which the logistic model is constructed allow to specify what is the *asymptotic* distribution of the *random vector* $\hat{\boldsymbol{\beta}}$. Again, the distribution is derived conditionally on the sample predictors $\mathbf{X}_1,\ldots,\mathbf{X}_n$. In other words, we assume that the randomness of $Y$ comes only from $Y|(X_1=x_1,\ldots,X_k=x_k)\sim\mathrm{Ber}(p(\mathbf{x}))$ and not from the predictors. To denote this, we employ lowercase for the sample predictors $\mathbf{x}_1,\ldots,\mathbf{x}_n$.
 
-There is an important difference between the inference results for the linear model and for logistic regression: 
+There is an important difference between the inference results for the linear model and for logistic regression:
 
 - **In linear regression the inference is exact**. This is due to the nice properties of the normal, least squares estimation and linearity. As a consequence, the distributions of the coefficients are perfectly known assuming that the assumptions hold.
 - **In logistic regression the inference is asymptotic**. This means that the distributions of the coefficients are unknown except for large sample sizes $n$, for which we have **approximations**. The reason is the more complexity of the model in terms of non-linearity. This is the usual situation for the majority of the regression models.
@@ -800,12 +800,12 @@ In the case of the multiple linear regression, $I(\hat{\boldsymbol{\beta}})^{-1}
 
 The interpretation of \@ref(eq:mle1) and \@ref(eq:mle2) give some useful insights on what concepts affect the quality of the estimation:
 
-- **Bias**. The estimates are *asymptotically* unbiased. 
+- **Bias**. The estimates are *asymptotically* unbiased.
 - **Variance**. It depends on:
 
     - *Sample size $n$*. Hidden inside $\mathbf{X}^T\mathbf{V}\mathbf{X}$. As $n$ grows, the precision of the estimators increases.
     - *Weighted predictor sparsity $(\mathbf{X}^T\mathbf{V}\mathbf{X})^{-1}$*. The more *sparse* the predictor is (small $|(\mathbf{X}^T\mathbf{V}\mathbf{X})^{-1}|$), the more precise $\hat{\boldsymbol{\beta}}$ is.
-    
+
 
 ```{block2, type='rmdinsight'}
 **The precision of $\hat{\boldsymbol{\beta}}$ is affected by the value of $\boldsymbol{\beta}$**, which is hidden inside $\mathbf{V}$. This contrasts sharply with the linear model, where the precision of the least squares estimator was not affected by the value of the unknown coefficients (see \@ref(eq:normp)). The reason is partially due to the **heteroskedasticity** of logistic regression, which implies a dependence of the variance of $Y$ in the logistic curve, hence in $\boldsymbol{\beta}$.
@@ -815,15 +815,15 @@ The interpretation of \@ref(eq:mle1) and \@ref(eq:mle2) give some useful insight
 knitr::include_app('https://egarpor.shinyapps.io/log-random/', height = '1000px')
 ```
 
-Similar to linear regression, the problem with \@ref(eq:mle1) and \@ref(eq:mle2) is that *$\mathbf{V}$ is unknown* in practice because it depends on $\boldsymbol{\beta}$. Plugging-in the estimate $\hat{\boldsymbol{\beta}}$ to $\boldsymbol{\beta}$ in $\mathbf{V}$ results in $\hat{\mathbf{V}}$. Now we can use $\hat{\mathbf{V}}$ to get 
+Similar to linear regression, the problem with \@ref(eq:mle1) and \@ref(eq:mle2) is that *$\mathbf{V}$ is unknown* in practice because it depends on $\boldsymbol{\beta}$. Plugging-in the estimate $\hat{\boldsymbol{\beta}}$ to $\boldsymbol{\beta}$ in $\mathbf{V}$ results in $\hat{\mathbf{V}}$. Now we can use $\hat{\mathbf{V}}$ to get
 \begin{align}
 \frac{\hat\beta_j-\beta_j}{\hat{\mathrm{SE}}(\hat\beta_j)}\sim \mathcal{N}(0,1),\quad\hat{\mathrm{SE}}(\hat\beta_j)^2=v_j^2(\#eq:mle3)
 \end{align}
-where 
+where
 \[
 v_j\text{ is the $j$-th element of the diagonal of }(\mathbf{X}^T\hat{\mathbf{V}}\mathbf{X})^{-1}.
 \]
-The LHS of \@ref(eq:normp2) is the **Wald statistic** for $\beta_j$, $j=0,\ldots,k$. They are employed for building confidence intervals and hypothesis tests. 
+The LHS of \@ref(eq:normp2) is the **Wald statistic** for $\beta_j$, $j=0,\ldots,k$. They are employed for building confidence intervals and hypothesis tests.
 
 ### Confidence intervals for the coefficients {#log-reg-confidence}
 
@@ -838,7 +838,7 @@ e^{\left(\hat\beta_j\pm\hat{\mathrm{SE}}(\hat\beta_j)z_{\alpha/2}\right)}.
 Of course, this CI is **not** the same as $\left(e^{\hat\beta_j}\pm e^{\hat{\mathrm{SE}}(\hat\beta_j)z_{\alpha/2}}\right)$, which is not a CI for $e^{\hat\beta_j}$.
 
 Let's see how we can compute the CIs. We return to the `challenger` dataset, so in case you do not have it loaded, you can download it [here](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/challenger.txt). We analyse the CI for the coefficients of `fail.field ~ temp`.
-```{r, collapse = TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 # Fit model
 nasa <- glm(fail.field ~ temp, family = "binomial", data = challenger)
 
@@ -857,14 +857,14 @@ In this example, the 95% confidence interval for $\beta_0$ is $(1.3364, 17.7834)
 - `temp` has a significantly negative effect in the probability of `fail.field`=1  (using the CI for $\beta_1$). Indeed, each unit increase in `temp` produces a reduction of the odds of `fail.field` by a factor between $0.3070$ and $0.8967$ (using the CI for $e^{\beta_1}$).
 
 ```{block2, type = 'rmdexercise'}
-Compute and interpret the CIs for the the exponentiated coefficients, at level $\alpha=0.05$, for the following regressions (`challenger` dataset):
+Compute and interpret the CIs for the exponentiated coefficients, at level $\alpha=0.05$, for the following regressions (`challenger` dataset):
 
 - `fail.field ~ temp + pres.field`
 - `fail.nozzle ~ temp + pres.nozzle`
 - `fail.field ~ temp + pres.nozzle`
 - `fail.nozzle ~ temp + pres.field`
 
-The interpretation of the variables is given above Table \@ref(tab:challengertable). 
+The interpretation of the variables is given above Table \@ref(tab:challengertable).
 ```
 
 ### Testing on the coefficients {#log-reg-testing}
@@ -887,15 +887,15 @@ The tests for significance are built-in in the `summary` function. However, a no
 >- No $\rightarrow$ the criterion is not conclusive.
 
 ```{block, type = 'rmdcaution'}
-The significances given in `summary` and the output of `confint` are *slightly* incoherent and the previous rule of thumb **does not apply**. The reason is because `MASS`'s `confint` is using a more sophisticated method (profile likelihood) to estimate the standard error of $\hat\beta_j$, $\hat{\mathrm{SE}}(\hat\beta_j)$, and not the asymptotic distribution behind Wald statistic. 
+The significances given in `summary` and the output of `confint` are *slightly* incoherent and the previous rule of thumb **does not apply**. The reason is because `MASS`'s `confint` is using a more sophisticated method (profile likelihood) to estimate the standard error of $\hat\beta_j$, $\hat{\mathrm{SE}}(\hat\beta_j)$, and not the asymptotic distribution behind Wald statistic.
 
 By changing `confint` to `R`'s default `confint.default`, the results of the latter will be completely equivalent to the significances in `summary`, and the rule of thumb still be completely valid. For the contents of this course we prefer `confint.default` due to its better interpretability.
 ```
 
 To illustrate this we consider the regression of `fail.field ~ temp + pres.field`:
-```{r, collapse = TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 # Significances with asymptotic approximation for the standard errors
-nasa2 <- glm(fail.field ~ temp + pres.field, family = "binomial", 
+nasa2 <- glm(fail.field ~ temp + pres.field, family = "binomial",
              data = challenger)
 summary(nasa2)
 
@@ -918,7 +918,7 @@ For the previous exercise, check the differences of using `confint` or `confint.
 \[
 p(x_1,\ldots,x_k)=\mathbb{P}[Y=1|X_1=x_1,\ldots,X_k=x_k]=\frac{1}{1+e^{-(\beta_0+\beta_1x_1+\ldots+\beta_kx_k)}}
 \]
-by means of 
+by means of
 \[
 \hat p(x_1,\ldots,x_k)=\hat{\mathbb{P}}[Y=1|X_1=x_1,\ldots,X_k=x_k]=\frac{1}{1+e^{-(\hat\beta_0+\hat\beta_1x_1+\ldots+\hat\beta_kx_k)}}.
 \]
@@ -930,11 +930,11 @@ As a consequence, we can predict $Y$ as $1$ if $\hat p(x_1,\ldots,x_k)>\frac{1}{
 
 Let's focus then on how to make predictions and compute CIs in practice with `predict`. Similarly to the linear model, the objects required for `predict` are: first, the output of `glm`; second, a `data.frame` containing the locations $\mathbf{x}=(x_1,\ldots,x_k)$ where we want to predict $p(x_1,\ldots,x_k)$. However, there are **two differences** with respect to the use of `predict` for `lm`:
 
-- The argument `type`. `type = "link"`, gives the predictions in the log-odds, this is, returns $\log\frac{\hat p(x_1,\ldots,x_k)}{1-\hat p(x_1,\ldots,x_k)}$. `type = "response"` gives the predictions in the probability space $[0,1]$, this is, returns $\hat p(x_1,\ldots,x_k)$. 
+- The argument `type`. `type = "link"`, gives the predictions in the log-odds, this is, returns $\log\frac{\hat p(x_1,\ldots,x_k)}{1-\hat p(x_1,\ldots,x_k)}$. `type = "response"` gives the predictions in the probability space $[0,1]$, this is, returns $\hat p(x_1,\ldots,x_k)$.
 - There is no `interval` argument for using `predict` for `glm`. That means that there is no easy way of computing CIs for prediction.
 
 Since it is a bit cumbersome to compute by yourself the CIs, we can code the function `predictCIsLogistic` so that it compute them automatically for you, see below.
-```{r, collapse = TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 # Data for which we want a prediction
 # Important! You have to name the column with the predictor name!
 newdata <- data.frame(temp = -0.6)
@@ -947,31 +947,31 @@ predict(nasa, newdata = newdata, type = "response")
 
 # Function for computing the predictions and CIs for the conditional probability
 predictCIsLogistic <- function(object, newdata, level = 0.95) {
-  
+
   # Compute predictions in the log-odds
   pred <- predict(object = object, newdata = newdata, se.fit = TRUE)
-  
+
   # CI in the log-odds
   za <- qnorm(p = (1 - level) / 2)
   lwr <- pred$fit + za * pred$se.fit
   upr <- pred$fit - za * pred$se.fit
-  
+
   # Transform to probabilities
   fit <- 1 / (1 + exp(-pred$fit))
   lwr <- 1 / (1 + exp(-lwr))
   upr <- 1 / (1 + exp(-upr))
-  
+
   # Return a matrix with column names "fit", "lwr" and "upr"
   result <- cbind(fit, lwr, upr)
   colnames(result) <- c("fit", "lwr", "upr")
   return(result)
- 
+
 }
 
 # Simple call
 predictCIsLogistic(nasa, newdata = newdata)
 # The CI is large because there is no data around temp = -0.6 and
-# that makes the prediction more variable (and also because we only 
+# that makes the prediction more variable (and also because we only
 # have 23 observations)
 ```
 
@@ -997,7 +997,7 @@ The **deviance** is a key concept in logistic regression. Intuitively, it measur
 \hat{\mathbb{P}}[Y=1|X_1=X_{i1},\ldots,X_k=X_{ik}]=Y_i,\quad i=1,\ldots,n.
 \]
 This model assigns probability $0$ or $1$ to $Y$ depending on the actual value of $Y_i$. To clarify this concept, Figure \@ref(fig:saturated) shows a saturated model and a fitted logistic regression.
-```{r, saturated, echo = FALSE, results = 'hide', out.width = '70%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Fitted logistc regression versus *a* saturated model (several are possible depending on the interpolation between points) and the null model.'}
+```{r, saturated, echo = FALSE, results = 'hide', out.width = '70%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Fitted logistc regression versus *a* saturated model (several are possible depending on the interpolation between points) and the null model.', cache = TRUE}
 set.seed(45671231)
 x <- runif(50, 0, 1)
 y <- rbinom(n = 50, size = 1, prob = 1/(1 + exp(-(1 - 6 * x))))
@@ -1018,9 +1018,9 @@ Since the likelihood of the saturated model is exactly one^[The probability of t
 \[
 D=-2\log\text{lik}(\hat{\boldsymbol{\beta}}).
 \]
-As as consequence, **the deviance is always larger or equal than zero, being zero only if the fit is perfect**. 
+As a consequence, **the deviance is always larger or equal than zero, being zero only if the fit is perfect**.
 
-A benchmark for evaluating the magnitude of the deviance is the **null deviance**, 
+A benchmark for evaluating the magnitude of the deviance is the **null deviance**,
 \[
 D_0=-2\log\text{lik}(\hat{\beta}_0),
 \]
@@ -1055,7 +1055,7 @@ D=\mathrm{SSE}\text{ (or $D=\mathrm{RSS}$) and }D_0=\mathrm{SST}.
 ```
 
 Let's see how these concepts are given by the `summary` function:
-```{r, collapse=TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 # Summary of model
 nasa <- glm(fail.field ~ temp, family = "binomial", data = challenger)
 summaryLog <- summary(nasa)
@@ -1068,10 +1068,10 @@ summaryNull
 
 # Computation of the R^2 with a function - useful for repetitive computations
 r2Log <- function(model) {
-  
+
   summaryLog <- summary(model)
   1 - summaryLog$deviance / summaryLog$null.deviance
-  
+
 }
 
 # R^2
@@ -1094,7 +1094,7 @@ The overall predictive accuracy can be summarized with the **hit matrix**
 | $Y=1$ | Incorrect$_{10}$ | Correct$_{1}$ |
 
 and with the **hit ratio** $\frac{\text{Correct}_0+\text{Correct}_1}{n}$. The hit matrix is easily computed with the `table` function. The function, whenever called with two vectors, computes the cross-table between the two vectors.
-```{r, collapse=TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 # Fitted probabilities for Y = 1
 nasa$fitted.values
 
@@ -1120,7 +1120,7 @@ It is important to recall that the hit matrix will be always *biased towards unr
 The same discussion we did in Section \@ref(selection) is applicable to logistic regression with small changes:
 
 1. The **deviance** of the model (reciprocally the likelihood and the $R^2$) **always decreases** (increase) with the inclusion of more predictors -- no matter whether they are significant or not.
-2. The **excess of predictors** in the model is paid by a larger variability in the estimation of the model which results in less precise prediction. 
+2. The **excess of predictors** in the model is paid by a larger variability in the estimation of the model which results in less precise prediction.
 3. **Multicollinearity** may hide significant variables, change the sign of them and result in an increase of the variability of the estimation at the expense of little improvement in .
 
 The use of information criteria, `stepwise` and `vif` allow to efficiently fight back these issues. Let's review them quickly from the perspective of logistic regression.
@@ -1131,10 +1131,10 @@ First, remember that the BIC/AIC information criteria are based on a **balance b
 &=D+(k+1)\times \log n,
 \end{align*}
 where $\text{lik}(\hat{\boldsymbol{\beta}})$ is the *likelihood of the model*. The AIC replaces $\log n$ by $2$, hence penalizing less model complexity. The BIC and AIC can be computed in `R` through the functions `BIC` and `AIC`, and we can check manually that they match with its definition.
-```{r, collapse=TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 # Models
 nasa <- glm(fail.field ~ temp, family = "binomial", data = challenger)
-nasa2 <- glm(fail.field ~ temp + pres.field, family = "binomial", 
+nasa2 <- glm(fail.field ~ temp + pres.field, family = "binomial",
              data = challenger)
 
 # nasa
@@ -1155,7 +1155,7 @@ summary2$deviance + 3 * 2
 ```
 Second, `stepwise` works analogously to the linear regression situation. Here is an illustration for a binary variable that measures whether a Boston suburb (`Boston` dataset) is wealth or not. The binary variable is `medv > 25`: it is `TRUE` (`1`) for suburbs with median house value larger than 25000\$) and `FALSE` (`0`) otherwise. The cutoff 25000\$ corresponds to the 25\% richest suburbs.
 
-```{r, collapse=TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 # Boston dataset
 data(Boston)
 
@@ -1170,7 +1170,7 @@ summary(modBIC)
 r2Log(modBIC)
 ```
 
-Finally, **multicollinearity can also be present in logistic regression**. Despite the nonlinear logistic curve, the predictors are combined linearly in \@ref(eq:eq-log). Due to this, if two or more predictors are highly correlated between them, the fit of the model will be compromised since the individual linear effect of each predictor is hard to disentangle from the rest of correlated predictors. 
+Finally, **multicollinearity can also be present in logistic regression**. Despite the nonlinear logistic curve, the predictors are combined linearly in \@ref(eq:eq-log). Due to this, if two or more predictors are highly correlated between them, the fit of the model will be compromised since the individual linear effect of each predictor is hard to disentangle from the rest of correlated predictors.
 
 In addition to inspecting the correlation matrix and look for high correlations, a powerful tool to detect multicollinearity is the *generalized* Variance Inflation Factor (gVIF) of each coefficient $\hat\beta_j$. This is a *measure of how much the variability in the estimation has increased due to the addition of the predictor $X_j$*. The next rule of thumb gives direct insight into which predictors are multicollinear:
 
@@ -1178,7 +1178,7 @@ In addition to inspecting the correlation matrix and look for high correlations,
 - **gVIF larger than 5 or 10: problematic amount of multicollinearity**. Advised to remove the predictor with largest gVIF.
 
 Here is an example illustrating the use of gVIF, through `vif`, in practice. It also shows also how the simple inspection of the covariance matrix is not enough for detecting collinearity in tricky situations.
-```{r, collapse=TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 # Create predictors with multicollinearity: x4 depends on the rest
 set.seed(45678)
 x1 <- rnorm(100)
@@ -1217,7 +1217,7 @@ For the `Boston` dataset, do the following:
 1. Compute the hit matrix and hit ratio for the regression `I(medv > 25) ~ .` (hint: do `table(medv > 25, ...)`).
 2. Fit `I(medv > 25) ~ .` but now using only the first 300 observations of `Boston`, the *training dataset* (hint: use `subset`).
 3. For the previous model, predict the probability of the responses and classify them into `0` or `1` in the last 206 observations, the *testing dataset* (hint: use `predict` on that subset).
-4. Compute the hit matrix and hit ratio for the new predictions. Check that the hit ratio is smaller than the one in the first point. The hit ratio on the testing dataset, and not the first hit rate, is an estimator of how well the model is going to classify future observations. 
+4. Compute the hit matrix and hit ratio for the new predictions. Check that the hit ratio is smaller than the one in the first point. The hit ratio on the testing dataset, and not the first hit rate, is an estimator of how well the model is going to classify future observations.
 
 ```
 

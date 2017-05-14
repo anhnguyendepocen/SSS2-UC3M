@@ -80,7 +80,7 @@ scatterplotMatrix(~ crim + logLstat + logMedv, reg.line = lm, smooth = FALSE,
                   levels = c(.5, .9), id.n = 0, diagonal = 'histogram',
                   data = Boston)
 ```
-```{r webgl=TRUE}
+```{r webgl = TRUE}
 # 2
 scatter3d(logMedv ~ crim + logLstat, data = Boston, fit = "linear",
           residuals = TRUE, bg = "white", axis.scales = TRUE, grid = TRUE,

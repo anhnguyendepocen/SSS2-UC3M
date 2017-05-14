@@ -7,7 +7,7 @@ Y=\beta_0+\beta_1X_1+\beta_2X_2+\ldots+\beta_kX_k+\varepsilon
 \]
 To convince you why is useful, let's begin by seeing what it can deliver in real-case scenarios!
 
-## Examples and applications 
+## Examples and applications
 
 ### Case study I: *The Bordeaux equation* {#wine}
 
@@ -28,13 +28,13 @@ The `wine.csv` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-U
 - `Price`: *logarithm* of the average market price for Bordeaux vintages according to 1990--1991 auctions.^[In @Ashenfelter1995, this variable is expressed relative to the price of the 1961 vintage, regarded as the best one ever recorded. In other words, they consider `Price - 8.4937` as the price variable.] This is a nonlinear transformation of the *response* (hence different to what we did in Section \@ref(nonlin)) made to *linearize* the response.
 - `WinterRain`: winter rainfall (in mm).
 - `AGST`: Average Growing Season Temperature (in Celsius degrees).
-- `HarvestRain`: harvest rainfall (in mm). 
+- `HarvestRain`: harvest rainfall (in mm).
 - `Age`: age of the wine measured as the number of years stored in a cask.
 - `FrancePop`: population of France at `Year` (in thousands).
 
-The *quality* of the wine is quantified as the `Price`, a clever way of quantifying a qualitative measure. The data is shown in Table \@ref(tab:winetable). 
+The *quality* of the wine is quantified as the `Price`, a clever way of quantifying a qualitative measure. The data is shown in Table \@ref(tab:winetable).
 
-```{r, winetable, echo = FALSE, out.width = '90%', fig.align = 'center'}
+```{r, winetable, echo = FALSE, out.width = '90%', fig.align = 'center', cache = TRUE}
 wine <- read.csv(file = "datasets/wine.csv", header = TRUE)
 knitr::kable(
   head(wine, 15),
@@ -50,34 +50,34 @@ Let's begin by summarizing the information in Table \@ref(tab:winetable). First,
 
 1. **Numerically**. Go to `'Statistics' -> 'Summaries' -> 'Active data set'`.
 
-    ```{r, collapse = TRUE}
+    ```{r, collapse = TRUE, cache = TRUE}
     summary(wine)
     ```
     Additionally, other summary statistics are available in `'Statistics' -> 'Summaries' -> 'Numerical summaries...'`.
 
 2. **Graphically**. Make a scatterplot matrix with all the variables. Add the `'Least-squares lines'`, `'Histograms'` on the diagonals and choose to identify 2 points.
 
-    ```{r, scat, collapse = TRUE, out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = 'Scatterplot matrix for `wine`.'}
-    scatterplotMatrix(~ Age + AGST + FrancePop + HarvestRain + Price + WinterRain, 
-                      reg.line = lm, smooth = FALSE, spread = FALSE, span = 0.5, 
-                      ellipse = FALSE, levels = c(.5, .9), id.n = 2, 
+    ```{r, scat, collapse = TRUE, out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = 'Scatterplot matrix for `wine`.', cache = TRUE}
+    scatterplotMatrix(~ Age + AGST + FrancePop + HarvestRain + Price + WinterRain,
+                      reg.line = lm, smooth = FALSE, spread = FALSE, span = 0.5,
+                      ellipse = FALSE, levels = c(.5, .9), id.n = 2,
                       diagonal = 'histogram', data = wine)
     ```
 
 Recall that the objective is to **predict** `Price`. Based on the above matrix scatterplot the best we can predict `Price` by a simple linear regression seems to be with `AGST` or `HarvestRain`. Let's see which one yields the larger $R^2$.
-```{r, collapse = TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 modAGST <- lm(Price ~ AGST, data = wine)
 summary(modAGST)
 
 modHarvestRain <- lm(Price ~ HarvestRain, data = wine)
 summary(modHarvestRain)
 ```
-In `Price ~ AGST`, the intercept is not significant for the regression but the slope is, and  `AGST` has a positive effect on the `Price`. For `Price ~ HarvestRain`, both intercept and slope are significant and the effect is negative. 
+In `Price ~ AGST`, the intercept is not significant for the regression but the slope is, and  `AGST` has a positive effect on the `Price`. For `Price ~ HarvestRain`, both intercept and slope are significant and the effect is negative.
 
 ```{block, type = 'rmdexercise'}
 Complete the analysis by computing the linear models `Price ~ FrancePop`, `Price ~ Age` and `Price ~ WinterRain`. Name them as `modFrancePop`, `modAge` and `modWinterRain`. Check if the intercepts and slopes are significant for the regression.
 ```
-```{r, echo = FALSE}
+```{r, echo = FALSE, cache = TRUE}
 modFrancePop <- lm(Price ~ FrancePop, data = wine)
 modAge <- lm(Price ~ Age, data = wine)
 modWinterRain <- lm(Price ~ WinterRain, data = wine)
@@ -97,9 +97,9 @@ A natural question to ask is:
 
 > Can we *combine* these simple regressions to increase both the $R^2$ and the prediction accuracy for `Price`?
 
-The answer is yes, by means of the **multiple linear regression**. In order to make our first one, go to `'Statistics' -> 'Fit models' -> 'Linear model...'`. A window like Figure \@ref(fig:lmod) will pop-up. 
-    
-```{r, lmod, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Window for performing multiple linear regression.'}
+The answer is yes, by means of the **multiple linear regression**. In order to make our first one, go to `'Statistics' -> 'Fit models' -> 'Linear model...'`. A window like Figure \@ref(fig:lmod) will pop-up.
+
+```{r, lmod, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Window for performing multiple linear regression.', cache = TRUE}
 knitr::include_graphics("images/screenshots/lmm.png")
 ```
 
@@ -108,7 +108,7 @@ Set the response as `Price` and add the rest of variables as predictors, in the 
 Y=\beta_0+\beta_1X_1+\beta_2X_2+\ldots+\beta_kX_k+\varepsilon
 \end{align*}
 If the model is named `modWine1`, we get the following summary when clicking in `'OK'`:
-```{r, collapse = TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 modWine1 <- lm(Price ~ Age + AGST + FrancePop + HarvestRain + WinterRain, data = wine)
 summary(modWine1)
 ```
@@ -125,14 +125,14 @@ Two useful tips  about `lm`'s syntax for including/excluding predictors faster:
 ```
 
 Then, the model without `FrancePop` is
-```{r, collapse = TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 modWine2 <- lm(Price ~ . - FrancePop, data = wine)
 summary(modWine2)
 ```
 All the coefficients are significant at level $\alpha=0.05$. Therefore, there is no clear redundant information. In addition, the $R^2$ is very similar to the full model, but the `'Adjusted R-squared'`, a weighting of the $R^2$ to account for the number of predictors used by the model, is slightly larger. Hence, this means that, comparatively to the number of predictors used, `modWine2` explains more variability of `Price` than `modWine1`. Later in this chapter we will see the precise meaning of the $R^2$ adjusted.
 
 The comparison of the coefficients of both models can be done with `'Models -> Compare model coefficients...'`:
-```{r, collapse = TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 compareCoefs(modWine1, modWine2)
 ```
 Note how **the coefficients for `modWine2` have smaller errors than `modWine1`**.
@@ -156,7 +156,7 @@ knitr::include_url("https://www.youtube.com/embed/Ec8hPHLMyzY")
 
 ### Case study II: Housing values in Boston {#boston}
 
-The second case study is motivated by @Harrison1978, who proposed an *hedonic model* for determining the willingness of house buyers to pay for clean air. An hedonic model is a model that decomposes the price of an item into separate components that determine its price. For example, an hedonic model for the price of a house may decompose its price into the house characteristics, the kind of neighborhood, and the location. The study of @Harrison1978 employed data from the Boston metropolitan area, containing 560 suburbs and 14 variables. The `Boston` dataset is available through the file `Boston.xlsx` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/Boston.xlsx)) and through the dataset `Boston` in the `MASS` package (load `MASS` by `'Tools' -> 'Load package(s)...'`). 
+The second case study is motivated by @Harrison1978, who proposed an *hedonic model* for determining the willingness of house buyers to pay for clean air. An hedonic model is a model that decomposes the price of an item into separate components that determine its price. For example, an hedonic model for the price of a house may decompose its price into the house characteristics, the kind of neighborhood, and the location. The study of @Harrison1978 employed data from the Boston metropolitan area, containing 560 suburbs and 14 variables. The `Boston` dataset is available through the file `Boston.xlsx` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/Boston.xlsx)) and through the dataset `Boston` in the `MASS` package (load `MASS` by `'Tools' -> 'Load package(s)...'`).
 
 The description of the related variables can be found in `?Boston` and @Harrison1978^[But be aware of the changes in units for `medv`, `black`, `lstat` and `nox`.], but we summarize here the most important ones as they appear in `Boston`. They are aggregated into five topics:
 
@@ -167,12 +167,12 @@ The description of the related variables can be found in `?Boston` and @Harrison
 - *Air pollution* variable: `nox`, the annual concentration of nitrogen oxide (in parts per ten million).
 
 A summary of the data is shown below:
-```{r, echo = FALSE, warning = FALSE}
+```{r, echo = FALSE, warning = FALSE, cache = TRUE}
 library(RcmdrMisc)
-Boston <- readXL("datasets/Boston.xlsx", rownames = FALSE, header = TRUE, na = "", 
+Boston <- readXL("datasets/Boston.xlsx", rownames = FALSE, header = TRUE, na = "",
                  sheet = "Hoja1", stringsAsFactors = TRUE)
 ```
-```{r, collapse = TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 summary(Boston)
 ```
 
@@ -183,15 +183,15 @@ The two goals of this case study are:
 
 We begin by making an exploratory analysis of the data with a matrix scatterplot. Since the number of variables is high, we opt to plot only five variables: `crim`, `dis`, `medv`, `nox` and `rm`. Each of them represents the five topics in which variables were classified.
 
-```{r, scat2, collapse = TRUE, out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = 'Scatterplot matrix for `crim`, `dis`, `medv`, `nox` and `rm` from the `Boston` dataset.'}
+```{r, scat2, collapse = TRUE, out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = 'Scatterplot matrix for `crim`, `dis`, `medv`, `nox` and `rm` from the `Boston` dataset.', cache = TRUE}
 scatterplotMatrix(~ crim + dis + medv + nox + rm, reg.line = lm, smooth = FALSE,
-                  spread = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9), 
+                  spread = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9),
                   id.n = 0, diagonal = 'density', data = Boston)
 ```
 The diagonal panels are showing an estimate of the unknown density of each variable. Note the peculiar distribution of `crim`, very concentrated at zero, and the asymmetry in `medv`, with a second mode associated to the most expensive properties. Inspecting the individual panels, it is clear that some nonlinearity exists in the data. For simplicity, we disregard that analysis for the moment (but see the final exercise).
 
 Let's fit a multiple linear regression for explaining `medv`. There are a good number of variables now, and some of them might be of little use for predicting `medv`. However, there is no clear intuition of which predictors will yield better explanations of `medv` with the information at hand. Therefore, we can start by doing a linear model on *all* the predictors:
-```{r, collapse = TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 modHouse <- lm(medv ~ ., data = Boston)
 summary(modHouse)
 ```
@@ -201,18 +201,18 @@ Let's polish a little bit the previous model. Instead of removing manually each 
 
 The stepwise model selection is located at `'Models' -> 'Stepwise model selection...'` and is always applied on the active model. Apply it with the default options to `modBest`:
 
-```{r, collapse = TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 modBest <- stepwise(modHouse, direction = 'backward/forward', criterion = 'BIC')
 ```
 
 Note the different steps: it starts with the full model and, when `+` is shown, it means that the variable is *excluded* at that step. The procedure seeks to minimize an **information criterion** (BIC or AIC)^[Although note that the printed messages always display `'AIC'` even if you choose `'BIC'`.]. An information criterion balances the fitness of a model with the number of predictors employed. Hence, it determines objectively the *best model*: *the one that minimizes the information criterion*. Remember to save the output to a variable if you want to have the final model (you need to do this in `R`)!
 
 The summary of the final model is:
-```{r, collapse = TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 summary(modBest)
 ```
 Let's compute the confidence intervals at level $\alpha=0.05$:
-```{r, collapse = TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 confint(modBest)
 ```
 We have quantified the influence of the predictor variables in the housing prices (Q1) and we can conclude that, in the final model and with confidence level $\alpha=0.05$:
@@ -230,7 +230,7 @@ The model employed in @Harrison1978 is different from `modBest`. In the paper, s
 Do the following:
 
 1. Check if the model with such predictors corresponds to the one in the first column, Table VII, page 100 of @Harrison1978
-(open-access paper available [here](https://deepblue.lib.umich.edu/bitstream/handle/2027.42/22636/0000186.pdf)). To do so, Save this model as `modelHarrison` and summarize it. **Hint**: the formula should be something like `I(log(1000 * medv)) ~ age + I(black / 1000) + ... + I(log(lstat / 100)) + I((10 * nox)^2)`. 
+(open-access paper available [here](https://deepblue.lib.umich.edu/bitstream/handle/2027.42/22636/0000186.pdf)). To do so, Save this model as `modelHarrison` and summarize it. **Hint**: the formula should be something like `I(log(1000 * medv)) ~ age + I(black / 1000) + ... + I(log(lstat / 100)) + I((10 * nox)^2)`.
 
 2. Make a `stepwise` selection of the variables in `modelHarrison` (use defaults) and save it as `modelHarrisonSel`. Summarize it.
 
@@ -252,7 +252,7 @@ holds between the predictors $X_1,\ldots,X_k$ and the response $Y$. In \@ref(eq:
 \begin{align}
 \mathbb{E}[Y|X_1=x_1,\ldots,X_k=x_k]=\beta_0+\beta_1x_1+\ldots+\beta_kx_k, (\#eq:k2)
 \end{align}
-since $\mathbb{E}[\varepsilon|X_1=x_1,\ldots,X_k=x_k]=0$. 
+since $\mathbb{E}[\varepsilon|X_1=x_1,\ldots,X_k=x_k]=0$.
 
 The LHS of \@ref(eq:k2) is the conditional expectation of $Y$ given $X_1,\ldots,X_k$. It represents how the mean of the random variable $Y$ is changing according to particular values, denoted by $x_1,\ldots,x_k$, of the random variables $X_1,\ldots,X_k$. With the RHS, what we are saying is that the mean of $Y$ is changing in a *linear* fashion with respect to the value of $X$. Hence the interpretation of the coefficients:
 
@@ -314,7 +314,7 @@ Recall that if $k=1$ we have the simple linear model. In this case:
 1 & X_{n1}
 \end{pmatrix}_{n\times2}\text{ and } \beta=\begin{pmatrix}
 \beta_0 \\
-\beta_1 
+\beta_1
 \end{pmatrix}_{2\times 1}
 \]
 ```
@@ -338,7 +338,7 @@ There are some similarities between \@ref(eq:k3) and $\hat\beta_1=(s_x^2)^{-1}s_
 ```
 
 The data of the illustration has been generated with the following code:
-```{r}
+```{r, cache = TRUE}
 # Generates 50 points from a N(0, 1): predictors and error
 set.seed(34567) # Fixes the seed for the random generator
 x1 <- rnorm(50)
@@ -352,19 +352,19 @@ yQua <- -0.5 + x1^2 + 0.5 * x2 + eps
 yExp <- -0.5 + 0.5 * exp(x2) + x3 + eps
 
 # Data
-leastSquares3D <- data.frame(x1 = x1, x2 = x2, yLin = yLin, 
+leastSquares3D <- data.frame(x1 = x1, x2 = x2, yLin = yLin,
                              yQua = yQua, yExp = yExp)
 ```
 
 Let's check that indeed the coefficients given by `lm` are the ones given by equation \@ref(eq:k3) for the regression `yLin ~ x1 + x2`.
-```{r, echo = TRUE, collapse = TRUE}
+```{r, echo = TRUE, collapse = TRUE, cache = TRUE}
 # Matrix X
 X <- cbind(1, x1, x2)
 
 # Vector Y
 Y <- yLin
 
-# Coefficients 
+# Coefficients
 beta <- solve(t(X) %*% X) %*% t(X) %*% Y
 # %*% multiplies matrices
 # solve() computes the inverse of a matrix
@@ -379,15 +379,15 @@ mod$coefficients
 ```{block2, type = 'rmdexercise'}
 Compute $\boldsymbol{\beta}$ for the regressions `yLin ~ x1 + x2`, `yQua ~ x1 + x2` and `yExp ~ x2 + x3` using:
 
-- equation \@ref(eq:k3) and 
-- the function `lm`. 
+- equation \@ref(eq:k3) and
+- the function `lm`.
 
 Check that the fitted plane and the coefficient estimates are coherent.
 ```
 
 Once we have the least squares estimates $\hat{\boldsymbol{\beta}}$, we can define the next two concepts:
 
-- The *fitted values* $\hat Y_1,\ldots,\hat Y_n$, where 
+- The *fitted values* $\hat Y_1,\ldots,\hat Y_n$, where
 \begin{align*}
 \hat Y_i=\hat\beta_0+\hat\beta_1X_{i1}+\cdots+\hat\beta_kX_{ik},\quad i=1,\ldots,n.
 \end{align*}
@@ -397,11 +397,11 @@ They are the vertical projections of $Y_1,\ldots,Y_n$ into the fitted line (see 
 \]
 where $\mathbf{H}=\mathbf{X}(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T$ is called the *hat matrix* because it "puts the hat into $\mathbf{Y}$". What it does is to project $\mathbf{Y}$ into the regression plane (see Figure \@ref(fig:leastsquares2)).
 
-- The *estimated residuals* $\hat \varepsilon_1,\ldots,\hat \varepsilon_n$, where 
+- The *estimated residuals* $\hat \varepsilon_1,\ldots,\hat \varepsilon_n$, where
 \begin{align*}
 \hat\varepsilon_i=Y_i-\hat Y_i,\quad i=1,\ldots,n.
 \end{align*}
-They are the vertical distances between actual data and fitted data. 
+They are the vertical distances between actual data and fitted data.
 
 We conclude with an insight on the relation of multiple and simple linear regressions. It is illustrated in Figure \@ref(fig:multmarg).
 
@@ -409,19 +409,19 @@ We conclude with an insight on the relation of multiple and simple linear regres
 Consider the multiple linear model $Y=\beta_0+\beta_1X_1+\beta_2X_2+\varepsilon$ and its associated simple linear models $Y=\alpha_0+\alpha_1X_1+\varepsilon$ and $Y=\gamma_0+\gamma_1X_2+\varepsilon$. Assume that we have a sample $(X_{11},X_{12},Y_1),\ldots, (X_{n1},X_{n2},Y_n)$. Then, in general, $\hat\alpha_0\neq\hat\beta_0$, $\hat\alpha_1\neq\hat\beta_1$, $\hat\gamma_0\neq\hat\beta_0$ and $\hat\gamma_1\neq\hat\beta_1$. This is, in general, **the inclusion of a new predictor changes the coefficient estimates**.
 ```
 
-```{r, multmarg, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The regression plane (blue) and its relation with the simple linear regressions (green lines). The red points represent the sample for $(X_1,X_2,Y)$ and the black points the subsamples for $(X_1,X_2)$ (bottom), $(X_1,Y)$ (left) and $(X_2,Y)$ (right).'}
+```{r, multmarg, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The regression plane (blue) and its relation with the simple linear regressions (green lines). The red points represent the sample for $(X_1,X_2,Y)$ and the black points the subsamples for $(X_1,X_2)$ (bottom), $(X_1,Y)$ (left) and $(X_2,Y)$ (right).', cache = TRUE}
 knitr::include_graphics("images/R/multmarg.png")
 ```
 
 The data employed in Figure \@ref(fig:multmarg) is:
-```{r, echo = TRUE, collapse = TRUE}
+```{r, echo = TRUE, collapse = TRUE, cache = TRUE}
 set.seed(212542)
 n <- 100
 x1 <- rnorm(n, sd = 2)
 x2 <- rnorm(n, mean = x1, sd = 3)
 y <- 1 + 2 * x1 - x2 + rnorm(n, sd = 1)
 data <- data.frame(x1 = x1, x2 = x2, y = y)
-``` 
+```
 
 ```{block, type = 'rmdexercise'}
 With the above `data`, cheek how the fitted coefficients change for `y ~ x1`, `y ~ x2` and `y ~ x1 + x2`.
@@ -431,7 +431,7 @@ With the above `data`, cheek how the fitted coefficients change for `y ~ x1`, `y
 
 Some probabilistic assumptions are required for performing inference on the model parameters. In other words, to infer properties about the *unknown* population coefficients $\boldsymbol{\beta}$ from the sample $(\mathbf{X}_1, Y_1),\ldots,(\mathbf{X}_n, Y_n)$.
 
-```{r, linearmodel2, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The key concepts of the multiple linear model when $k=2$. The space between the yellow planes denotes where the $95\\%$ of the data is, according to the model.'}
+```{r, linearmodel2, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The key concepts of the multiple linear model when $k=2$. The space between the yellow planes denotes where the $95\\%$ of the data is, according to the model.', cache = TRUE}
 knitr::include_graphics("images/R/linearmodel2.png")
 ```
 
@@ -452,7 +452,7 @@ Recall:
 
 - Compared with simple liner regression, the only **different assumption is linearity**.
 
-- Nothing is said about the distribution of $X_1,\ldots,X_k$. They could be deterministic or random. They could be discrete or continuous. 
+- Nothing is said about the distribution of $X_1,\ldots,X_k$. They could be deterministic or random. They could be discrete or continuous.
 
 - $X_1,\ldots,X_k$ are **not required to be independent** between them.
 
@@ -460,7 +460,7 @@ Recall:
 
 ```
 
-Figure \@ref(fig:linearmodelassump) represent situations where the assumptions of the model are respected and violated, for the situation with two predictors. Clearly, the inspection of the scatterplots for identifying strange patterns is more complicated than in simple linear regression -- and here we are dealing only with two predictors. In Section \@ref(diagnostics) we will see more sophisticated methods for checking whether the assumptions hold or not for an arbitrary number of predictors. 
+Figure \@ref(fig:linearmodelassump) represent situations where the assumptions of the model are respected and violated, for the situation with two predictors. Clearly, the inspection of the scatterplots for identifying strange patterns is more complicated than in simple linear regression -- and here we are dealing only with two predictors. In Section \@ref(diagnostics) we will see more sophisticated methods for checking whether the assumptions hold or not for an arbitrary number of predictors.
 
 ```{r, linearmodelassump, echo = FALSE, fig.cap = 'Valid (all the assumptions are verified) and problematic (a single assumption does not hold) multiple linear models, when there are two predictors.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
 knitr::include_app('https://egarpor.shinyapps.io/assump-lm-3D/', height = '700px')
@@ -468,23 +468,23 @@ knitr::include_app('https://egarpor.shinyapps.io/assump-lm-3D/', height = '700px
 
 To conclude this section, let's see how to make a 3D scatterplot with the regression plane, in order to evaluate visually how good the fit of the model is. We will do it with the `iris` dataset, that can be imported in `R` simply by running `data(iris)`. In `R Commander` go to `'Graphs' -> '3D Graphs' -> '3D scatterplot...'`. A window like Figures \@ref(fig:scatter3d1) and \@ref(fig:scatter3d2) will pop-up. The options are similar to the ones for `'Graphs' -> 'Scatterplot...'`.
 
-```{r, scatter3d1, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = '3D scatterplot window, `\'Data\'` panel.'}
+```{r, scatter3d1, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = '3D scatterplot window, `\'Data\'` panel.', cache = TRUE}
 knitr::include_graphics("images/screenshots/scatterplot3d1.png")
 ```
-```{r, scatter3d2, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = '3D scatterplot window, `\'Options\'` panel. Remember to tick the `\'Linear least-squares fit\'` box in order to display the fitted regression plane'}
+```{r, scatter3d2, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = '3D scatterplot window, `\'Options\'` panel. Remember to tick the `\'Linear least-squares fit\'` box in order to display the fitted regression plane', cache = TRUE}
 knitr::include_graphics("images/screenshots/scatterplot3d2.png")
 ```
 
 If you select the options as shown in Figures \@ref(fig:scatter3d1) and \@ref(fig:scatter3d2), you should get something like this:
-```{r echo = FALSE, warning = FALSE, eval = TRUE}
+```{r echo = FALSE, warning = FALSE, eval = TRUE, cache = TRUE}
 # include this code chunk as-is to enable 3D graphs
 library(rgl)
 knitr::knit_hooks$set(webgl = hook_webgl)
 ```
-```{r, webgl=TRUE}
+```{r, webgl = TRUE, cache = TRUE}
 data(iris)
-scatter3d(Petal.Length ~ Petal.Width + Sepal.Length, data = iris, fit = "linear", 
-          residuals = TRUE, bg = "white", axis.scales = TRUE, grid = TRUE, 
+scatter3d(Petal.Length ~ Petal.Width + Sepal.Length, data = iris, fit = "linear",
+          residuals = TRUE, bg = "white", axis.scales = TRUE, grid = TRUE,
           ellipsoid = FALSE, id.method = 'mahal', id.n = 2)
 ```
 
@@ -501,13 +501,13 @@ The distribution of $\hat{\boldsymbol{\beta}}$ is:
 \end{align}
 where $\mathcal{N}_{m}$ is the $m$-dimensional Normal, this is, the extension of the usual Normal distribution to deal with $m$ random variables^[With $m=1$, the density of a $\mathcal{N}_{m}$ corresponds to a bell-shaped *curve* With $m=2$, the density is a *surface* similar to a bell.]. The interpretation of \@ref(eq:normp) is not so easy as in the simple linear case. Here are some broad remarks:
 
-- **Bias**. The estimates are unbiased. 
+- **Bias**. The estimates are unbiased.
 - **Variance**. Depending on:
 
     - *Sample size $n$*. Hidden inside $\mathbf{X}^T\mathbf{X}$. As $n$ grows, the precision of the estimators increases.
     - *Error variance $\sigma^2$*. The larger $\sigma^2$ is, the less precise $\hat{\boldsymbol{\beta}}$ is.
     - *Predictor sparsity $(\mathbf{X}^T\mathbf{X})^{-1}$*. The more *sparse* the predictor is (small $|(\mathbf{X}^T\mathbf{X})^{-1}|$), the more precise $\hat{\boldsymbol{\beta}}$ is.
-    
+
 
 The problem with \@ref(eq:normp) is that *$\sigma^2$ is unknown* in practice, so we need to estimate $\sigma^2$ from the data. We do so by computing a rescaled sample variance of the fitted residuals $\hat\varepsilon_1,\ldots,\hat\varepsilon_n$:
 \begin{align*}
@@ -519,11 +519,11 @@ If we use the estimate $\hat\sigma^2$ instead of $\sigma^2$, we get more useful 
 \begin{align}
 \frac{\hat\beta_j-\beta_j}{\hat{\mathrm{SE}}(\hat\beta_j)}\sim t_{n-k-1},\quad\hat{\mathrm{SE}}(\hat\beta_j)^2=\hat\sigma^2v_j^2(\#eq:normp2)
 \end{align}
-where $t_{n-k-1}$ represents the Student's $t$ distribution with $n-k-1$ degrees of freedom and 
+where $t_{n-k-1}$ represents the Student's $t$ distribution with $n-k-1$ degrees of freedom and
 \[
 v_j\text{ is the $j$-th element of the diagonal of }(\mathbf{X}^T\mathbf{X})^{-1}.
 \]
-The LHS of \@ref(eq:normp2) is the $t$-statistic for $\beta_j$, $j=0,\ldots,k$. They are employed for building confidence intervals and hypothesis tests. 
+The LHS of \@ref(eq:normp2) is the $t$-statistic for $\beta_j$, $j=0,\ldots,k$. They are employed for building confidence intervals and hypothesis tests.
 
 
 ### Confidence intervals for the coefficients
@@ -535,7 +535,7 @@ Thanks to \@ref(eq:normp2), we can have the $100(1-\alpha)\%$ CI for the coeffic
 where $t_{n-k-1;\alpha/2}$ is the *$\alpha/2$-upper quantile of the $t_{n-k-1}$*. Note that with $k=1$ we have same CI as in \@ref(eq:ci).
 
 Let's see how we can compute the CIs. We return to the `wine` dataset, so in case you do not have it loaded, you can download it [here](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/wine.RData) as an `.RData` file. We analyse the CI for the coefficients of `Price ~ Age + WinterRain`.
-```{r, collapse = TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 # Fit model
 mod <- lm(Price ~ Age + WinterRain, data = wine)
 
@@ -577,7 +577,7 @@ In an hypothesis test, the *$p$-value measures the degree of veracity of $H_0$ a
 
 **Is the $p$-value lower than $\alpha$?**
 
-- **Yes $\rightarrow$ reject $H_0$**. 
+- **Yes $\rightarrow$ reject $H_0$**.
 - **No $\rightarrow$ do not reject $H_0$**.
 ```
 
@@ -587,12 +587,12 @@ The connection of a $t$-test for $H_0:\beta_j=0$ and the CI for $\beta_j$, both 
 
 **Is $0$ inside the CI for $\beta_j$?**
 
-- **Yes $\leftrightarrow$ do not reject $H_0$**. 
+- **Yes $\leftrightarrow$ do not reject $H_0$**.
 - **No $\leftrightarrow$ reject $H_0$**.
 ```
 
-The tests for significance are built-in in the `summary` function, as we saw in Section \@ref(eamult). For `mod`, the regression of `Price ~ Age + WinterRain`, we have:
-```{r, collapse = TRUE}
+The tests for significance are built-in in the `summary` function, as we saw in Section \@ref(mult). For `mod`, the regression of `Price ~ Age + WinterRain`, we have:
+```{r, collapse = TRUE, cache = TRUE}
 summary(mod)
 ```
 
@@ -602,7 +602,7 @@ The unilateral test $H_0:\beta_j\geq 0$ (respectively, $H_0:\beta_j\leq 0$) vs $
 
 **Is the CI for $\beta_j$ below (above) $0$ at level $\alpha$?**
 
-- **Yes $\rightarrow$ reject $H_0$ at level $\alpha$. Conclude $X_j$ has a significant negative (positive) effect on $Y$ at level $\alpha$**. 
+- **Yes $\rightarrow$ reject $H_0$ at level $\alpha$. Conclude $X_j$ has a significant negative (positive) effect on $Y$ at level $\alpha$**.
 - **No $\rightarrow$ the criterion is not conclusive**.
 ```
 
@@ -620,16 +620,16 @@ The prediction and computation of CIs can be done with the `R` function `predict
 It is mandatory to name the columns of the data frame with the same names of the predictors used in `lm`. Otherwise `predict` will generate an error, see below.
 ```
 
-To illustrate the use of `predict`, we return to the `wine` dataset. 
+To illustrate the use of `predict`, we return to the `wine` dataset.
 
-```{r, collapse = TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 # Fit a linear model for the price on WinterRain, HarvestRain and AGST
 modelW <- lm(Price ~ WinterRain + HarvestRain + AGST, data = wine)
 summary(modelW)
 
 # Data for which we want a prediction
 # Important! You have to name the column with the predictor name!
-weather <- data.frame(WinterRain = 500, HarvestRain = 123, 
+weather <- data.frame(WinterRain = 500, HarvestRain = 123,
                       AGST = 18)
 
 ## Prediction of the mean
@@ -661,7 +661,7 @@ predict(modelW, newdata = weather, interval = "prediction", level = 0.90)
 predict(modelW, newdata = weather, interval = "prediction", level = 0.99)
 
 # Predictions for several values
-weather2 <- data.frame(WinterRain = c(500, 200), HarvestRain = c(123, 200), 
+weather2 <- data.frame(WinterRain = c(500, 200), HarvestRain = c(123, 200),
                        AGST = c(17, 18))
 predict(modelW, newdata = weather2, interval = "prediction")
 ```
@@ -705,22 +705,22 @@ or, equivalently (dividing by $n$ in \@ref(eq:anovamult)),
 \end{align*}
 Notice the $n-k-1$ instead of simple linear regression's $n-2$, which is the main change. The graphical interpretation of \@ref(eq:anovamult) when $k=2$ is shown in Figures \@ref(fig:anova3D) and \@ref(fig:anovaillus3D).
 
-```{r, anova3D, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Visualization of the ANOVA decomposition when $k=2$. SST measures the variation of $Y_1,\\ldots,Y_n$ with respect to $\\bar Y$. SST measures the variation with respect to the conditional means, $\\hat\\beta_0+\\hat\\beta_1X_{i1}+\\hat\\beta_2X_{i2}$. SSE collects the variation of the residuals.', fig.show = 'hold'}
+```{r, anova3D, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Visualization of the ANOVA decomposition when $k=2$. SST measures the variation of $Y_1,\\ldots,Y_n$ with respect to $\\bar Y$. SST measures the variation with respect to the conditional means, $\\hat\\beta_0+\\hat\\beta_1X_{i1}+\\hat\\beta_2X_{i2}$. SSE collects the variation of the residuals.', fig.show = 'hold', cache = TRUE}
 knitr::include_graphics("images/R/anova3D.png")
 ```
 
-```{r, anovaillus3D, echo = FALSE, fig.cap = 'Illustration of the ANOVA decomposition and its dependence on $\\sigma^2$ and $\\hat\\sigma^2$.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+```{r, anovaillus3D, echo = FALSE, fig.cap = 'Illustration of the ANOVA decomposition and its dependence on $\\sigma^2$ and $\\hat\\sigma^2$.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%', cache = TRUE}
 knitr::include_app('https://egarpor.shinyapps.io/anova-3D/', height = '900px')
 ```
 
-The ANOVA table summarizes the decomposition of the variance. 
+The ANOVA table summarizes the decomposition of the variance.
 
 |     | Degrees of freedom | Sum Squares | Mean Squares | $F$-value | $p$-value |
 |-----|------------|--------|---------|----------------|----------------|
 | Predictors | $k$ | SSR | $\frac{\text{SSR}}{k}$ | $\frac{\text{SSR}/k}{\text{SSE}/(n-k-1)}$ | $p$ |
 | Residuals | $n - k-1$ | SSE | $\frac{\text{SSE}}{n-k-1}$ | | |
 
-The "$F$-value" of the ANOVA table represents the value of the $F$-statistic $\frac{\text{SSR}/k}{\text{SSE}/(n-k-1)}$. This statistic is employed to test 
+The "$F$-value" of the ANOVA table represents the value of the $F$-statistic $\frac{\text{SSR}/k}{\text{SSE}/(n-k-1)}$. This statistic is employed to test
 \begin{align*}
 H_0:\beta_1=\ldots=\beta_k=0\quad\text{vs.}\quad H_1:\beta_j\neq 0\text{ for any $j$},
 \end{align*}
@@ -734,7 +734,7 @@ where $F_{k,n-k-1}$ is the *Snedecor's $F$ distribution* with $k$ and $n-k-1$ de
 The "ANOVA table" is a broad concept in statistics, with different variants. Here we are only covering the basic ANOVA table from the relation $\text{SST} = \text{SSR} + \text{SSE}$. However, further sophistications are possible when $\text{SSR}$ is decomposed into the variations contributed by *each* predictor. In particular, for multiple linear regression `R`'s `anova` implements a *sequential (type I) ANOVA table*, which is **not** the previous table!
 ```
 
-The `anova` function in `R` takes a model as an input and returns the following *sequential* ANOVA table^[More complex -- included here just for clarification of the `anova`'s output.]: 
+The `anova` function in `R` takes a model as an input and returns the following *sequential* ANOVA table^[More complex -- included here just for clarification of the `anova`'s output.]:
 
 |              | Degrees of freedom | Sum Squares | Mean Squares | $F$-value |$p$-value|
 |--------------|------------|--------|---------|----------------|-------------|
@@ -756,7 +756,7 @@ carried out **inside the linear model $Y=\beta_0+\beta_1X_1+\ldots+\beta_jX_j+\v
 
 Let's see how we can compute both ANOVA tables in `R`. The sequential table is simple: use `anova`. We illustrate it with the `Boston` dataset.
 
-```{r, collapse = TRUE, message=FALSE}
+```{r, collapse = TRUE, message=FALSE, cache = TRUE}
 # Load data
 library(MASS)
 data(Boston)
@@ -772,7 +772,7 @@ anova(model)
 
 In order to compute the simplified ANOVA table, we need to rely on an ad-hoc *function*^[You will need to run this piece of code whenever you want to call `simpleAnova`, since it is not part of `R` nor `R Commander`.]. The function takes as input a fitted `lm`:
 
-```{r}
+```{r, cache = TRUE}
 # This function computes the simplied anova from a linear model
 simpleAnova <- function(object, ...) {
 
@@ -818,8 +818,8 @@ $R^2$ measures the **proportion of variation** of the response variable $Y$ that
 
 Trusting blindly the $R^2$ can lead to catastrophic conclusions in model selection. Here is a counterexample of a multiple regression where the $R^2$ is apparently large but the assumptions discussed in Section \@ref(assumptionsmult) are clearly not satisfied.
 
-```{r, collapse = TRUE, webgl = TRUE}
-# Create data that: 
+```{r, collapse = TRUE, webgl = TRUE, cache = TRUE}
+# Create data that:
 # 1) does not follow a linear model
 # 2) the error is heteroskedastic
 x1 <- seq(0.15, 1, l = 100)
@@ -867,7 +867,7 @@ The *adjusted $R^2$* is an important quantity specifically designed to cover thi
 R^2_{\text{Adj}}&=1-\frac{\text{SSE}/(n-k-1)}{\text{SST}/(n-1)}=1-\frac{\text{SSE}}{\text{SST}}\times\frac{n-1}{n-k-1}\nonumber\\
 &=1-\frac{\hat\sigma^2}{\text{SST}}\times (n-1).(\#eq:R2A)
 \end{align}
-The $R^2_{\text{Adj}}$ is independent of $k$, at least explicitly. If $k=1$ then $R^2_{\text{Adj}}$ is *almost* $R^2$ (practically identical if $n$ is large). Both \@ref(eq:R2) and \@ref(eq:R2A) are quite similar except for the last factor, which in the former does not depend on $k$. Therefore, \@ref(eq:R2A) will only increase if $\hat\sigma^2$ is reduced with $k$ -- in other words, if the new variables contribute in the reduction of variability around the regression plane. 
+The $R^2_{\text{Adj}}$ is independent of $k$, at least explicitly. If $k=1$ then $R^2_{\text{Adj}}$ is *almost* $R^2$ (practically identical if $n$ is large). Both \@ref(eq:R2) and \@ref(eq:R2A) are quite similar except for the last factor, which in the former does not depend on $k$. Therefore, \@ref(eq:R2A) will only increase if $\hat\sigma^2$ is reduced with $k$ -- in other words, if the new variables contribute in the reduction of variability around the regression plane.
 
 The different behavior between $R^2$ and $R^2_\text{Adj}$ can be visualized by a small simulation. Suppose that we generate a random dataset, with $n=200$ observations of a response $Y$ and two predictors $X_1,X_2$. This is, the sample $\{(X_{i1},X_{i2},Y_i)\}_{i=1}^n$ with
 \[
@@ -879,14 +879,14 @@ Y=\beta_0+\beta_1X_{1}+\ldots+\beta_jX_{j}+\varepsilon,
 \]
 with $j=1,\ldots,k$ and we plot them as the curves $(j,R^2(j))$ and $(j,R_\text{Adj}^2(j))$. Since **$R^2$ and $R^2_\text{Adj}$ are random variables**, we repeat the procedure $100$ times to have a measure of the variability.
 
-```{r, R2, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Comparison of $R^2$ and $R^2_{\\text{Adj}}$ for $n=200$ and $k$ ranging from $1$ to $198$. $M=100$ datasets were simulated with **only the first two** predictors being significant. The thicker curves are the mean of each color\'s curves.', fig.show = 'hold'}
+```{r, R2, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Comparison of $R^2$ and $R^2_{\\text{Adj}}$ for $n=200$ and $k$ ranging from $1$ to $198$. $M=100$ datasets were simulated with **only the first two** predictors being significant. The thicker curves are the mean of each color\'s curves.', fig.show = 'hold', cache = TRUE}
 knitr::include_graphics("images/R/R2vsAdjR2.png")
 ```
 
 Figure \@ref(fig:R2) contains the results of this experiment. As you can see $R^2$ increases linearly with the number of predictors considered, although only the first two ones were important! On the contrary, $R^2_\text{Adj}$ only increases in the first two variables and then is flat on average, but it has a huge variability when $k$ approaches $n-2$. This is a consequence of the explosive variance of $\hat\sigma^2$ in that *degenerate case* (as we will see in Section \@ref(selection)). The experiment evidences that **$R^2_\text{Adj}$ is more adequate than the $R^2$ for evaluating the fit of a multiple linear regression**.
 
 An example of a simulated dataset considered in the experiment of Figure \@ref(fig:R2):
-```{r, eval = FALSE}
+```{r, eval = FALSE, cache = TRUE}
 # Generate data
 k <- 198
 n <- 200
@@ -908,7 +908,7 @@ The $R^2_\text{Adj}$ no longer measures the proportion of variation of $Y$ expla
 ```
 
 The next code illustrates a situation where we have two predictors completely independent from the response. The fitted model has a negative $R^2_\text{Adj}$.
-```{r, collapse=TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 # Three independent variables
 set.seed(234599)
 x1 <- rnorm(100)
@@ -925,12 +925,12 @@ Construct more predictors (`x3`, `x4`, ...) by sampling 100 points from a normal
 
 ## Model selection {#selection}
 
-In Section \@ref(wine) we briefly saw that **the inclusion of more predictors is not for free**: there is a price to pay in terms more variability on the coefficients. Indeed, there is a **maximum number of predictors $k$** that can be considered in a linear model for a sample size $n$: **$k\leq n-2$**. Or equivalently, there is a **minimum sample size $n$** required for fitting a model with $k$ predictors: **$n\geq k + 2$**. 
+In Section \@ref(wine) we briefly saw that **the inclusion of more predictors is not for free**: there is a price to pay in terms more variability on the coefficients. Indeed, there is a **maximum number of predictors $k$** that can be considered in a linear model for a sample size $n$: **$k\leq n-2$**. Or equivalently, there is a **minimum sample size $n$** required for fitting a model with $k$ predictors: **$n\geq k + 2$**.
 
 The interpretation of this fact is simple if we think on the geometry for $k=1$ and $k=2$:
 
 - If $k=1$, we need at least $n=2$ points to fit uniquely a line. However, this line gives no information on the vertical variation around it and hence $\hat\sigma^2$ can not be estimated (applying its formula, we would have $\hat\sigma^2=\infty$). Therefore we need at least $n=3$ points, or in other words $n\geq k + 2=3$.
-- If $k=2$, we need at least $n=3$ points to fit uniquely a plane. But this this plane gives no information on the variation of the data around it and hence $\hat\sigma^2$ can not be estimated. Therefore we need $n\geq k + 2=4$.
+- If $k=2$, we need at least $n=3$ points to fit uniquely a plane. But this plane gives no information on the variation of the data around it and hence $\hat\sigma^2$ can not be estimated. Therefore we need $n\geq k + 2=4$.
 
 Another interpretation is the following:
 
@@ -942,10 +942,10 @@ The *degrees of freedom* $n-k-1$ quantify the increasing on the variability of $
 - $\hat\sigma^2=\frac{1}{n-k-1}\sum_{i=1}^n\hat\varepsilon_i^2$ influences the $R^2$ and $R^2_\text{Adj}$. If no relevant variables are added to the model then $\sum_{i=1}^n\hat\varepsilon_i^2$ will not change substantially. However, the reducing factor $\frac{1}{n-k-1}$ will decrease as $k$ augments, inflating $\hat\sigma^2$ and its variance. This is exactly what happened in Figure \@ref(fig:R2).
 
 
-```{r, dft, echo = FALSE, warning = FALSE, results = 'hide', out.width = '70%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Effect of $\\text{df}=n-k-1$ in $t_{\\text{df};\\alpha/2}$ for $\\alpha=0.10,0.05,0.01$.'}
+```{r, dft, echo = FALSE, warning = FALSE, results = 'hide', out.width = '70%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Effect of $\\text{df}=n-k-1$ in $t_{\\text{df};\\alpha/2}$ for $\\alpha=0.10,0.05,0.01$.', cache = TRUE}
 df <- 1:30
 alpha <- 0.10
-plot(df, qt(p = alpha/2, df = df, lower.tail = FALSE), type = "o", 
+plot(df, qt(p = alpha/2, df = df, lower.tail = FALSE), type = "o",
      xlab = expression(df), ylab = expression(t[df * ";" * alpha/2]),
      ylim = c(0, 10), col = rainbow(3)[1], pch = 16)
 alpha <- 0.05
@@ -967,7 +967,7 @@ Before introducing the method, we need to understand what is an **information cr
 where $\text{lik(model)}$ is the *likelihood of the model* (how well the model fits the data) and $\text{npar(model)}$ is the number of parameters of the model, $k+2$ in the case of a multiple linear regression model with $k$ predictors. The **AIC** replaces $\log n$ by $2$ in \@ref(eq:bic), so it **penalizes less complexer models**. This is one of the reasons why BIC is preferred by some practitioners for model comparison. Also, because is *consistent* in selecting the true model: if enough data is provided, the BIC is guaranteed to select the data-generating model among a list of candidate models.
 
 The BIC and AIC can be computed in `R` through the functions `BIC` and `AIC`. They take a model as the input.
-```{r, collapse=TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 # Load iris dataset
 data(iris)
 
@@ -986,7 +986,7 @@ summary(mod2)
 
 Let's go back to the selection of predictors. If we have $k$ predictors, a naive procedure would be to check *all the possible* models that can be constructed with them and then select the best one in terms of BIC/AIC. The problem is that there are $2^{k+1}$ possible models! Fortunately, the `stepwise` procedure helps us navigating this ocean of models. The function takes as input a *model employing all the available predictors*.
 
-```{r, collapse=TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 # Explain NOx in Boston dataset
 mod <- lm(nox ~ ., data = Boston)
 
@@ -1013,12 +1013,17 @@ When applying `stepwise` for BIC/AIC, different final models might be selected d
 - `"forward"`: starts a simple model, *adds* predictors sequentially.
 - `"backward/forward"` (default) and `"forward/backward"`: combination of the above.
 
-The **advice** is to try several of these methods and retain the one with minimum BIC/AIC. Set `trace = 0` to omit lengthy outputs of information of the search procedure. 
+The **advice** is to try several of these methods and retain the one with minimum BIC/AIC. Set `trace = 0` to omit lengthy outputs of information of the search procedure.
 ```
+
+```{block, type='rmdcaution'}
+`stepwise` assumes no `NA`'s (missing values) are present in the data. It is advised to remove the missing values in the data before since their presence might lead to errors. To do so, employ `data = na.omit(dataset)` in the call to `lm` (if your dataset is `dataset`).
+```
+
 
 We conclude highlighting a caveat on the use of the BIC and AIC: they are constructed assuming that the sample size $n$ is much larger than the number of parameters in the model ($k+2$). Therefore, they will work reasonably well if $n>>k+2$, but if this is not true they may favor unrealistic complex models. An illustration of this phenomena is Figure \@ref(fig:bic), which is the BIC/AIC version of Figure \@ref(fig:R2) for the experiment done in Section \@ref(anovamult). The BIC and AIC curves tend to have local minimums close to $k=2$ and then increase. But when $k+2$ gets close to $n$, they quickly drop down. Note also how the BIC penalizes more the complexity than the AIC, which is more flat.
 
-```{r, bic, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Comparison of BIC and AIC for $n=200$ and $k$ ranging from $1$ to $198$. $M=100$ datasets were simulated with **only the first two** predictors being significant. The thicker curves are the mean of each color\'s curves.', fig.show = 'hold'}
+```{r, bic, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Comparison of BIC and AIC for $n=200$ and $k$ ranging from $1$ to $198$. $M=100$ datasets were simulated with **only the first two** predictors being significant. The thicker curves are the mean of each color\'s curves.', fig.show = 'hold', cache = TRUE}
 knitr::include_graphics("images/R/BICandAIC.png")
 ```
 
@@ -1026,7 +1031,7 @@ knitr::include_graphics("images/R/BICandAIC.png")
 
 As we saw in Section \@ref(assumptionsmult), checking the assumptions of the multiple linear model through the data scatterplots becomes tricky even when $k=2$. To solve this issue, a series of *diagnostic plots* have been designed in order to evaluate graphically and in a simple way the validity of the assumptions. For illustration, we retake the `wine` dataset ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/wine.csv)).
 
-```{r, collapse = TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 mod <- lm(Price ~ Age + AGST + HarvestRain + WinterRain, data = wine)
 ```
 
@@ -1034,26 +1039,26 @@ We will focus only in three plots:
 
 1. **Residuals vs. fitted values plot**. This plot serves mainly to check the **linearity**, although lack of homoscedasticity or independence can also be detected. Here is an example:
 
-    ```{r, collapse=TRUE}
+    ```{r, collapse = TRUE, cache = TRUE}
     plot(mod, 1)
     ```
-    
+
     **Under linearity, we expect the red line** (a nonlinear fit of the mean of the residuals) **to be almost flat**. This which means that the trend of $Y_1,\ldots,Y_n$ is linear with respect to the predictors. Heteroskedasticity can be detected also in the form of irregular vertical dispersion around the red line. The dependence between residuals can be detected (harder) in the form of non randomly spread residuals.
 
 2. **QQ-plot**. Checks the **normality**:
 
-    ```{r, collapse=TRUE}
+    ```{r, collapse = TRUE, cache = TRUE}
     plot(mod, 2)
     ```
-    
+
     **Under normality, we expect the points** (sample quantiles of the standardized residuals vs. theoretical quantiles of a $\mathcal{N}(0,1)$) **to align with the diagonal line**, which represents the ideal position of the points if those were sampled from a $\mathcal{N}(0,1)$. It is usual to have larger departures from the diagonal in the extremes than in the center, even under normality, although these departures are more clear if the data is non-normal.
 
 3. **Scale-location plot**. Serves for checking the **homoscedasticity**. It is similar to the first diagnostic plot, but now with the residuals standardized and transformed by a square root (of the absolute value). This change transforms the task of spotting heteroskedasticity by looking into irregular vertical dispersion patterns into spotting for nonlinearities, which is somehow simpler.
 
-    ```{r, collapse=TRUE}
+    ```{r, collapse = TRUE, cache = TRUE}
     plot(mod, 3)
     ```
-    
+
     **Under homoscedasticity, we expect the red line to be almost flat.** If there are consistent nonlinear patterns, then there is evidence of heteroskedasticity.
 
 ```{block, type ='rmdtip'}
@@ -1062,15 +1067,15 @@ If you type `plot(mod)`, several diagnostic plots will be shown sequentially. In
 
 The next figures present datasets where the assumptions are satisfied and violated.
 
-```{r, diagnostics1, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Residuals vs. fitted values plots for datasets respecting (left column) and violating (right column) the linearity assumption.'}
+```{r, diagnostics1, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Residuals vs. fitted values plots for datasets respecting (left column) and violating (right column) the linearity assumption.', cache = TRUE}
 knitr::include_graphics("images/R/diagnostics1.png")
 ```
 
-```{r, diagnostics2, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'QQ-plots for datasets respecting (left column) and violating (right column) the normality assumption.'}
+```{r, diagnostics2, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'QQ-plots for datasets respecting (left column) and violating (right column) the normality assumption.', cache = TRUE}
 knitr::include_graphics("images/R/diagnostics2.png")
 ```
 
-```{r, diagnostics3, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Scale-location plots for datasets respecting (left column) and violating (right column) the homoscedasticity assumption..'}
+```{r, diagnostics3, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Scale-location plots for datasets respecting (left column) and violating (right column) the homoscedasticity assumption.', cache = TRUE}
 knitr::include_graphics("images/R/diagnostics3.png")
 ```
 
@@ -1084,21 +1089,21 @@ A common problem that arises in multiple linear regression is **multicollinearit
 - It is **difficult to determine how each of the highly related predictors affects the response**, since one masks the other. This may result in numerical instabilities.
 
 <!--
-Intuitively, multicollinearity can be thought in a 
-plane spins around a straight line (think about holding a card on their opposite 
+Intuitively, multicollinearity can be thought in a
+plane spins around a straight line (think about holding a card on their opposite
 corners and make it spinning on its axis of rotation)
 Animation:
 Insight into straight line in 3D
 -->
 
 An approach is to detect multicollinearity is to compute the correlation matrix between the predictors by `cor` (in `R Commander`: `'Statistics' -> 'Summaries' -> 'Correlation matrix...'`)
-```{r, collapse=TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 cor(wine)
 ```
-Here we can see what we already knew from Section \@ref(wine), that `Age` and `Year` are perfectly linearly related and that `Age` and `FrancePop` are highly linearly related. 
+Here we can see what we already knew from Section \@ref(wine), that `Age` and `Year` are perfectly linearly related and that `Age` and `FrancePop` are highly linearly related.
 
 However, is not enough to inspect remove pair by pair correlations in order to get rid of multicollinearity. Here is a counterexample:
-```{r, collapse=TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 # Create predictors with multicollinearity: x4 depends on the rest
 set.seed(45678)
 x1 <- rnorm(100)
@@ -1124,7 +1129,7 @@ where $R^2_{X_j|X_{-j}}$ is the $R^2$ from a regression of $X_j$ into the remain
 - **VIF larger than 5 or 10: problematic amount of multicollinearity**. Advised to remove the predictor with largest VIF.
 
 VIF is called by `vif` and takes as argument a linear model (In `R Commander`: `'Models' -> 'Numerical diagnostics' -> 'Variance-inflation factors'`). We continue with the previous example.
-```{r, collapse=TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 # Variance inflation factors anormal: largest for x4, we remove it
 modMultiCo <- lm(y ~ x1 + x2 + x3 + x4)
 vif(modMultiCo)

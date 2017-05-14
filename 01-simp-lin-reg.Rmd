@@ -18,9 +18,9 @@ The Programme for International Student Assessment (PISA) is a study carried out
 - Q1. *Is the educational level of a country influenced by its economic wealth?*
 - Q2. *If so, up to what precise extent?*
 
-The `pisa.csv` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/pisa.csv)) contains 65 rows corresponding to the countries that took part on the PISA study. The data was obtained merging the [statlink](http://dx.doi.org/10.1787/888932937035) in @PISA2012 with @WB data. Each row has the following variables: `Country`; `MathMean`, `ReadingMean` and `ScienceMean` (the average performance of the students in mathematics, reading and science); `MathShareLow` and `MathShareTop` (percentages of students with a low and top performance in mathematics); `GDPp` and `logGDPp` (the Gross Domestic Product per capita and its logarithm); `HighIncome` (whether the country has a GDPp larger than 20000\$ or not). The GDPp of a country is a measure of how many economic resources are available per citizen. The `logGDPp` is the logarithm of the GDPp, taken in order to avoid scale distortions. A small subset of the data is shown in Table \@ref(tab:pisatable). 
+The `pisa.csv` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/pisa.csv)) contains 65 rows corresponding to the countries that took part on the PISA study. The data was obtained merging the [statlink](http://dx.doi.org/10.1787/888932937035) in @PISA2012 with @WB data. Each row has the following variables: `Country`; `MathMean`, `ReadingMean` and `ScienceMean` (the average performance of the students in mathematics, reading and science); `MathShareLow` and `MathShareTop` (percentages of students with a low and top performance in mathematics); `GDPp` and `logGDPp` (the Gross Domestic Product per capita and its logarithm); `HighIncome` (whether the country has a GDPp larger than 20000\$ or not). The GDPp of a country is a measure of how many economic resources are available per citizen. The `logGDPp` is the logarithm of the GDPp, taken in order to avoid scale distortions. A small subset of the data is shown in Table \@ref(tab:pisatable).
 
-```{r, pisatable, echo = FALSE, out.width = '90%', fig.align = 'center'}
+```{r, pisatable, echo = FALSE, out.width = '90%', fig.align = 'center', cache = TRUE}
 pisa <- read.csv(file = "datasets/pisa.csv", header = TRUE)
 knitr::kable(
   head(pisa[, c(1, 2, 5, 6, 8, 9)], 10),
@@ -36,112 +36,112 @@ We are going to do the following. First, import the data into `R Commander` and 
 
 1. **Import the data into `R Commander`**.
 
-    * Go to `'Data' -> 'Import data' -> 'from text file, clipboard, or URL...'`. A window like Figure \@ref(fig:read) will pop-up. Select the appropiate formatting options of the data file: whether the first row contains the name of the variables, what is the indicator for missing data, what is the field separator, and what is the decimal point character. Then click `'OK'`. 
-      
+    * Go to `'Data' -> 'Import data' -> 'from text file, clipboard, or URL...'`. A window like Figure \@ref(fig:read) will pop-up. Select the appropiate formatting options of the data file: whether the first row contains the name of the variables, what is the indicator for missing data, what is the field separator, and what is the decimal point character. Then click `'OK'`.
+
         ```{block, type = 'rmdtip'}
         Inspecting the data file in a text editor will give you the right formatting choices for importing the data.
         ```
-      
-        ```{r, read, echo = FALSE, out.width = '45%', fig.align = 'center', fig.cap = 'Data importation options.'}
+
+        ```{r, read, echo = FALSE, out.width = '45%', fig.align = 'center', fig.cap = 'Data importation options.', cache = TRUE}
         row.names(pisa) <- as.character(pisa$Country)
         pisa$Country <- NULL
         knitr::include_graphics("images/screenshots/read.png")
         ```
 
-    * Click on `'View data set'` to check that the importation was fine. If the data looks weird, then recheck the structure of the data file and restart from the above point. 
-    
+    * Click on `'View data set'` to check that the importation was fine. If the data looks weird, then recheck the structure of the data file and restart from the above point.
+
     * Since each row corresponds to a different country, we are going to name the rows as the value of the variable `Country`. To that end, go to `'Data' -> 'Active data set' -> 'Set case names...'` and select the variable `Country` and click `'OK'`. The dataset should look like Figure \@ref(fig:view).
 
-        ```{r, view, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Correct importation of the `pisa` dataset.'}
+        ```{r, view, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Correct importation of the `pisa` dataset.', cache = TRUE}
         knitr::include_graphics("images/screenshots/view.png")
         ```
-    
+
         ```{block, type = 'rmdcaution'}
         In UC3M computers, **altering the location of a downloaded file may cause errors** in its importation to `R Commander`!
-        
+
         Example:
-        
+
         - Default download path: `'C:/Users/g15s4021/Downloads/pisa.csv'`. Importation from that path works fine.
         - If you **move the file another location** (e.g. to `'C:/Users/g15s4021/Desktop/pisa.csv'`). Importation generates an **error**.
         ```
 
 2. **Fit a simple linear regression**.
 
-    * Go to `'Statistics' -> 'Fit models' -> 'Linear regression...'`. A window like Figure \@ref(fig:lm) will pop-up. 
-    
-        ```{r, lm, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Window for performing simple linear regression.'}
+    * Go to `'Statistics' -> 'Fit models' -> 'Linear regression...'`. A window like Figure \@ref(fig:lm) will pop-up.
+
+        ```{r, lm, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Window for performing simple linear regression.', cache = TRUE}
         knitr::include_graphics("images/screenshots/lm.png")
         ```
-        
+
         Select the *response variable*. This is the variable denoted by $Y$ that we want to predict/explain. Then select the *explanatory variable* (also known as the *predictor*). It is denoted by $X$ and is the variable used to predict/explain $Y$. Recall the form of the linear model:
         \begin{align*}
         Y=\beta_0+\beta_1X+\varepsilon
         \end{align*}
-        
-        In our case $Y=$`MathMean` and  $X=$`logGDPp`, so select them and click `'OK'`^[In principle, you could pick more than one explanatory variables using the `'Control'` or `'Shift'` keys, but that corresponds to the *multiple linear regression* (covered in Chapter \@ref(mult)).]. 
-    
+
+        In our case $Y=$`MathMean` and  $X=$`logGDPp`, so select them and click `'OK'`^[In principle, you could pick more than one explanatory variables using the `'Control'` or `'Shift'` keys, but that corresponds to the *multiple linear regression* (covered in Chapter \@ref(mult)).].
+
         ```{block, type = 'rmdtip'}
         If you want to deselect an option in an `R Commander` menu, use `'Control' + 'Mouse click'`.
         ```
-        
+
         ```{block, type = 'rmdtip'}
         Four buttons are common in the menus of `R Commander`:
-        
+
         - `'OK'`: executes the selected action, then closes the window.
         - `'Apply'`: executes the selected action but leaves the window open. Useful if you are experimenting with different options.
         - `'Reset'`: resets the fields and boxes of the window to their defaults.
         - `'Cancel'`: exits the window without performing any action.
         ```
-    
+
     * The window in Figure \@ref(fig:lm) generates this code and output:
-    
-        ```{r}
+
+        ```{r, cache = TRUE}
         pisaLinearModel <- lm(MathMean ~ logGDPp, data = pisa)
         summary(pisaLinearModel)
         ```
-    
+
         This is the linear model of `MathMean` regressed on `logGDPp` (first line) and its summary (second line). The summary gives the coefficients of the line and the $R^2$ (`'Multiple R-squared'`), which -- as we will see in Section \@ref(fit) -- it can be regarded as an *indicator of the strength of the linear relation between the variables*. ($R^2=1$ is a perfect linear fit -- all the points lay in a line -- and $R^2=0$ is the poorest fit.)
-        
+
         The fitted regression line is `MathMean` $= 185.16 + 28.79\,\times$ `logGDPp`. The slope coefficient is positive, which indicates that there is a positive correlation between the wealth of a country and its performance in the PISA Mathematics test (this answers Q1). Hence, the evidence that *wealthy countries tend to achieve larger average scores* is indeed true (at least for the Mathematics test). We can be more precise on the effect of the wealth of a country. According to the fitted linear model, an increase of 1 unit in the `logGDPp` of a country is associated with achieving, on average, 28.79 additional points in the test (Q2).
-    
+
 3. **Visualize the fitted regression line**.
 
     * Go to `'Graphs' -> 'Scatterplot...'`. A window with two panels will pop-up (Figures \@ref(fig:scatter1) and \@ref(fig:scatter2)).
-    
-        ```{r, scatter1, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Scatterplot window, `\'Data\'` panel.'}
+
+        ```{r, scatter1, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Scatterplot window, `\'Data\'` panel.', cache = TRUE}
         knitr::include_graphics("images/screenshots/scatterplot1.png")
         ```
-        ```{r, scatter2, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Scatterplot window, `\'Options\'` panel. Remember to tick the `\'Least-squares line\'` box in order to display the fitted regression line.'}
+        ```{r, scatter2, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Scatterplot window, `\'Options\'` panel. Remember to tick the `\'Least-squares line\'` box in order to display the fitted regression line.', cache = TRUE}
         knitr::include_graphics("images/screenshots/scatterplot2.png")
         ```
-    
+
         On the `'Data'` panel, select the $X$ and $Y$ variables to be displayed in the scatterplot. On the `'Options'` panel, check the `'Least-squares line'` box and choose to identify `'3'` points `'Automatically'`^[The decision of which points are the most *different* from the rest is done automatically by a method known as the *Mahalanobis depth*.]. This will identify what are the three^[The default GUI option is set to identify `'2'` points. However, we know after a preliminary plot that there are three very different points in the dataset, hence this particular choice.] most different observations of the data.
 
     * The following `R` code will be generated. It produces a scatterplot of `MathMean` vs `logGDPp`, with its scorresponding regression line.
-        ```{r, echo = FALSE, warning = FALSE}
+        ```{r, echo = FALSE, warning = FALSE, cache = TRUE}
         library(splines)
         library(car)
         library(sandwich)
         ```
-        ```{r, out.width = '90%', fig.asp = 1, fig.align = 'center'}
+        ```{r, out.width = '90%', fig.asp = 1, fig.align = 'center', cache = TRUE}
         scatterplot(MathMean ~ logGDPp, reg.line = lm, smooth = FALSE, spread = FALSE,
                     id.method = 'mahal', id.n = 3, boxplots = FALSE, span = 0.5,
-                    ellipse = FALSE, levels = c(.5, .9), 
+                    ellipse = FALSE, levels = c(.5, .9),
                     main = "Average Math score vs. logGDPp", pch = c(16), data = pisa)
         ```
-        
+
         There are three clear *outliers*^[The outliers have a considerable impact on the regression line, as we will see later.]: Vietnam, Shanghai-China and Qatar. The first two are non high-income economies that perform exceptionally well in the test (although Shanghai-China is a cherry-picked region of China). On the other hand, Qatar is a high-income economy that has really poor scores.
-    
+
         We can identify countries that are above and below the linear trend in the plot. This is particularly interesting: we can assess whether a country is performing better or worse with respect to its *expected PISA score according to its economic status* (this adds more insight into Q2). To do so, we want to display the text labels in the points of the scatterplot. We can take a shortcut: copy and run in the input panel the next piece of code. It is a slightly modified version of the previous code (what are the differences?).
-    
-        ```{r, out.width = '90%', fig.asp = 1, fig.align = 'center', results = 'hide'}
-        scatterplot(MathMean ~ logGDPp, reg.line = lm, smooth = FALSE, spread = FALSE, 
-                    id.method = 'mahal', id.n = 65, id.cex = 0.75, boxplots = FALSE, 
-                    span = 0.5, ellipse = FALSE, levels = c(.5, .9), 
+
+        ```{r, out.width = '90%', fig.asp = 1, fig.align = 'center', results = 'hide', cache = TRUE}
+        scatterplot(MathMean ~ logGDPp, reg.line = lm, smooth = FALSE, spread = FALSE,
+                    id.method = 'mahal', id.n = 65, id.cex = 0.75, boxplots = FALSE,
+                    span = 0.5, ellipse = FALSE, levels = c(.5, .9),
                     main = "Average Math score vs. logGDPp", pch = c(16), cex = 0.75,
                     data = pisa)
         ```
-    
+
 If you understood the previous analysis, then you should be able to perform the next ones on your own.
 
 ```{block, type = 'rmdexercise'}
@@ -175,25 +175,25 @@ Let's begin by reading the data:
 
 1. The `US_apportionment.xlsx` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/US_apportionment.xlsx)) contains the 50 US states entitled to representation. The variables are `State`, `Population2010` (from the last census) and `Seats2013–2023`. This is an Excel file that we can read using `'Data' -> 'Import data' -> 'from Excel file...'`. A window will pop-up, asking for the right options. We set them as in Figure \@ref(fig:excel), since we want the variable `State` to be the case names. After clicking in `'View dataset'`, the data should look like Figure \@ref(fig:US).
 
-    ```{r, excel, echo = FALSE, out.width = '45%', fig.align = 'center', fig.cap = 'Importation of an Excel file.'}
+    ```{r, excel, echo = FALSE, out.width = '45%', fig.align = 'center', fig.cap = 'Importation of an Excel file.', cache = TRUE}
     knitr::include_graphics("images/screenshots/excel.png")
     ```
 
-    ```{r, US, echo = FALSE, out.width = '45%', fig.align = 'center', fig.cap = 'Correct importation of the `US` dataset.'}
+    ```{r, US, echo = FALSE, out.width = '45%', fig.align = 'center', fig.cap = 'Correct importation of the `US` dataset.', cache = TRUE}
     knitr::include_graphics("images/screenshots/US.png")
     ```
 
-2. The `EU_apportionment.txt` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/EU_apportionment.txt)) contains 28 rows with the member states of the EU (`Country`), the number of seats assigned under different years (`Seats2011`, `Seats2014`), the Cambridge Compromise apportionment (`CamCom2011`), and the countries population^[According to [EuroStat](http://ec.europa.eu/eurostat/tgm/table.do?tab=table&init=1&language=en&pcode=tps00001) and the population stated in the Cambridge Compromise report.] (`Population2010`,`Population2013`). 
+2. The `EU_apportionment.txt` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/EU_apportionment.txt)) contains 28 rows with the member states of the EU (`Country`), the number of seats assigned under different years (`Seats2011`, `Seats2014`), the Cambridge Compromise apportionment (`CamCom2011`), and the countries population^[According to [EuroStat](http://ec.europa.eu/eurostat/tgm/table.do?tab=table&init=1&language=en&pcode=tps00001) and the population stated in the Cambridge Compromise report.] (`Population2010`,`Population2013`).
 
     ```{block, type = 'rmdexercise'}
     For this file, you should know how to:
-    
+
     1. Inspect the file in a text editor and determine its formatting.
     2. Decide the right importation options and load it with the name `EU`.
     3. Set the case names as the variable `Country`.
     ```
-    
-    ```{r, EU, echo = FALSE}
+
+    ```{r, EU, echo = FALSE, cache = TRUE}
     US <- RcmdrMisc::readXL("datasets/US_apportionment.xlsx", rownames = TRUE, header = TRUE, na = "", sheet = "Hoja1", stringsAsFactors = TRUE)
     EU <- read.table("datasets/EU_apportionment.txt", header = TRUE, na = "-", sep = "\t")
     row.names(EU) <- EU$Country
@@ -209,10 +209,10 @@ Let's begin by reading the data:
 We start by analyzing the `US` dataset. If there is indeed a direct proportionality in the apportionment, we would expect a direct, 1:1, relation between the *ratios of seats* and the *population per state*. Let's start by constructing these variables:
 
 1. Switch the active dataset to `US`. An alternative way to do so is by `'Data' -> 'Active data set' -> 'Select active data set...'`.
-2. Go to `'Data' -> 'Manage variables in active dataset...' -> 'Compute new variable...'`. 
-3. Create the the variable `RatioSeats2013.2023` as shown in Figure \@ref(fig:newvar). Be **careful to not overwrite** the variable `Seats2013.2023`.
+2. Go to `'Data' -> 'Manage variables in active dataset...' -> 'Compute new variable...'`.
+3. Create the variable `RatioSeats2013.2023` as shown in Figure \@ref(fig:newvar). Be **careful to not overwrite** the variable `Seats2013.2023`.
 
-    ```{r, newvar, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Creation of the new variable `RatioSeats2013.2023`. The expression to compute is `Seats2013.2023/sum(Seats2013.2023)`.'}
+    ```{r, newvar, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Creation of the new variable `RatioSeats2013.2023`. The expression to compute is `Seats2013.2023/sum(Seats2013.2023)`.', cache = TRUE}
     knitr::include_graphics("images/screenshots/newvar.png")
     ```
 
@@ -221,13 +221,13 @@ We start by analyzing the `US` dataset. If there is indeed a direct proportional
 ```{block, type = 'rmdexercise'}
 Repeat steps 1--3, conveniently adapted, to create the new variable `RatioPopulation2010`.
 ```
-```{r, echo = FALSE}
+```{r, echo = FALSE, cache = TRUE}
 US$RatioSeats2013.2023 <- US$Seats2013.2023 / sum(US$Seats2013.2023)
 US$RatioPopulation2010 <- US$Population2010 / sum(US$Population2010)
 ```
 
 Let's fit a regression line to the `US` data, with `RatioSeats2013.2023` as the response and `RatioPopulation2010` as the explanatory variable. If we name the model as `appUS`, you should get the following code and output:
-```{r}
+```{r, cache = TRUE}
 appUS <- lm(RatioSeats2013.2023 ~ RatioPopulation2010, data = US)
 summary(appUS)
 ```
@@ -235,23 +235,23 @@ The fitted regression line is `RatioSeats2013.2023`$=0.000+1.005\,\times$`RatioP
 
 If we make the scatterplot for the `US` dataset, we can see the almost perfect (up to integer rounding) 1:1 relation between the ratios "state seats"/"total seats" and "state population"/"aggregated population". We can set the scatterplot to automatically label the `'25'` most different points (select the numeric box with the mouse and type `'25'` -- the arrow buttons are limited to `'10'`) with their case names. As it is seen in Figure \@ref(fig:ratios), there is no state clearly over- or under-represented (Q2).
 
-```{r, ratios, echo = FALSE, out.width = '90%', fig.asp = 1, results = 'hide', fig.align = 'center', fig.cap = 'The apportionment in the US House of Representatives compared with a linear fit.'}
-scatterplot(RatioSeats2013.2023 ~ RatioPopulation2010, reg.line = lm, smooth = FALSE, 
-            spread = FALSE, id.method = 'mahal', id.n = 25, id.cex = 0.75, 
-            boxplots = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9), 
-            main = "Approportionment in the US House of Representatives", pch = c(16), 
+```{r, ratios, echo = FALSE, out.width = '90%', fig.asp = 1, results = 'hide', fig.align = 'center', fig.cap = 'The apportionment in the US House of Representatives compared with a linear fit.', cache = TRUE}
+scatterplot(RatioSeats2013.2023 ~ RatioPopulation2010, reg.line = lm, smooth = FALSE,
+            spread = FALSE, id.method = 'mahal', id.n = 25, id.cex = 0.75,
+            boxplots = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9),
+            main = "Approportionment in the US House of Representatives", pch = c(16),
             cex = 0.75, data = US)
 ```
 
-Let's switch to the `EU` dataset, for which we will focus on the 2011 variables. A quick way of visualizing this dataset and, in general, of **visualizing multivariate data** (up to a moderate number of dimensions) is to use a *matrix scatterplot*. Essentially, it displays the scatterplots between all the pairs of variables. To do it, go to `'Graphs' -> 'Scatterplot matrix...'` and select the number of variables to be displayed. If you select them as in Figures \@ref(fig:mscatter1a) and \@ref(fig:mscatter1b), you should get an output like Figure \@ref(fig:mscatter2). 
+Let's switch to the `EU` dataset, for which we will focus on the 2011 variables. A quick way of visualizing this dataset and, in general, of **visualizing multivariate data** (up to a moderate number of dimensions) is to use a *matrix scatterplot*. Essentially, it displays the scatterplots between all the pairs of variables. To do it, go to `'Graphs' -> 'Scatterplot matrix...'` and select the number of variables to be displayed. If you select them as in Figures \@ref(fig:mscatter1a) and \@ref(fig:mscatter1b), you should get an output like Figure \@ref(fig:mscatter2).
 
-```{r, mscatter1a, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Scatterplot matrix window, `\'Data\'` panel.'}
+```{r, mscatter1a, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Scatterplot matrix window, `\'Data\'` panel.', cache = TRUE}
 knitr::include_graphics("images/screenshots/mscatter1a.png")
 ```
-```{r, mscatter1b, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Scatterplot matrix window, `\'Options\'` panel. Be sure to tick the `\'Least-squares line\'` box in order to display the fitted regression line.'}
+```{r, mscatter1b, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Scatterplot matrix window, `\'Options\'` panel. Be sure to tick the `\'Least-squares line\'` box in order to display the fitted regression line.', cache = TRUE}
 knitr::include_graphics("images/screenshots/mscatter1b.png")
 ```
-```{r, mscatter2, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Scatterplot matrix for the variables `CamCom2011`, `Population2010` and `Seats2011` of `EU` dataset with boxplots in the central panels.'}
+```{r, mscatter2, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Scatterplot matrix for the variables `CamCom2011`, `Population2010` and `Seats2011` of `EU` dataset with boxplots in the central panels.', cache = TRUE}
 knitr::include_graphics("images/screenshots/mscatter2.png")
 ```
 
@@ -261,26 +261,26 @@ The scatterplot matrix has a central panel displaying one-variable summary plots
 
 The most interesting panels in Figure \@ref(fig:mscatter2) for our study are `CamCom2011` vs `Population2010` -- panel (1,2) -- and `Seats2011` vs `Population2010` -- panel (3,2). At first sight, it seems that the Cambridge Compromise was favoring a fairer allocation of seats than what it was actually being used in the EU parliament in 2011 (recall the step-wise patterns in (3,2)). Let's explore in depth the scatterplot `Seats2011` vs `Population2010`.
 
-```{r, echo = FALSE, results = 'hide', out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = '`Seats2011` vs `Population2010` in the `EU` dataset.'}
-scatterplot(Seats2011 ~ Population2010, reg.line = lm, smooth = FALSE, spread = FALSE, 
-            id.method = 'mahal', id.n = 25, id.cex = 0.75, boxplots = FALSE, span = 0.5, 
-            ellipse = FALSE, levels = c(.5, .9), 
-            main = "Approportionment in the EU parliament in 2011", pch = c(16), 
+```{r, echo = FALSE, results = 'hide', out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = '`Seats2011` vs `Population2010` in the `EU` dataset.', cache = TRUE}
+scatterplot(Seats2011 ~ Population2010, reg.line = lm, smooth = FALSE, spread = FALSE,
+            id.method = 'mahal', id.n = 25, id.cex = 0.75, boxplots = FALSE, span = 0.5,
+            ellipse = FALSE, levels = c(.5, .9),
+            main = "Approportionment in the EU parliament in 2011", pch = c(16),
             cex = 0.75, data = EU)
 ```
 
-There are some countries clearly detrimented and benefited by this apportionment. For example, France and Spain are under-represented and, on the other hand, Germany, Hungary and Czech Republic are over-represented (Q2). 
+There are some countries clearly detrimented and benefited by this apportionment. For example, France and Spain are under-represented and, on the other hand, Germany, Hungary and Czech Republic are over-represented (Q2).
 
 Let's compute the regression line of `Seats2011` on `Population2010`, which we save in the model `appEU2011`.
 
-```{r}
+```{r, cache = TRUE}
 appEU2011 <- lm(Seats2011 ~ Population2010, data = EU)
 summary(appEU2011)
 ```
 
 The fitted line is `Seats2011`$=7.91+1.078\,\times10^{-6}\,\times$`Population2010`. The intercept is not zero and, indeed, the fitted intercept is significantly different from zero. Therefore, **there is no proportionality** in the apportionment. Recall that the fitted slope, despite being very small (why?), is also significantly different from zero. The $R^2$ is slightly smaller than in the `US` dataset, but definitely very high. Two conclusions stem from this analysis:
 
-- The US House of Representatives is a proportional chamber whereas the EU parliament is definitely not, but is close to perfect linearity (completes Q1). 
+- The US House of Representatives is a proportional chamber whereas the EU parliament is definitely not, but is close to perfect linearity (completes Q1).
 
 - The principle of **digressive proportionality**, in practice, means an almost **linear allocation** of seats with respect to population (Q3). The main point is the presence of a **non-zero intercept** -- that is, a minimum number of seats corresponding to a country -- in order to over-represent smaller countries with respect to its corresponding proportional share.
 
@@ -288,29 +288,29 @@ The question that remains to be answered is whether the Cambridge Compromise was
 
 In order to avoid this distortion, we will exclude Germany from our comparison. To do so, we specify in the `'Subset expression'` field, of either `'Linear regression...'` or `'Scatterplot...'`, a `'-1'`. This tells `R` to exclude the first row of `EU` dataset, corresponding to Germany. Then, we compare the linear models for the official allocation, `appEUNoGer2011`, and the Cambridge Compromise, `appCamComNoGer2011`. The outputs are the following.
 
-```{r}
+```{r, cache = TRUE}
 appEUNoGer2011 <- lm(Seats2011 ~ Population2010, data = EU, subset = -1)
 summary(appEUNoGer2011)
 ```
-```{r}
+```{r, cache = TRUE}
 appCamComNoGer2011 <- lm(CamCom2011 ~ Population2010, data = EU, subset = -1)
 summary(appCamComNoGer2011)
 ```
 
 We see that the Cambridge Compromise has a larger $R^2$ and a lower intercept than the official allocation of seats. This means that it favors a more proportional allocation, which is fairer in the sense that the deviations from the linear trend are smaller (Q3). We conclude the case study by illustrating both fits.
 
-```{r, echo = FALSE, results = 'hide', out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = '`Seats2011` vs `Population2010` in the `EU` dataset, Germany excluded.'}
-scatterplot(Seats2011 ~ Population2010, reg.line = lm, smooth = FALSE, spread = FALSE, 
+```{r, echo = FALSE, results = 'hide', out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = '`Seats2011` vs `Population2010` in the `EU` dataset, Germany excluded.', cache = TRUE}
+scatterplot(Seats2011 ~ Population2010, reg.line = lm, smooth = FALSE, spread = FALSE,
             id.method = 'mahal', id.n = 25, id.cex = 0.75, boxplots = FALSE, span = 0.5,
-            ellipse = FALSE, levels = c(.5, .9), 
-            main = "Approportionment in the EU parliament (Germany excl.)", 
+            ellipse = FALSE, levels = c(.5, .9),
+            main = "Approportionment in the EU parliament (Germany excl.)",
             pch = c(16), cex = 0.75, data = EU, subset = -1)
 ```
 
-```{r, echo = FALSE, results = 'hide', out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = '`CamCom2011` vs `Population2010` in the `EU` dataset, Germany excluded.'}
-scatterplot(CamCom2011 ~ Population2010, reg.line = lm, smooth = FALSE, spread = FALSE, 
-            id.method = 'mahal', id.n = 25, id.cex = 0.75, boxplots = FALSE, span = 0.5, 
-            ellipse = FALSE, levels = c(.5, .9), 
+```{r, echo = FALSE, results = 'hide', out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = '`CamCom2011` vs `Population2010` in the `EU` dataset, Germany excluded.', cache = TRUE}
+scatterplot(CamCom2011 ~ Population2010, reg.line = lm, smooth = FALSE, spread = FALSE,
+            id.method = 'mahal', id.n = 25, id.cex = 0.75, boxplots = FALSE, span = 0.5,
+            ellipse = FALSE, levels = c(.5, .9),
             main = "Proposal for approportionment in the EU parliament (Germany excl.)",
             pch = c(16), cex = 0.75, data = EU, subset = -1)
 ```
@@ -327,7 +327,7 @@ In 2014 it was negotiated a new EU apportionment, collected in `Seats2014`, acco
 
 ***
 
-We have performed a decent number of operations in `R Commander`. If we have to exit the session, we can save the data and models in an `.RData` file, which contains all the objects we have computed so far (but **not** the code -- this has to be saved differently). 
+We have performed a decent number of operations in `R Commander`. If we have to exit the session, we can save the data and models in an `.RData` file, which contains all the objects we have computed so far (but **not** the code -- this has to be saved differently).
 
 ```{block, type = 'rmdtip'}
 To exit `R Commander`, save all your progress and reload it later, do:
@@ -354,7 +354,7 @@ If you just want to save a dataset, you have two options:
 
 By this time you probably had realized that some pieces of `R` code are repeated over and over, and that it is simpler to just modify them than to navigate the menus. For example, the codes `lm` and `scatterplot` always appear related with linear models and scatterplots. It is important to know some of the `R` basics in order to understand what are these pieces of text actually doing. Do not worry, the menus will always be there to generate the proper code for you -- but you need to have a *general idea* of the code.
 
-In the following sections, **type** -- not copy and paste systematically -- the code in the `'R Script'` panel and send it to the output panel (on the selected expression, either with the `'Submit'` button or with `'Control' + 'R'`). 
+In the following sections, **type** -- not copy and paste systematically -- the code in the `'R Script'` panel and send it to the output panel (on the selected expression, either with the `'Submit'` button or with `'Control' + 'R'`).
 
 We begin with the `lm` function, since it is the one you are more used to. In the following, you should get the same outputs (which are preceded by `## [1]`).
 
@@ -362,7 +362,7 @@ We begin with the `lm` function, since it is the one you are more used to. In th
 
 We are going to employ the `EU` dataset from Section \@ref(euus), with the case names set as the `Country`. In case you do not have it loaded, you can download it [here](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/EU.RData) as an `.RData` file.
 
-```{r, collapse = TRUE, error = TRUE}
+```{r, collapse = TRUE, error = TRUE, cache = TRUE}
 # First of all, this is a comment. Its purpose is to explain what the code is doing
 # Comments are preceeded by a #
 
@@ -397,9 +397,9 @@ The following table contains a handy cheat sheet of equivalences between `R` cod
 
 |              `R`                       |        Statistical concept          |
 |:---------------------------------------|:------------------------------------|
-| `x` | Predictor $X_1,\ldots,X_n$    | 
+| `x` | Predictor $X_1,\ldots,X_n$    |
 | `y` | Response $Y_1,\ldots,Y_n$    |
-| `data <- data.frame(x = x, y = y)` | Sample $(X_1,Y_1),\ldots,(X_n,Y_n)$    | 
+| `data <- data.frame(x = x, y = y)` | Sample $(X_1,Y_1),\ldots,(X_n,Y_n)$    |
 | `model <- lm(y ~ x, data = data)` | Fitted linear model |
 | `model$coefficients` | Fitted coefficients $\hat\beta_0,\hat\beta_1$ |
 | `model$residuals` | Fitted residuals $\hat\varepsilon_1,\ldots,\hat\varepsilon_n$ |
@@ -425,7 +425,7 @@ Now you know how to fit and summarize a linear model with a few keystrokes. Let'
 
 ### Simple computations
 
-```{r, echo = TRUE, error = TRUE, collapse = TRUE}
+```{r, echo = TRUE, error = TRUE, collapse = TRUE, cache = TRUE}
 # These are some simple operations
 # The console can act as a simple calculator
 1.0 + 1.1
@@ -448,13 +448,13 @@ sin(pi); cos(0); asin(0)
 
 ```{r, echo = TRUE, error = TRUE, collapse = TRUE}
 # Remember to complete the expressions
-1 + 
+1 +
 (1 + 3
 ```
 
 ### Variables and assignment
 
-```{r, echo = TRUE, error = TRUE, collapse = TRUE}
+```{r, echo = TRUE, error = TRUE, collapse = TRUE, cache = TRUE}
 # Any operation that you perform in R can be stored in a variable (or object)
 # with the assignment operator "<-"
 a <- 1
@@ -466,7 +466,7 @@ a
 a <- 1 + 1
 
 # Now the value of a is 2 and not 1, as before
-a 
+a
 
 # Careful with capitalization
 A
@@ -495,8 +495,7 @@ Do the following:
 
 ### Vectors
 
-```{r, echo = TRUE, collapse = TRUE, error = TRUE}
-
+```{r, echo = TRUE, collapse = TRUE, error = TRUE, cache = TRUE}
 # These are vectors - arrays of numbers
 # We combine numbers with the function c
 c(1, 3)
@@ -504,7 +503,7 @@ c(1.5, 0, 5, -3.4)
 
 # A handy way of creating sequences is the operator :
 # Sequence from 1 to 5
-1:5 
+1:5
 
 # Storing some vectors
 myData <- c(1, 2)
@@ -513,7 +512,7 @@ myData
 myData2
 
 # Entry-wise operations
-myData + 1 
+myData + 1
 myData^2
 
 # If you want to access a position of a vector, use [position]
@@ -546,7 +545,7 @@ myData2[c(-1, 2)]
 ```{block, type = 'rmdexercise'}
 Do the following:
 
-- Create the vector $x=(1, 7, 3, 4)$. 
+- Create the vector $x=(1, 7, 3, 4)$.
 - Create the vector $y=(100, 99, 98, ..., 2, 1)$.
 - Compute $x_2+y_4$ and $\cos(x_3) + \sin(x_2) e^{-y_2}$. (Answers: `104`, `-0.9899925`)
 - Set $x_{2}=0$ and $y_{2}=-1$. Recompute the previous expressions. (Answers: `97`, `2.785875`)
@@ -556,7 +555,7 @@ Do the following:
 
 ### Some functions
 
-```{r, echo = TRUE, collapse = TRUE, error = TRUE}
+```{r, echo = TRUE, collapse = TRUE, error = TRUE, cache = TRUE}
 # Functions take arguments between parenthesis and transform them into an output
 sum(myData)
 prod(myData)
@@ -600,7 +599,7 @@ Do the following:
 
 ### Matrices, data frames and lists
 
-```{r, collapse = TRUE, error = TRUE}
+```{r, collapse = TRUE, error = TRUE, cache = TRUE}
 # A matrix is an array of vectors
 A <- matrix(1:4, nrow = 2, ncol = 2)
 A
@@ -634,13 +633,13 @@ myDf
 # The nice thing is that you can access variables by its name with the $ operator
 myDf$newname1
 
-# And create new variables also (it has to be of the same 
+# And create new variables also (it has to be of the same
 # length as the rest of variables)
 myDf$myNewVariable <- c(0, 1)
 myDf
-  
+
 # A list is a collection of arbitrary variables
-myList <- list(myData = myData, A = A, myDf = myDf) 
+myList <- list(myData = myData, A = A, myDf = myDf)
 
 # Access elements by names
 myList$myData
@@ -681,7 +680,7 @@ holds between $X$ and $Y$. In \@ref(eq:1), $\beta_0$ and $\beta_1$ are known as 
 \begin{align}
 \mathbb{E}[Y|X=x]=\beta_0+\beta_1x, (\#eq:2)
 \end{align}
-since $\mathbb{E}[\varepsilon|X=x]=0$. 
+since $\mathbb{E}[\varepsilon|X=x]=0$.
 
 The Left Hand Side (LHS) of \@ref(eq:2) is the *conditional expectation* of $Y$ given $X$. It represents how the mean of the random variable $Y$ is changing according to a particular value, denoted by $x$, of the random variable $X$. With the RHS, what we are saying is that the mean of $Y$ is changing in a *linear* fashion with respect to the value of $X$. Hence the interpretation of the coefficients:
 
@@ -724,11 +723,11 @@ knitr::include_app('https://egarpor.shinyapps.io/least-squares/', height = '900p
 ```
 
 The data of the figure has been generated with the following code:
-```{r}
+```{r, cache = TRUE}
 # Generates 50 points from a N(0, 1): predictor and error
 set.seed(34567) # Fixes the seed for the random generator
-x <- rnorm(n = 50) 
-eps <- rnorm(n = 50) 
+x <- rnorm(n = 50)
+eps <- rnorm(n = 50)
 
 # Responses
 yLin <- -0.5 + 1.5 * x + eps
@@ -754,13 +753,13 @@ In an abuse of notation, the term *regression line* is often used to denote both
 
 Once we have the least squares estimates $(\hat\beta_0,\hat\beta_1)$, we can define the next two concepts:
 
-- The *fitted values* $\hat Y_1,\ldots,\hat Y_n$, where 
+- The *fitted values* $\hat Y_1,\ldots,\hat Y_n$, where
 \begin{align*}
 \hat Y_i=\hat\beta_0+\hat\beta_1X_i,\quad i=1,\ldots,n.
 \end{align*}
 They are the vertical projections of $Y_1,\ldots,Y_n$ into the fitted line (see Figure \@ref(fig:leastsquares)).
 
-- The *estimated residuals* $\hat \varepsilon_1,\ldots,\hat \varepsilon_n$, where 
+- The *estimated residuals* $\hat \varepsilon_1,\ldots,\hat \varepsilon_n$, where
 \begin{align*}
 \hat\varepsilon_i=Y_i-\hat Y_i,\quad i=1,\ldots,n.
 \end{align*}
@@ -768,7 +767,7 @@ They are the vertical distances between actual data $(X_i,Y_i)$ and fitted data 
 
 To conclude this section, we check that the regression coefficients given by `lm` are indeed the ones given in \@ref(eq:3).
 
-```{r, echo = TRUE, collapse = TRUE}
+```{r, echo = TRUE, collapse = TRUE, cache = TRUE}
 # Covariance
 Sxy <- cov(x, yLin)
 
@@ -777,7 +776,7 @@ Sx2 <- var(x)
 
 # Coefficients
 beta1 <- Sxy / Sx2
-beta0 <- mean(yLin) - beta1 * mean(x) 
+beta0 <- mean(yLin) - beta1 * mean(x)
 c(beta0, beta1)
 
 # Output from lm
@@ -788,17 +787,17 @@ mod$coefficients
 ```{block, type = 'rmdexercise'}
 Adapt the code conveniently for doing the same checking with
 
-- $X=$`ReadingMean` and $Y=$`MathMean` from the `pisa` dataset. 
+- $X=$`ReadingMean` and $Y=$`MathMean` from the `pisa` dataset.
 - $X=$`logGDPp` and $Y=$`MathMean`.
 - $X=$`Population2010` and $Y=$`Seats2013.2023` from the `US` dataset.
-- $X=$`Population2010` and $Y=$`Seats2011` from the `EU` dataset. 
+- $X=$`Population2010` and $Y=$`Seats2011` from the `EU` dataset.
 ```
 
 ## Assumptions of the model {#assumptions}
 
 Why do we need assumptions? To make **inference** on the model parameters. In other words, to infer properties about the *unknown* population coefficients $\beta_0$ and $\beta_1$ from the sample $(X_1,Y_1),\ldots,(X_n,Y_n)$.
 
-```{r, linearmodel, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The key concepts of the simple linear model. The yellow band denotes where the $95\\%$ of the data is, according to the model.'}
+```{r, linearmodel, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The key concepts of the simple linear model. The yellow band denotes where the $95\\%$ of the data is, according to the model.', cache = TRUE}
 knitr::include_graphics("images/R/linearmodel.png")
 ```
 
@@ -817,25 +816,25 @@ Y|X=x\sim \mathcal{N}(\beta_0+\beta_1x,\sigma^2)
 ```{block, type = 'rmdinsight'}
 Recall:
 
-- Nothing is said about the distribution of $X$. Indeed, $X$ could be deterministic (called *fixed design*) or random (*random design*). 
+- Nothing is said about the distribution of $X$. Indeed, $X$ could be deterministic (called *fixed design*) or random (*random design*).
 
 - The linear model **assumes that $Y$ is continuous** due to the normality of the errors. However, **$X$ can be discrete**!
 ```
 
 Figures \@ref(fig:linearmodelgood) and \@ref(fig:linearmodelbad) represent situations where the assumptions of the model are respected and violated, respectively. For the moment, we will focus on building the intuition for checking the assumptions visually. In Chapter \@ref(mult) we will see more sophisticated methods for checking the assumptions. We will see also what are the possible fixes to the failure of assumptions.
 
-```{r, linearmodelgood, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Perfectly valid simple linear models (all the assumptions are verified).'}
+```{r, linearmodelgood, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Perfectly valid simple linear models (all the assumptions are verified).', cache = TRUE}
 knitr::include_graphics("images/R/linearmodelgood.png")
 ```
 
-```{r, linearmodelbad, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Problematic simple linear models (a single assumption does not hold).'}
+```{r, linearmodelbad, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Problematic simple linear models (a single assumption does not hold).', cache = TRUE}
 knitr::include_graphics("images/R/linearmodelbad.png")
 ```
 
 ```{block, type = 'rmdexercise'}
 The dataset `assumptions.RData` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/assumptions.RData)) contains the variables `x1`, ..., `x9` and `y1`, ..., `y9`. For each regression `y1 ~ x1`, ..., `y9 ~ x9`:
 
-- Check whether the assumptions of the linear model are being satisfied (make a scatterplot with a regression line). 
+- Check whether the assumptions of the linear model are being satisfied (make a scatterplot with a regression line).
 - State which assumption(s) are violated and justify your answer.
 ```
 
@@ -867,8 +866,8 @@ Some important remarks on \@ref(eq:norm1) and \@ref(eq:se1) are
 
     - *Sample size $n$*. As the sample size grows, the precision of the estimators increases, since both variances decrease.
     - *Error variance $\sigma^2$*. The more disperse the error is, the less precise the estimates are, since the more vertical variability is present.
-    - *Predictor variance $s_x^2$*. If the predictor is spread out (large $s_x^2$), then it is easier to fit a regression line: we have information about the data trend over a long interval. If $s_x^2$ is small, then all the data is concentrated on a narrow vertical band, so we have a much more limited view of the trend. 
-    
+    - *Predictor variance $s_x^2$*. If the predictor is spread out (large $s_x^2$), then it is easier to fit a regression line: we have information about the data trend over a long interval. If $s_x^2$ is small, then all the data is concentrated on a narrow vertical band, so we have a much more limited view of the trend.
+
     - *Mean $\bar X$*. It has influence only on the precision of $\hat\beta_0$. The larger $\bar X$ is, the less precise $\hat\beta_0$ is.
 
 
@@ -904,7 +903,7 @@ Due to \@ref(eq:norm3) and \@ref(eq:se2), we can have the $100(1-\alpha)\%$ Conf
 \end{align}
 where $t_{n-2;\alpha/2}$ is the *$\alpha/2$-upper quantile of the $t_{n-2}$* (see Figure \@ref(fig:ttest)). Usually, $\alpha=0.10,0.05,0.01$ are considered.
 
-```{r, ttest, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The Student\'s $t$ distribution for the $t$-statistics associated to null intercept and slope, for the `y1 ~ x1` regression of the `assumptions` dataset.'}
+```{r, ttest, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The Student\'s $t$ distribution for the $t$-statistics associated to null intercept and slope, for the `y1 ~ x1` regression of the `assumptions` dataset.', cache = TRUE}
 knitr::include_graphics("images/R/ttest.png")
 ```
 
@@ -919,17 +918,17 @@ knitr::include_app('https://egarpor.shinyapps.io/ci-random/', height = '900px')
 ```
 
 Let's see how we can compute the CIs for $\beta_0$ and $\beta_1$ in practice. We do it in the first regression of the `assumptions` dataset. Assuming you have loaded the dataset, in `R` we can simply type:
-```{r, echo = FALSE}
+```{r, echo = FALSE, cache = TRUE}
 load("datasets/assumptions.RData")
 ```
-```{r, collapse = TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 mod1 <- lm(y1 ~ x1, data = assumptions)
 confint(mod1)
 ```
 In this example, the 95% confidence interval for $\beta_0$ is $(-0.2257, 0.1572)$. For $\beta_1$ is $(-0.5587, -0.2881)$. Therefore, we can say that **with a 95% confidence `x1` has a negative effect on `y1`**. If the CI for $\beta_1$ was $(-0.2256901, 0.1572392)$, we could not arrive to the same conclusion, since the CI contains both positive and negative numbers.
 
 By default, the confidence interval is computed for $\alpha=0.05$. You can change this on the `level` argument, for example:
-```{r, collapse = TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 confint(mod1, level = 0.90) # alpha = 0.10
 confint(mod1, level = 0.95) # alpha = 0.05
 confint(mod1, level = 0.99) # alpha = 0.01
@@ -948,7 +947,7 @@ If you want to make the CIs through the help of `R Commander` (assuming the data
 Compute the CIs (95%) for the coefficients of the regressions:
 
 - `y2 ~ x2`
-- `y6 ~ x6` 
+- `y6 ~ x6`
 - `y7 ~ x7`
 
 Do you think all of them are meaningful? Which ones are and why? (Recall: inference on the model makes sense if assumptions of the model are verified)
@@ -972,7 +971,7 @@ A CI for $\sigma^2$ can be also computed, but is less important in practice. The
 where $\chi^2_{n-2;q}$ is the $q$-upper quantile of the *$\chi^2$ distribution*^[$\chi_n^2$ is the distribution of the sum of the squares of $n$ random variables $\mathcal{N}(0,1)$.] with $n-2$ degrees of freedom, $\chi^2_{n-2}$. Note that the CI is *not symmetric* around $\hat\sigma^2$.
 
 ```{block, type = 'rmdexercise'}
-Compute the CI for $\sigma^2$ for the regression of `MathMean` on `logGDPp` in the `pisa` dataset. Do it for $\alpha=0.10,0.05,0.01$. 
+Compute the CI for $\sigma^2$ for the regression of `MathMean` on `logGDPp` in the `pisa` dataset. Do it for $\alpha=0.10,0.05,0.01$.
 
 - To compute $\chi^2_{n-2;q}$, you can do:
 
@@ -994,7 +993,7 @@ for $j=0,1$. The test of $H_0:\beta_1=0$ is specially interesting, since it allo
 \begin{align*}
 \frac{\hat\beta_j-0}{\hat{\mathrm{SE}}(\hat\beta_j)},
 \end{align*}
-which is distributed as a $t_{n-2}$ *under the (veracity of) the null hypothesis*. 
+which is distributed as a $t_{n-2}$ *under the (veracity of) the null hypothesis*.
 
 ```{block, type = 'rmdinsight'}
 Remember the analogy of hypothesis testing vs a trial, as given in the table below.
@@ -1005,7 +1004,7 @@ Remember the analogy of hypothesis testing vs a trial, as given in the table bel
 | Null hypothesis $H_0$ | **Accused of comitting a crime**. It has the "presumption of innocence", which means that it is *not guilty* until there is enough evidence to supporting its guilt |
 | Sample $X_1,\ldots,X_n$ | Collection of small **evidences supporting innocence and guilt**  |
 | Statistic $T_n$ | **Summary of the evicences presented** by the prosecutor and defense lawyer   |
-| Distribution of $T_n$ under $H_0$ | The **judge** conducting the trial. Evaluates the evidence presented by both sides and presents a verdict for $H_0$  | 
+| Distribution of $T_n$ under $H_0$ | The **judge** conducting the trial. Evaluates the evidence presented by both sides and presents a verdict for $H_0$  |
 | Significance level $\alpha$ | $1-\alpha$ is the **strength of evidences required by the judge for condemning $H_0$**. The judge allows evidences that on average condemn $100\alpha\%$ of the innocents! $\alpha=0.05$ is considered a reasonable level |
 | $p$-value | **Decision** of the judge. If $p\text{-value}<\alpha$, $H_0$ is declared guilty. Otherwise, is declared not guilty |
 | $H_0$ is rejected | $H_0$ is declared guilty: there are **strong evidences supporting its guilt** |
@@ -1017,7 +1016,7 @@ More formally, the $p$-value is defined as:
 
 Therefore, **if the $p$-value is small** (smaller than the chosen level $\alpha$), **it is unlikely that the evidence against $H_0$ is due to randomness. As a consequence, $H_0$ is rejected**. If the $p$-value is large (larger than $\alpha$), then it is more possible that the evidences against $H_0$ are merely due to the randomness of the data. In this case, we do not reject $H_0$.
 
-The null hypothesis $H_0$ is tested *against* the *alternative hypothesis*, $H_1$. If $H_0$ is rejected, it is *rejected in favor* of $H_1$. The alternative hypothesis can be *bilateral*, such as 
+The null hypothesis $H_0$ is tested *against* the *alternative hypothesis*, $H_1$. If $H_0$ is rejected, it is *rejected in favor* of $H_1$. The alternative hypothesis can be *bilateral*, such as
 \begin{align*}
 H_0:\beta_j= 0\quad\text{vs}\quad H_1:\beta_j\neq 0
 \end{align*}
@@ -1032,12 +1031,12 @@ The connection of a $t$-test for $H_0:\beta_j=0$ and the CI for $\beta_j$, both 
 
 **Is $0$ inside the CI for $\beta_j$?**
 
-- **Yes $\leftrightarrow$ do not reject $H_0$**. 
+- **Yes $\leftrightarrow$ do not reject $H_0$**.
 - **No $\leftrightarrow$ reject $H_0$**.
 ```
 
 The tests for significance are built-in in the `summary` function, as we glimpsed in Section \@ref(euus). For `mod1`, we have:
-```{r, collapse = TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 summary(mod1)
 ```
 The `Coefficients` block of the output of `summary` contains the next elements regarding the test $H_0:\beta_j=0$ vs $H_1:\beta_j\neq0$:
@@ -1053,13 +1052,13 @@ In the above output for `summary(mod1)`, $H_0:\beta_0=0$ is not rejected at any 
 ```{block, type = 'rmdexercise'}
 For the `assumptions` dataset, do the next:
 
-- Regression `y7 ~ x7`. Check that: 
+- Regression `y7 ~ x7`. Check that:
     - The intercept of  is not significant for the regression at any reasonable level $\alpha$.
     - The slope is significant for any $\alpha>10^{-7}$.
-  
-- Regression `y6 ~ x6`. Assume the linear model assumptions are verified. 
+
+- Regression `y6 ~ x6`. Assume the linear model assumptions are verified.
     - Check that $\hat\beta_0$ is significantly different from zero at any level
-$\alpha$. 
+$\alpha$.
     - For which $\alpha=0.10,0.05,0.01$ is $\hat\beta_1$ significantly different from zero?
 ```  
 
@@ -1097,12 +1096,12 @@ knitr::include_app('https://egarpor.shinyapps.io/ci-prediction/', height = '1000
 
 The prediction and computation of CIs can be done with the `R` function `predict`. The objects required for `predict` are: first, the output of `lm`; second, a `data.frame` containing the locations $x$ where we want to predict $\beta_0+\beta_1x$. To illustrate the use of `predict`, we are going to use the `pisa` dataset. In case you do not have it loaded, you can download it [here](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/pisa.RData) as an `.RData` file.
 
-```{r, echo = FALSE, warning = FALSE}
+```{r, echo = FALSE, warning = FALSE, cache = TRUE}
 pisa <- read.csv(file = "datasets/pisa.csv", header = TRUE)
 library(car)
 ```
 
-```{r, collapse = TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 # Plot the data and the regression line (alternatively, using R Commander)
 scatterplot(MathMean ~ ReadingMean, data = pisa, smooth = FALSE)
 
@@ -1114,7 +1113,7 @@ summary(model)
 # Important! You have to name the column with the predictor name!
 newData <- data.frame(ReadingMean = 400)
 
-# Prediction 
+# Prediction
 predict(model, newdata = newData)
 
 # Prediction with 95% confidence interval (the default)
@@ -1157,8 +1156,8 @@ Similarities and differences in the prediction of the conditional mean $\mathbb{
 
 The prediction and computation of CIs can be done with the `R` function predict. The objects required for predict are: first, the output of `lm`; second, a `data.frame` containing the locations $x$ where we want to predict $\beta_0+\beta_1 x$. To illustrate the use of predict, we are going to use the `pisa` dataset. In case you do not have it loaded, you can download it [here](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/pisa.RData) as an `.RData` file.
 
-The prediction of a new observation can be done via the function `predict`, which also provides confidence intervals. 
-```{r, collapse = TRUE}
+The prediction of a new observation can be done via the function `predict`, which also provides confidence intervals.
+```{r, collapse = TRUE, cache = TRUE}
 # Prediction with 95% confidence interval (the default) CI: (lwr, upr)
 predict(model, newdata = newData, interval = "prediction")
 
@@ -1182,7 +1181,7 @@ Redo the third and fourth points of the previous exercise with CIs for the condi
 
 ### ANOVA
 
-As we have seen in Sections \@ref(inference) and \@ref(prediction), the variance of the error, $\sigma^2$, plays a fundamental role in the inference for the model coefficients and prediction. In this section we will see how the variance of $Y$ is decomposed into two parts, each one corresponding to the regression and to the error, respectively. This decomposition is called the *ANalysis Of VAriance* (ANOVA). 
+As we have seen in Sections \@ref(inference) and \@ref(prediction), the variance of the error, $\sigma^2$, plays a fundamental role in the inference for the model coefficients and prediction. In this section we will see how the variance of $Y$ is decomposed into two parts, each one corresponding to the regression and to the error, respectively. This decomposition is called the *ANalysis Of VAriance* (ANOVA).
 
 Before explaining ANOVA, it is important to recall an interesting result: *the mean of the fitted values $\hat Y_1,\ldots,\hat Y_n$ is the mean of $Y_1,\ldots, Y_n$*. This is easily seen if we plug-in the expression of $\hat\beta_0$:
 \begin{align*}
@@ -1192,7 +1191,7 @@ The ANOVA decomposition considers the following measures of variation related wi
 
 - $\text{SST}=\sum_{i=1}^n\left(Y_i-\bar Y\right)^2$, the **total sum of squares**. This is the *total variation* of $Y_1,\ldots,Y_n$, since $\text{SST}=ns_y^2$, where $s_y^2$ is the sample variance of $Y_1,\ldots,Y_n$.
 - $\text{SSR}=\sum_{i=1}^n\left(\hat Y_i-\bar Y\right)^2$, the **regression sum of squares**^[Recall that SSR is different from RSS (Residual Sum of Squares, Section \@ref(modelsimp)).]. This is the variation explained by the regression line, that is, *the variation from $\bar Y$ that is explained by the estimated conditional mean $\hat Y_i=\hat\beta_0+\hat\beta_1X_i$*. $\text{SSR}=ns_{\hat y}^2$, where $s_{\hat y}^2$ is the sample variance of $\hat Y_1,\ldots,\hat Y_n$.
-- $\text{SSE}=\sum_{i=1}^n\left(Y_i-\hat Y_i\right)^2$, the **sum of squared errors**^[Recall that SSE and RSS (for $(\hat \beta_0,\hat \beta_1)$) are just different names for referring to the same quantity: $\text{SSE}=\sum_{i=1}^n\left(Y_i-\hat Y_i\right)^2=\sum_{i=1}^n\left(Y_i-\hat \beta_0-\hat \beta_1X_i\right)^2=\mathrm{RSS}\left(\hat \beta_0,\hat \beta_1\right)$.]. Is the variation around the conditional mean. Recall that $\text{SSE}=\sum_{i=1}^n \hat\varepsilon_i^2=(n-2)\hat\sigma^2$, where $\hat\sigma^2$ is the sample variance of $\hat \varepsilon_1,\ldots,\hat \varepsilon_n$. 
+- $\text{SSE}=\sum_{i=1}^n\left(Y_i-\hat Y_i\right)^2$, the **sum of squared errors**^[Recall that SSE and RSS (for $(\hat \beta_0,\hat \beta_1)$) are just different names for referring to the same quantity: $\text{SSE}=\sum_{i=1}^n\left(Y_i-\hat Y_i\right)^2=\sum_{i=1}^n\left(Y_i-\hat \beta_0-\hat \beta_1X_i\right)^2=\mathrm{RSS}\left(\hat \beta_0,\hat \beta_1\right)$.]. Is the variation around the conditional mean. Recall that $\text{SSE}=\sum_{i=1}^n \hat\varepsilon_i^2=(n-2)\hat\sigma^2$, where $\hat\sigma^2$ is the sample variance of $\hat \varepsilon_1,\ldots,\hat \varepsilon_n$.
 
 The ANOVA decomposition is
 \begin{align}
@@ -1221,7 +1220,7 @@ The ANOVA table summarizes the decomposition of the variance. Here is given in t
 
 The `anova` function in `R` takes a model as an input and returns the ANOVA table. In `R Commander`, the ANOVA table can be computed by going to `'Models' -> 'Hypothesis tests' -> 'ANOVA table...'`. In the `'Type of Tests'` option, select `'Sequential ("Type I")'`. (This types `anova()` for you...)
 
-```{r, collapse = TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 # Fit a linear model (alternatively, using R Commander)
 model <- lm(MathMean ~ ReadingMean, data = pisa)
 summary(model)
@@ -1230,7 +1229,7 @@ summary(model)
 anova(model)
 ```
 
-The "$F$-value" of the ANOVA table represents the value of the $F$-statistic $\frac{\text{SSR}/1}{\text{SSE}/(n-2)}$. This statistic is employed to test 
+The "$F$-value" of the ANOVA table represents the value of the $F$-statistic $\frac{\text{SSR}/1}{\text{SSE}/(n-2)}$. This statistic is employed to test
 \begin{align*}
 H_0:\beta_1=0\quad\text{vs.}\quad H_1:\beta_1\neq 0,
 \end{align*}
@@ -1272,7 +1271,7 @@ The equality $R^2=r^2_{y \hat y}$ is still true for the **multiple** linear regr
 ```
 
 The result $R^2=r^2_{xy}=r^2_{y\hat y}$ can be checked numerically and graphically with the next code.
-```{r, fig.show = 'hold', collapse = TRUE}
+```{r, fig.show = 'hold', collapse = TRUE, cache = TRUE}
 # Responses generated following a linear model
 set.seed(343567) # Fixes seed, allows to generate the same random data
 x <- rnorm(50)
@@ -1309,8 +1308,8 @@ $R^2$ does not measure the correctness of a linear model but its **usefulness** 
 
 Trusting blindly the $R^2$ can lead to catastrophic conclusions, since the model may not be correct. Here is a counterexample of a linear regression performed in a data that clearly does not satisfy the assumptions discussed in Section \@ref(assumptions), but despite so it has a large $R^2$. Recall how biased will be the predictions for $x=0.35$ and $x=0.65$!
 
-```{r, collapse = TRUE}
-# Create data that: 
+```{r, collapse = TRUE, cache = TRUE}
+# Create data that:
 # 1) does not follow a linear model
 # 2) the error is heteroskedastic
 x <- seq(0.15, 1, l = 100)
@@ -1345,7 +1344,7 @@ The trick is to work with the transformed predictor ($X^2$, $\log(X)$, ...), ins
   2. $\tilde X_i=\log(X_i)$, $i=1,\ldots,n$.
   3. $\tilde X_i=X_i^3-\log(|X_i|) + 2^{X_i}$, $i=1,\ldots,n$.
 
-```{r, nonlineartransf, echo = FALSE, warning = FALSE, results = 'hide', out.width = '45%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Some common nonlinear transformations and their negative counterparts. Recall the domain of definition of each transformation.'}
+```{r, nonlineartransf, echo = FALSE, warning = FALSE, results = 'hide', out.width = '45%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Some common nonlinear transformations and their negative counterparts. Recall the domain of definition of each transformation.', cache = TRUE}
 x <- seq(-2, 5, l = 200)
 plot(x, x, xlab = "x", ylab = "y", type = "l", col = 1, lwd = 2)
 lines(x, x^2, col = 2, lwd = 2)
@@ -1369,7 +1368,7 @@ An example of this simple but powerful trick is given as follows. The left panel
 
 In conclusion, with a simple trick we have increased drastically the explanation of the response. However, there is a catch: knowing which transformation is required in order to linearise the relation between response and the predictor is a kind of art which requires some good eye. This is partially alleviated by the extension of this technique to deal with *polynomials* rather than *monomials*, as we will see in Chapter \@ref(mult). For the moment, we will consider only the transformations displayed in Figure \@ref(fig:nonlineartransf). Figure \@ref(fig:transf) shows different transformations linearising nonlinear data patterns.
 
-```{r, quadratic, echo = FALSE, out.width = '45%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Left: quadratic pattern when plotting $Y$ against $X$. Right: linearized pattern when plotting $Y$ against $X^2$.'}
+```{r, quadratic, echo = FALSE, out.width = '45%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Left: quadratic pattern when plotting $Y$ against $X$. Right: linearized pattern when plotting $Y$ against $X^2$.', cache = TRUE}
 set.seed(345607)
 x <- round(seq(-2, 5, l = 50), 1)
 y <- round(0.5 * x^2 + rnorm(50), 1)
@@ -1382,7 +1381,7 @@ abline(mod2$coefficients, col = 2, lwd = 2)
 ```
 
 ```{block2, type = 'rmdinsight'}
-If you apply a nonlinear transformation, namely $f$, and fit the linear model $Y=\beta_0+\beta_1 f(X)+\varepsilon$, then there is no point in fit also the model resulting from the negative transformation $-f$. The model with $-f$ is exactly the same as the one with $f$ but with the sign of $\beta_1$ flipped! 
+If you apply a nonlinear transformation, namely $f$, and fit the linear model $Y=\beta_0+\beta_1 f(X)+\varepsilon$, then there is no point in fit also the model resulting from the negative transformation $-f$. The model with $-f$ is exactly the same as the one with $f$ but with the sign of $\beta_1$ flipped!
 
 As a rule of thumb, use Figure \@ref(fig:nonlineartransf) with the transformations to compare it with the data pattern, then choose the most similar curve, and finally apply the corresponding function with **positive sign**.
 ```
@@ -1397,15 +1396,15 @@ As you might have realized, applying nonlinear transformations to the predictors
 ```
 
 Let's see how we can compute transformations of our predictors and perform a linear regression with them. The data for the above example is the following:
-```{r}
+```{r, cache = TRUE}
 # Data
-x <- c(-2, -1.9, -1.7, -1.6, -1.4, -1.3, -1.1, -1, -0.9, -0.7, -0.6, 
-       -0.4, -0.3, -0.1, 0, 0.1, 0.3, 0.4, 0.6, 0.7, 0.9, 1, 1.1, 1.3, 
-       1.4, 1.6, 1.7, 1.9, 2, 2.1, 2.3, 2.4, 2.6, 2.7, 2.9, 3, 3.1, 
+x <- c(-2, -1.9, -1.7, -1.6, -1.4, -1.3, -1.1, -1, -0.9, -0.7, -0.6,
+       -0.4, -0.3, -0.1, 0, 0.1, 0.3, 0.4, 0.6, 0.7, 0.9, 1, 1.1, 1.3,
+       1.4, 1.6, 1.7, 1.9, 2, 2.1, 2.3, 2.4, 2.6, 2.7, 2.9, 3, 3.1,
        3.3, 3.4, 3.6, 3.7, 3.9, 4, 4.1, 4.3, 4.4, 4.6, 4.7, 4.9, 5)
 y <- c(1.4, 0.4, 2.4, 1.7, 2.4, 0, 0.3, -1, 1.3, 0.2, -0.7, 1.2, -0.1,
        -1.2, -0.1, 1, -1.1, -0.9, 0.1, 0.8, 0, 1.7, 0.3, 0.8, 1.2, 1.1,
-       2.5, 1.5, 2, 3.8, 2.4, 2.9, 2.7, 4.2, 5.8, 4.7, 5.3, 4.9, 5.1, 
+       2.5, 1.5, 2, 3.8, 2.4, 2.9, 2.7, 4.2, 5.8, 4.7, 5.3, 4.9, 5.1,
        6.3, 8.6, 8.1, 7.1, 7.9, 8.4, 9.2, 12, 10.5, 8.7, 13.5)
 
 # Data frame (a matrix with column names)
@@ -1417,24 +1416,24 @@ In order to perform a simple linear regression in `x^2`, and not in `x`, we need
 
 2. Through `R`. Just type:
 
-    ```{r, collapse = TRUE}
-    # We create a new column inside nonLinear, called x2, that contains 
+    ```{r, collapse = TRUE, cache = TRUE}
+    # We create a new column inside nonLinear, called x2, that contains
     # nonLinear$x^2
     nonLinear$x2 <- nonLinear$x^2
-    
+
     # Check the variables
     names(nonLinear)
     ```
 
 With either the two previous points you will have a new variable called `x2`. If you wish to remove it, you can do it by either typing
-```{r, eval = FALSE}
+```{r, eval = FALSE, cache = TRUE}
 # Empties the column named x2
 nonLinear$x2 <- NULL
 ```
 or, in `R Commander`, by going to `'Data' -> 'Manage variables in active data set' -> 'Delete variables from data set...'` and select to remove  `x2`.
 
 Now we are ready to perform the regression. If you do it directly through `R`, you will obtain:
-```{r, collapse = TRUE}
+```{r, collapse = TRUE, cache = TRUE}
 mod1 <- lm(y ~ x, data = nonLinear)
 summary(mod1)
 mod2 <- lm(y ~ x2, data = nonLinear)
@@ -1442,14 +1441,14 @@ summary(mod2)
 ```
 
 ```{block, type = 'rmdtip'}
-A fast way of performing and summarizing the quadratic fit is 
+A fast way of performing and summarizing the quadratic fit is
 
     summary(lm(y ~ I(x^2), data = nonLinear))
 
 Some remarks about this expression:
 
   - The `I()` function wrapping `x^2` is fundamental when applying arithmetic operations in the predictor. The symbols `+`, `\*`, `^`, ... have **different meaning** when inputted in a formula, so is required to use `I()` to indicate that they must be interpreted in their arithmetic meaning and that the result of the expression denotes a new predictor variable. For example, use `I((x - 1)^3 - log(3 \* x))` if you want to apply the transformation `(x - 1)^3 - log(3 * x)`.
-  
+
   - We are computing the `summary` of `lm` directly, without using an intermediate variable for storing the output of `lm`. This is perfectly valid and very handy, but note that you will not be able to access the information outputted by `lm`, only the one from `summary`.
 
 ```
@@ -1517,7 +1516,7 @@ Perform the following data management operations. Remember to select the adequat
 - In `la-liga-2015-2016`, create a new variable named `Goals.wrt.mean`, defined as `Goals - mean(Goals)`.
 - In `wdi-countries`, create a new variable that standardizes^[The standardization of $X_1,\ldots,X_n$ is $Z_1,\ldots,Z_n$, with $Z_i=\frac{X_i-\bar X}{s_x}$, where $s_x$ is the standard deviation of $X_1,\ldots,X_n$] the `GDP.growth`. Call it `GDP.growth`.
 - Delete the variable `Species` from `iris`.
-- For `la-liga-2015-2016`, go to `'Edit dataset'` and change the `Points` of `Getafe` to `40`. To do so, click on the cell, change the content and **click OK** or select a new cell to **save changes**. Do not hit `'Enter`' or you will add a new column!. 
+- For `la-liga-2015-2016`, go to `'Edit dataset'` and change the `Points` of `Getafe` to `40`. To do so, click on the cell, change the content and **click OK** or select a new cell to **save changes**. Do not hit `'Enter`' or you will add a new column!.
 - Explore the menu options of `'Edit dataset'`for adding and removing rows/columns. Is a useful feature for simple edits.
 - Create a `newDatasets.RData` file saving all the modified datasets.
 - Restart `R Commander` and then load `newDatasets.RData` (ignore the error `'ERROR: There is more than one object in the file...'` and check that all the datasets are indeed available).
@@ -1527,7 +1526,7 @@ Perform the following data management operations. Remember to select the adequat
 ### Computing simple linear regressions
 
 ```{block, type = 'rmdexercise'}
-Import the `iris` dataset, either from [`iris.txt`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/iris.txt) or `datasets.RData`. This dataset contains measurements for 150 iris flowers. The purpose of this exercise is to do the following analyses through `R Commander` *while inspecting and understanding the outputed code* to identify what parts are changing, how and why. 
+Import the `iris` dataset, either from [`iris.txt`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/iris.txt) or `datasets.RData`. This dataset contains measurements for 150 iris flowers. The purpose of this exercise is to do the following analyses through `R Commander` *while inspecting and understanding the outputed code* to identify what parts are changing, how and why.
 
 - Fit the regression line for `Petal.Width` (response) on `Petal.Length` (predictor) and summarize it.
 - Make the scatterplot of `Petal.Width` (y) vs `Petal.Length` (x) with a regression line.
@@ -1572,7 +1571,7 @@ Answer briefly in your own words:
 ```{block2, type = 'rmdexercise'}
 Do the following:
 
-- Create the vectors $x = (1.17, 0.41, 0.34, 1.11, 1.02, 0.22, -0.24, -0.27, -0.40, -1.38)$ and $y = (3.63, 1.69, 0.27, 5.83, 2.64, 1.33, 1.22 -0.62, 1.29, -0.43)$. 
+- Create the vectors $x = (1.17, 0.41, 0.34, 1.11, 1.02, 0.22, -0.24, -0.27, -0.40, -1.38)$ and $y = (3.63, 1.69, 0.27, 5.83, 2.64, 1.33, 1.22 -0.62, 1.29, -0.43)$.
 - Set the positions 3, 4 and 8 of $x$ to 0. Set the positions 1, 4, 9 of $y$ to 0.5, -0.75 and 0.3, respectively.
 - Create a new vector $z$ containing $\log(x^2) - y^3\sqrt{\exp(x)}$.
 - Create the vector $t=(1, 4, 9, 16, 25, \ldots, 100)$.
@@ -1614,7 +1613,7 @@ Finally, check that the regression line goes through $(\bar X, \bar Y)$, in othe
 ### Assumptions of the linear model
 
 ```{block, type = 'rmdexercise'}
-The dataset `moreAssumptions.RData` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/moreAssumptions.RData)) contains the variables `x1`, ..., `x9` and `y1`, ..., `y9`. For each regression `y1 ~ x1`, ..., `y9 ~ x9` describe whether the assumptions of the linear model are being satisfied or not. Justify your answer and state which assumption(s) you think are violated. 
+The dataset `moreAssumptions.RData` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/moreAssumptions.RData)) contains the variables `x1`, ..., `x9` and `y1`, ..., `y9`. For each regression `y1 ~ x1`, ..., `y9 ~ x9` describe whether the assumptions of the linear model are being satisfied or not. Justify your answer and state which assumption(s) you think are violated.
 ```
 
 ### Inference
@@ -1647,7 +1646,7 @@ Hints: use the transformations in Figure \@ref(fig:nonlineartransf) for the thre
 
 *Moore's law* [@Moore1965] is an empirical law that states that the power of a computer doubles approximately every two years. More precisely:
 
-> Moore's law is the observation that the number of transistors in a dense integrated circuit [e.g. a CPU] doubles approximately every two years. 
+> Moore's law is the observation that the number of transistors in a dense integrated circuit [e.g. a CPU] doubles approximately every two years.
 >
 > --- Wikipedia article on [Moore's law](https://en.wikipedia.org/wiki/Moore%27s_law)
 
@@ -1674,7 +1673,7 @@ The dataset `cpus.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS
 - Show a scatterplot of `Log.Transistor.count` vs `Date.of.introduction`  with a linear regression.
 - Are the assumptions verified in `Log.Transistor.count ~ Date.of.introduction`? Which ones are which are more "problematic"?
 - Regress `Log.Transistor.count ~ Date.of.introduction`.
-- Summarize the fit. What are the estimates $\hat\beta_0$ and $\hat\beta_1$? Is $\hat\beta_1$ close to $\frac{\log(2)}{2}$? 
+- Summarize the fit. What are the estimates $\hat\beta_0$ and $\hat\beta_1$? Is $\hat\beta_1$ close to $\frac{\log(2)}{2}$?
 - Compute the CI for $\beta_1$ at $\alpha=0.05$. Is $\frac{\log(2)}{2}$ inside it? What happens at levels $\alpha=0.10,0.01$?
 - We want to forecast the average log-number of transistors for the CPUs to be released in 2017. Compute the adequate prediction and CI.
 - A new CPU design is expected for 2017. What is the range of log-number of transistors expected for it, at a 95% level of confidence?
@@ -1689,14 +1688,14 @@ The dataset `gpus.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS
 
 In the aftermath of the 2007-2008 financial crisis, the paper *Growth in a time of debt* [@Reinhart2010a], from Carmen M. Reinhart and Kenneth Rogoff (both at Harvard), provided an important economical support for pro-austerity policies. The paper claimed that for levels of external debt in excess of 90% of the GDP, the GDP growth of a country was dramatically different than for lower levels of external debt. Therefore, it concludes the existence of a *magical threshold* -- 90% -- for which the level of external debt must be kept below in order to have a growing economy. Figure \@ref(fig:reinhart), extracted from @Reinhart2010a, illustrates the main finding.
 
-```{r, reinhart, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'The *magical threshold* of $90\\%$ external debt.'}
+```{r, reinhart, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'The *magical threshold* of $90\\%$ external debt.', cache = TRUE}
 knitr::include_graphics("images/figures/reinhart.png")
 ```
 
 @Herndon2013 replicated the analysis of @Reinhart2010a and found that "selective exclusion of available data, coding errors and inappropriate weighting of summary statistics lead to serious miscalculations that inaccurately represent the relationship between public debt and GDP growth among 20 advanced economies". The authors concluded that "both mean and median GDP growth when public debt levels exceed 90% of GDP are not dramatically different from when the public debt/GDP ratios are lower". As a consequence, @Reinhart2010a led to an unjustified support for the adoption of austerity policies for countries with various levels of public debt.
 
 You can read the full story at [BBC](http://www.bbc.com/news/magazine-22223190),
-[The New York Times](http://www.nytimes.com/2013/04/19/opinion/krugman-the-excel-depression.html) and 
+[The New York Times](http://www.nytimes.com/2013/04/19/opinion/krugman-the-excel-depression.html) and
 [The Economist](http://www.economist.com/news/finance-and-economics/21576362-seminal-analysis-relationship-between-debt-and-growth-comes-under). Also, the video in Figure \@ref(fig:video) contains a quick summary of the story by Nobel Prize laureate Paul Krugman.
 
 ```{r, video, echo = FALSE, fig.align = 'center', fig.cap = 'CNN interview to Paul Krugman (key point from 1:16 to 1:40), broadcasted in 2013.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE}
@@ -1706,23 +1705,21 @@ knitr::include_url("https://www.youtube.com/embed/3xj338ACri8")
 @Herndon2013 made the data of the study publicly available. You can download it [here](http://www.peri.umass.edu/236/hash/31e2ff374b6377b2ddec04deaa6388b1/publication/566/).
 
 ```{block, type = 'rmdexercise'}
-The dataset `hap.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/hap.txt)) contains data for 20 advanced economies in the time period 1946–2009, and is the data source for the papers aforementioned. The variable `dRGDP` represents the real GDP growth (as a percentage) and `debtgdp` represents the percentage of public debt with respect to the GDP. 
+The dataset `hap.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/hap.txt)) contains data for 20 advanced economies in the time period 1946–2009, and is the data source for the papers aforementioned. The variable `dRGDP` represents the real GDP growth (as a percentage) and `debtgdp` represents the percentage of public debt with respect to the GDP.
 
 - Import the data and save it as `hap`.
 - Set the case names of `hap` as `Country.Year`.
 - Summarize `dRGDP` and `debtgdp`. What are their minimum and maximum values?
 - What is the correlation between `dRGDP` and `debtgdp`? What is the standard deviation of each variable?
 - Show the scatterplot of `dRGDP` vs `debtgdp` with the regression line. Is this coherent with what was stated in the video at 1:30?
-- Do you see any gap on the data around 90%? Is there any substantial change for `dRGDP` around there? 
+- Do you see any gap on the data around 90%? Is there any substantial change for `dRGDP` around there?
 - Compute the linear regression of `dRGDP` on `debtgdp` and summarize the fit.
-- What are the fitted coefficients? What are their standard errors? What is the $R^2$? 
+- What are the fitted coefficients? What are their standard errors? What is the $R^2$?
 - Compute the ANOVA table. How many degrees of freedom are? What is the SSR? What is SSE? What is the $p$-value for $H_0:\beta_1=0$?
 - Is SSR larger than SSE? Is this coherent with the resulting $R^2$?
 - Are $\beta_0$ and $\beta_1$ significant for the regression at level $\alpha=0.05$? And at level $\alpha=0.10,0.01$?
-- Compute the CIs for the coefficients. Can we conclude that the effect of `debtgdp` on `dRGDP` is positive at $\alpha=0.05$? And negative? 
+- Compute the CIs for the coefficients. Can we conclude that the effect of `debtgdp` on `dRGDP` is positive at $\alpha=0.05$? And negative?
 - Predict the average growth for levels of debt of 60%, 70%, 80%, 90%, 100% and 110%. Compute the 95% CIs for all of them.
 - Predict the growth for the previous levels of debt. Compute also the CI for them. Is there a marked difference on the CIs for debt levels below and above 90%?
 - Which assumptions of the linear model you think are satisfied? Should we trust blindly the inferential results obtained assuming that the assumptions were satisfied?
 ```
-
-
