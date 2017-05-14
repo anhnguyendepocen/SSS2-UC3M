@@ -1,31 +1,14 @@
 language: r
-pandoc_version: 1.17.2
-sudo: false
-cache:
-  packages: yes
-  directories:
-    - $HOME/bin
-    - $TRAVIS_BUILD_DIR/inst/examples/_bookdown_files
+cache: packages
 
 env:
   global:
-    - R_PKG="$(basename $TRAVIS_REPO_SLUG)" R_KNITR_OPTIONS="knitr.chunk.tidy=TRUE" PATH=$HOME/bin:$PATH
-
-repos:
-  XRAN: https://xran.yihui.name
-
-before_install:
-  - "curl https://xran.yihui.name/.gitconfig -o ~/.gitconfig"
-  - Rscript -e "update.packages(.libPaths()[1], ask = FALSE)"
-  - export BUILD_ALL="$(git log --format=%B --no-merges -n 1 | grep -E "\[build all\]")"
+    - secure: "InF/z62wD/4enP/GKotyZp399PsOMpO+Gn8lc7AH7+4drYLU+u/hAfH56Qm4PpPtY9kdK3ZCYAmFnfP0Tnbi3mGyfeT2InqCPe6p3EDGwVI+l5QJ+dJU5RyBdnJ18Big4wYJ9osybQTmuHDzjH5sI15ozUMsXoxmanZlvFK+Xj3H0objDRiCaY3CsDZ8KutRoXuXL/ODD/h2Au5JM2UG8QSBdsYil5DTRl6gYKDj3yGl+52jb7QVrEpkMZECzgRvep+KApQPTU0jPAJmSPvKKAo2gm3C5C+ZAeKORzJpS3N1USjI8buxXdDAK49bFIfbLYMgJk2pjuKbDQ3WAaJVo7pgVNq/foXH913/jJQoS/0/VBKZlr+ZtwNjHRq12asGX7L8U5i21ENky5wQp/GnJYU6GP1bMA7gxnJMFcHD0Jb8V805iPrJWzj07gkkZ4nnv44IDzDuNBEp+psI01r/rrJ2oqUzkiOnESthCT50UG4qDDdKyQIVgh7kLKzyB6psgdsi+ntXvQbHEnrk1gCW2jxYlSxqmhiKL1FqeUNFPWINcQ7RQbXtSIfcFa4PQi/J5as0dYv2JlmWjjnTr1i2V6Z7iiROOrJzypGuxPn6hrE2cQcCG6/3cfQP5CikodCgBRLX+9rrMML8mgc/QXcV4TxCpGgLnV6E7vFCSlThg6M="
 
 before_script:
-  - "[ -x \"$HOME/bin/phantomjs\" ] || Rscript -e \"webshot::install_phantomjs()\""
-  - R CMD INSTALL .
-  - cd inst/examples
-  - "[ ! -z \"$BUILD_ALL\" ] && make all || make gitbook"
-  - cd ../..
+  - chmod +x ./_build.sh
+  - chmod +x ./_deploy.sh
 
-after_success:
-  - "(curl https://xran.yihui.name/r-xran | bash)"
-  - cd inst/examples; ./deploy_github
+script:
+  - ./_build.sh
+  - ./_deploy.sh
