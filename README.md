@@ -37,7 +37,7 @@ List of animations
 	* [Coverage of the confidence intervals](https://bookdown.org/egarpor/SSS2-UC3M/inference.html#confidence-intervals-for-the-coefficients)
 	* [Confidence intervals for prediction](https://bookdown.org/egarpor/SSS2-UC3M/prediction.html)
 	* [ANOVA decomposition](https://bookdown.org/egarpor/SSS2-UC3M/fit.html#anova)
-	* [Dealing with non-linear relations](https://bookdown.org/egarpor/SSS2-UC3M/nonlin.html)
+	* [Dealing with nonlinear relationships](https://bookdown.org/egarpor/SSS2-UC3M/nonlin.html)
 * Multiple linear regression
 	* [Least squares and distance choice](https://bookdown.org/egarpor/SSS2-UC3M/modelmult.html) (**\***)
 	* [Assumptions of the linear model](https://bookdown.org/egarpor/SSS2-UC3M/assumptionsmult.html) (**\***)
@@ -47,7 +47,11 @@ List of animations
 	* [Randomness of the logistic regression curve](https://bookdown.org/egarpor/SSS2-UC3M/log-reg-inference.html#log-reg-distributions)
 	* [Confidence intervals for prediction](https://bookdown.org/egarpor/SSS2-UC3M/log-reg-prediction.html)
 
-Contribution
-------------
+Contributions
+-------------
 
-Contributions and feedback on the notes are very welcome. Either send an email to <edgarcia@est-econ.uc3m.es> or (preferably) fork the repository, make your changes and open a pull request.
+Contributions and feedback on the notes are very welcome. Either send an email to <edgarcia@est-econ.uc3m.es> or (preferably) fork the repository, make your changes and open a pull request. 
+
+Acknowledged contributors:
+
+- Pablo Brugarolas Navarro (mentioned problems about the presence of `NA`'s for stepwise selection)
