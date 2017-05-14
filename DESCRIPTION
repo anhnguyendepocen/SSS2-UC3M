@@ -1,5 +1,5 @@
-Package: placeholder
-Title: Does not matter.
+Package: SSS2UC3M
+Title: SSS2-UC3M
 Version: 0.0.1
-Imports: bookdown
+Imports: bookdown, Rcmdr, RcmdrMisc, car, splines, pca3d, rgl, MASS, cluster, nnet, sandwich
 Remotes: rstudio/bookdown
