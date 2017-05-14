@@ -12,3 +12,9 @@ before_script:
 script:
   - ./_build.sh
   - ./_deploy.sh
+
+addons:
+  apt:
+    packages:
+    - tcl8.5-dev
+    - tk8.5-dev
