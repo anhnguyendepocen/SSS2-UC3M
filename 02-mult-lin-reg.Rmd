@@ -25,7 +25,7 @@ Red Bordeaux wines have been produced in Bordeaux, one of most famous and prolif
 The `wine.csv` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/wine.csv)) contains 27 red Bordeaux vintages. The data is the originally employed by @Ashenfelter1995, except for the inclusion of the variable `Year`, the exclusion of NAs and the reference price used for the wine. The original source is [here](http://www.liquidasset.com/winedata.html). Each row has the following variables:
 
 - `Year`: year in which grapes were harvested to make wine.
-- `Price`: *logarithm* of the average market price for Bordeaux vintages according to 1990--1991 auctions.^[In @Ashenfelter1995, this variable is expressed relative to the price of the 1961 vintage, regarded as the best one ever recorded. In other words, they consider `Price - 8.4937` as the price variable.] This is a nonlinear transformation of the *response* (hence different to what we did in Section \@ref(nonlin)) made to *linearize* the response.
+- `Price`: *logarithm* of the average market price for Bordeaux vintages according to 1990--1991 auctions.^[In Ashenfelter, Ashmore, and Lalonde (1995), this variable is expressed relative to the price of the 1961 vintage, regarded as the best one ever recorded. In other words, they consider `Price - 8.4937` as the price variable.] This is a nonlinear transformation of the *response* (hence different to what we did in Section \@ref(nonlin)) made to *linearize* the response.
 - `WinterRain`: winter rainfall (in mm).
 - `AGST`: Average Growing Season Temperature (in Celsius degrees).
 - `HarvestRain`: harvest rainfall (in mm).
