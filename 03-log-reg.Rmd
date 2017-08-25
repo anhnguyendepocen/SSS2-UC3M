@@ -687,7 +687,7 @@ Unfortunately, due to the non-linearity of the optimization problem there are no
 
 Figure \@ref(fig:maximumlikelihood) shows how the log-likelihood changes with respect to the values for $(\beta_0,\beta_1)$ in three data patterns.
 ```{r, maximumlikelihood, echo = FALSE, fig.cap = 'The logistic regression fit and its dependence on $\\beta_0$ (horizontal displacement) and $\\beta_1$ (steepness of the curve). Recall the effect of the sign of $\\beta_1$ in the curve: if positive, the logistic curve has an \'s\' form; if negative, the form is a reflected \'s\'.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
-knitr::include_app('https://egarpor.shinyapps.io/log-maximum-likelihood/', height = '900px')
+knitr::include_app('http://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com:3838/log-maximum-likelihood/', height = '900px')
 ```
 
 The data of the illustration has been generated with the following code:
@@ -812,7 +812,7 @@ The interpretation of \@ref(eq:mle1) and \@ref(eq:mle2) give some useful insight
 ```
 
 ```{r, lograndomcoefs, echo = FALSE, fig.cap = 'Illustration of the randomness of the fitted coefficients $(\\hat\\beta_0,\\hat\\beta_1)$ and the influence of $n$, $(\\beta_0,\\beta_1)$ and $s_x^2$. The sample predictors $x_1,\\ldots,x_n$ are fixed and new responses $Y_1,\\ldots,Y_n$ are generated each time from a logistic model $Y\\sim\\mathrm{Ber}(p(X))$.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
-knitr::include_app('https://egarpor.shinyapps.io/log-random/', height = '1000px')
+knitr::include_app('http://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com:3838/log-random/', height = '1000px')
 ```
 
 Similar to linear regression, the problem with \@ref(eq:mle1) and \@ref(eq:mle2) is that *$\mathbf{V}$ is unknown* in practice because it depends on $\boldsymbol{\beta}$. Plugging-in the estimate $\hat{\boldsymbol{\beta}}$ to $\boldsymbol{\beta}$ in $\mathbf{V}$ results in $\hat{\mathbf{V}}$. Now we can use $\hat{\mathbf{V}}$ to get
@@ -987,7 +987,7 @@ For the `challenger` dataset, do the following:
 Finally, Figure \@ref(fig:logcipred) gives an interactive visualization of the CIs for the conditional probability in simple logistic regression. Their interpretation is very similar to the CIs for the conditional mean in the simple linear model, see Section \@ref(prediction) and Figure \@ref(fig:cipred).
 
 ```{r, logcipred, echo = FALSE, fig.cap = 'Illustration of the CIs for the conditional probability in the simple logistic regression.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
-knitr::include_app('https://egarpor.shinyapps.io/log-ci-prediction/', height = '1000px')
+knitr::include_app('http://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com:3838/log-ci-prediction/', height = '1000px')
 ```
 
 ## Deviance and model fit {#log-reg-deviance}
@@ -1227,6 +1227,6 @@ For the `Boston` dataset, do the following:
 Assumptions: 3 plots everything fine, 3 plots wrong, focus on non-linearity on the logit
 
 ```{r, log-reg-transf, echo = FALSE, fig.cap = 'Illustration of the choice of the polynomial transformation.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
-knitr::include_app('https://egarpor.shinyapps.io/log-reg-non-lin/', height = '1000px')
+knitr::include_app('http://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com:3838/log-reg-non-lin/', height = '1000px')
 ```
 -->
