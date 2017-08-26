@@ -29,18 +29,16 @@ Here is a broad view of the syllabus:
 List of animations
 ------------------
 
-**Disclaimer: only the starred (\*) animations are currently available.** If you are interested in the rest, you can download them at [`/shinyapps`](https://github.com/egarpor/SSS2-UC3M/tree/master/shinyapps) and run locally the `R` code (if required, load the `.RData` file in the folder of the animation).
-
 * Simple linear regression 
-	* [Regression coefficients, least squares and distance choice](https://bookdown.org/egarpor/SSS2-UC3M/modelsimp.html) (**\***)
-	* [Randomness of the regression line](https://bookdown.org/egarpor/SSS2-UC3M/inference.html#distributions-of-the-fitted-coefficients) (**\***)
+	* [Regression coefficients, least squares and distance choice](https://bookdown.org/egarpor/SSS2-UC3M/modelsimp.html)
+	* [Randomness of the regression line](https://bookdown.org/egarpor/SSS2-UC3M/inference.html#distributions-of-the-fitted-coefficients)
 	* [Coverage of the confidence intervals](https://bookdown.org/egarpor/SSS2-UC3M/inference.html#confidence-intervals-for-the-coefficients)
 	* [Confidence intervals for prediction](https://bookdown.org/egarpor/SSS2-UC3M/prediction.html)
 	* [ANOVA decomposition](https://bookdown.org/egarpor/SSS2-UC3M/fit.html#anova)
 	* [Dealing with nonlinear relationships](https://bookdown.org/egarpor/SSS2-UC3M/nonlin.html)
 * Multiple linear regression
-	* [Least squares and distance choice](https://bookdown.org/egarpor/SSS2-UC3M/modelmult.html) (**\***)
-	* [Assumptions of the linear model](https://bookdown.org/egarpor/SSS2-UC3M/assumptionsmult.html) (**\***)
+	* [Least squares and distance choice](https://bookdown.org/egarpor/SSS2-UC3M/modelmult.html)
+	* [Assumptions of the linear model](https://bookdown.org/egarpor/SSS2-UC3M/assumptionsmult.html)
 	* [ANOVA decomposition](https://bookdown.org/egarpor/SSS2-UC3M/anovamult.html#anova-1)
 * Logistic regression
 	* [Logistic curve and maximum likelihood fit](https://bookdown.org/egarpor/SSS2-UC3M/log-reg-model-estimation.html)
