@@ -262,7 +262,7 @@ The LHS of \@ref(eq:k2) is the conditional expectation of $Y$ given $X_1,\ldots,
 Figure \@ref(fig:leastsquares2) illustrates the geometrical interpretation of a multiple linear model: a plane in the $(k+1)$-dimensional space. If $k=1$, the plane is the regression line for simple linear regression. If $k=2$, then the plane can be visualized in a three-dimensional plot
 
 ```{r, leastsquares2, echo = FALSE, fig.cap = 'The least squares regression plane $y=\\hat\\beta_0+\\hat\\beta_1x_1+\\hat\\beta_2x_2$ and its dependence on the kind of squared distance considered.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
-knitr::include_app('http://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com:3838/least-squares-3D/', height = '700px')
+knitr::include_app('https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/least-squares-3D/', height = '700px')
 ```
 
 The estimation of $\beta_0,\beta_1,\ldots,\beta_k$ is done as in simple linear regression, by minimizing the Residual Sum of Squares (RSS). First we need to introduce some helpful *matrix notation*. In the following, **bold face** are used for distinguishing vectors and matrices from scalars:
@@ -463,7 +463,7 @@ Recall:
 Figure \@ref(fig:linearmodelassump) represent situations where the assumptions of the model are respected and violated, for the situation with two predictors. Clearly, the inspection of the scatterplots for identifying strange patterns is more complicated than in simple linear regression -- and here we are dealing only with two predictors. In Section \@ref(diagnostics) we will see more sophisticated methods for checking whether the assumptions hold or not for an arbitrary number of predictors.
 
 ```{r, linearmodelassump, echo = FALSE, fig.cap = 'Valid (all the assumptions are verified) and problematic (a single assumption does not hold) multiple linear models, when there are two predictors.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
-knitr::include_app('http://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com:3838/assump-lm-3D/', height = '700px')
+knitr::include_app('https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/assump-lm-3D/', height = '700px')
 ```
 
 To conclude this section, let's see how to make a 3D scatterplot with the regression plane, in order to evaluate visually how good the fit of the model is. We will do it with the `iris` dataset, that can be imported in `R` simply by running `data(iris)`. In `R Commander` go to `'Graphs' -> '3D Graphs' -> '3D scatterplot...'`. A window like Figures \@ref(fig:scatter3d1) and \@ref(fig:scatter3d2) will pop-up. The options are similar to the ones for `'Graphs' -> 'Scatterplot...'`.
@@ -710,7 +710,7 @@ knitr::include_graphics("images/R/anova3D.png")
 ```
 
 ```{r, anovaillus3D, echo = FALSE, fig.cap = 'Illustration of the ANOVA decomposition and its dependence on $\\sigma^2$ and $\\hat\\sigma^2$.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%', cache = TRUE}
-knitr::include_app('http://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com:3838/anova-3D/', height = '900px')
+knitr::include_app('https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/anova-3D/', height = '900px')
 ```
 
 The ANOVA table summarizes the decomposition of the variance.
@@ -1151,7 +1151,7 @@ vif(modClean)
 
 
 ```{r, mult-transf, echo = FALSE, fig.cap = 'Illustration of the choice of the polynomial transformation.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
-knitr::include_app('http://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com:3838/mult-non-lin/', height = '1000px')
+knitr::include_app('https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/mult-non-lin/', height = '1000px')
 ```
 
 -->
