@@ -1,7 +1,7 @@
 Lab notes for *Statistics for Social Sciences II: Multivariate Techniques*
 ==========================================================================
 
-[![Travis-CI Build Status](https://travis-ci.org/egarpor/SSS2-UC3M.svg?branch=master)](https://travis-ci.org/egarpor/SSS2-UC3M) [![License](https://img.shields.io/badge/license-MIT%20License-brightgreen.svg)](https://opensource.org/licenses/MIT)
+[![Travis-CI Build Status](https://travis-ci.org/egarpor/SSS2-UC3M.svg?branch=master)](https://travis-ci.org/egarpor/SSS2-UC3M) [![License](https://img.shields.io/badge/license-CC_BY--NC--SA_4.0-blue.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
 Overview
 --------
