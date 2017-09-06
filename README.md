@@ -53,3 +53,8 @@ Contributions and feedback on the notes are very welcome. Either send an email t
 Acknowledged contributors:
 
 - Pablo Brugarolas Navarro (mentioned problems about the presence of `NA`'s for stepwise selection)
+
+License
+-------
+
+All material in this repository is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).

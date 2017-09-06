@@ -1,4 +1,4 @@
---- 
+---
 title: "Lab notes for Statistics for Social Sciences II: Multivariate Techniques"
 subtitle: "BSc in International Studies and BSc in International Studies	&	Political	Science, Carlos III University of Madrid"
 author: "Eduardo García Portugués"
@@ -34,7 +34,7 @@ Be advised that these notes are *neither an exhaustive, rigorous nor comprehensi
     - International Studies, group 56. **Tuesdays 18:00-19:30 at INF-10.0.29**.
     - International Studies & Political Science, group 45. **Mondays 18:00-19:30 at INF-15.S.04**.
 - Office hours. **Tuesdays 11:00-13:00 at office 10.0.10** (access through 10.0.7 in *Campomanes* building). If they are incompatible with your schedule, send me an email to get an alternative appointment (preferable) or just drop by my office to see if I am available (I will remove this option if I get overwhelmed with queries).
-- Grading. 
+- Grading.
     - Continuous evaluation is 60% of the final grade. Scored by 2 partial exams and 1 group project, each accounting for a 20%.
     - Final exam is 40%, covers contents mostly from the theoretical lectures.
 - Partials. Cover contents from labs and lectures. The first will (likely) cover Topics 1-2. The second, Topics 3-5.
@@ -42,7 +42,7 @@ Be advised that these notes are *neither an exhaustive, rigorous nor comprehensi
 
 ## Software employed
 
-The software we will employ in this course is available in all UC3M computer labs, including INF-15.S.04, INF-15.S.06 and INF-10.0.29 ~~(the first week only in INF-15.S.04)~~. We will use two pieces of software:
+The software we will employ in this course is available in all UC3M computer labs, including INF-15.S.04, INF-15.S.06 and INF-10.0.29 ~~(the first week only in INF-15.S.04). We will use two pieces of software:
 
 - [`R`](https://www.r-project.org/). A free open-source software environment for statistical computing and graphics. Virtually all the statistical methods you can think of are available in `R`. Currently, it is *the* dominant statistical software (at least among statisticians).
 
@@ -56,31 +56,31 @@ The only thing you need to do to run `R Commander` in any UC3M computer is:
     ```{r, eval = FALSE}
     library(Rcmdr)
     ```
-    
+
     Congratulations on your first piece of `R` code, you have just loaded a package!
 
 3. If `Rcmdr` is installed, then `R Commander` will open automatically and you are ready to go. In case you accidentally close `R Commander`, type
-    
+
     ```{r, eval = FALSE}
     Commander()
     ```
-    
+
     If `Rcmdr` is not installed, then type
-    
+
     ```{r, eval = FALSE}
     install.packages("Rcmdr", dep = TRUE)
     ```
-    
-    and say `'Yes'` to the next pop-ups regarding the installation of the personal library. This will download and install `Rcmdr` and all the related packages from a CRAN mirror (`'Spain (A Coruña) [https]'`, usually works fine -- try a different one if you experience problems). Wait for the downloading and installation of the packages. When it is done, just type 
+
+    and say `'Yes'` to the next pop-ups regarding the installation of the personal library. This will download and install `Rcmdr` and all the related packages from a CRAN mirror (`'Spain (A Coruña) [https]'`, usually works fine -- try a different one if you experience problems). Wait for the downloading and installation of the packages. When it is done, just type
     ```{r, eval = FALSE}
     library(Rcmdr)
     ```
     and you are ready to go.
-    
+
 An important warning about UC3M computer labs:
 
 ```{block, type = 'rmdcaution'}
-Every file you save locally (including installed packages) will be wiped out after you close your session. So be sure to save your valuable files at the end of the lesson. 
+Every file you save locally (including installed packages) will be wiped out after you close your session. So be sure to save your valuable files at the end of the lesson.
 
 The **exception** is the folder `'C:/TEMP'`, where all the files you save will be accessible for *everyone* that logs in the computer!
 ```
@@ -88,7 +88,7 @@ The **exception** is the folder `'C:/TEMP'`, where all the files you save will b
 ```{block2, type = 'rmdcaution'}
 In UC3M computers, `R` and `R Commander` are only available in Spanish. To have them in English, you need to do a workaround:
 
-1. Create a shotcut to `R` in your desktop. To do so, go to `'C:/Archivos de programa/R/R-3.3.1/bin/', right-click in `'R.exe'` and choose `'Enviar a' -> 'Escritorio (crear acceso directo)'`.
+1. Create a shortcut to `R` in your desktop. To do so, go to `'C:/Archivos de programa/R/R-3.3.1/bin/', right-click in `'R.exe'` and choose `'Enviar a' -> 'Escritorio (crear acceso directo)'`.
 2. Modify the properties of the shortcut. Right-click on the shortcut and choose `'Propiedades'`. Then **append** to the `'Destino'` field the text `Language=en` (separated by a space, see Figure \@ref(fig:lang)). Click `'Aplicar'` and then `'OK'`.
 3. Run that shortcut and then type `library(Rcmdr)`.
 
@@ -107,7 +107,7 @@ There are many advanced commercial statistical software, such as `SPSS`, `Excel`
 
 3. **`R` is the leading computer language in statistics**. Any statistical analysis that you can imagine is already available in `R` through its almost 9000 free packages (September, 2016). Some of them contain a good number of ready-to-use datasets or methods for data acquisition from accredited sources.
 
-4. `R Commander` produces **high-quality graphs easily**. `R Commander`, through the plug-in `KMggplot2`, interfaces the `ggplot2` library, which delivers high-quality, publication-level graphs ([sample gallery](http://www.r-graph-gallery.com/portfolio/ggplot2-package/)). It is considered as one of the best and more elegant graphing packages nowadays. 
+4. `R Commander` produces **high-quality graphs easily**. `R Commander`, through the plug-in `KMggplot2`, interfaces the `ggplot2` library, which delivers high-quality, publication-level graphs ([sample gallery](http://www.r-graph-gallery.com/portfolio/ggplot2-package/)). It is considered as one of the best and more elegant graphing packages nowadays.
 
 5. **Great report generation**. `R Commander` integrates `R Markdown`, which is a framework able to create `.html`, `.pdf` and `.docx` reports directly from the outputs of `R`. That means you can deliver high-quality, reproducible and beautiful reports with a little amount of effort. For example, these notes have been created with an extension of `R Markdown`.
 
@@ -124,19 +124,19 @@ If you plan to use your personal laptop, **you** are responsible for the right s
 Regardless of your choice, at some point you will probably need to run the software outside UC3M computer labs. This is what you have to do in order to install `R` + `R Commander` in your own computer:
 
 1. In Mac OS X, download and install first [`XQuartz`](https://www.xquartz.org/) and log out and back on your Mac OS X account (this is an **important** step). Be sure that your Mac OS X system is up-to-date.
-2. Download the latest version of `R` for [Windows](https://cran.r-project.org/bin/windows/base/release.html) or [Mac OS X](https://cran.r-project.org/bin/macosx/R-3.3.2.pkg). 
+2. Download the latest version of `R` for [Windows](https://cran.r-project.org/bin/windows/base/release.html) or [Mac OS X](https://cran.r-project.org/bin/macosx/R-3.3.2.pkg).
 3. Install `R`. In Windows, be sure to select the `'Startup options'` and then choose `'SDI'` in the `'Display Mode'` options. Leave the rest of installation options as default.
 4. Open `R` (`'R x64 X.X.X'` in 64-bit Windows, `'R i386 X.X.X'` in 32-bit Windows and `'R.app'` in Mac OS X) and type:
 
     ```{r, eval = FALSE}
     install.packages(c("Rcmdr", "RcmdrMisc", "RcmdrPlugin.TeachingDemos",
-                       "RcmdrPlugin.FactoMineR", "RcmdrPlugin.KMggplot2"), 
+                       "RcmdrPlugin.FactoMineR", "RcmdrPlugin.KMggplot2"),
                      dep = TRUE)
     ```
-    
+
     Say `'Yes'` to the pop-ups regarding the installation of the personal library and choose the CRAN mirror (the server from which you will download packages). `'Spain (A Coruña) [https]'`, usually works fine -- try a different one if you experience problems.
 
-5. To launch the `R Commander`, run `R` and then 
+5. To launch the `R Commander`, run `R` and then
 
     ```{r, eval = FALSE}
     library(Rcmdr)
@@ -161,9 +161,9 @@ By default `R` and `R Commander` will have menus and messages in the language of
     ```{r, eval = FALSE}
     system("defaults write org.R-project.R force.LANG en_GB.UTF-8")
     ```
-  
+
   Then close `'R.app'` and relaunch it. Analogously, replace `en_GB` above by `es_ES` or `it_IT` if you want to switch back to Spanish or Italian, for example.
-  
+
 ## `R Commander` basics
 
 ```{r, ScreenshotRcmdr, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Main window of `R Commander`, with the plug-ins `RcmdrPlugin.FactoMineR`, `RcmdrPlugin.KMggplot2` and `RcmdrPlugin.Demos` loaded.', cache = TRUE}
@@ -200,7 +200,7 @@ Focus on **understanding the purpose of each element in the GUI**. When performi
 
 This is a handy list with a small description and download link for all the relevant datasets used in the course. To download them, simply **save the link as a file** in your browser.
 
-- `pisa.csv` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/pisa.csv)). Contains 65 rows corresponding to the countries that took part on the PISA study. Each row has the variables `Country`, `MeanMath`,` MathShareLow`, `MathShareTop`, `ReadingMean`, `ScienceMean`, `GDPp`, `logGDPp` and `HighIncome`. The `logGDPp` is the logarithm of the `GDPp`, which is taken in order to avoid scale distortions. 
+- `pisa.csv` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/pisa.csv)). Contains 65 rows corresponding to the countries that took part on the PISA study. Each row has the variables `Country`, `MeanMath`,` MathShareLow`, `MathShareTop`, `ReadingMean`, `ScienceMean`, `GDPp`, `logGDPp` and `HighIncome`. The `logGDPp` is the logarithm of the `GDPp`, which is taken in order to avoid scale distortions.
 
 - `US_apportionment.xls` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/US_apportionment.xls)). Contains the 50 US states entitled to representation in the US House of Representatives. The recorded variables are `State`, `Population2010` and `Seats2013–2023`.
 
@@ -210,19 +210,19 @@ This is a handy list with a small description and download link for all the rele
 
 - `assumptions.RData` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/assumptions.RData)). Contains the data frame `assumptions` with 200 observations of the variables `x1`, ..., `x9` and `y1`, ..., `y9`. The purpose of the dataset is to identify which regression `y1 ~ x1`, ..., `y9 ~ x9` fulfills the assumptions of the linear model. The dataset `moreAssumptions.RData` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/moreAssumptions.RData)) has the same structure.
 
-- `cpus.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/cpus.txt)) and `gpus.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/gpus.txt)). The datasets contain 102 and 35 rows, respectively, of commercial CPUs and GPUs appeared since the first models up to nowadays. The variables in the datasets are `Processor`, `Transistor count`, `Date of introduction`, `Manufacturer`, `Process` and `Area`. 
+- `cpus.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/cpus.txt)) and `gpus.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/gpus.txt)). The datasets contain 102 and 35 rows, respectively, of commercial CPUs and GPUs appeared since the first models up to nowadays. The variables in the datasets are `Processor`, `Transistor count`, `Date of introduction`, `Manufacturer`, `Process` and `Area`.
 
-- `hap.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/hap.txt)). Contains data for 20 advanced economies in the time period 1946–2009, measured for 31 variables. Among those, the variable `dRGDP` represents the real GDP growth (as a percentage) and `debtgdp` represents the percentage of public debt with respect to the GDP. 
+- `hap.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/hap.txt)). Contains data for 20 advanced economies in the time period 1946–2009, measured for 31 variables. Among those, the variable `dRGDP` represents the real GDP growth (as a percentage) and `debtgdp` represents the percentage of public debt with respect to the GDP.
 
 - `wine.csv` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/wine.csv)). The dataset is formed by the auction `Price` of 27 red Bordeaux vintages, four vintage descriptors (`WinterRain`, `AGST`, `HarvestRain`, `Age`) and the population of France in the year of the vintage, `FrancePop`.
 
-- `Boston.xlsx` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/Boston.xlsx)). The dataset contains 14 variables describing 506 suburbs in Boston. Among those variables, `medv` is the median house value, `rm` is the average number of rooms per house and `crim` is the per capita crime rate. The full description is available in `?Boston`. 
+- `Boston.xlsx` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/Boston.xlsx)). The dataset contains 14 variables describing 506 suburbs in Boston. Among those variables, `medv` is the median house value, `rm` is the average number of rooms per house and `crim` is the per capita crime rate. The full description is available in `?Boston`.
 
 - `assumptions3D.RData` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/assumptions3D.RData)). Contains the data frame `assumptions3D` with 200 observations of the variables `x1.1`, ..., `x1.8`, `x2.1`, ..., `x2.8` and `y.1`, ..., `y.8`. The purpose of the dataset is to identify which regression `y.1 ~ x1.1 + x2.1`, ..., `y.8 ~ x1.8 + x2.8` fulfills the assumptions of the linear model.
 
-- `challenger.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/challenger.txt)). Contains data for 23 Space-Shuttle launches. The data consists of 23 shuttle flights. There are 8 variables. Among them: `temp`, the temperature in Celsius degrees at the time of launch, and `fail.field`	and `fail.nozzle`, indicators of whether there were an incidents in the O-rings of the field joints and nozzles of the solid rocket boosters. 
+- `challenger.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/challenger.txt)). Contains data for 23 Space-Shuttle launches. The data consists of 23 shuttle flights. There are 8 variables. Among them: `temp`, the temperature in Celsius degrees at the time of launch, and `fail.field`	and `fail.nozzle`, indicators of whether there were an incidents in the O-rings of the field joints and nozzles of the solid rocket boosters.
 
-- `eurojob.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/eurojob.txt)). Contains data for employment in 26 European countries. There are 9 variables, giving the percentage of employments in 9 sectors: `Agr` (Agriculture), `Min` (Mining), `Man` (Manufacture), `Pow` (Power), `Con` (Construction), `Ser` (Sevices), `Fin` (Finance), `Soc` (Social) and `Tra` (Transport). 
+- `eurojob.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/eurojob.txt)). Contains data for employment in 26 European countries. There are 9 variables, giving the percentage of employments in 9 sectors: `Agr` (Agriculture), `Min` (Mining), `Man` (Manufacture), `Pow` (Power), `Con` (Construction), `Ser` (Sevices), `Fin` (Finance), `Soc` (Social) and `Tra` (Transport).
 
 - `Chile.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/Chile.txt)). Contains data for 2700 respondents on a survey for the voting intentions in the 1988 Chilean national plebiscite. There are 8 variables: `region`, `population`, `sex`, `age`, `education`, `income`, `statusquo` (scale of support for the status quo) and `vote`. `vote` is a factor with levels `A` (abstention), `N` (against Pinochet), `U` (undecided), `Y` (for Pinochet). Available in `R` through the package `car` and `data(Chile)`.
 
@@ -244,4 +244,4 @@ The following great reference books have been used extensively for preparing the
 
 The icons used in the notes were designed by [madebyoliver](http://www.flaticon.com/authors/madebyoliver), [freepik](http://www.flaticon.com/authors/freepik) and [roundicons](http://www.flaticon.com/authors/roundicons) from [Flaticon](http://www.flaticon.com/).
 
-
+All material in these notes is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
