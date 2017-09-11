@@ -871,7 +871,7 @@ Some important remarks on \@ref(eq:norm1) and \@ref(eq:se1) are
     - *Mean $\bar X$*. It has influence only on the precision of $\hat\beta_0$. The larger $\bar X$ is, the less precise $\hat\beta_0$ is.
 
 
-```{r, randomcoefs, echo = FALSE, fig.cap = 'Illustration of the randomness of the fitted coefficients $(\\hat\\beta_0,\\hat\\beta_1)$ and the influence of $n$, $\\sigma^2$ and  $s_x^2$. The sample predictors $x_1,\\ldots,x_n$ are fixed and new responses $Y_1,\\ldots,Y_n$ are generated each time from a linear model $Y=\\beta_0+\\beta_1X+\\varepsilon$.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+```{r, randomcoefs, echo = FALSE, fig.cap = 'Illustration of the randomness of the fitted coefficients $(\\hat\\beta_0,\\hat\\beta_1)$ and the influence of $n$, $\\sigma^2$ and $s_x^2$. The sample predictors $x_1,\\ldots,x_n$ are fixed and new responses $Y_1,\\ldots,Y_n$ are generated each time from a linear model $Y=\\beta_0+\\beta_1X+\\varepsilon$.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
 knitr::include_app('https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/lm-random/', height = '1000px')
 ```
 
