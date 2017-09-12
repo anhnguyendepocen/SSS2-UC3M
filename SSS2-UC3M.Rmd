@@ -1054,7 +1054,7 @@ knitr::include_graphics("images/R/linearmodel.png")
 The assumptions of the linear model are:
 
 i. **Linearity**: $\mathbb{E}[Y|X=x]=\beta_0+\beta_1x$.
-ii. **Homoscedasticity**: $\mathbb{V}\text{ar}(\varepsilon_i)=\sigma^2$, with $\sigma^2$ constant for $i=1,\ldots,n$.
+ii. **Homoscedasticity**: $\mathbb{V}\text{ar}[\varepsilon_i]=\sigma^2$, with $\sigma^2$ constant for $i=1,\ldots,n$.
 iii. **Normality**: $\varepsilon_i\sim\mathcal{N}(0,\sigma^2)$ for $i=1,\ldots,n$.
 iv. **Independence of the errors**: $\varepsilon_1,\ldots,\varepsilon_n$ are independent (or uncorrelated, $\mathbb{E}[\varepsilon_i\varepsilon_j]=0$, $i\neq j$, since they are assumed to be Normal).
 
@@ -2416,7 +2416,7 @@ knitr::include_graphics("images/R/linearmodel2.png")
 The assumptions of the multiple linear model are an extension of the simple linear model:
 
 i. **Linearity**: $\mathbb{E}[Y|X_1=x_1,\ldots,X_k=x_k]=\beta_0+\beta_1x_1+\ldots+\beta_kx_k$.
-ii. **Homoscedasticity**: $\mathbb{V}\text{ar}(\varepsilon_i)=\sigma^2$, with $\sigma^2$ constant for $i=1,\ldots,n$.
+ii. **Homoscedasticity**: $\mathbb{V}\text{ar}[\varepsilon_i]=\sigma^2$, with $\sigma^2$ constant for $i=1,\ldots,n$.
 iii. **Normality**: $\varepsilon_i\sim\mathcal{N}(0,\sigma^2)$ for $i=1,\ldots,n$.
 iv. **Independence of the errors**: $\varepsilon_1,\ldots,\varepsilon_n$ are independent (or uncorrelated, $\mathbb{E}[\varepsilon_i\varepsilon_j]=0$, $i\neq j$, since they are assumed to be Normal).
 

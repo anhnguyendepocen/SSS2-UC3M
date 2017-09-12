@@ -248,13 +248,13 @@ The multiple linear model extends the simple linear model by describing the rela
 \begin{align}
 Y = \beta_0 + \beta_1 X_1 + \ldots + \beta_k X_k + \varepsilon (\#eq:k1)
 \end{align}
-holds between the predictors $X_1,\ldots,X_k$ and the response $Y$. In \@ref(eq:k1), $\beta_0$ is the *intercept* and $\beta_1,\ldots,\beta_k$ are the *slopes*, respectively. $\varepsilon$ is a random variable with mean zero and independent from $X_1,\ldots,X_n$. Another way of looking at \@ref(eq:k1) is
+holds between the predictors $X_1,\ldots,X_k$ and the response $Y$. In \@ref(eq:k1), $\beta_0$ is the *intercept* and $\beta_1,\ldots,\beta_k$ are the *slopes*, respectively. $\varepsilon$ is a random variable with mean zero and independent from $X_1,\ldots,X_k$. Another way of looking at \@ref(eq:k1) is
 \begin{align}
 \mathbb{E}[Y|X_1=x_1,\ldots,X_k=x_k]=\beta_0+\beta_1x_1+\ldots+\beta_kx_k, (\#eq:k2)
 \end{align}
 since $\mathbb{E}[\varepsilon|X_1=x_1,\ldots,X_k=x_k]=0$.
 
-The LHS of \@ref(eq:k2) is the conditional expectation of $Y$ given $X_1,\ldots,X_k$. It represents how the mean of the random variable $Y$ is changing according to particular values, denoted by $x_1,\ldots,x_k$, of the random variables $X_1,\ldots,X_k$. With the RHS, what we are saying is that the mean of $Y$ is changing in a *linear* fashion with respect to the value of $X$. Hence the interpretation of the coefficients:
+The LHS of \@ref(eq:k2) is the conditional expectation of $Y$ given $X_1,\ldots,X_k$. It represents how the mean of the random variable $Y$ is changing according to particular values, denoted by $x_1,\ldots,x_k$, of the random variables $X_1,\ldots,X_k$. With the RHS, what we are saying is that the mean of $Y$ is changing in a *linear* fashion with respect to the values of $X_1,\ldots,X_k$. Hence the interpretation of the coefficients:
 
 - $\beta_0$: is the mean of $Y$ when $X_1=\ldots=X_k=0$.
 - $\beta_j$, $1\leq j\leq k$: is the increment in mean of $Y$ for an increment of one unit in $X_j=x_j$, provided that the remaining variables $X_1,\ldots,X_{j-1},X_{j+1},\ldots,X_k$ *do not change*.
@@ -298,7 +298,7 @@ Y_n
 \]
 Thanks to the matrix notation, we can turn the sample version of the multiple linear model, namely
 \begin{align*}
-Y_i&=\beta_0 + \beta_1 X_{i1} + \ldots +\beta_k X_{ik} + \varepsilon_i,\quad i=1,\ldots,n
+Y_i&=\beta_0 + \beta_1 X_{i1} + \ldots +\beta_k X_{ik} + \varepsilon_i,\quad i=1,\ldots,n,
 \end{align*}
 into something as compact as
 \begin{align*}
@@ -330,7 +330,7 @@ The RSS aggregates the *squared vertical distances* from the data to a regressio
 \end{align*}
 Luckily, thanks to the matrix form of \@ref(eq:rss), it is simple to compute a closed-form expression for the least squares estimates:
 \begin{align}
-\hat{\boldsymbol{\beta}}=(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{Y},(\#eq:k3)
+\hat{\boldsymbol{\beta}}=(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{Y}.(\#eq:k3)
 \end{align}
 
 ```{block2, type = 'rmdinsight'}
@@ -460,7 +460,7 @@ Recall:
 
 ```
 
-Figure \@ref(fig:linearmodelassump) represent situations where the assumptions of the model are respected and violated, for the situation with two predictors. Clearly, the inspection of the scatterplots for identifying strange patterns is more complicated than in simple linear regression -- and here we are dealing only with two predictors. In Section \@ref(diagnostics) we will see more sophisticated methods for checking whether the assumptions hold or not for an arbitrary number of predictors.
+Figure \@ref(fig:linearmodelassump) represents situations where the assumptions of the model are respected and violated, for the situation with two predictors. Clearly, the inspection of the scatterplots for identifying strange patterns is more complicated than in simple linear regression -- and here we are dealing only with two predictors. In Section \@ref(diagnostics) we will see more sophisticated methods for checking whether the assumptions hold or not for an arbitrary number of predictors.
 
 ```{r, linearmodelassump, echo = FALSE, fig.cap = 'Valid (all the assumptions are verified) and problematic (a single assumption does not hold) multiple linear models, when there are two predictors.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
 knitr::include_app('https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/assump-lm-3D/', height = '700px')
