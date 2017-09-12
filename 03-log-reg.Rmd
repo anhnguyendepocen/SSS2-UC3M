@@ -619,7 +619,7 @@ We can rewrite \@ref(eq:eq-log) in terms of the odds \@ref(eq:eq-odds). If we do
 \begin{align}
 \mathrm{odds}(Y|X_1=x_1,\ldots,X_k=x_k)&=\frac{p(x_1,\ldots,x_k)}{1-p(x_1,\ldots,x_k)}\nonumber\\
 &=e^{\beta_0+\beta_1x_1+\ldots+\beta_kx_k}\nonumber\\
-&=e^{\beta_0}e^{\beta_1x_1}\ldots e^{\beta_kx_k}.(\#eq:eq-odds-log1)
+&=e^{\beta_0}e^{\beta_1x_1}\ldots e^{\beta_kx_k}(\#eq:eq-odds-log1)
 \end{align}
 or, taking logarithms, the *log-odds* (or logit)
 \begin{align}
@@ -716,7 +716,7 @@ mod$coefficients
 For the regressions `y ~ x2` and `y ~ x3`, do the following:
 
 - Check that $\boldsymbol{\beta}$ is indeed maximizing the likelihood as compared with Figure \@ref(fig:maximumlikelihood).
-- plot the fitted logistic curve and compare it with the one in Figure \@ref(fig:maximumlikelihood).
+- Plot the fitted logistic curve and compare it with the one in Figure \@ref(fig:maximumlikelihood).
 
 ```
 

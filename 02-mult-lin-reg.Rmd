@@ -444,7 +444,7 @@ iv. **Independence of the errors**: $\varepsilon_1,\ldots,\varepsilon_n$ are ind
 
 A good one-line summary of the linear model is the following (independence is assumed)
 \begin{align}
-Y|(X_1=x_1,\ldots,X_k=x_k)\sim \mathcal{N}(\beta_0+\beta_1x_1+\ldots+\beta_kx_k,\sigma^2)(\#eq:condnorm)
+Y|(X_1=x_1,\ldots,X_k=x_k)\sim \mathcal{N}(\beta_0+\beta_1x_1+\ldots+\beta_kx_k,\sigma^2).(\#eq:condnorm)
 \end{align}
 
 ```{block2, type = 'rmdinsight'}
