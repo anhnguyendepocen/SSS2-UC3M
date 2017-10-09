@@ -261,7 +261,9 @@ The LHS of \@ref(eq:k2) is the conditional expectation of $Y$ given $X_1,\ldots,
 
 Figure \@ref(fig:leastsquares2) illustrates the geometrical interpretation of a multiple linear model: a plane in the $(k+1)$-dimensional space. If $k=1$, the plane is the regression line for simple linear regression. If $k=2$, then the plane can be visualized in a three-dimensional plot
 
-```{r, leastsquares2, echo = FALSE, fig.cap = 'The least squares regression plane $y=\\hat\\beta_0+\\hat\\beta_1x_1+\\hat\\beta_2x_2$ and its dependence on the kind of squared distance considered.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+(ref:leastsquares2title) The least squares regression plane $y=\hat\beta_0+\hat\beta_1x_1+\hat\beta_2x_2$ and its dependence on the kind of squared distance considered. Application also available [here](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/least-squares-3D/).
+
+```{r, leastsquares2, echo = FALSE, fig.cap = '(ref:leastsquares2title)', screenshot.alt = "images/screenshots/least-squares-3D.png", dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
 knitr::include_app('https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/least-squares-3D/', height = '700px')
 ```
 
@@ -462,7 +464,9 @@ Recall:
 
 Figure \@ref(fig:linearmodelassump) represents situations where the assumptions of the model are respected and violated, for the situation with two predictors. Clearly, the inspection of the scatterplots for identifying strange patterns is more complicated than in simple linear regression -- and here we are dealing only with two predictors. In Section \@ref(diagnostics) we will see more sophisticated methods for checking whether the assumptions hold or not for an arbitrary number of predictors.
 
-```{r, linearmodelassump, echo = FALSE, fig.cap = 'Valid (all the assumptions are verified) and problematic (a single assumption does not hold) multiple linear models, when there are two predictors.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+(ref:linearmodelassumptitle) Valid (all the assumptions are verified) and problematic (a single assumption does not hold) multiple linear models, when there are two predictors. Application also available [here](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/assump-lm-3D/).
+
+```{r, linearmodelassump, echo = FALSE, fig.cap = '(ref:linearmodelassumptitle)', screenshot.alt = "images/screenshots/assump-lm-3D.png", dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
 knitr::include_app('https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/assump-lm-3D/', height = '700px')
 ```
 
@@ -709,7 +713,9 @@ Notice the $n-k-1$ instead of simple linear regression's $n-2$, which is the mai
 knitr::include_graphics("images/R/anova3D.png")
 ```
 
-```{r, anovaillus3D, echo = FALSE, fig.cap = 'Illustration of the ANOVA decomposition and its dependence on $\\sigma^2$ and $\\hat\\sigma^2$.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%', cache = TRUE}
+(ref:anovaillus3D) Illustration of the ANOVA decomposition and its dependence on $\sigma^2$ and $\hat\sigma^2$. Application also available [here](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/anova-3D/).
+
+```{r, anovaillus3D, echo = FALSE, fig.cap = '(ref:anovaillus3D)', screenshot.alt = "images/screenshots/anova-3D.png", dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%', cache = TRUE}
 knitr::include_app('https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/anova-3D/', height = '900px')
 ```
 
@@ -1144,37 +1150,3 @@ summary(modClean)
 # Variance inflation factors normal
 vif(modClean)
 ```
-
-<!--
-
-## Polynomial fitting {#mult-poly}
-
-
-```{r, mult-transf, echo = FALSE, fig.cap = 'Illustration of the choice of the polynomial transformation.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
-knitr::include_app('https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/mult-non-lin/', height = '1000px')
-```
-
--->
-
-<!--
-## Exercises and case studies
-
-### Computing multiple linear regressions
-
-```{block, type = 'rmdexercise'}
-TBA
-```
-
-College
-Wage
-USArrests
-Boston
-
-### Case study I: *a marketing plan*
-
-(Case study from )
-
-### Case study II: * *
-
-
--->
