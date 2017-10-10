@@ -7,7 +7,7 @@ Cluster analysis is the collection of techniques designed to find subgroups or *
 
 We will see the basics of the most well-known partition method, namely *$k$-means clustering*, and of the *agglomerative hierarchical clustering*.
 
-## $k$-means clustering {#kmeans}
+## $k$-means clustering {#cluster-kmeans}
 
 The $k$-means clustering looks for **$k$ clusters in the data such that they are as compact as possible and as separated as possible**. In clustering terminology, the clusters minimize the *with-in cluster variation* with respect to the cluster centroid while they maximize the *between cluster variation* among clusters. The distance used for measuring proximity is the usual **Euclidean distance** between points. As a consequence, this clustering method tend to yield spherical or rounded clusters and is not adequate for categorical variables.
 
@@ -68,7 +68,7 @@ km$centers
 # Assignments of observations to the k clusters
 km$cluster
 
-# Plot data wih colors according to clusters
+# Plot data with colors according to clusters
 plot(pointsCards, col = km$cluster)
 
 # Add the names of the observations above the points
@@ -179,7 +179,7 @@ For the `iris` dataset, do sequentially:
 
 ```
 
-## Agglomerative hierarchical clustering {#hierarchical}
+## Agglomerative hierarchical clustering {#cluster-hierarchical}
 
 ```{r, trees, echo = FALSE, results = 'hide', out.width = '90%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'The hierarchical clustering for a two-dimensional dataset with complete, single and average linkages.', cache = TRUE}
 # Data with 3 clusters
@@ -221,7 +221,7 @@ Hierarchical clustering is quite sensible to the kind of dissimilarity employed 
 
 Let's illustrate how to perform hierarchical clustering in `laligaStd`.
 ```{r, collapse = TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1, warning = FALSE, cache = TRUE}
-# Compute dissimilary matrix - in this case Euclidean distance
+# Compute dissimilarity matrix - in this case Euclidean distance
 d <- dist(laligaStd)
 
 # Hierarchical clustering with complete linkage
@@ -286,9 +286,9 @@ table(iris$Species, cutree(tree, k = 3))
 Performing hierarchical clustering in practice depends on several decisions that may have big consequences on the final output:
 
   - What kind of dissimilarity and linkage should be employed? Not a single answer: try several and compare.
-  - Where to cut the dendogram? The general advice is to look for groups of branches hanging for a long space and cut on their top.
+  - Where to cut the dendrogram? The general advice is to look for groups of branches hanging for a long space and cut on their top.
 
-Despite the general advice, there is not a single and best solution for the previous questions. What is advisable in practice is to analyse several choices, report the general patterns that arise and the different features of the data the methods expose.
+Despite the general advice, there is not a single and best solution for the previous questions. What is advisable in practice is to analyze several choices, report the general patterns that arise and the different features of the data the methods expose.
 ```
 
 Hierarchical clustering can also be performed through the help of `R Commander`. To do so, go to `'Statistics' -> 'Dimensional Analysis' -> 'Clustering' -> 'Hierar...'`. If you do this for the `USArrests` dataset after rescaling, you should get something like this:

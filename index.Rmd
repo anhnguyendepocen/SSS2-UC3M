@@ -11,7 +11,7 @@ link-citations: yes
 site: bookdown::bookdown_site
 ---
 
-# Introduction
+# Introduction {#intro}
 
 <!--
 (Move up once decided what options)
@@ -27,7 +27,7 @@ Welcome to the lab notes for *Statistics for Social Sciences II: Multivariate Te
 
 Be advised that these notes are *neither an exhaustive, rigorous nor comprehensive treatment* of the broad statistical branch know as *Multivariate Analysis*. They are just a helpful resource to implement the specific topics covered in this limited course.
 
-## Some course logistics
+## Some course logistics {#intro-logistics}
 
 - Lessons.
     - International Studies, group 55. **Mondays 16:15-17:45 at INF-15.S.06**.
@@ -38,9 +38,9 @@ Be advised that these notes are *neither an exhaustive, rigorous nor comprehensi
     - Continuous evaluation is 60% of the final grade. Scored by 2 partial exams and 1 group project, each accounting for a 20%.
     - Final exam is 40%, covers contents mostly from the theoretical lectures.
 - Partials. Cover contents from labs and lectures. The first will (likely) cover Topics 1-2. The second, Topics 3-5.
-- Group project. The students must team up in groups of 4 ($\pm1$) in order to produce a report. This report must apply the methodology presented to a dataset of their choice. As a rule of thumb, all students in a group will be graded evenly and according to the ratio "quality project"/"group size". Specific details in Appendix \@ref(group-project).
+- Group project. The students must team up in groups of 4 ($\pm1$) in order to produce a report. This report must apply the methodology presented to a dataset of their choice. As a rule of thumb, all students in a group will be graded evenly and according to the ratio "quality project"/"group size". Specific details in Appendix \@ref(appendix-project).
 
-## Software employed
+## Software employed {#intro-software}
 
 The software we will employ in this course is available in all UC3M computer labs, including INF-15.S.04, INF-15.S.06 and INF-10.0.29 ~~(the first week only in INF-15.S.04). We will use two pieces of software:
 
@@ -95,9 +95,9 @@ In UC3M computers, `R` and `R Commander` are only available in Spanish. To have 
 Tip: if you save the modified shortcut in `'C:/TEMP'`, it could be available the next time you log in.
 ```
 
-Alternatively, you can bring your own laptop and save all your files in it, see Section \@ref(laptop).
+Alternatively, you can bring your own laptop and save all your files in it, see Section \@ref(intro-installation).
 
-## Why this software?
+## Why this software? {#intro-whysoftware}
 
 There are many advanced commercial statistical software, such as `SPSS`, `Excel` (with commercial add-ons), `Minitab`, `Stata`, `SAS`, etc. We will rely on the combo `R` [@R-base] + `R Commander` [@R-Rcmdr] due to some noteworthy advantages:
 
@@ -113,7 +113,7 @@ There are many advanced commercial statistical software, such as `SPSS`, `Excel`
 
 In summary, `R Commander` eases the learning curve of `R` and provides a powerful way of creating and reporting statistical analyses. An intermediate knowledge in `R Commander` + `R` will improve notably your quantitative skills, therefore making an **important distinction in your graduate profile** (it is a fact that many social scientists tend to lack a proper quantitative formation). So I encourage you to take full advantage of this great opportunity!
 
-## Installation in your own computer {#laptop}
+## Installation in your own computer {#intro-installation}
 
 You are allowed to bring your own laptop to the labs. This may have a series of benefits, such as admin privileges, saving all your files locally and a deeper familiarization with the software. But keep in mind:
 
@@ -164,7 +164,7 @@ By default `R` and `R Commander` will have menus and messages in the language of
 
   Then close `'R.app'` and relaunch it. Analogously, replace `en_GB` above by `es_ES` or `it_IT` if you want to switch back to Spanish or Italian, for example.
 
-## `R Commander` basics
+## `R Commander` basics {#intro-RCommander}
 
 ```{r, ScreenshotRcmdr, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Main window of `R Commander`, with the plug-ins `RcmdrPlugin.FactoMineR`, `RcmdrPlugin.KMggplot2` and `RcmdrPlugin.Demos` loaded.', cache = TRUE}
 knitr::include_graphics("images/screenshots/Rcmdr2.png")
@@ -196,7 +196,7 @@ When you close `R Commander` you will be asked on what files to save: `'script f
 Focus on **understanding the purpose of each element in the GUI**. When performing the real-case studies we will take care of explaining the many features of `R Commander` step by step.
 ```
 
-## Datasets for the course
+## Datasets for the course {#intro-datasets}
 
 This is a handy list with a small description and download link for all the relevant datasets used in the course. To download them, simply **save the link as a file** in your browser.
 
@@ -234,7 +234,7 @@ This is a handy list with a small description and download link for all the rele
 
 - `pisaUS2009.csv` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/pisaUS2009.csv)). Reading score of 3663 US students in the PISA test, with 23 variables informing about the student profile and family background.
 
-## Main references and credits
+## Main references and credits {#intro-credits}
 
 The following great reference books have been used extensively for preparing these notes:
 

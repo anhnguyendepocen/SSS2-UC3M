@@ -1,8 +1,8 @@
 # (APPENDIX) Appendix {-}
 
-# Glossary of important `R` commands
+# Glossary of important `R` commands {#appendix-Rglossary}
 
-#### Basic usage {-}
+#### Basic usage
 
 The following table contains important `R` commands for its **basic usage**.
 
@@ -23,7 +23,7 @@ The following table contains important `R` commands for its **basic usage**.
 | ... list | `$`| `list(x = 2, y = 7:0)$y` |
 | **Summarize any object** | `summary` | `summary(1:10)` |
 
-#### Linear regression {-}
+#### Linear regression
 
 Some useful commands for performing **simple and multiple linear regression** are given in the next table. We assume that:
 
@@ -56,7 +56,7 @@ Some useful commands for performing **simple and multiple linear regression** ar
 | **Compare model coefficients** | `compareCoefs(model1, model2)` |
 | **Diagnostic plots** | `plot(model, num)` |
 
-#### More basic usage {-}
+#### More basic usage
 
 The following table contains important `R` commands for its **basic usage**. We assume the following dataset is available:
 ```{r, cache = TRUE}
@@ -93,7 +93,7 @@ data <- data.frame(x = 1:10, y = c(-1, 2, 3, 0, 3, 1, -1, 3, 0, -1))
 | plot a curve | `plot`, `seq` | `x <- seq(0, 1, l = 100); plot(x, x^2, type = "l")` |
 | add lines | `lines`, | `x <- seq(0, 1, l = 100); plot(x, x^2 + rnorm(100, sd = 0.1)); lines(x, x^2, col = 2, lwd = 2)` |
 
-#### Logistic regression {-}
+#### Logistic regression
 
 Some useful commands for performing **logistic regression** are given in the next table. We assume that:
 
@@ -118,13 +118,13 @@ Some useful commands for performing **logistic regression** are given in the nex
 | **CIs coefficients** | `confint(model, level = level); confint.default(model, level = level)` |
 | **CIs exp-coefficients** | `exp(confint(model, level = level)); exp(confint.default(model, level = level))` |
 | **Prediction** | `predict(model, newdata = new, type = "response")` |
-| **CIs predicted probability** | Not immediate. Use `predictCIsLogistic(model, newdata = new, level = level)` as seen in Section \@ref(log-reg-prediction) |
+| **CIs predicted probability** | Not immediate. Use `predictCIsLogistic(model, newdata = new, level = level)` as seen in Section \@ref(logreg-prediction) |
 | **Variable selection** | `stepwise(model)` |
 | **Multicollinearity detection** | `vif(model)` |
-| **$R^2$** | Not immediate. Use `r2Log(model = model)` as seen in Section \@ref(log-reg-selection) |
+| **$R^2$** | Not immediate. Use `r2Log(model = model)` as seen in Section \@ref(logreg-modsel) |
 | **Hit matrix** | `table(data$resp, model$fitted.values > 0.5)` |
 
-#### Principal Component Analysis {-}
+#### Principal component analysis
 
 Some useful commands for performing **logistic regression** are given in the next table. We assume that:
 
@@ -144,11 +144,11 @@ Some useful commands for performing **logistic regression** are given in the nex
 | **Screeplot** | `plot(pca); plot(pca, type = "l")` |
 | **Biplot** | `biplot(pca)` |
 
-# Use of qualitative predictors in regression {#qualitative-predictors}
+# Use of qualitative predictors in regression {#appendix-qualpred}
 
-An important situation not covered in Chapters \@ref(simp), \@ref(mult) and \@ref(log-reg) is how to deal with *qualitative*, and not *quantitative*, predictors. Qualitative predictors, also known as *categorical* variables or, in `R`'s terminology, *factors*, are ubiquitous in social sciences. Dealing with them requires some care and proper understanding of how these variables are represented in statistical softwares such as `R`.
+An important situation not covered in Chapters \@ref(simplin), \@ref(multlin) and \@ref(logreg) is how to deal with *qualitative*, and not *quantitative*, predictors. Qualitative predictors, also known as *categorical* variables or, in `R`'s terminology, *factors*, are ubiquitous in social sciences. Dealing with them requires some care and proper understanding of how these variables are represented in statistical softwares such as `R`.
 
-#### Two levels {-}
+#### Two levels
 
 The simplest case is the situation with **two levels**, this is, the binary case covered in logistic regression. There we saw that a binary variable $C$ with two levels (for example, *a* and *b*) could be represented as
 \[
@@ -168,7 +168,7 @@ The coefficient associated to $D$ is easily interpretable. $\beta_{k+1}$ is the 
 
 - **Logistic model**
 \[
-\mathbb{P}[Y=1|X_1=x_1,\ldots,X_k=x_k,D=d]=\text{logisitc}(\beta_0+\beta_1X_1+\ldots+\beta_kX_k+\beta_{k+1}D).
+\mathbb{P}[Y=1|X_1=x_1,\ldots,X_k=x_k,D=d]=\text{logisitic}(\beta_0+\beta_1X_1+\ldots+\beta_kX_k+\beta_{k+1}D).
 \]
 We have two interpretations of $\beta_{k+1}$, either in terms of log-odds or odds:
 
@@ -184,7 +184,7 @@ data(Boston)
 # Structure of the data
 str(Boston)
 # chas is a dummy variable measuring if the suburb is close to the river (1)
-# or not (0). In this case it is not codifyed as a factor but as a 0 or 1.
+# or not (0). In this case it is not codified as a factor but as a 0 or 1.
 
 # Summary of a linear model
 mod <- lm(medv ~ chas + crim, data = Boston)
@@ -207,7 +207,7 @@ summary(mod)
 # for explaining medv)
 ```
 
-#### More than two levels {-}
+#### More than two levels
 
 Let's see now the case with **more than two levels**, for example, a categorical variable $C$ with levels *a*, *b* and *c*. If we take *a* as the reference level, this variable can be represented by *two* dummy variables:
 \[
@@ -264,9 +264,9 @@ For example if you have a categorical variable `party` with levels `partyA`, `pa
 The right way of dealing with categorical variables in regression is to set the variable as a factor and let `R` do internally the dummification.
 ```
 
-# Multinomial logistic regression
+# Multinomial logistic regression {#appendix-multinomialreg}
 
-The logistic model can be generalized to categorical variables $Y$ with more than two possible levels, namely $\{1,\ldots,J\}$. Given the predictors $X_1,\ldots,X_k$,  *multinomial logistic regression* models the probability of each level $j$ of $Y$ by
+The logistic model can be generalized to categorical variables $Y$ with more than two possible levels, namely $\{1,\ldots,J\}$. Given the predictors $X_1,\ldots,X_k$, *multinomial logistic regression* models the probability of each level $j$ of $Y$ by
 \begin{align}
 p_j(\mathbf{x})=\mathbb{P}[Y=j|X_1=x_1,\ldots,X_k=x_k]=\frac{e^{\beta_{0j}+\beta_{1j}X_1+\ldots+\beta_{kj}X_k}}{1+\sum_{l=1}^{J-1}e^{\beta_{0l}+\beta_{1l}X_1+\ldots+\beta_{kl}X_k}} (\#eq:multinom-1)
 \end{align}
@@ -353,7 +353,7 @@ Multinomial logistic regression will suffer from numerical instabilities and its
 The multinomial model employs $(J-1)(k+1)$ parameters. It is easy to end up with **complex models** -- that require a **large sample size** to be fitted properly -- if the response has a few number of levels and there are several predictors. For example, with $5$ levels and $8$ predictors we will have $36$ parameters. Estimating this model with $50-100$ observations will probably result in **overfitting**.
 ```
 
-# Reporting with `R` and `R Commander`
+# Reporting with `R` and `R Commander` {#appendix-reporting}
 
 A nice feature of `R Commander` is that integrates seamless with `R Markdown`, which is able to create `.html`, `.pdf` and `.docx` reports directly from the outputs of `R`. Depending on the kind of report that we want, we will need the following auxiliary software^[Alternatively, the `'Tools' -> 'Install auxiliary software [if not already installed]'` will redirect you to the download links for the auxiliary software.]:
 
@@ -363,7 +363,7 @@ A nice feature of `R Commander` is that integrates seamless with `R Markdown`, w
 
 The workflow is simple. Once you have done some statistical analysis, either by using `R Commander`'s menus or `R` code directly, you will end up with an `R` script, on the `'R Script'` tab, that contains all the commands you have run so far. Switch then to the `'R Markdown'` tab and you will see the commands you have entered in a different layout, which essentially encapsulates the code into chunks delimited by `` ```{r}`` and `` ``` ``. This will generate a report once you click in the `'Generate report'` button.
 
-Let's illustrate this process through an example. Suppose we were analyzing the `Boston` dataset, as we did in Section \@ref(boston). *Ideally*^[This is, assuming we have performed the right steps in the analysis without making any mistake.] our final script would be something like this:
+Let's illustrate this process through an example. Suppose we were analyzing the `Boston` dataset, as we did in Section \@ref(multlin-examps-boston). *Ideally*^[This is, assuming we have performed the right steps in the analysis without making any mistake.] our final script would be something like this:
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE}
 library(RcmdrMisc)
 ```
@@ -376,11 +376,11 @@ library(RcmdrMisc)
 library(MASS)
 data(Boston)
 
-# Make a multiple linear regression od medv in the rest of variables
+# Make a multiple linear regression of medv in the rest of variables
 mod <- lm(medv ~ ., data = Boston)
 summary(mod)
 
-# Check the linearty assumption
+# Check the linearity assumption
 plot(mod, 1) # Clear non-linearity
 
 # Let's consider the transformations given in Harrison and Rubinfeld (1978)
@@ -614,17 +614,17 @@ When we click on `'Generate report'` for the above `R Markdown` file, we should 
 For advanced users, there is a lot of information on mastering `R Markdown` [here](http://rmarkdown.rstudio.com/lesson-1.html) by using `RStudio`, a more advanced framework than `R Commander`.
 ```
 
-# Group project
+# Group project {#appendix-project}
 
-#### Groups {-}
+#### Groups
 
 You will team up in groups of 3 to 5 members. It is up to you to form the groups based on your grade expectations, affinity, complementary skills, etc. You must communicate the group compositions **no later than November the 30th** by a (single) email to <edgarcia@est-econ.uc3m.es> detailing the members of the group and, if you have it, a preliminary description about the topic of the project (~ 3 lines).
 
-#### Aim of the project {-}
+#### Aim of the project
 
-You will analyse a real dataset of your choice using the statistical methodology that we have seen in the lessons and labs. The purpose is to demonstrate that you know how to apply and interpret some of the studied statistical techniques (such as simple/multiple linear regression, logistic regression, or any other methods covered in the course) in a real-case scenario that is appealing for you.
+You will analyze a real dataset of your choice using the statistical methodology that we have seen in the lessons and labs. The purpose is to demonstrate that you know how to apply and interpret some of the studied statistical techniques (such as simple/multiple linear regression, logistic regression, or any other methods covered in the course) in a real-case scenario that is appealing for you.
 
-#### Structure of the report {-}
+#### Structure of the report
 
 Use the following *mandatory* structure when writing your report:
 
@@ -641,7 +641,7 @@ Use the following *mandatory* structure when writing your report:
 - Spacing: single space, single column.
 - Length limit: less than 5000 words **and** 15 pages. You are **not** required to make use of all the space.
 
-#### Grading {-}
+#### Grading
 
 All students in a group will be graded evenly. Take this into account when forming the group. The grading is on a scale of 0-10 (plus 2 bonus points) and will be performed according to the following breakdown:
 
@@ -654,11 +654,11 @@ All students in a group will be graded evenly. Take this into account when formi
 
 The ratio "quality project"/"group size" might be taken into account in extreme cases (e.g. poor report written by 5 people, extremely good report written by 3 people).
 
-#### Academic fraud {-}
+#### Academic fraud
 
 Evidences of academic fraud will have serious consequences, such as a zero grade for the whole group and the reporting of the fraud detection to the pertinent academic authorities. Academic fraud includes (but is not limited to) plagiarism, use of sources without proper credit, project outsourcing and the use of external tutoring not mentioned explicitly.
 
-#### Tips {-}
+#### Tips
 
 - Think about a topic that could be reused for other subjects, or take inspiration from previous projects you did. In that way, this project could serve as the *quantification* of another subject's project. If you do this, **add an explicit mention** in the report.
 - Data sources. Here are some useful data sources:
@@ -680,6 +680,6 @@ Evidences of academic fraud will have serious consequences, such as a zero grade
 - Make use of office hours before it is too late.
 - Pro-tip: if you come to my office with a printed draft of the project, I can provide you some quick feedback on what could be improved.
 
-#### Deadline {-}
+#### Deadline
 
 Submit the reports before December the 23rd at 16:59 through Aula Global. **Not by email**. Reports received after the deadline will not be evaluated.

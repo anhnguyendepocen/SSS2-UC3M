@@ -1,15 +1,15 @@
 
-# Multiple linear regression {#mult}
+# Multiple linear regression {#multlin}
 
-The multiple linear regression is an *extension* of the simple linear regression saw in Chapter \@ref(simp). If the simple linear regression employed a *single* predictor $X$ to explain the response $Y$, the multiple linear regression employs *multiple* predictors $X_1,\ldots,X_k$ for explaining a single response $Y$:
+The multiple linear regression is an *extension* of the simple linear regression saw in Chapter \@ref(simplin). If the simple linear regression employed a *single* predictor $X$ to explain the response $Y$, the multiple linear regression employs *multiple* predictors $X_1,\ldots,X_k$ for explaining a single response $Y$:
 \[
 Y=\beta_0+\beta_1X_1+\beta_2X_2+\ldots+\beta_kX_k+\varepsilon
 \]
 To convince you why is useful, let's begin by seeing what it can deliver in real-case scenarios!
 
-## Examples and applications
+## Examples and applications {#multlin-examps}
 
-### Case study I: *The Bordeaux equation* {#wine}
+### Case study I: *The Bordeaux equation* {#multlin-examps-wine}
 
 > Calculate the winter rain and the harvest rain (in millimeters). Add summer heat in the vineyard (in degrees centigrade). Subtract 12.145. And what do you have? A very, very passionate argument over wine.
 >
@@ -25,7 +25,7 @@ Red Bordeaux wines have been produced in Bordeaux, one of most famous and prolif
 The `wine.csv` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/wine.csv)) contains 27 red Bordeaux vintages. The data is the originally employed by @Ashenfelter1995, except for the inclusion of the variable `Year`, the exclusion of NAs and the reference price used for the wine. The original source is [here](http://www.liquidasset.com/winedata.html). Each row has the following variables:
 
 - `Year`: year in which grapes were harvested to make wine.
-- `Price`: *logarithm* of the average market price for Bordeaux vintages according to 1990--1991 auctions.^[In Ashenfelter, Ashmore, and Lalonde (1995), this variable is expressed relative to the price of the 1961 vintage, regarded as the best one ever recorded. In other words, they consider `Price - 8.4937` as the price variable.] This is a nonlinear transformation of the *response* (hence different to what we did in Section \@ref(nonlin)) made to *linearize* the response.
+- `Price`: *logarithm* of the average market price for Bordeaux vintages according to 1990--1991 auctions.^[In Ashenfelter, Ashmore, and Lalonde (1995), this variable is expressed relative to the price of the 1961 vintage, regarded as the best one ever recorded. In other words, they consider `Price - 8.4937` as the price variable.] This is a nonlinear transformation of the *response* (hence different to what we did in Section \@ref(simplin-nonlin)) made to *linearize* the response.
 - `WinterRain`: winter rainfall (in mm).
 - `AGST`: Average Growing Season Temperature (in Celsius degrees).
 - `HarvestRain`: harvest rainfall (in mm).
@@ -154,7 +154,7 @@ Create a new variable in `wine` named `PriceOrley`, defined as `Price - 8.4937`.
 knitr::include_url("https://www.youtube.com/embed/Ec8hPHLMyzY")
 ```
 
-### Case study II: Housing values in Boston {#boston}
+### Case study II: Housing values in Boston {#multlin-examps-boston}
 
 The second case study is motivated by @Harrison1978, who proposed an *hedonic model* for determining the willingness of house buyers to pay for clean air. An hedonic model is a model that decomposes the price of an item into separate components that determine its price. For example, an hedonic model for the price of a house may decompose its price into the house characteristics, the kind of neighborhood, and the location. The study of @Harrison1978 employed data from the Boston metropolitan area, containing 560 suburbs and 14 variables. The `Boston` dataset is available through the file `Boston.xlsx` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/Boston.xlsx)) and through the dataset `Boston` in the `MASS` package (load `MASS` by `'Tools' -> 'Load package(s)...'`).
 
@@ -197,7 +197,7 @@ summary(modHouse)
 ```
 There are a couple of non-significant variables, but so far the model has an $R^2=0.74$ and the fitted coefficients are sensible with what it would be expected. For example, `crim`, `tax`, `ptratio` and `nox` have negative effects on `medv`, while `rm`, `rad` and `chas` have positive. However, the non-significant coefficients are not improving significantly the model, but only adding artificial noise and decreasing the overall accuracy of the coefficient estimates!
 
-Let's polish a little bit the previous model. Instead of removing manually each non-significant variable to reduce the complexity, we employ an automatic tool in `R` called **stepwise model selection**. It has different flavors, that we will see in detail in Section \@ref(selection), but essentially this powerful tool *usually* ends up selecting "a" *best model*: **a model that delivers the maximum fit with the minimum number of variables**.
+Let's polish a little bit the previous model. Instead of removing manually each non-significant variable to reduce the complexity, we employ an automatic tool in `R` called **stepwise model selection**. It has different flavors, that we will see in detail in Section \@ref(multlin-modsel), but essentially this powerful tool *usually* ends up selecting "a" *best model*: **a model that delivers the maximum fit with the minimum number of variables**.
 
 The stepwise model selection is located at `'Models' -> 'Stepwise model selection...'` and is always applied on the active model. Apply it with the default options to `modBest`:
 
@@ -221,7 +221,7 @@ We have quantified the influence of the predictor variables in the housing price
 - `nox`, `dis`, `tax`, `pratio` and `lstat` have a **significantly negative** influence on `medv`.
 
 ```{block2, type = 'rmdexercise'}
-The model employed in @Harrison1978 is different from `modBest`. In the paper, several nonlinear transformations of the predictors (remember Section \@ref(nonlin)) and the response are done to improve the linear fit. Also, different units are used for `medv`, `black`, `lstat` and `nox`. The authors considered these variables:
+The model employed in @Harrison1978 is different from `modBest`. In the paper, several nonlinear transformations of the predictors (remember Section \@ref(simplin-nonlin)) and the response are done to improve the linear fit. Also, different units are used for `medv`, `black`, `lstat` and `nox`. The authors considered these variables:
 
 - *Response*: `log(1000 * medv)`
 - *Linear predictors*: `age`, `black / 1000` (this variable corresponds to their $(B-0.63)^2$), `tax`, `ptratio`, `crim`, `zn`, `indus` and `chas`.
@@ -241,10 +241,9 @@ Do the following:
 lm(I(log(medv*1000)) ~ I(rm^2) + age + log(dis) + log(rad) + tax + ptratio + I(black/1000) + I(log(lstat/100)) + crim + zn + indus + chas + I((10*nox)^2), data = Boston)
 -->
 
+## Model formulation and estimation by least squares {#multlin-model}
 
-## Model formulation and estimation by least squares {#modelmult}
-
-The multiple linear model extends the simple linear model by describing the relation between the random variables $X_1,\ldots,X_k$ and $Y$. For example, in the last model for the `wine` dataset, we had $k=4$ variables $X_1=$`WinterRain`, $X_2=$`AGST`, $X_3=$`HarvestRain` and $X_4=$`Age`, and $Y=$ `Price`. Therefore, as in Section \@ref(modelsimp), the multiple linear model is *constructed by assuming* that the linear relation
+The multiple linear model extends the simple linear model by describing the relation between the random variables $X_1,\ldots,X_k$ and $Y$. For example, in the last model for the `wine` dataset, we had $k=4$ variables $X_1=$`WinterRain`, $X_2=$`AGST`, $X_3=$`HarvestRain` and $X_4=$`Age`, and $Y=$ `Price`. Therefore, as in Section \@ref(simplin-model), the multiple linear model is *constructed by assuming* that the linear relation
 \begin{align}
 Y = \beta_0 + \beta_1 X_1 + \ldots + \beta_k X_k + \varepsilon (\#eq:k1)
 \end{align}
@@ -269,7 +268,7 @@ knitr::include_app('https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/le
 
 The estimation of $\beta_0,\beta_1,\ldots,\beta_k$ is done as in simple linear regression, by minimizing the Residual Sum of Squares (RSS). First we need to introduce some helpful *matrix notation*. In the following, **bold face** are used for distinguishing vectors and matrices from scalars:
 
-- A sample of $(X_1,\ldots,X_k,Y)$ is $(X_{11},\ldots,X_{1k},Y_1),\ldots,(X_{n1},\ldots,X_{nk},Y_n)$, where $X_{ij}$ denotes the $i$-th observation of the $j$-th predictor $X_j$. We denote with $\mathbf{X}_i=(X_{i1},\ldots,X_{ik})$ to the $i$-th observation of $(X_1,\ldots,X_k)$, so the sample simplifies to $(\mathbf{X}_{1},Y_1),\ldots,(\mathbf{X}_{n},Y_n)$
+- A sample of $(X_1,\ldots,X_k,Y)$ is $(X_{11},\ldots,X_{1k},Y_1),\ldots,(X_{n1},\ldots,X_{nk},Y_n)$, where $X_{ij}$ denotes the $i$-th observation of the $j$-th predictor $X_j$. We denote with $\mathbf{X}_i=(X_{i1},\ldots,X_{ik})$ to the $i$-th observation of $(X_1,\ldots,X_k)$, so the sample simplifies to $(\mathbf{X}_{1},Y_1),\ldots,(\mathbf{X}_{n},Y_n)$.
 
 - The *design matrix* contains all the information of the predictors and a column of ones
 \[
@@ -277,7 +276,7 @@ The estimation of $\beta_0,\beta_1,\ldots,\beta_k$ is done as in simple linear r
 1 & X_{11} & \cdots & X_{1k}\\
 \vdots & \vdots & \ddots & \vdots\\
 1 & X_{n1} & \cdots & X_{nk}
-\end{pmatrix}_{n\times(k+1)}
+\end{pmatrix}_{n\times(k+1)}.
 \]
 
 - The *vector of responses* $\mathbf{Y}$, the *vector of coefficients* $\boldsymbol\beta$ and the *vector of errors* are, respectively^[The vectors are regarded as column matrices.],
@@ -399,7 +398,7 @@ They are the vertical projections of $Y_1,\ldots,Y_n$ into the fitted line (see 
 \]
 where $\mathbf{H}=\mathbf{X}(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T$ is called the *hat matrix* because it "puts the hat into $\mathbf{Y}$". What it does is to project $\mathbf{Y}$ into the regression plane (see Figure \@ref(fig:leastsquares2)).
 
-- The *estimated residuals* $\hat \varepsilon_1,\ldots,\hat \varepsilon_n$, where
+- The *residuals* (or estimated errors) $\hat \varepsilon_1,\ldots,\hat \varepsilon_n$, where
 \begin{align*}
 \hat\varepsilon_i=Y_i-\hat Y_i,\quad i=1,\ldots,n.
 \end{align*}
@@ -429,7 +428,7 @@ data <- data.frame(x1 = x1, x2 = x2, y = y)
 With the above `data`, cheek how the fitted coefficients change for `y ~ x1`, `y ~ x2` and `y ~ x1 + x2`.
 ```
 
-## Assumptions of the model {#assumptionsmult}
+## Assumptions of the model {#multlin-assumps}
 
 Some probabilistic assumptions are required for performing inference on the model parameters. In other words, to infer properties about the *unknown* population coefficients $\boldsymbol{\beta}$ from the sample $(\mathbf{X}_1, Y_1),\ldots,(\mathbf{X}_n, Y_n)$.
 
@@ -462,7 +461,7 @@ Recall:
 
 ```
 
-Figure \@ref(fig:linearmodelassump) represents situations where the assumptions of the model are respected and violated, for the situation with two predictors. Clearly, the inspection of the scatterplots for identifying strange patterns is more complicated than in simple linear regression -- and here we are dealing only with two predictors. In Section \@ref(diagnostics) we will see more sophisticated methods for checking whether the assumptions hold or not for an arbitrary number of predictors.
+Figure \@ref(fig:linearmodelassump) represents situations where the assumptions of the model are respected and violated, for the situation with two predictors. Clearly, the inspection of the scatterplots for identifying strange patterns is more complicated than in simple linear regression -- and here we are dealing only with two predictors. In Section \@ref(multlin-diagnostics) we will see more sophisticated methods for checking whether the assumptions hold or not for an arbitrary number of predictors.
 
 (ref:linearmodelassumptitle) Valid (all the assumptions are verified) and problematic (a single assumption does not hold) multiple linear models, when there are two predictors. Application also available [here](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/assump-lm-3D/).
 
@@ -492,11 +491,11 @@ scatter3d(Petal.Length ~ Petal.Width + Sepal.Length, data = iris, fit = "linear"
           ellipsoid = FALSE, id.method = 'mahal', id.n = 2)
 ```
 
-## Inference for model parameters
+## Inference for model parameters {#multlin-inference}
 
 The assumptions introduced in the previous section allow to specify what is the distribution of the *random vector* $\hat{\boldsymbol{\beta}}$. The distribution is derived conditionally on the sample predictors $\mathbf{X}_1,\ldots,\mathbf{X}_n$. In other words, we assume that the randomness of $\mathbf{Y}=\mathbf{X}\boldsymbol{\beta}+\boldsymbol\varepsilon$ comes only from the error terms and not from the predictors. To denote this, we employ lowercase for the sample predictors $\mathbf{x}_1,\ldots,\mathbf{x}_n$.
 
-### Distributions of the fitted coefficients
+### Distributions of the fitted coefficients {#multlin-inference-dists}
 
 The distribution of $\hat{\boldsymbol{\beta}}$ is:
 \begin{align}
@@ -529,8 +528,7 @@ v_j\text{ is the $j$-th element of the diagonal of }(\mathbf{X}^T\mathbf{X})^{-1
 \]
 The LHS of \@ref(eq:normp2) is the $t$-statistic for $\beta_j$, $j=0,\ldots,k$. They are employed for building confidence intervals and hypothesis tests.
 
-
-### Confidence intervals for the coefficients
+### Confidence intervals for the coefficients {#multlin-inference-cis}
 
 Thanks to \@ref(eq:normp2), we can have the $100(1-\alpha)\%$ CI for the coefficient $\beta_j$, $j=0,\ldots,k$:
 \begin{align}
@@ -550,7 +548,7 @@ confint(mod)
 confint(mod, level = 0.90)
 confint(mod, level = 0.99)
 ```
-In this example, the 95% confidence interval for $\beta_0$ is $(4.7460, 7.2201)$, for $\beta_1$ is $(0.0077, 0.0644)$ and for $\beta_2$ is $(-0.0010, 0.0026)$. Therefore, we can say with a 95% confidence that *the coefficient of `WinterRain` is non significant*. But in Section \@ref(wine) we saw that it *was significant* in the model `Price ~ Age + AGST + HarvestRain + WinterRain`! How is this possible? The answer is that the presence of extra predictors affects the coefficient estimate, as we saw in Figure \@ref(fig:multmarg). Therefore, the precise statement to make is: **in the model `Price ~ Age + WinterRain`**, with $\alpha=0.05$, the coefficient of `WinterRain` is non significant. Note that this **does not** mean that it will be always non significant: in `Price ~ Age + AGST + HarvestRain + WinterRain` it is.
+In this example, the 95% confidence interval for $\beta_0$ is $(4.7460, 7.2201)$, for $\beta_1$ is $(0.0077, 0.0644)$ and for $\beta_2$ is $(-0.0010, 0.0026)$. Therefore, we can say with a 95% confidence that *the coefficient of `WinterRain` is non significant*. But in Section \@ref(multlin-examps-wine) we saw that it *was significant* in the model `Price ~ Age + AGST + HarvestRain + WinterRain`! How is this possible? The answer is that the presence of extra predictors affects the coefficient estimate, as we saw in Figure \@ref(fig:multmarg). Therefore, the precise statement to make is: **in the model `Price ~ Age + WinterRain`**, with $\alpha=0.05$, the coefficient of `WinterRain` is non significant. Note that this **does not** mean that it will be always non significant: in `Price ~ Age + AGST + HarvestRain + WinterRain` it is.
 
 ```{block, type = 'rmdexercise'}
 Compute and interpret the CIs for the coefficients, at levels $\alpha=0.10,0.05,0.01$, for the following regressions:
@@ -561,8 +559,7 @@ Compute and interpret the CIs for the coefficients, at levels $\alpha=0.10,0.05,
 - `AGST ~ Year + FrancePop` (`wine`)
 ```
 
-
-### Testing on the coefficients
+### Testing on the coefficients {#multlin-inference-tests}
 
 The distributions in \@ref(eq:normp2) also allow to conduct a formal hypothesis test on the coefficients $\beta_j$, $j=0,\ldots,k$. For example the test for significance is specially important:
 \begin{align*}
@@ -595,11 +592,10 @@ The connection of a $t$-test for $H_0:\beta_j=0$ and the CI for $\beta_j$, both 
 - **No $\leftrightarrow$ reject $H_0$**.
 ```
 
-The tests for significance are built-in in the `summary` function, as we saw in Section \@ref(mult). For `mod`, the regression of `Price ~ Age + WinterRain`, we have:
+The tests for significance are built-in in the `summary` function, as we saw in Section \@ref(multlin). For `mod`, the regression of `Price ~ Age + WinterRain`, we have:
 ```{r, collapse = TRUE, cache = TRUE}
 summary(mod)
 ```
-
 
 ```{block, type = 'rmdinsight'}
 The unilateral test $H_0:\beta_j\geq 0$ (respectively, $H_0:\beta_j\leq 0$) vs $H_1:\beta_j<0$ ($H_1:\beta_j>0$) can be done by means of the CI for $\beta_j$. If $H_0$ is rejected, they allow to conclude that *$\hat\beta_j$ is significantly negative (positive)* and that *for the considered regression model, $X_j$ has a significant negative (positive) effect on $Y$*. We have been doing them using the following rule of thumb:
@@ -610,8 +606,7 @@ The unilateral test $H_0:\beta_j\geq 0$ (respectively, $H_0:\beta_j\leq 0$) vs $
 - **No $\rightarrow$ the criterion is not conclusive**.
 ```
 
-
-## Prediction
+## Prediction {#multlin-prediction}
 
 As in the simple linear model, the forecast of $Y$ from $\mathbf{X}=\mathbf{x}$ (this is, $X_1=x_1,\ldots,X_k=x_k$) is approached by two different ways:
 
@@ -686,10 +681,9 @@ Similarities and differences in the prediction of the conditional mean $\mathbb{
 - *Differences*. $\mathbb{E}[Y|\mathbf{X}=\mathbf{x}]$ is deterministic and $Y|\mathbf{X}=\mathbf{x}$ is random. Therefore, the variance is larger for the prediction of $Y|\mathbf{X}=\mathbf{x}$ than for the prediction of $\mathbb{E}[Y|\mathbf{X}=\mathbf{x}]$.
 ```
 
+## ANOVA and model fit {#multlin-aovfit}
 
-## ANOVA and model fit {#anovamult}
-
-### ANOVA
+### ANOVA {#multlin-aovfit-anova}
 
 The ANOVA decomposition for multiple linear regression is quite analogous to the one in simple linear regression. The ANOVA decomposes the variance of $Y$ into two parts, each one corresponding to the regression and to the error, respectively. Since the difference between simple and multiple linear regression is the number of predictors -- the response $Y$ is unique in both cases -- the ANOVA decompositions are highly similar, as we will see.
 
@@ -814,15 +808,15 @@ Recall that the $F$-statistic, its $p$-value and the degrees of freedom are also
 Compute the ANOVA table for the regression `Price ~ WinterRain + AGST + HarvestRain + Age` in the `wine` dataset. Check that the $p$-value for the $F$-test given in `summary` and by `simpleAnova` are the same.
 ```
 
-### The $R^2$
+### The $R^2$ {#multlin-aovfit-R2}
 
 The *coefficient of determination* $R^2$ is defined as in simple linear regression:
 \begin{align*}
 R^2=\frac{\text{SSR}}{\text{SST}}=\frac{\text{SSR}}{\text{SSR}+\text{SSE}}=\frac{\text{SSR}}{\text{SSR}+(n-k-1)\hat\sigma^2}.
 \end{align*}
-$R^2$ measures the **proportion of variation** of the response variable $Y$ that is **explained** by the predictor $X$ through the regression. Intuitively, $R^2$ measures the **tightness of the data cloud around the regression plane**. Check in Figure \@ref(fig:anovaillus3D) how changing the value of $\sigma^2$ (not $\hat\sigma^2$, but $\hat\sigma^2$ is obviously dependent on $\sigma^2$) affects the $R^2$. Also, as we saw in Section \@ref(fit), $R^2=r^2_{y\hat y}$, that is, *the square of the sample correlation coefficient between $Y_1,\ldots,Y_n$ and $\hat Y_1,\ldots,\hat Y_n$ is $R^2$*.
+$R^2$ measures the **proportion of variation** of the response variable $Y$ that is **explained** by the predictor $X$ through the regression. Intuitively, $R^2$ measures the **tightness of the data cloud around the regression plane**. Check in Figure \@ref(fig:anovaillus3D) how changing the value of $\sigma^2$ (not $\hat\sigma^2$, but $\hat\sigma^2$ is obviously dependent on $\sigma^2$) affects the $R^2$. Also, as we saw in Section \@ref(simplin-aovfit), $R^2=r^2_{y\hat y}$, that is, *the square of the sample correlation coefficient between $Y_1,\ldots,Y_n$ and $\hat Y_1,\ldots,\hat Y_n$ is $R^2$*.
 
-Trusting blindly the $R^2$ can lead to catastrophic conclusions in model selection. Here is a counterexample of a multiple regression where the $R^2$ is apparently large but the assumptions discussed in Section \@ref(assumptionsmult) are clearly not satisfied.
+Trusting blindly the $R^2$ can lead to catastrophic conclusions in model selection. Here is a counterexample of a multiple regression where the $R^2$ is apparently large but the assumptions discussed in Section \@ref(multlin-assumps) are clearly not satisfied.
 
 ```{r, collapse = TRUE, webgl = TRUE, cache = TRUE}
 # Create data that:
@@ -859,7 +853,7 @@ R^2=\frac{\text{SSR}}{\text{SST}}=\frac{\text{SST} - \text{SSE}}{\text{SST}}=\fr
 so if $\text{RSS}(\hat{\boldsymbol{\beta}})=\min_{\boldsymbol{\beta}\in\mathbb{R}^{k+1}}\text{RSS}(\boldsymbol{\beta})$, then $R^2$ is maximal for $\hat{\boldsymbol{\beta}}$!
 ```
 
-### The $R^2_{\text{Adj}}$
+### The $R^2_{\text{Adj}}$ {#multlin-aovfit-R2Adj}
 
 As we saw, these are equivalent forms for $R^2$:
 \begin{align}
@@ -868,7 +862,7 @@ R^2&=\frac{\text{SSR}}{\text{SST}}=\frac{\text{SST}-\text{SSE}}{\text{SST}}=1-\f
 \end{align}
 The SSE on the numerator always decreases as more predictors are added to the model, even if these are no significant. As a consequence, the **$R^2$ always increases with $k$**. Why is so? Intuitively, because the complexity -- hence the flexibility -- of the model augments when we use more predictors to explain $Y$. Mathematically, because when $k$ approaches $n-1$ and $\hat\sigma^2$, then the second term in \@ref(eq:R2) is reduced and as a consequence $R^2$ grows.
 
-The *adjusted $R^2$* is an important quantity specifically designed to cover this $R^2$'s flaw, which is ubiquitous in multiple linear regression. The purpose is to have a better tool for **comparing models without systematically favouring complexer models**. This alternative coefficient is defined as
+The *adjusted $R^2$* is an important quantity specifically designed to cover this $R^2$'s flaw, which is ubiquitous in multiple linear regression. The purpose is to have a better tool for **comparing models without systematically favoring complexer models**. This alternative coefficient is defined as
 \begin{align}
 R^2_{\text{Adj}}&=1-\frac{\text{SSE}/(n-k-1)}{\text{SST}/(n-1)}=1-\frac{\text{SSE}}{\text{SST}}\times\frac{n-1}{n-k-1}\nonumber\\
 &=1-\frac{\hat\sigma^2}{\text{SST}}\times (n-1).(\#eq:R2A)
@@ -889,7 +883,7 @@ with $j=1,\ldots,k$ and we plot them as the curves $(j,R^2(j))$ and $(j,R_\text{
 knitr::include_graphics("images/R/R2vsAdjR2.png")
 ```
 
-Figure \@ref(fig:R2) contains the results of this experiment. As you can see $R^2$ increases linearly with the number of predictors considered, although only the first two ones were important! On the contrary, $R^2_\text{Adj}$ only increases in the first two variables and then is flat on average, but it has a huge variability when $k$ approaches $n-2$. This is a consequence of the explosive variance of $\hat\sigma^2$ in that *degenerate case* (as we will see in Section \@ref(selection)). The experiment evidences that **$R^2_\text{Adj}$ is more adequate than the $R^2$ for evaluating the fit of a multiple linear regression**.
+Figure \@ref(fig:R2) contains the results of this experiment. As you can see $R^2$ increases linearly with the number of predictors considered, although only the first two ones were important! On the contrary, $R^2_\text{Adj}$ only increases in the first two variables and then is flat on average, but it has a huge variability when $k$ approaches $n-2$. This is a consequence of the explosive variance of $\hat\sigma^2$ in that *degenerate case* (as we will see in Section \@ref(multlin-modsel)). The experiment evidences that **$R^2_\text{Adj}$ is more adequate than the $R^2$ for evaluating the fit of a multiple linear regression**.
 
 An example of a simulated dataset considered in the experiment of Figure \@ref(fig:R2):
 ```{r, eval = FALSE, cache = TRUE}
@@ -910,7 +904,7 @@ summary(lm(y ~ X[, 1:22], data = data))
 ```
 
 ```{block, type = 'rmdcaution'}
-The $R^2_\text{Adj}$ no longer measures the proportion of variation of $Y$ explained by the regression, but the result of *correcting this proportion by the number of predictors exmployed*. As a consequence of this, $R^2_\text{Adj}\leq1$ but **it can be negative!**
+The $R^2_\text{Adj}$ no longer measures the proportion of variation of $Y$ explained by the regression, but the result of *correcting this proportion by the number of predictors employed*. As a consequence of this, $R^2_\text{Adj}\leq1$ but **it can be negative!**
 ```
 
 The next code illustrates a situation where we have two predictors completely independent from the response. The fitted model has a negative $R^2_\text{Adj}$.
@@ -929,9 +923,9 @@ summary(lm(y ~ x1 + x2))
 Construct more predictors (`x3`, `x4`, ...) by sampling 100 points from a normal (`rnorm(100)`). Check that when the predictors are added to the model, the $R^2_\text{Adj}$ decreases and the $R^2$ increases.
 ```
 
-## Model selection {#selection}
+## Model selection {#multlin-modsel}
 
-In Section \@ref(wine) we briefly saw that **the inclusion of more predictors is not for free**: there is a price to pay in terms more variability on the coefficients. Indeed, there is a **maximum number of predictors $k$** that can be considered in a linear model for a sample size $n$: **$k\leq n-2$**. Or equivalently, there is a **minimum sample size $n$** required for fitting a model with $k$ predictors: **$n\geq k + 2$**.
+In Section \@ref(multlin-examps-wine) we briefly saw that **the inclusion of more predictors is not for free**: there is a price to pay in terms more variability on the coefficients. Indeed, there is a **maximum number of predictors $k$** that can be considered in a linear model for a sample size $n$: **$k\leq n-2$**. Or equivalently, there is a **minimum sample size $n$** required for fitting a model with $k$ predictors: **$n\geq k + 2$**.
 
 The interpretation of this fact is simple if we think on the geometry for $k=1$ and $k=2$:
 
@@ -940,13 +934,12 @@ The interpretation of this fact is simple if we think on the geometry for $k=1$ 
 
 Another interpretation is the following:
 
-> The fitting of a linear model with $k$ predictors involves the estimation the $k+2$ parameters $(\boldsymbol{\beta},\sigma^2)$ from $n$ data points. The closer $k+2$ and $n$ are, the more variable the estimates $(\hat{\boldsymbol{\beta}},\hat\sigma^2)$ will be, since less information is availiable for computing each one. In the limit case $n=k+2$, each sample point determines a parameter estimate.
+> The fitting of a linear model with $k$ predictors involves the estimation the $k+2$ parameters $(\boldsymbol{\beta},\sigma^2)$ from $n$ data points. The closer $k+2$ and $n$ are, the more variable the estimates $(\hat{\boldsymbol{\beta}},\hat\sigma^2)$ will be, since less information is available for computing each one. In the limit case $n=k+2$, each sample point determines a parameter estimate.
 
 The *degrees of freedom* $n-k-1$ quantify the increasing on the variability of $(\hat{\boldsymbol{\beta}},\hat\sigma^2)$ when $n-k-1$ decreases. For example:
 
 - $t_{n-k-1;\alpha/2}$ appears in \@ref(eq:normp2) and influences the length of the CIs for $\beta_j$, see \@ref(eq:cip). It also influences the length of the CIs for the prediction. As Figure \@ref(fig:dft) shows, when the degrees of freedom decrease, $t_{n-k-1;\alpha/2}$ increases, thus the intervals become wider.
 - $\hat\sigma^2=\frac{1}{n-k-1}\sum_{i=1}^n\hat\varepsilon_i^2$ influences the $R^2$ and $R^2_\text{Adj}$. If no relevant variables are added to the model then $\sum_{i=1}^n\hat\varepsilon_i^2$ will not change substantially. However, the reducing factor $\frac{1}{n-k-1}$ will decrease as $k$ augments, inflating $\hat\sigma^2$ and its variance. This is exactly what happened in Figure \@ref(fig:R2).
-
 
 ```{r, dft, echo = FALSE, warning = FALSE, results = 'hide', out.width = '70%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Effect of $\\text{df}=n-k-1$ in $t_{\\text{df};\\alpha/2}$ for $\\alpha=0.10,0.05,0.01$.', cache = TRUE}
 df <- 1:30
@@ -1004,7 +997,6 @@ summary(modBIC)
 stepwise(mod, trace = 0, direction = "forward")
 stepwise(mod, trace = 0, direction = "backward")
 
-
 # With AIC
 modAIC <- stepwise(mod, trace = 0, criterion = "AIC")
 summary(modAIC)
@@ -1026,16 +1018,15 @@ The **advice** is to try several of these methods and retain the one with minimu
 `stepwise` assumes no `NA`'s (missing values) are present in the data. It is advised to remove the missing values in the data before since their presence might lead to errors. To do so, employ `data = na.omit(dataset)` in the call to `lm` (if your dataset is `dataset`).
 ```
 
-
-We conclude highlighting a caveat on the use of the BIC and AIC: they are constructed assuming that the sample size $n$ is much larger than the number of parameters in the model ($k+2$). Therefore, they will work reasonably well if $n>>k+2$, but if this is not true they may favor unrealistic complex models. An illustration of this phenomena is Figure \@ref(fig:bic), which is the BIC/AIC version of Figure \@ref(fig:R2) for the experiment done in Section \@ref(anovamult). The BIC and AIC curves tend to have local minimums close to $k=2$ and then increase. But when $k+2$ gets close to $n$, they quickly drop down. Note also how the BIC penalizes more the complexity than the AIC, which is more flat.
+We conclude highlighting a caveat on the use of the BIC and AIC: they are constructed assuming that the sample size $n$ is much larger than the number of parameters in the model ($k+2$). Therefore, they will work reasonably well if $n>>k+2$, but if this is not true they may favor unrealistic complex models. An illustration of this phenomena is Figure \@ref(fig:bic), which is the BIC/AIC version of Figure \@ref(fig:R2) for the experiment done in Section \@ref(multlin-aovfit). The BIC and AIC curves tend to have local minimums close to $k=2$ and then increase. But when $k+2$ gets close to $n$, they quickly drop down. Note also how the BIC penalizes more the complexity than the AIC, which is more flat.
 
 ```{r, bic, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Comparison of BIC and AIC for $n=200$ and $k$ ranging from $1$ to $198$. $M=100$ datasets were simulated with **only the first two** predictors being significant. The thicker curves are the mean of each color\'s curves.', fig.show = 'hold', cache = TRUE}
 knitr::include_graphics("images/R/BICandAIC.png")
 ```
 
-## Model diagnostics and multicollinearity {#diagnostics}
+## Model diagnostics and multicollinearity {#multlin-diagnostics}
 
-As we saw in Section \@ref(assumptionsmult), checking the assumptions of the multiple linear model through the data scatterplots becomes tricky even when $k=2$. To solve this issue, a series of *diagnostic plots* have been designed in order to evaluate graphically and in a simple way the validity of the assumptions. For illustration, we retake the `wine` dataset ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/wine.csv)).
+As we saw in Section \@ref(multlin-assumps), checking the assumptions of the multiple linear model through the data scatterplots becomes tricky even when $k=2$. To solve this issue, a series of *diagnostic plots* have been designed in order to evaluate graphically and in a simple way the validity of the assumptions. For illustration, we retake the `wine` dataset ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/wine.csv)).
 
 ```{r, collapse = TRUE, cache = TRUE}
 mod <- lm(Price ~ Age + AGST + HarvestRain + WinterRain, data = wine)
@@ -1095,18 +1086,14 @@ A common problem that arises in multiple linear regression is **multicollinearit
 - It is **difficult to determine how each of the highly related predictors affects the response**, since one masks the other. This may result in numerical instabilities.
 
 <!--
-Intuitively, multicollinearity can be thought in a
-plane spins around a straight line (think about holding a card on their opposite
-corners and make it spinning on its axis of rotation)
-Animation:
-Insight into straight line in 3D
+Intuitively, multicollinearity can be thought as a plane that pins around a straight line (think about holding a card on its opposite corners and make it spinning on its axis of rotation). Animation: Insight into straight line in 3D
 -->
 
 An approach is to detect multicollinearity is to compute the correlation matrix between the predictors by `cor` (in `R Commander`: `'Statistics' -> 'Summaries' -> 'Correlation matrix...'`)
 ```{r, collapse = TRUE, cache = TRUE}
 cor(wine)
 ```
-Here we can see what we already knew from Section \@ref(wine), that `Age` and `Year` are perfectly linearly related and that `Age` and `FrancePop` are highly linearly related.
+Here we can see what we already knew from Section \@ref(multlin-examps-wine), that `Age` and `Year` are perfectly linearly related and that `Age` and `FrancePop` are highly linearly related.
 
 However, is not enough to inspect remove pair by pair correlations in order to get rid of multicollinearity. Here is a counterexample:
 ```{r, collapse = TRUE, cache = TRUE}
@@ -1121,7 +1108,7 @@ x4 <- -x1 + x2 + rnorm(100, sd = 0.25)
 y <- 1 + 0.5 * x1 + 2 * x2 - 3 * x3 - x4 + rnorm(100)
 data <- data.frame(x1 = x1, x2 = x2, x3 = x3, x4 = x4, y = y)
 
-# Correlations - none seems suspicius
+# Correlations - none seems suspicious
 cor(data)
 ```
 
@@ -1136,7 +1123,7 @@ where $R^2_{X_j|X_{-j}}$ is the $R^2$ from a regression of $X_j$ into the remain
 
 VIF is called by `vif` and takes as argument a linear model (In `R Commander`: `'Models' -> 'Numerical diagnostics' -> 'Variance-inflation factors'`). We continue with the previous example.
 ```{r, collapse = TRUE, cache = TRUE}
-# Variance inflation factors anormal: largest for x4, we remove it
+# Abnormal variance inflation factors: largest for x4, we remove it
 modMultiCo <- lm(y ~ x1 + x2 + x3 + x4)
 vif(modMultiCo)
 

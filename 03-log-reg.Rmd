@@ -1,15 +1,15 @@
 
-# Logistic regression {#log-reg}
+# Logistic regression {#logreg}
 
-As we saw in Chapters \@ref(simp) and \@ref(mult), linear regression assumes that the response variable $Y$ is *continuous*. In this chapter we will see how *logistic regression* can deal with a *discrete* response $Y$. The simplest case is with $Y$ being a *binary* response, that is, a variable encoding two categories. In general, we assume that we have $X_1,\ldots,X_k$ predictors for explaining $Y$ (*multiple* logistic regression) and cover the peculiarities for $k=1$ as particular cases.
+As we saw in Chapters \@ref(simplin) and \@ref(multlin), linear regression assumes that the response variable $Y$ is *continuous*. In this chapter we will see how *logistic regression* can deal with a *discrete* response $Y$. The simplest case is with $Y$ being a *binary* response, that is, a variable encoding two categories. In general, we assume that we have $X_1,\ldots,X_k$ predictors for explaining $Y$ (*multiple* logistic regression) and cover the peculiarities for $k=1$ as particular cases.
 
-## More `R` basics
+## More `R` basics {#logreg-R}
 
 In order to implement some of the contents of this chapter we need to cover more `R` basics, mostly related with flexible plotting that is not implemented directly in `R Commander`. The `R` functions we will are also very useful for simplifying some `R Commander` approaches.
 
 In the following sections, **type** -- not copy and paste systematically -- the code in the `'R Script'` panel and send it to the output panel. Remember that you should get the same outputs (which are preceded by `## [1]`).
 
-### Data frames revisited
+### Data frames revisited {#logreg-R-dataframes}
 
 ```{r, echo = TRUE, collapse = TRUE, error = TRUE, cache = TRUE}
 # Let's begin importing the iris dataset
@@ -54,7 +54,7 @@ Do the following:
 - Compute the levels of `name`.
 ```
 
-### Vector-related functions
+### Vector-related functions {#logreg-R-vector}
 
 ```{r, echo = TRUE, collapse = TRUE, error = TRUE, cache = TRUE}
 # The function seq creates sequences of numbers equally separated
@@ -89,7 +89,7 @@ Do the following:
 
 ```
 
-### Logical conditions and subsetting
+### Logical conditions and subsetting {#logreg-R-logic}
 
 ```{r, echo = TRUE, collapse = TRUE, error = TRUE, cache = TRUE}
 # Relational operators: x < y, x > y, x <= y, x >= y, x == y, x!= y
@@ -111,7 +111,7 @@ Do the following:
 1 == 1 # Tests equality. Remember: "=="" and not "="" !
 
 # Unequal
-1 != 0 # Tests iequality
+1 != 0 # Tests inequality
 
 # TRUE is encoded as 1 and FALSE as 0
 TRUE + 1
@@ -192,11 +192,11 @@ Do the following for the `iris` dataset:
 
 ```
 
-### Plotting functions
+### Plotting functions {#logreg-R-plot}
 
 ```{r, echo = TRUE, collapse = TRUE, error = TRUE, cache = TRUE}
 # plot is the main function for plotting in R
-# It has a different behaviour depending on the kind of object that it receives
+# It has a different behavior depending on the kind of object that it receives
 
 # For example, for a regression model, it produces diagnostic plots
 mod <- lm(Sepal.Width ~ Sepal.Length, data = iris)
@@ -242,7 +242,7 @@ points(x, y + 10, col = "blue") # Add points
 abline(a = 5, b = 1, col = "orange", lwd = 2) # Add a straight line y = a + b * x
 ```
 
-### Distributions
+### Distributions {#logreg-R-distribs}
 
 The operations on distributions described here are implemented in `R Commander` through the menu `'Distributions'`, but is convenient for you to grasp how are they working.
 
@@ -285,7 +285,7 @@ qnorm(p = 0.95, mean = 0, sd = 1)
 
 # All distributions have the same syntax: rname(n,...), dname(x,...), dname(p,...)  
 # and qname(p,...), but the parameters in ... change. Look them in ?Distributions
-# For example, here is que same for the uniform distribution
+# For example, here is the same for the uniform distribution
 
 # Sampling from a U(0, 1)
 set.seed(45678)
@@ -325,7 +325,7 @@ Do the following:
 - Plot the density of a $t$ distribution with `df = 1` (use a sequence spanning from `-4` to `4`). Add lines of different colors with the densities for `df = 5`, `df = 10`, `df = 50` and `df = 100`. Do you see any pattern?
 ```
 
-### Defining functions
+### Defining functions {#logreg-R-funcs}
 
 ```{r, echo = TRUE, collapse = TRUE, error = TRUE, cache = TRUE}
 # A function is a way of encapsulating a block of code so it can be reused easily
@@ -367,9 +367,9 @@ addLine(x, beta0 = 0.1, beta1 = 0)
 ```
 
 
-## Examples and applications {#log-reg-applications}
+## Examples and applications {#logreg-examps}
 
-### Case study: *The Challenger disaster* {#log-reg-challenger}
+### Case study: *The Challenger disaster* {#logreg-examps-challenger}
 
 The *Challenger* disaster occurred on the 28th January of 1986, when the NASA Space Shuttle orbiter *Challenger* broke apart and disintegrated at 73 seconds into its flight, leading to the deaths of its seven crew members. The accident deeply shocked the US society, in part due to the attention the mission had received because of the presence of Christa McAuliffe, who would have been the first astronaut-teacher. Because of this, NASA TV broadcasted live the launch to US public schools, which resulted in millions of school children witnessing the accident. The accident had serious consequences for the NASA credibility and resulted in an interruption of 32 months in the shuttle program. The Presidential *Rogers Commission* (formed by astronaut Neil A. Armstrong and Nobel laureate Richard P. Feynman, among others) was created to investigate the disaster.
 
@@ -381,7 +381,7 @@ The Rogers Commission elaborated a report [@Roberts1986] with all the findings. 
 
 > "Temperature data [are] not conclusive on predicting primary O-ring blowby."
 
-```{r, rogerts, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Number of incidents in the O-rings (fied joints) versus temperatures. Panel *a* includes only flights with incidents. Panel *b* contains all flights (with and without incidents).', fig.show = 'hold', cache = TRUE}
+```{r, rogerts, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Number of incidents in the O-rings (filed joints) versus temperatures. Panel *a* includes only flights with incidents. Panel *b* contains all flights (with and without incidents).', fig.show = 'hold', cache = TRUE}
 knitr::include_graphics("images/figures/challenger.png")
 ```
 
@@ -395,7 +395,7 @@ The purpose of this case study, inspired by @Dalal1989, is to quantify what was 
 - Q2. *In which way was the temperature affecting the probability of O-ring incidents?*
 - Q3. *What was the predicted probability of an incidient in an O-ring for the temperature of the launch day?*
 
-To try to answer these questions we have the `challenger` dataset ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/challenger.txt)). The dataset contains (shown in Table \@ref(tab:challengertable)) information regarding the state of the solid rocket boosters after launch^[After the shuttle exits the atmosphere, the solid rocket boosters separate and descend to land using a parachute where they are carefully analysed.] for 23 flights. Each row has, among others, the following variables:
+To try to answer these questions we have the `challenger` dataset ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/challenger.txt)). The dataset contains (shown in Table \@ref(tab:challengertable)) information regarding the state of the solid rocket boosters after launch^[After the shuttle exits the atmosphere, the solid rocket boosters separate and descend to land using a parachute where they are carefully analyzed.] for 23 flights. Each row has, among others, the following variables:
 
 - `fail.field`, `fail.nozzle`: binary variables indicating whether there was an incident with the O-rings in the field joints or in the nozzles of the solid rocket boosters. `1` codifies an incident and `0` its absence. On the analysis, we focus on the O-rings of the field joint as being the most determinants for the accident.
 - `temp`: temperature in the day of launch. Measured in Celsius degrees.
@@ -411,7 +411,7 @@ knitr::kable(
 )
 ```
 
-Let's begin the analysis by replicating Figures \@ref(fig:rogerts)a and \@ref(fig:rogerts)b and checking that linear regression is not the right tool for answering Q1--Q3. For that, we make two scatterplots of `nfails.field` (number of total incidents in the field joints) versus `temp`, the first one excluding the launches without incidents (`subset = nfails.field > 0`) and the second one for all the data. Doing it through `R Commander` as we saw in Chapter \@ref(simp), you should get something similar to:
+Let's begin the analysis by replicating Figures \@ref(fig:rogerts)a and \@ref(fig:rogerts)b and checking that linear regression is not the right tool for answering Q1--Q3. For that, we make two scatterplots of `nfails.field` (number of total incidents in the field joints) versus `temp`, the first one excluding the launches without incidents (`subset = nfails.field > 0`) and the second one for all the data. Doing it through `R Commander` as we saw in Chapter \@ref(simplin), you should get something similar to:
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE}
 library(car)
 ```
@@ -435,7 +435,7 @@ Albeit linear regression is not the adequate tool for this data, it is able to d
 1. **The trend for launches with incidents is flat, hence suggesting there is no dependence on the temperature** (Figure \@ref(fig:rogerts)a). This was one of the arguments behind NASA's decision of launching the rocket at a temperature of -0.6 degrees.
 2. However, **the trend for *all* launches indicates a clear negative dependence between temperature and number of incidents!** (Figure \@ref(fig:rogerts)b). Think about it in this way: the minimum temperature for a launch without incidents ever recorded was above 18 degrees, and the Challenger was launched at -0.6 without clearly knowing the effects of such low temperatures.
 
-Instead of trying to predict the number of incidents, we will concentrate on modelling the *probability of expecting at least one incident given the temperature*, a simpler but also revealing approach. In other words, we look to estimate the following curve:
+Instead of trying to predict the number of incidents, we will concentrate on modeling the *probability of expecting at least one incident given the temperature*, a simpler but also revealing approach. In other words, we look to estimate the following curve:
 $$
 p(x)=\mathbb{P}(\text{incident}=1|\text{temperature}=x)
 $$
@@ -495,10 +495,9 @@ To conclude this section, we refer to a funny and comprehensive exposition by Ju
 knitr::include_url("https://www.youtube.com/embed/MOeDbQlF5Tw?start=552")
 ```
 
+## Model formulation and estimation by maximum likelihood {#logreg-model}
 
-## Model formulation and estimation by maximum likelihood {#log-reg-model-estimation}
-
-As saw in Section \@ref(modelmult), the multiple linear model described the relation between the random variables $X_1,\ldots,X_k$ and $Y$ by assuming the linear relation
+As we saw in Section \@ref(multlin-model), the multiple linear model described the relation between the random variables $X_1,\ldots,X_k$ and $Y$ by assuming the linear relation
 \begin{align*}
 Y = \beta_0 + \beta_1 X_1 + \ldots + \beta_k X_k + \varepsilon.
 \end{align*}
@@ -506,7 +505,7 @@ Since we assume $\mathbb{E}[\varepsilon|X_1=x_1,\ldots,X_k=x_k]=0$, the previous
 \begin{align}
 \mathbb{E}[Y|X_1=x_1,\ldots,X_k=x_k]=\beta_0+\beta_1x_1+\ldots+\beta_kx_k,(\#eq:eq-lm)
 \end{align}
-where $\mathbb{E}[Y|X_1=x_1,\ldots,X_k=x_k]$ is the mean of $Y$ for a particular value of the set of predictors. As remarked in Section \@ref(assumptionsmult), it was a *necessary condition that $Y$ was continuous in order to satisfy the normality of the errors*, hence the linear model assumptions. Or in other words, **the linear model is designed for a continuous response**.
+where $\mathbb{E}[Y|X_1=x_1,\ldots,X_k=x_k]$ is the mean of $Y$ for a particular value of the set of predictors. As remarked in Section \@ref(multlin-assumps), it was a *necessary condition that $Y$ was continuous in order to satisfy the normality of the errors*, hence the linear model assumptions. Or in other words, **the linear model is designed for a continuous response**.
 
 The situation when $Y$ is *discrete* (naturally ordered values; e.g. number of fails, number of students) or *categorical* (non-ordered categories; e.g. territorial divisions, ethnic groups) requires a special treatment. The simplest situation is when $Y$ is *binary* (or *dichotomic*): it can only take two values, codified for convenience as $1$ (success) and $0$ (failure). For example, in the Challenger case study we used `fail.field` as an *indicator* of whether "there was at least an incident with the O-rings" (`1` = yes, `0` = no). For binary variables there is no fundamental distinction between the treatment of discrete and categorical variables.
 
@@ -550,7 +549,7 @@ this is, how the probability of $Y=1$ is changing according to particular values
 \[
 p(x_1,\ldots,x_k)=\beta_0+\beta_1x_1+\ldots+\beta_kx_k.
 \]
-However, such a model will run into serious problems inevitably: negative probabilities and probabilities larger than one. The solution is to consider a function to encapsulate the value of $z=\beta_0+\beta_1x_1+\ldots+\beta_kx_k$, in $\mathbb{R}$, and map it back to $[0,1]$. There are several alternatives to do so, based on distribution functions $F:\mathbb{R}\longrightarrow[0,1]$ that deliver $y=F(z)\in[0,1]$ (see Figure \@ref(fig:logitprobit)). Different choices of $F$ give rise to different models:
+However, such a model will run into serious problems inevitably: negative probabilities and probabilities larger than one. A solution is to consider a function to encapsulate the value of $z=\beta_0+\beta_1x_1+\ldots+\beta_kx_k$, in $\mathbb{R}$, and map it back to $[0,1]$. There are several alternatives to do so, based on distribution functions $F:\mathbb{R}\longrightarrow[0,1]$ that deliver $y=F(z)\in[0,1]$ (see Figure \@ref(fig:logitprobit)). Different choices of $F$ give rise to different models:
 
 - **Uniform**. Truncate $z$ to $0$ and $1$ when $z<0$ and $z>1$, respectively.
 - **Logit**. Consider the *logistic distribution function*:
@@ -602,7 +601,7 @@ To be more precise on the interpretation of the coefficients $\beta_0,\ldots,\be
 \begin{align}
 \mathrm{odds}(Y)=\frac{p}{1-p}=\frac{\mathbb{P}[Y=1]}{\mathbb{P}[Y=0]}.(\#eq:eq-odds)
 \end{align}
-The odds is the *ratio between the probability of success and the probability of failure*. It is extensively used in betting^[Recall that the result of a bet is binary: you win or lose the bet.] due to its better interpretability. For example, if a horse $Y$ has a probability $p=2/3$ of winning a race ($Y=1$), then the odds of the horse is
+The odds is the *ratio between the probability of success and the probability of failure*. It is extensively used in betting^[Recall that the result of a bet is binary: you either win or lose the bet.] due to its better interpretability. For example, if a horse $Y$ has a probability $p=2/3$ of winning a race ($Y=1$), then the odds of the horse is
 \[
 \text{odds}=\frac{p}{1-p}=\frac{2/3}{1/3}=2.
 \]
@@ -734,7 +733,7 @@ In linear regression we relied on least squares estimation, in other words, the 
 As in the linear model, **the inclusion of a new predictor changes the coefficient estimates of the logistic model**.  
 ```
 
-## Assumptions of the model {#log-reg-assumptions}
+## Assumptions of the model {#logreg-assumps}
 
 Some probabilistic assumptions are required for performing inference on the model parameters $\boldsymbol\beta$ from the sample $(\mathbf{X}_1, Y_1),\ldots,(\mathbf{X}_n, Y_n)$. These assumptions are somehow simpler than the ones for linear regression.
 
@@ -761,7 +760,6 @@ There are three important points of the linear model assumptions  missing in the
 - *Where are the errors? The errors played a fundamental role in the linear model assumptions, but are not employed in logistic regression.* The errors are not fundamental for building the linear model but just a helpful concept related to least squares. The linear model can be constructed without errors as \@ref(eq:condnorm), which has a logistic analogous in \@ref(eq:condber).
 - *Why is normality not present?* A normal distribution is not adequate to replace the Bernoulli distribution in \@ref(eq:condber) since the response $Y$ *has to be binary* and the Normal or other continuous distribution would put yield illegal values for $Y$.
 
-
 ```{block, type='rmdinsight'}
 Recall that:
 
@@ -769,7 +767,7 @@ Recall that:
 - $X_1,\ldots,X_k$ are **not required to be independent** between them.
 ```
 
-## Inference for model parameters {#log-reg-inference}
+## Inference for model parameters {#logreg-inference}
 
 The assumptions on which the logistic model is constructed allow to specify what is the *asymptotic* distribution of the *random vector* $\hat{\boldsymbol{\beta}}$. Again, the distribution is derived conditionally on the sample predictors $\mathbf{X}_1,\ldots,\mathbf{X}_n$. In other words, we assume that the randomness of $Y$ comes only from $Y|(X_1=x_1,\ldots,X_k=x_k)\sim\mathrm{Ber}(p(\mathbf{x}))$ and not from the predictors. To denote this, we employ lowercase for the sample predictors $\mathbf{x}_1,\ldots,\mathbf{x}_n$.
 
@@ -778,7 +776,7 @@ There is an important difference between the inference results for the linear mo
 - **In linear regression the inference is exact**. This is due to the nice properties of the normal, least squares estimation and linearity. As a consequence, the distributions of the coefficients are perfectly known assuming that the assumptions hold.
 - **In logistic regression the inference is asymptotic**. This means that the distributions of the coefficients are unknown except for large sample sizes $n$, for which we have **approximations**. The reason is the more complexity of the model in terms of non-linearity. This is the usual situation for the majority of the regression models.
 
-### Distributions of the fitted coefficients {#log-reg-distributions}
+### Distributions of the fitted coefficients {#logreg-inference-distribs}
 
 The distribution of $\hat{\boldsymbol{\beta}}$ is given by the asymptotic theory of MLE:
 \begin{align}
@@ -830,7 +828,7 @@ v_j\text{ is the $j$-th element of the diagonal of }(\mathbf{X}^T\hat{\mathbf{V}
 \]
 The LHS of \@ref(eq:normp2) is the **Wald statistic** for $\beta_j$, $j=0,\ldots,k$. They are employed for building confidence intervals and hypothesis tests.
 
-### Confidence intervals for the coefficients {#log-reg-confidence}
+### Confidence intervals for the coefficients {#logreg-inference-cis}
 
 Thanks to \@ref(eq:mle3), we can have the $100(1-\alpha)\%$ CI for the coefficient $\beta_j$, $j=0,\ldots,k$:
 \begin{align}
@@ -842,7 +840,7 @@ e^{\left(\hat\beta_j\pm\hat{\mathrm{SE}}(\hat\beta_j)z_{\alpha/2}\right)}.
 \]
 Of course, this CI is **not** the same as $\left(e^{\hat\beta_j}\pm e^{\hat{\mathrm{SE}}(\hat\beta_j)z_{\alpha/2}}\right)$, which is not a CI for $e^{\hat\beta_j}$.
 
-Let's see how we can compute the CIs. We return to the `challenger` dataset, so in case you do not have it loaded, you can download it [here](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/challenger.txt). We analyse the CI for the coefficients of `fail.field ~ temp`.
+Let's see how we can compute the CIs. We return to the `challenger` dataset, so in case you do not have it loaded, you can download it [here](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/challenger.txt). We analyze the CI for the coefficients of `fail.field ~ temp`.
 ```{r, collapse = TRUE, cache = TRUE}
 # Fit model
 nasa <- glm(fail.field ~ temp, family = "binomial", data = challenger)
@@ -872,7 +870,7 @@ Compute and interpret the CIs for the exponentiated coefficients, at level $\alp
 The interpretation of the variables is given above Table \@ref(tab:challengertable).
 ```
 
-### Testing on the coefficients {#log-reg-testing}
+### Testing on the coefficients {#logreg-inference-tests}
 
 The distributions in \@ref(eq:mle3) also allow to conduct a formal hypothesis test on the coefficients $\beta_j$, $j=0,\ldots,k$. For example, the test for significance:
 \begin{align*}
@@ -917,7 +915,7 @@ confint(nasa2, level = 0.99) # temp still significant
 For the previous exercise, check the differences of using `confint` or `confint.default` for computing the CIs.
 ```
 
-## Prediction {#log-reg-prediction}
+## Prediction {#logreg-prediction}
 
 *Prediction* in logistic regression focuses mainly on predicting the values of the logistic curve
 \[
@@ -989,7 +987,7 @@ For the `challenger` dataset, do the following:
 
 ```
 
-Finally, Figure \@ref(fig:logcipred) gives an interactive visualization of the CIs for the conditional probability in simple logistic regression. Their interpretation is very similar to the CIs for the conditional mean in the simple linear model, see Section \@ref(prediction) and Figure \@ref(fig:cipred).
+Finally, Figure \@ref(fig:logcipred) gives an interactive visualization of the CIs for the conditional probability in simple logistic regression. Their interpretation is very similar to the CIs for the conditional mean in the simple linear model, see Section \@ref(simplin-prediction) and Figure \@ref(fig:cipred).
 
 (ref:logcipredtitle) Illustration of the CIs for the conditional probability in the simple logistic regression. Application also available [here](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/log-ci-prediction/).
 
@@ -997,14 +995,14 @@ Finally, Figure \@ref(fig:logcipred) gives an interactive visualization of the C
 knitr::include_app('https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/log-ci-prediction/', height = '1000px')
 ```
 
-## Deviance and model fit {#log-reg-deviance}
+## Deviance and model fit {#logreg-deviance}
 
 The **deviance** is a key concept in logistic regression. Intuitively, it measures the **deviance of the fitted logistic model with respect to a perfect model for $\mathbb{P}[Y=1|X_1=x_1,\ldots,X_k=x_k]$**. This perfect model, known as the *saturated model*, denotes an abstract model that fits perfectly the sample, this is, the model such that
 \[
 \hat{\mathbb{P}}[Y=1|X_1=X_{i1},\ldots,X_k=X_{ik}]=Y_i,\quad i=1,\ldots,n.
 \]
 This model assigns probability $0$ or $1$ to $Y$ depending on the actual value of $Y_i$. To clarify this concept, Figure \@ref(fig:saturated) shows a saturated model and a fitted logistic regression.
-```{r, saturated, echo = FALSE, results = 'hide', out.width = '70%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Fitted logistc regression versus *a* saturated model (several are possible depending on the interpolation between points) and the null model.', cache = TRUE}
+```{r, saturated, echo = FALSE, results = 'hide', out.width = '70%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Fitted logistic regression versus *a* saturated model (several are possible depending on the interpolation between points) and the null model.', cache = TRUE}
 set.seed(45671231)
 x <- runif(50, 0, 1)
 y <- rbinom(n = 50, size = 1, prob = 1/(1 + exp(-(1 - 6 * x))))
@@ -1110,7 +1108,7 @@ yHat <- nasa$fitted.values > 0.5
 
 # Hit matrix:
 # - 16 correctly classified as 0
-# - 4 correclty classified as 1
+# - 4 correctly classified as 1
 # - 3 incorrectly classified as 0
 tab <- table(challenger$fail.field, yHat)
 tab
@@ -1120,11 +1118,11 @@ tab
 sum(diag(tab)) / sum(tab) # Automatically
 ```
 
-It is important to recall that the hit matrix will be always *biased towards unrealistc good classification rates* if it is computed in the same sample used for fitting the logistic model. A familiar analogy is asking to your mother (data) whether you (model) are a good-looking human being (good predictive accuracy) -- the answer will be highly positively biased. To get a fair hit matrix, the right approach is to split randomly the sample into two: a *training dataset*, used for fitting the model, and a *test dataset*, used for evaluating the predictive accuracy.
+It is important to recall that the hit matrix will be always *biased towards unrealistic good classification rates* if it is computed in the same sample used for fitting the logistic model. A familiar analogy is asking to your mother (data) whether you (model) are a good-looking human being (good predictive accuracy) -- the answer will be highly positively biased. To get a fair hit matrix, the right approach is to split randomly the sample into two: a *training dataset*, used for fitting the model, and a *test dataset*, used for evaluating the predictive accuracy.
 
-## Model selection and multicollinearity {#log-reg-selection}
+## Model selection and multicollinearity {#logreg-modsel}
 
-The same discussion we did in Section \@ref(selection) is applicable to logistic regression with small changes:
+The same discussion we did in Section \@ref(multlin-modsel) is applicable to logistic regression with small changes:
 
 1. The **deviance** of the model (reciprocally the likelihood and the $R^2$) **always decreases** (increase) with the inclusion of more predictors -- no matter whether they are significant or not.
 2. The **excess of predictors** in the model is paid by a larger variability in the estimation of the model which results in less precise prediction.
@@ -1171,7 +1169,7 @@ mod <- glm(I(medv > 25) ~ ., data = Boston, family = "binomial")
 summary(mod)
 r2Log(mod)
 
-# With BIC - wnds up with only the significant variables and a similar R^2
+# With BIC - ends up with only the significant variables and a similar R^2
 modBIC <- stepwise(mod, trace = 0)
 summary(modBIC)
 r2Log(modBIC)
@@ -1198,10 +1196,10 @@ z <- 1 + 0.5 * x1 + 2 * x2 - 3 * x3 - x4
 y <- rbinom(n = 100, size = 1, prob = 1/(1 + exp(-z)))
 data <- data.frame(x1 = x1, x2 = x2, x3 = x3, x4 = x4, y = y)
 
-# Correlations - none seems suspicius
+# Correlations - none seems suspicious
 cor(data)
 
-# Generalized variance inflation factors anormal: largest for x4, we remove it
+# Abnormal generalized variance inflation factors: largest for x4, we remove it
 modMultiCo <- glm(y ~ x1 + x2 + x3 + x4, family = "binomial")
 vif(modMultiCo)
 
@@ -1214,7 +1212,7 @@ summary(modClean)
 r2Log(modMultiCo)
 r2Log(modClean)
 
-# Genralized variance inflation factors normal
+# Generalized variance inflation factors normal
 vif(modClean)
 ```
 

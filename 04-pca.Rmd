@@ -4,9 +4,9 @@ Principal Component Analysis (PCA) is a powerful multivariate technique designed
 
 There is *no response* $Y$ or particular variable in PCA that deserves a particular attention -- all variables are treated equally.
 
-## Examples and applications
+## Examples and applications {#pca-examps}
 
-### Case study: *Employement in European countries in the late 70s*
+### Case study: *Employment in European countries in the late 70s* {#pca-examps-employment}
 
 The purpose of this case study, motivated by @Hand1994 and @Bartholomew2008, is to reveal the structure of the job market and economy in different developed countries. The final aim is to have a meaningful and rigorous plot that is able to show the most important features of the countries in a concise form.
 
@@ -62,7 +62,7 @@ We definitely need a way of visualizing and quantifying the relations between va
     - **Weights of the variables in the PCs**. They give the interpretation of the PCs in terms of the original variables, as they are the coefficients of the linear combination. The weights of the variables $X_1,\ldots,X_k$ on the PC$_j$, $a_{1j},\ldots,a_{kj}$, are normalized: $a_{1j}^2+\ldots+a_{kj}^2=1$, $j=1,\ldots,k$. In `R`, they are called `loadings`.
     - **Scores of the data in the PCs**: this is the data with $\text{PC}_1,\ldots \text{PC}_k$ variables instead of $X_1,\ldots,X_k$. The **scores are uncorrelated**. Useful for knowing which PCs have more effect on a certain observation.
 
-Hence, PCA rearranges our variables in an information-equivalent, but more convenient, layout where the variables are **sorted according to the ammount of information they are able to explain**. From this position, the next step is clear: **stick only with a limited number of PCs such that they explain most of the information** (e.g., 70\% of the total variance) and do *dimension reduction*. The effectiveness of PCA in practice varies from the structure present in the dataset. For example, in the case of highly dependent data, it could explain more than the 90\% of variability of a dataset with tens of variables with just two PCs.
+Hence, PCA rearranges our variables in an information-equivalent, but more convenient, layout where the variables are **sorted according to the amount of information they are able to explain**. From this position, the next step is clear: **stick only with a limited number of PCs such that they explain most of the information** (e.g., 70\% of the total variance) and do *dimension reduction*. The effectiveness of PCA in practice varies from the structure present in the dataset. For example, in the case of highly dependent data, it could explain more than the 90\% of variability of a dataset with tens of variables with just two PCs.
 
 Let's see how to compute a full PCA in `R`.
 ```{r, collapse = TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1, cache = TRUE}
@@ -81,7 +81,7 @@ pca$sdev
 # (Because the matrix is orthogonal, so the transpose is the inverse)
 pca$loadings
 
-# Scores of the data on the PCs: how is the data reexpressed into PCs
+# Scores of the data on the PCs: how is the data re-expressed into PCs
 head(pca$scores, 10)
 
 # Scatterplot matrix of the scores - they are uncorrelated!
@@ -92,7 +92,7 @@ scatterplotMatrix(pca$scores, reg.line = lm, smooth = FALSE, spread = FALSE,
 # Means of the variables - before PCA the variables are centered
 pca$center
 
-# Rescalation done to each variable
+# Rescaling done to each variable
 # - if cor = FALSE (default), a vector of ones
 # - if cor = TRUE, a vector with the standard deviations of the variables
 pca$scale
@@ -133,7 +133,7 @@ To conclude, let's see how we can represent our original data into a plot called
 biplot(pca)
 ```
 
-### Case studies: Analysis of `USArrests`, `USJudgeRatings` and *La Liga 2015/2016 metrics*
+### Case studies: Analysis of `USArrests`, `USJudgeRatings` and *La Liga 2015/2016 metrics* {#pca-examps-datasets}
 
 The selection of the number of PCs and their interpretation though the weights and biplots are key aspects in a successful application of PCA. In this section we will see examples of both points through the datasets `USArrests`, `USJudgeRatings` and *La Liga 2015/2016* ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/la-liga-2015-2016.xlsx)).
 
@@ -148,7 +148,7 @@ There are several heuristic rules in order to determine the number of components
 In addition to these three heuristics, in practice we might apply a *justified bias* towards:
 
 4. $l=1,2$, since these are the ones that allow to have a **simple graphical representation of the data**. Even if the variability explained by the $l$ PCs is *low* (lower than $50\%$), these graphical representations are usually insightful. $l=3$ is preferred as a second option since its graphical representation is more cumbersome (see the end of this section).
-5. $l$'s such that they yield **intepretable PCs**. Interpreting PCs is not so straightforward as interpreting the original variables. Furthermore, it becomes more difficult the larger the index of the PC is, since it explains less information of the data.
+5. $l$'s such that they yield **interpretable PCs**. Interpreting PCs is not so straightforward as interpreting the original variables. Furthermore, it becomes more difficult the larger the index of the PC is, since it explains less information of the data.
 
 Let's see these heuristics in practice with the `USArrests` dataset (arrest statistics and population of US states).
 ```{r, collapse = TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1, cache = TRUE}
@@ -198,7 +198,7 @@ The selections of $l$ for this PCA, based on the previous heuristics, are:
 4. $l=1,2$ are fine, they can be easily represented graphically.
 5. $l=1,2$ are fine, both components are interpretable, as we will see later.
 
-Based on the previous cirteria, we can conclude that *$l=1$ PC is a reasonable compromise* for representing the `USJudgeRatings` dataset.
+Based on the previous criteria, we can conclude that *$l=1$ PC is a reasonable compromise* for representing the `USJudgeRatings` dataset.
 
 We analyse now a slightly more complicated dataset. It contains the standings and team statistics for La Liga 2015/2016:
 ```{r, laliga, echo = FALSE, out.width = '90%', fig.align = 'center', message = FALSE, warning = FALSE, cache = TRUE}
@@ -230,7 +230,7 @@ The selections of $l$ for this PCA, based on the previous heuristics, are:
 4. $l=2$ is preferred to $l=3$.
 5. $l=1,2$ are fine, both components are interpretable, as we will see later. $l=3$ is harder to interpret.
 
-Based on the previous citeria, we can conclude that *$l=2$ PCs is a reasonable compromise* for representing La Liga 2015/2016 dataset.
+Based on the previous criteria, we can conclude that *$l=2$ PCs is a reasonable compromise* for representing La Liga 2015/2016 dataset.
 
 Let's focus now on the **interpretation of the PCs**. In addition to the weights present in the `loadings` slot, `biplot` provides a powerful and succinct way of displaying the relevant information for $1\leq l\leq 2$. The biplot shows:
 
