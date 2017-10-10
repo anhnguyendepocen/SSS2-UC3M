@@ -390,7 +390,6 @@ sumMod <- summary(mod)
 sumMod
 ```
 
-
 The following table contains a handy cheat sheet of equivalences between `R` code and some of the statistical concepts associated to linear regression.
 
 |              `R`                       |        Statistical concept          |
@@ -816,7 +815,6 @@ Y|X=x\sim \mathcal{N}(\beta_0+\beta_1x,\sigma^2)
 Recall:
 
 - Nothing is said about the distribution of $X$. Indeed, $X$ could be deterministic (called *fixed design*) or random (*random design*).
-
 - The linear model **assumes that $Y$ is continuous** due to the normality of the errors. However, **$X$ can be discrete**!
 ```
 
@@ -1514,25 +1512,26 @@ Import the datasets `Titanic` (`datasets` package), `PublicSchools` (`sandwich` 
 
 ### Simple data management {#simplin-datamanag}
 
-```{block, type = 'rmdexercise'}
+```{block2, type = 'rmdexercise'}
 Perform the following data management operations. Remember to select the adequate dataset as the active one:
 
 - Load `datasets.RData`.
 - Establish the case names in `la-liga-2015-2016` as the variable `Team` (if they were not set).
 - Establish the case names in `wdi-countries` as the variable `Country`.
 - In `la-liga-2015-2016`, create a new variable named `Goals.wrt.mean`, defined as `Goals - mean(Goals)`.
-- In `wdi-countries`, create a new variable that standardizes^[The standardization of $X_1,\ldots,X_n$ is $Z_1,\ldots,Z_n$, with $Z_i=\frac{X_i-\bar X}{s_x}$, where $s_x$ is the standard deviation of $X_1,\ldots,X_n$] the `GDP.growth`. Call it `GDP.growth`.
+- In `wdi-countries`, create a new variable that standardizes^[The standardization of $X_1,\ldots,X_n$ is $Z_1,\ldots,Z_n$, with $Z_i=\frac{X_i-\bar X}{s_x}$, where $s_x$ is the standard deviation of $X_1,\ldots,X_n$.] the `GDP.growth`. Call it `GDP.growth`.
 - Delete the variable `Species` from `iris`.
 - For `la-liga-2015-2016`, go to `'Edit dataset'` and change the `Points` of `Getafe` to `40`. To do so, click on the cell, change the content and **click OK** or select a new cell to **save changes**. Do not hit `'Enter`' or you will add a new column!.
 - Explore the menu options of `'Edit dataset'`for adding and removing rows/columns. Is a useful feature for simple edits.
 - Create a `newDatasets.RData` file saving all the modified datasets.
 - Restart `R Commander` and then load `newDatasets.RData` (ignore the error `'ERROR: There is more than one object in the file...'` and check that all the datasets are indeed available).
+
 ```
 
 ### Computing simple linear regressions {#simplin-exercises-reg}
 
 ```{block, type = 'rmdexercise'}
-Import the `iris` dataset, either from [`iris.txt`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/iris.txt) or `datasets.RData`. This dataset contains measurements for 150 iris flowers. The purpose of this exercise is to do the following analyses through `R Commander` *while inspecting and understanding the outputed code* to identify what parts are changing, how and why.
+Import the `iris` dataset, either from [`iris.txt`](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/iris.txt) or `datasets.RData`. This dataset contains measurements for 150 iris flowers. The purpose of this exercise is to do the following analyses through `R Commander` *while inspecting and understanding the outputted code* to identify what parts are changing, how and why.
 
 - Fit the regression line for `Petal.Width` (response) on `Petal.Length` (predictor) and summarize it.
 - Make the scatterplot of `Petal.Width` (y) vs `Petal.Length` (x) with a regression line.
@@ -1623,7 +1622,6 @@ The dataset `moreAssumptions.RData` ([download](https://raw.githubusercontent.co
 ```
 
 <!--
-
 ### Inference {#simplin-exercises-inference}
 
 ```{block, type = 'rmdexercise'}
@@ -1641,7 +1639,6 @@ TBA
 ```{block, type = 'rmdexercise'}
 TBA
 ```
-
 -->
 
 ### Nonlinear relations {#simplin-exercises-nonlin}
@@ -1673,6 +1670,7 @@ We can write the above formula more generally
 \log(\text{transistors})=\beta_0+\beta_1 \text{years}+\varepsilon,
 \end{align*}
 where $\varepsilon$ is a random error. This is a linear model!
+
 ```{block, type = 'rmdexercise'}
 The dataset `cpus.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/cpus.txt)) contains the transistor counts for the CPUs appeared in the time range 1971--2015. For this data, do the following:
 
