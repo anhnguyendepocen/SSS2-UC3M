@@ -42,7 +42,7 @@ Be advised that these notes are *neither an exhaustive, rigorous nor comprehensi
 
 ## Software employed {#intro-software}
 
-The software we will employ in this course is available in all UC3M computer labs, including INF-15.S.04, INF-15.S.06 and INF-10.0.29 ~~(the first week only in INF-15.S.04). We will use two pieces of software:
+The software we will employ in this course is available in all UC3M computer labs, including INF-15.S.04, INF-15.S.06 and INF-10.0.29 (the first week only in INF-15.S.04). We will use two pieces of software:
 
 - [`R`](https://www.r-project.org/). A free open-source software environment for statistical computing and graphics. Virtually all the statistical methods you can think of are available in `R`. Currently, it is *the* dominant statistical software (at least among statisticians).
 
@@ -150,9 +150,11 @@ If there is any Linux user, kindly follow the corresponding instructions [here](
 
 By default `R` and `R Commander` will have menus and messages in the language of your OS. If you want them in English, a simple option is to change the OS language to English and reboot. If you want to stick with your OS language, another options are:
 
+(ref:langtitle) Modification of the `R` shortcut properties in Windows.
+
 - **Windows**. Create a shortcut in your desktop, either to `'R x64 X.X.X'` or to `'R i386 X.X.X'`. Add a distinctive descriptor to its name, for example `'R x64 X.X.X ENGLISH'`. Then `'Right mouse click'` on it, select `'Properties'` and **append** to the `'Target'` field the text `Language=en` (separated by a space, see Figure \@ref(fig:lang)). Analogously, use `Language=es` for Spanish, `Language=it` for Italian, etc. Use this shortcut to launch `R` (and then `R Commander`) in the chosen language. Click `'Apply'` and then `'OK'`.
 
-    ```{r, lang, echo = FALSE, out.width = '45%', fig.align = 'center', fig.cap = 'Modification of the `R` shortcut properties in Windows.', cache = TRUE}
+    ```{r, lang, echo = FALSE, out.width = '45%', fig.align = 'center', fig.pos = 'h!', fig.cap = '(ref:langtitle)', cache = TRUE}
   knitr::include_graphics("images/screenshots/lang.png")
     ```
 
@@ -166,7 +168,9 @@ By default `R` and `R Commander` will have menus and messages in the language of
 
 ## `R Commander` basics {#intro-RCommander}
 
-```{r, ScreenshotRcmdr, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Main window of `R Commander`, with the plug-ins `RcmdrPlugin.FactoMineR`, `RcmdrPlugin.KMggplot2` and `RcmdrPlugin.Demos` loaded.', cache = TRUE}
+(ref:ScreenshotRcmdrtitle) Main window of `R Commander`, with the plug-ins `RcmdrPlugin.FactoMineR`, `RcmdrPlugin.KMggplot2` and `RcmdrPlugin.Demos` loaded.
+
+```{r, ScreenshotRcmdr, echo = FALSE, out.width = '90%', fig.align = 'center', fig.pos = 'h!', fig.cap = '(ref:ScreenshotRcmdrtitle)', cache = TRUE}
 knitr::include_graphics("images/screenshots/Rcmdr2.png")
 ```
 

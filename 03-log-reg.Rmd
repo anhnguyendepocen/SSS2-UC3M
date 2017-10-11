@@ -373,7 +373,7 @@ addLine(x, beta0 = 0.1, beta1 = 0)
 
 The *Challenger* disaster occurred on the 28th January of 1986, when the NASA Space Shuttle orbiter *Challenger* broke apart and disintegrated at 73 seconds into its flight, leading to the deaths of its seven crew members. The accident deeply shocked the US society, in part due to the attention the mission had received because of the presence of Christa McAuliffe, who would have been the first astronaut-teacher. Because of this, NASA TV broadcasted live the launch to US public schools, which resulted in millions of school children witnessing the accident. The accident had serious consequences for the NASA credibility and resulted in an interruption of 32 months in the shuttle program. The Presidential *Rogers Commission* (formed by astronaut Neil A. Armstrong and Nobel laureate Richard P. Feynman, among others) was created to investigate the disaster.
 
-```{r, video3, echo = FALSE, fig.align = 'center', fig.cap = 'Challenger launch and posterior explosion, as broadcasted live by NBC in 28/01/1986.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE}
+```{r, video3, echo = FALSE, fig.align = 'center', fig.pos = 'h!', fig.cap = 'Challenger launch and posterior explosion, as broadcasted live by NBC in 28/01/1986.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE}
 knitr::include_url("https://www.youtube.com/embed/fSTrmJtHLFU")
 ```
 
@@ -381,7 +381,9 @@ The Rogers Commission elaborated a report [@Roberts1986] with all the findings. 
 
 > "Temperature data [are] not conclusive on predicting primary O-ring blowby."
 
-```{r, rogerts, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Number of incidents in the O-rings (filed joints) versus temperatures. Panel *a* includes only flights with incidents. Panel *b* contains all flights (with and without incidents).', fig.show = 'hold', cache = TRUE}
+(ref:rogertstitle) Number of incidents in the O-rings (filed joints) versus temperatures. Panel *a* includes only flights with incidents. Panel *b* contains all flights (with and without incidents).
+
+```{r, rogerts, echo = FALSE, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.cap = '(ref:rogertstitle)', fig.show = 'hold', cache = TRUE}
 knitr::include_graphics("images/figures/challenger.png")
 ```
 
@@ -401,13 +403,15 @@ To try to answer these questions we have the `challenger` dataset ([download](ht
 - `temp`: temperature in the day of launch. Measured in Celsius degrees.
 - `pres.field`,	`pres.nozzle`: leak-check pressure tests of the O-rings. These tests assured that the rings would seal the joint.
 
-```{r, challengertable, echo = FALSE, out.width = '90%', fig.align = 'center', cache = TRUE}
+(ref:challengertabletitle) The `challenger` dataset.
+
+```{r, challengertable, echo = FALSE, out.width = '90%', fig.align = 'center', fig.pos = 'h!', cache = TRUE}
 challenger <- read.table(file = "datasets/challenger.txt", header = TRUE, sep = "\t")
 knitr::kable(
   challenger[, c(1, 2, 5:7)],
   booktabs = TRUE,
   longtable = TRUE,
-  caption = 'The `challenger` dataset.'
+  caption = '(ref:challengertabletitle)'
 )
 ```
 
@@ -451,7 +455,7 @@ with $\beta_0$ and $\beta_1$ unknown. Let's fit the model to the data by estimat
 
 In order to fit a logistic regression to the data, go to `'Statistics' -> 'Fit models' -> 'Generalized linear model...'`. A window like Figure \@ref(fig:glm) will pop-up, which you should fill as indicated.
 
-```{r, glm, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Window for performing logistic regression.', cache = TRUE}
+```{r, glm, echo = FALSE, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.cap = 'Window for performing logistic regression.', cache = TRUE}
 knitr::include_graphics("images/screenshots/glm.png")
 ```
 A code like this will be generated:
@@ -491,7 +495,7 @@ Be aware that `type = "response"` has a different meaning in logistic regression
 Recall that there is a serious problem of **extrapolation** in the prediction, which makes it less precise (or more variable). But this extrapolation, together with the evidences raised by a simple analysis like we did, should have been strong arguments for postponing the launch.
 
 To conclude this section, we refer to a funny and comprehensive exposition by Juan Cuesta (University of Cantabria) on the flawed statistical analysis that contributed to the Challenger disaster.
-```{r, video4, echo = FALSE, fig.align = 'center', fig.cap = 'The Challenger disaster and other elegant applications of statistics in complex problems.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE}
+```{r, video4, echo = FALSE, fig.align = 'center', fig.pos = 'h!', fig.cap = 'The Challenger disaster and other elegant applications of statistics in complex problems.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE}
 knitr::include_url("https://www.youtube.com/embed/MOeDbQlF5Tw?start=552")
 ```
 
@@ -519,7 +523,7 @@ or, equivalently, if $\mathbb{P}[Y=1]=p$ and $\mathbb{P}[Y=0]=1-p$, which can be
 \end{align}
 Recall that a *binomial variable with size $n$ and probability $p$*, $\mathrm{Bi}(n,p)$, is obtained by summing $n$ independent $\mathrm{Ber}(p)$ (so $\mathrm{Ber}(p)$ is the same as $\mathrm{Bi}(1,p)$). This is why we need to use a `family = "binomial"` in `glm`, to indicate that the response is binomial.
 
-```{block, type='rmdinsight'}
+```{block, type = 'rmdinsight'}
 A Bernoulli variable $Y$ is completely determined by the probability $p$. **So do its mean and variance**:
 
 - $\mathbb{E}[Y]=p\times1+(1-p)\times0=p$
@@ -530,7 +534,7 @@ In particular, recall that $\mathbb{P}[Y=1]=\mathbb{E}[Y]=p$.
 This is something relatively uncommon (or a $\mathcal{N}(\mu,\sigma^2)$, $\mu$ determines the mean and $\sigma^2$ the variance) that has important consequences for the logistic model: we do not need a $\sigma^2$.
 ```
 
-```{block, type='rmdexercise'}
+```{block, type = 'rmdexercise'}
 Are these Bernoulli variables? If so, which is the value of $p$ and what could the codes $0$ and $1$ represent?
 
 - The toss of a fair coin.
@@ -558,7 +562,7 @@ F(z)=\mathrm{logistic}(z)=\frac{e^z}{1+e^z}=\frac{1}{1+e^{-z}}.
 \]
 - **Probit**. Consider the *normal* distribution function, this is, $F=\Phi$.
 
-```{r, logitprobit, echo = FALSE, results = 'hide', out.width = '70%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Different transformations mapping the response of a simple linear regression $z=\\beta_0+\\beta_1x$ to $[0,1]$.', cache = TRUE}
+```{r, logitprobit, echo = FALSE, results = 'hide', out.width = '70%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.pos = 'h!', fig.cap = 'Different transformations mapping the response of a simple linear regression $z=\\beta_0+\\beta_1x$ to $[0,1]$.', cache = TRUE}
 # Regression
 x <- seq(-3, 3, l = 200)
 z <- 2 * x
@@ -639,7 +643,7 @@ As a consequence of this last interpretation, we have:
 If $\beta_j>0$ (respectively, $\beta_j<0$) then $e^{\beta_j}>1$ ($e^{\beta_j}<1$) in \@ref(eq:eq-odds-log1). Therefore, an increment of one unit in $X_j$, provided that the remaining variables $X_1,\ldots,X_{j-1},X_{j+1},\ldots,X_k$ do not change, results in an increment (decrement) of the odds, this is, in an increment (decrement) of $\mathbb{P}[Y=1]$.
 ```
 
-```{block, type='rmdcaution'}
+```{block, type = 'rmdcaution'}
 Since the relationship between $p(X_1,\ldots,X_k)$ and $X_1,\ldots,X_k$ is not linear, **$\beta_j$ does not correspond to the change in $p(X_1,\ldots,X_k)$ associated with a one-unit increase in $X_j$**.
 ```
 
@@ -688,7 +692,7 @@ Figure \@ref(fig:maximumlikelihood) shows how the log-likelihood changes with re
 
 (ref:maximumlikelihoodtitle) The logistic regression fit and its dependence on $\beta_0$ (horizontal displacement) and $\beta_1$ (steepness of the curve). Recall the effect of the sign of $\beta_1$ in the curve: if positive, the logistic curve has an 's' form; if negative, the form is a reflected 's'. Application also available [here](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/log-maximum-likelihood/).
 
-```{r, maximumlikelihood, echo = FALSE, fig.cap = '(ref:maximumlikelihoodtitle)', screenshot.alt = "images/screenshots/log-maximum-likelihood.png", dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+```{r, maximumlikelihood, echo = FALSE, fig.cap = '(ref:maximumlikelihoodtitle)', screenshot.alt = "images/screenshots/log-maximum-likelihood.png", dev = 'png', cache = TRUE, fig.align = 'center', fig.pos = 'h!', out.width = '90%'}
 knitr::include_app('https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/log-maximum-likelihood/', height = '900px')
 ```
 
@@ -735,9 +739,9 @@ As in the linear model, **the inclusion of a new predictor changes the coefficie
 
 ## Assumptions of the model {#logreg-assumps}
 
-Some probabilistic assumptions are required for performing inference on the model parameters $\boldsymbol\beta$ from the sample $(\mathbf{X}_1, Y_1),\ldots,(\mathbf{X}_n, Y_n)$. These assumptions are somehow simpler than the ones for linear regression.
+Some probabilistic assumptions are required for performing inference on the model parameters $\boldsymbol{\beta}$ from the sample $(\mathbf{X}_1, Y_1),\ldots,(\mathbf{X}_n, Y_n)$. These assumptions are somehow simpler than the ones for linear regression.
 
-```{r, logisticmodel, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The key concepts of the logistic model.', cache = TRUE}
+```{r, logisticmodel, echo = FALSE, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.cap = 'The key concepts of the logistic model.', cache = TRUE}
 knitr::include_graphics("images/R/logisticmodel.png")
 ```
 
@@ -760,7 +764,7 @@ There are three important points of the linear model assumptions  missing in the
 - *Where are the errors? The errors played a fundamental role in the linear model assumptions, but are not employed in logistic regression.* The errors are not fundamental for building the linear model but just a helpful concept related to least squares. The linear model can be constructed without errors as \@ref(eq:condnorm), which has a logistic analogous in \@ref(eq:condber).
 - *Why is normality not present?* A normal distribution is not adequate to replace the Bernoulli distribution in \@ref(eq:condber) since the response $Y$ *has to be binary* and the Normal or other continuous distribution would put yield illegal values for $Y$.
 
-```{block, type='rmdinsight'}
+```{block, type = 'rmdinsight'}
 Recall that:
 
 - Nothing is said about the distribution of $X_1,\ldots,X_k$. They could be deterministic or random. They could be discrete or continuous.
@@ -780,10 +784,10 @@ There is an important difference between the inference results for the linear mo
 
 The distribution of $\hat{\boldsymbol{\beta}}$ is given by the asymptotic theory of MLE:
 \begin{align}
-\hat{\boldsymbol{\beta}}\sim\mathcal{N}_{k+1}\left(\boldsymbol\beta,I(\hat{\boldsymbol{\beta}})^{-1}\right)
+\hat{\boldsymbol{\beta}}\sim\mathcal{N}_{k+1}\left(\boldsymbol{\beta},I(\hat{\boldsymbol{\beta}})^{-1}\right)
 (\#eq:mle1)
 \end{align}
-where $\sim$ must be understood as *approximately distributed as [...] when $n\to\infty$* for the rest of this chapter. $I(\boldsymbol\beta)$ is known as the *Fisher information matrix*, and receives that name because *it measures the information available in the sample for estimating $\boldsymbol\beta$*. Therefore, the *larger* the matrix is, the more precise is the estimation of $\boldsymbol\beta$, because that results in smaller variances in \@ref(eq:mle1). The inverse of the Fisher information matrix is
+where $\sim$ must be understood as *approximately distributed as [...] when $n\to\infty$* for the rest of this chapter. $I(\boldsymbol{\beta})$ is known as the *Fisher information matrix*, and receives that name because *it measures the information available in the sample for estimating $\boldsymbol{\beta}$*. Therefore, the *larger* the matrix is, the more precise is the estimation of $\boldsymbol{\beta}$, because that results in smaller variances in \@ref(eq:mle1). The inverse of the Fisher information matrix is
 \begin{align}
 I(\hat{\boldsymbol{\beta}})^{-1}=(\mathbf{X}^T\mathbf{V}\mathbf{X})^{-1},
 (\#eq:mle2)
@@ -808,13 +812,13 @@ The interpretation of \@ref(eq:mle1) and \@ref(eq:mle2) give some useful insight
     - *Weighted predictor sparsity $(\mathbf{X}^T\mathbf{V}\mathbf{X})^{-1}$*. The more *sparse* the predictor is (small $|(\mathbf{X}^T\mathbf{V}\mathbf{X})^{-1}|$), the more precise $\hat{\boldsymbol{\beta}}$ is.
 
 
-```{block2, type='rmdinsight'}
+```{block2, type = 'rmdinsight'}
 **The precision of $\hat{\boldsymbol{\beta}}$ is affected by the value of $\boldsymbol{\beta}$**, which is hidden inside $\mathbf{V}$. This contrasts sharply with the linear model, where the precision of the least squares estimator was not affected by the value of the unknown coefficients (see \@ref(eq:normp)). The reason is partially due to the **heteroskedasticity** of logistic regression, which implies a dependence of the variance of $Y$ in the logistic curve, hence in $\boldsymbol{\beta}$.
 ```
 
-(ref:lograndomcoefs) Illustration of the randomness of the fitted coefficients $(\hat\beta_0,\hat\beta_1)$ and the influence of $n$, $(\beta_0,\beta_1)$ and $s_x^2$. The sample predictors $x_1,\ldots,x_n$ are fixed and new responses $Y_1,\ldots,Y_n$ are generated each time from a logistic model $Y\sim\mathrm{Ber}(p(X))$. Application also available [here](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/log-random/).
+(ref:lograndomcoefstitle) Illustration of the randomness of the fitted coefficients $(\hat\beta_0,\hat\beta_1)$ and the influence of $n$, $(\beta_0,\beta_1)$ and $s_x^2$. The sample predictors $x_1,\ldots,x_n$ are fixed and new responses $Y_1,\ldots,Y_n$ are generated each time from a logistic model $Y\sim\mathrm{Ber}(p(X))$. Application also available [here](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/log-random/).
 
-```{r, lograndomcoefs, echo = FALSE, fig.cap = '(ref:lograndomcoefstitle)', screenshot.alt = "images/screenshots/log-random.png", dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+```{r, lograndomcoefs, echo = FALSE, fig.cap = '(ref:lograndomcoefstitle)', screenshot.alt = "images/screenshots/log-random.png", dev = 'png', cache = TRUE, fig.align = 'center', fig.pos = 'h!', out.width = '90%'}
 knitr::include_app('https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/log-random/', height = '1000px')
 ```
 
@@ -824,7 +828,7 @@ Similar to linear regression, the problem with \@ref(eq:mle1) and \@ref(eq:mle2)
 \end{align}
 where
 \[
-v_j\text{ is the $j$-th element of the diagonal of }(\mathbf{X}^T\hat{\mathbf{V}}\mathbf{X})^{-1}.
+v_j\text{ is the }j\text{-th element of the diagonal of }(\mathbf{X}^T\hat{\mathbf{V}}\mathbf{X})^{-1}.
 \]
 The LHS of \@ref(eq:normp2) is the **Wald statistic** for $\beta_j$, $j=0,\ldots,k$. They are employed for building confidence intervals and hypothesis tests.
 
@@ -991,7 +995,7 @@ Finally, Figure \@ref(fig:logcipred) gives an interactive visualization of the C
 
 (ref:logcipredtitle) Illustration of the CIs for the conditional probability in the simple logistic regression. Application also available [here](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/log-ci-prediction/).
 
-```{r, logcipred, echo = FALSE, fig.cap = '(ref:logcipredtitle)', screenshot.alt = "images/screenshots/log-ci-prediction.png", dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+```{r, logcipred, echo = FALSE, fig.cap = '(ref:logcipredtitle)', screenshot.alt = "images/screenshots/log-ci-prediction.png", dev = 'png', cache = TRUE, fig.align = 'center', fig.pos = 'h!', out.width = '90%'}
 knitr::include_app('https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/log-ci-prediction/', height = '1000px')
 ```
 
@@ -1002,7 +1006,10 @@ The **deviance** is a key concept in logistic regression. Intuitively, it measur
 \hat{\mathbb{P}}[Y=1|X_1=X_{i1},\ldots,X_k=X_{ik}]=Y_i,\quad i=1,\ldots,n.
 \]
 This model assigns probability $0$ or $1$ to $Y$ depending on the actual value of $Y_i$. To clarify this concept, Figure \@ref(fig:saturated) shows a saturated model and a fitted logistic regression.
-```{r, saturated, echo = FALSE, results = 'hide', out.width = '70%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Fitted logistic regression versus *a* saturated model (several are possible depending on the interpolation between points) and the null model.', cache = TRUE}
+
+(ref:saturatedtitle) Fitted logistic regression versus *a* saturated model (several are possible depending on the interpolation between points) and the null model.
+
+```{r, saturated, echo = FALSE, results = 'hide', out.width = '70%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.pos = 'h!', fig.cap = '(ref:saturatedtitle)', cache = TRUE}
 set.seed(45671231)
 x <- runif(50, 0, 1)
 y <- rbinom(n = 50, size = 1, prob = 1/(1 + exp(-(1 - 6 * x))))
@@ -1044,7 +1051,7 @@ This global measure of fit is *similar* indeed shares some important properties 
 1. It is a quantity between $0$ and $1$.
 2. If the fit is perfect, then $D=0$ and $R^2=1$. If the predictors do not add anything to the regression, then $D=D_0$ and $R^2=0$.
 
-```{block, type='rmdinsight'}
+```{block, type = 'rmdinsight'}
 In logistic regression, $R^2$ does not have the same interpretation as in linear regression:
 
 - Is **not the percentage of variance explained by the logistic model**, but rather a ratio indicating how close is the fit to being perfect or the worst.
@@ -1052,10 +1059,10 @@ In logistic regression, $R^2$ does not have the same interpretation as in linear
 
 ```
 
-```{block2, type='rmdinsight'}
+```{block2, type = 'rmdinsight'}
 The $R^2$ in \@ref(eq:log-r2) is valid for the whole family of *generalized linear models*, for which linear and logistic regression are particular cases. The connexion between \@ref(eq:log-r2) and the determination coefficient is given by the expressions of the deviance and null the deviance for the linear model:
 \[
-D=\mathrm{SSE}\text{ (or $D=\mathrm{RSS}$) and }D_0=\mathrm{SST}.
+D=\mathrm{SSE}\text{ (or }D=\mathrm{RSS}\text{) and }D_0=\mathrm{SST}.
 \]
 ```
 

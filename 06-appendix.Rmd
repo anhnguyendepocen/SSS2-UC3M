@@ -2,7 +2,7 @@
 
 # Glossary of important `R` commands {#appendix-Rglossary}
 
-#### Basic usage
+#### Basic usage {-}
 
 The following table contains important `R` commands for its **basic usage**.
 
@@ -23,7 +23,7 @@ The following table contains important `R` commands for its **basic usage**.
 | ... list | `$`| `list(x = 2, y = 7:0)$y` |
 | **Summarize any object** | `summary` | `summary(1:10)` |
 
-#### Linear regression
+#### Linear regression {-}
 
 Some useful commands for performing **simple and multiple linear regression** are given in the next table. We assume that:
 
@@ -56,7 +56,7 @@ Some useful commands for performing **simple and multiple linear regression** ar
 | **Compare model coefficients** | `compareCoefs(model1, model2)` |
 | **Diagnostic plots** | `plot(model, num)` |
 
-#### More basic usage
+#### More basic usage {-}
 
 The following table contains important `R` commands for its **basic usage**. We assume the following dataset is available:
 ```{r, cache = TRUE}
@@ -93,7 +93,7 @@ data <- data.frame(x = 1:10, y = c(-1, 2, 3, 0, 3, 1, -1, 3, 0, -1))
 | plot a curve | `plot`, `seq` | `x <- seq(0, 1, l = 100); plot(x, x^2, type = "l")` |
 | add lines | `lines`, | `x <- seq(0, 1, l = 100); plot(x, x^2 + rnorm(100, sd = 0.1)); lines(x, x^2, col = 2, lwd = 2)` |
 
-#### Logistic regression
+#### Logistic regression {-}
 
 Some useful commands for performing **logistic regression** are given in the next table. We assume that:
 
@@ -124,7 +124,7 @@ Some useful commands for performing **logistic regression** are given in the nex
 | **$R^2$** | Not immediate. Use `r2Log(model = model)` as seen in Section \@ref(logreg-modsel) |
 | **Hit matrix** | `table(data$resp, model$fitted.values > 0.5)` |
 
-#### Principal component analysis
+#### Principal component analysis {-}
 
 Some useful commands for performing **logistic regression** are given in the next table. We assume that:
 
@@ -148,7 +148,7 @@ Some useful commands for performing **logistic regression** are given in the nex
 
 An important situation not covered in Chapters \@ref(simplin), \@ref(multlin) and \@ref(logreg) is how to deal with *qualitative*, and not *quantitative*, predictors. Qualitative predictors, also known as *categorical* variables or, in `R`'s terminology, *factors*, are ubiquitous in social sciences. Dealing with them requires some care and proper understanding of how these variables are represented in statistical softwares such as `R`.
 
-#### Two levels
+#### Two levels {-}
 
 The simplest case is the situation with **two levels**, this is, the binary case covered in logistic regression. There we saw that a binary variable $C$ with two levels (for example, *a* and *b*) could be represented as
 \[
@@ -207,7 +207,7 @@ summary(mod)
 # for explaining medv)
 ```
 
-#### More than two levels
+#### More than two levels {-}
 
 Let's see now the case with **more than two levels**, for example, a categorical variable $C$ with levels *a*, *b* and *c*. If we take *a* as the reference level, this variable can be represented by *two* dummy variables:
 \[
@@ -252,7 +252,7 @@ confint(mod2)
 # negative. Therefore, there are significant
 ```
 
-```{block, type='rmdcaution'}
+```{block, type = 'rmdcaution'}
 **Do not codify a categorical variable as a discrete variable**. This constitutes a major methodological fail that will flaw the subsequent statistical analysis.
 
 For example if you have a categorical variable `party` with levels `partyA`, `partyB` and `partyC`, do not encode it as a discrete variable taking the values `1`, `2` and `3`, respectively. If you do so:
@@ -345,11 +345,11 @@ predict(mod2, newdata = newdata, type = "probs")
 predict(mod2, newdata = newdata, type = "class")
 ```
 
-```{block, type = "rmdcaution"}
+```{block, type = 'rmdcaution'}
 Multinomial logistic regression will suffer from numerical instabilities and its iterative algorithm might even fail to converge if the levels of the categorical variable are very separated (e.g., two data clouds clearly separated corresponding to a different level of the categorical variable).
 ```
 
-```{block, type = "rmdcaution"}
+```{block, type = 'rmdcaution'}
 The multinomial model employs $(J-1)(k+1)$ parameters. It is easy to end up with **complex models** -- that require a **large sample size** to be fitted properly -- if the response has a few number of levels and there are several predictors. For example, with $5$ levels and $8$ predictors we will have $36$ parameters. Estimating this model with $50-100$ observations will probably result in **overfitting**.
 ```
 
@@ -616,15 +616,15 @@ For advanced users, there is a lot of information on mastering `R Markdown` [her
 
 # Group project {#appendix-project}
 
-#### Groups
+#### Groups {-}
 
 You will team up in groups of 3 to 5 members. It is up to you to form the groups based on your grade expectations, affinity, complementary skills, etc. You must communicate the group compositions **no later than November the 30th** by a (single) email to <edgarcia@est-econ.uc3m.es> detailing the members of the group and, if you have it, a preliminary description about the topic of the project (~ 3 lines).
 
-#### Aim of the project
+#### Aim of the project {-}
 
 You will analyze a real dataset of your choice using the statistical methodology that we have seen in the lessons and labs. The purpose is to demonstrate that you know how to apply and interpret some of the studied statistical techniques (such as simple/multiple linear regression, logistic regression, or any other methods covered in the course) in a real-case scenario that is appealing for you.
 
-#### Structure of the report
+#### Structure of the report {-}
 
 Use the following *mandatory* structure when writing your report:
 
@@ -641,7 +641,7 @@ Use the following *mandatory* structure when writing your report:
 - Spacing: single space, single column.
 - Length limit: less than 5000 words **and** 15 pages. You are **not** required to make use of all the space.
 
-#### Grading
+#### Grading {-}
 
 All students in a group will be graded evenly. Take this into account when forming the group. The grading is on a scale of 0-10 (plus 2 bonus points) and will be performed according to the following breakdown:
 
@@ -654,11 +654,11 @@ All students in a group will be graded evenly. Take this into account when formi
 
 The ratio "quality project"/"group size" might be taken into account in extreme cases (e.g. poor report written by 5 people, extremely good report written by 3 people).
 
-#### Academic fraud
+#### Academic fraud {-}
 
 Evidences of academic fraud will have serious consequences, such as a zero grade for the whole group and the reporting of the fraud detection to the pertinent academic authorities. Academic fraud includes (but is not limited to) plagiarism, use of sources without proper credit, project outsourcing and the use of external tutoring not mentioned explicitly.
 
-#### Tips
+#### Tips {-}
 
 - Think about a topic that could be reused for other subjects, or take inspiration from previous projects you did. In that way, this project could serve as the *quantification* of another subject's project. If you do this, **add an explicit mention** in the report.
 - Data sources. Here are some useful data sources:
@@ -680,6 +680,6 @@ Evidences of academic fraud will have serious consequences, such as a zero grade
 - Make use of office hours before it is too late.
 - Pro-tip: if you come to my office with a printed draft of the project, I can provide you some quick feedback on what could be improved.
 
-#### Deadline
+#### Deadline {-}
 
 Submit the reports before December the 23rd at 16:59 through Aula Global. **Not by email**. Reports received after the deadline will not be evaluated.

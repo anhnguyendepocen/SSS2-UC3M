@@ -20,19 +20,25 @@ The Programme for International Student Assessment (PISA) is a study carried out
 
 The `pisa.csv` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/pisa.csv)) contains 65 rows corresponding to the countries that took part on the PISA study. The data was obtained merging the [statlink](http://dx.doi.org/10.1787/888932937035) in @PISA2012 with @WB data. Each row has the following variables: `Country`; `MathMean`, `ReadingMean` and `ScienceMean` (the average performance of the students in mathematics, reading and science); `MathShareLow` and `MathShareTop` (percentages of students with a low and top performance in mathematics); `GDPp` and `logGDPp` (the Gross Domestic Product per capita and its logarithm); `HighIncome` (whether the country has a GDPp larger than 20000\$ or not). The GDPp of a country is a measure of how many economic resources are available per citizen. The `logGDPp` is the logarithm of the GDPp, taken in order to avoid scale distortions. A small subset of the data is shown in Table \@ref(tab:pisatable).
 
-```{r, pisatable, echo = FALSE, out.width = '90%', fig.align = 'center', cache = TRUE}
+(ref:pisatabletitle) First 10 rows of the `pisa` dataset for a selection of variables. Note the `NA` (*Not Available*) in Chinese Taipei (or Taiwan).
+
+```{r, pisatable, echo = FALSE, out.width = '90%', fig.align = 'center', fig.pos = 'h!', cache = TRUE}
 pisa <- read.csv(file = "datasets/pisa.csv", header = TRUE)
 knitr::kable(
   head(pisa[, c(1, 2, 5, 6, 8, 9)], 10),
   booktabs = TRUE,
   longtable = TRUE,
-  caption = 'First 10 rows of the `pisa` dataset for a selection of variables. Note the `NA` (*Not Available*) in Chinese Taipei (or Taiwan).'
+  caption = '(ref:pisatabletitle)'
 )
 ```
 
 We definitely need a way of **summarizing this amount of information**!
 
 We are going to do the following. First, import the data into `R Commander` and do a basic manipulation of it. Second, fit a linear model and interpret its output. Finally, visualize the fitted line and the data.
+
+(ref:viewtitle) Correct importation of the `pisa` dataset.
+(ref:scatter1title) Scatterplot window, `'Data'` panel.
+(ref:scatter2title) Scatterplot window, `'Options'` panel. Remember to tick the `'Least-squares line'` box in order to display the fitted regression line.
 
 1. **Import the data into `R Commander`**.
 
@@ -42,7 +48,7 @@ We are going to do the following. First, import the data into `R Commander` and 
         Inspecting the data file in a text editor will give you the right formatting choices for importing the data.
         ```
 
-        ```{r, read, echo = FALSE, out.width = '45%', fig.align = 'center', fig.cap = 'Data importation options.', cache = TRUE}
+        ```{r, read, echo = FALSE, out.width = '35%', fig.align = 'center', fig.pos = 'h!', fig.cap = 'Data importation options.', cache = TRUE}
         row.names(pisa) <- as.character(pisa$Country)
         pisa$Country <- NULL
         knitr::include_graphics("images/screenshots/read.png")
@@ -52,7 +58,7 @@ We are going to do the following. First, import the data into `R Commander` and 
 
     * Since each row corresponds to a different country, we are going to name the rows as the value of the variable `Country`. To that end, go to `'Data' -> 'Active data set' -> 'Set case names...'` and select the variable `Country` and click `'OK'`. The dataset should look like Figure \@ref(fig:view).
 
-        ```{r, view, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Correct importation of the `pisa` dataset.', cache = TRUE}
+        ```{r, view, echo = FALSE, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.cap = '(ref:viewtitle)', cache = TRUE}
         knitr::include_graphics("images/screenshots/view.png")
         ```
 
@@ -69,7 +75,7 @@ We are going to do the following. First, import the data into `R Commander` and 
 
     * Go to `'Statistics' -> 'Fit models' -> 'Linear regression...'`. A window like Figure \@ref(fig:lm) will pop-up.
 
-        ```{r, lm, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Window for performing simple linear regression.', cache = TRUE}
+        ```{r, lm, echo = FALSE, out.width = '45%', fig.align = 'center', fig.pos = 'h!', fig.cap = 'Window for performing simple linear regression.', cache = TRUE}
         knitr::include_graphics("images/screenshots/lm.png")
         ```
 
@@ -78,7 +84,7 @@ We are going to do the following. First, import the data into `R Commander` and 
         Y=\beta_0+\beta_1X+\varepsilon
         \end{align*}
 
-        In our case $Y=$`MathMean` and  $X=$`logGDPp`, so select them and click `'OK'`^[In principle, you could pick more than one explanatory variables using the `'Control'` or `'Shift'` keys, but that corresponds to the *multiple linear regression* (covered in Chapter \@ref(multlin)).].
+        In our case $Y=$ `MathMean` and  $X=$ `logGDPp`, so select them and click `'OK'`^[In principle, you could pick more than one explanatory variables using the `'Control'` or `'Shift'` keys, but that corresponds to the *multiple linear regression* (covered in Chapter \@ref(multlin)).].
 
         ```{block, type = 'rmdtip'}
         If you want to deselect an option in an `R Commander` menu, use `'Control' + 'Mouse click'`.
@@ -108,10 +114,11 @@ We are going to do the following. First, import the data into `R Commander` and 
 
     * Go to `'Graphs' -> 'Scatterplot...'`. A window with two panels will pop-up (Figures \@ref(fig:scatter1) and \@ref(fig:scatter2)).
 
-        ```{r, scatter1, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Scatterplot window, `\'Data\'` panel.', cache = TRUE}
+        ```{r, scatter1, echo = FALSE, out.width = '45%', fig.align = 'center', fig.pos = 'h!', fig.cap = '(ref:scatter1title)', cache = TRUE}
         knitr::include_graphics("images/screenshots/scatterplot1.png")
         ```
-        ```{r, scatter2, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Scatterplot window, `\'Options\'` panel. Remember to tick the `\'Least-squares line\'` box in order to display the fitted regression line.', cache = TRUE}
+
+        ```{r, scatter2, echo = FALSE, out.width = '45%', fig.align = 'center', fig.pos = 'h!', fig.cap = '(ref:scatter2title)', cache = TRUE}
         knitr::include_graphics("images/screenshots/scatterplot2.png")
         ```
 
@@ -123,7 +130,7 @@ We are going to do the following. First, import the data into `R Commander` and 
         library(car)
         library(sandwich)
         ```
-        ```{r, out.width = '90%', fig.asp = 1, fig.align = 'center', cache = TRUE}
+        ```{r, out.width = '70%', fig.asp = 1, fig.align = 'center', fig.pos = 'h!', cache = TRUE}
         scatterplot(MathMean ~ logGDPp, reg.line = lm, smooth = FALSE, spread = FALSE,
                     id.method = 'mahal', id.n = 3, boxplots = FALSE, span = 0.5,
                     ellipse = FALSE, levels = c(.5, .9),
@@ -134,7 +141,7 @@ We are going to do the following. First, import the data into `R Commander` and 
 
         We can identify countries that are above and below the linear trend in the plot. This is particularly interesting: we can assess whether a country is performing better or worse with respect to its *expected PISA score according to its economic status* (this adds more insight into Q2). To do so, we want to display the text labels in the points of the scatterplot. We can take a shortcut: copy and run in the input panel the next piece of code. It is a slightly modified version of the previous code (what are the differences?).
 
-        ```{r, out.width = '90%', fig.asp = 1, fig.align = 'center', results = 'hide', cache = TRUE}
+        ```{r, out.width = '70%', fig.asp = 1, fig.align = 'center', fig.pos = 'h!', results = 'hide', cache = TRUE}
         scatterplot(MathMean ~ logGDPp, reg.line = lm, smooth = FALSE, spread = FALSE,
                     id.method = 'mahal', id.n = 65, id.cex = 0.75, boxplots = FALSE,
                     span = 0.5, ellipse = FALSE, levels = c(.5, .9),
@@ -173,13 +180,16 @@ We know that there exist qualitative dissimilarities between both chambers, but 
 
 Let's begin by reading the data:
 
+(ref:UStitle) Correct importation of the `US` dataset.
+(ref:EUtitle) The `EU` dataset with `Country` set as the case names.
+
 1. The `US_apportionment.xlsx` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/US_apportionment.xlsx)) contains the 50 US states entitled to representation. The variables are `State`, `Population2010` (from the last census) and `Seats2013–2023`. This is an Excel file that we can read using `'Data' -> 'Import data' -> 'from Excel file...'`. A window will pop-up, asking for the right options. We set them as in Figure \@ref(fig:excel), since we want the variable `State` to be the case names. After clicking in `'View dataset'`, the data should look like Figure \@ref(fig:US).
 
-    ```{r, excel, echo = FALSE, out.width = '45%', fig.align = 'center', fig.cap = 'Importation of an Excel file.', cache = TRUE}
+    ```{r, excel, echo = FALSE, out.width = '45%', fig.align = 'center', fig.pos = 'h!', fig.cap = 'Importation of an Excel file.', cache = TRUE}
     knitr::include_graphics("images/screenshots/excel.png")
     ```
 
-    ```{r, US, echo = FALSE, out.width = '45%', fig.align = 'center', fig.cap = 'Correct importation of the `US` dataset.', cache = TRUE}
+    ```{r, US, echo = FALSE, out.width = '45%', fig.align = 'center', fig.pos = 'h!', fig.cap = '(ref:UStitle)', cache = TRUE}
     knitr::include_graphics("images/screenshots/US.png")
     ```
 
@@ -202,17 +212,19 @@ Let's begin by reading the data:
       EU,
       booktabs = TRUE,
       longtable = TRUE,
-      caption = 'The `EU` dataset with `Country` set as the case names.'
+      caption = '(ref:EUtitle)'
     )
     ```
 
 We start by analyzing the `US` dataset. If there is indeed a direct proportionality in the apportionment, we would expect a direct, 1:1, relation between the *ratios of seats* and the *population per state*. Let's start by constructing these variables:
 
+(ref:newvartitle) Creation of the new variable `RatioSeats2013.2023`. The expression to compute is `Seats2013.2023/sum(Seats2013.2023)`.
+
 1. Switch the active dataset to `US`. An alternative way to do so is by `'Data' -> 'Active data set' -> 'Select active data set...'`.
 2. Go to `'Data' -> 'Manage variables in active dataset...' -> 'Compute new variable...'`.
 3. Create the variable `RatioSeats2013.2023` as shown in Figure \@ref(fig:newvar). Be **careful to not overwrite** the variable `Seats2013.2023`.
 
-    ```{r, newvar, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Creation of the new variable `RatioSeats2013.2023`. The expression to compute is `Seats2013.2023/sum(Seats2013.2023)`.', cache = TRUE}
+    ```{r, newvar, echo = FALSE, out.width = '45%', fig.align = 'center', fig.pos = 'h!', fig.cap = '(ref:newvartitle)', cache = TRUE}
     knitr::include_graphics("images/screenshots/newvar.png")
     ```
 
@@ -231,11 +243,11 @@ Let's fit a regression line to the `US` data, with `RatioSeats2013.2023` as the 
 appUS <- lm(RatioSeats2013.2023 ~ RatioPopulation2010, data = US)
 summary(appUS)
 ```
-The fitted regression line is `RatioSeats2013.2023`$=0.000+1.005\,\times$`RatioPopulation2010` and has an $R^2=0.9991$ (`'Multiple R-squared'`), which means that the data is almost perfectly linearly distributed. Furthermore, the *intercept coefficient is not significant for the regression*. This is seen in the column `'Pr(>|t|)'`, which gives the $p$-values for the null hypotheses $H_0:\beta_0=0$ and $H_0:\beta_1=0$, respectively. The null hypothesis $H_0:\beta_0=0$ is *not rejected* ($p\text{-value}=0.407$; non-significant) whereas $H_0:\beta_1=0$ is rejected ($p\text{-value}=0$; significant)^[We will be able to say more about how these test are performed after Section \@ref(simplin-inference).]. Hence, we can conclude that the appropriation of seats in the US House of Representatives is indeed directly proportional to the population of each state (partially answers Q1).
+The fitted regression line is `RatioSeats2013.2023` $=0.000+1.005\,\times$`RatioPopulation2010` and has an $R^2=0.9991$ (`'Multiple R-squared'`), which means that the data is almost perfectly linearly distributed. Furthermore, the *intercept coefficient is not significant for the regression*. This is seen in the column `'Pr(>|t|)'`, which gives the $p$-values for the null hypotheses $H_0:\beta_0=0$ and $H_0:\beta_1=0$, respectively. The null hypothesis $H_0:\beta_0=0$ is *not rejected* ($p\text{-value}=0.407$; non-significant) whereas $H_0:\beta_1=0$ is rejected ($p\text{-value}=0$; significant)^[We will be able to say more about how these test are performed after Section \@ref(simplin-inference).]. Hence, we can conclude that the appropriation of seats in the US House of Representatives is indeed directly proportional to the population of each state (partially answers Q1).
 
 If we make the scatterplot for the `US` dataset, we can see the almost perfect (up to integer rounding) 1:1 relation between the ratios "state seats"/"total seats" and "state population"/"aggregated population". We can set the scatterplot to automatically label the `'25'` most different points (select the numeric box with the mouse and type `'25'` -- the arrow buttons are limited to `'10'`) with their case names. As it is seen in Figure \@ref(fig:ratios), there is no state clearly over- or under-represented (Q2).
 
-```{r, ratios, echo = FALSE, out.width = '90%', fig.asp = 1, results = 'hide', fig.align = 'center', fig.cap = 'The apportionment in the US House of Representatives compared with a linear fit.', cache = TRUE}
+```{r, ratios, echo = FALSE, out.width = '70%', fig.asp = 1, results = 'hide', fig.align = 'center', fig.pos = 'h!', fig.cap = 'The apportionment in the US House of Representatives compared with a linear fit.', cache = TRUE}
 scatterplot(RatioSeats2013.2023 ~ RatioPopulation2010, reg.line = lm, smooth = FALSE,
             spread = FALSE, id.method = 'mahal', id.n = 25, id.cex = 0.75,
             boxplots = FALSE, span = 0.5, ellipse = FALSE, levels = c(.5, .9),
@@ -245,13 +257,21 @@ scatterplot(RatioSeats2013.2023 ~ RatioPopulation2010, reg.line = lm, smooth = F
 
 Let's switch to the `EU` dataset, for which we will focus on the 2011 variables. A quick way of visualizing this dataset and, in general, of **visualizing multivariate data** (up to a moderate number of dimensions) is to use a *matrix scatterplot*. Essentially, it displays the scatterplots between all the pairs of variables. To do it, go to `'Graphs' -> 'Scatterplot matrix...'` and select the number of variables to be displayed. If you select them as in Figures \@ref(fig:mscatter1a) and \@ref(fig:mscatter1b), you should get an output like Figure \@ref(fig:mscatter2).
 
-```{r, mscatter1a, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Scatterplot matrix window, `\'Data\'` panel.', cache = TRUE}
+(ref:mscatter1atitle) Scatterplot matrix window, `'Data'` panel.
+
+```{r, mscatter1a, echo = FALSE, out.width = '45%', fig.align = 'center', fig.pos = 'h!', fig.cap = '(ref:mscatter1atitle)', cache = TRUE}
 knitr::include_graphics("images/screenshots/mscatter1a.png")
 ```
-```{r, mscatter1b, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Scatterplot matrix window, `\'Options\'` panel. Be sure to tick the `\'Least-squares line\'` box in order to display the fitted regression line.', cache = TRUE}
+
+(ref:mscatter1btitle) Scatterplot matrix window, `'Options'` panel. Be sure to tick the `'Least-squares line'` box in order to display the fitted regression line.
+
+```{r, mscatter1b, echo = FALSE, out.width = '45%', fig.align = 'center', fig.pos = 'h!', fig.cap = '(ref:mscatter1btitle)', cache = TRUE}
 knitr::include_graphics("images/screenshots/mscatter1b.png")
 ```
-```{r, mscatter2, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Scatterplot matrix for the variables `CamCom2011`, `Population2010` and `Seats2011` of `EU` dataset with boxplots in the central panels.', cache = TRUE}
+
+(ref:mscatter2title) Scatterplot matrix for the variables `CamCom2011`, `Population2010` and `Seats2011` of `EU` dataset with boxplots in the central panels.
+
+```{r, mscatter2, echo = FALSE, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.cap = '(ref:mscatter2title)', cache = TRUE}
 knitr::include_graphics("images/screenshots/mscatter2.png")
 ```
 
@@ -261,7 +281,9 @@ The scatterplot matrix has a central panel displaying one-variable summary plots
 
 The most interesting panels in Figure \@ref(fig:mscatter2) for our study are `CamCom2011` vs `Population2010` -- panel (1,2) -- and `Seats2011` vs `Population2010` -- panel (3,2). At first sight, it seems that the Cambridge Compromise was favoring a fairer allocation of seats than what it was actually being used in the EU parliament in 2011 (recall the step-wise patterns in (3,2)). Let's explore in depth the scatterplot `Seats2011` vs `Population2010`.
 
-```{r, echo = FALSE, results = 'hide', out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = '`Seats2011` vs `Population2010` in the `EU` dataset.', cache = TRUE}
+(ref:seats2011title) `Seats2011` vs `Population2010` in the `EU` dataset.
+
+```{r, seats2011, echo = FALSE, results = 'hide', out.width = '70%', fig.asp = 1, fig.align = 'center', fig.pos = 'h!', fig.cap = '(ref:seats2011title)', cache = TRUE}
 scatterplot(Seats2011 ~ Population2010, reg.line = lm, smooth = FALSE, spread = FALSE,
             id.method = 'mahal', id.n = 25, id.cex = 0.75, boxplots = FALSE, span = 0.5,
             ellipse = FALSE, levels = c(.5, .9),
@@ -278,7 +300,7 @@ appEU2011 <- lm(Seats2011 ~ Population2010, data = EU)
 summary(appEU2011)
 ```
 
-The fitted line is `Seats2011`$=7.91+1.078\,\times10^{-6}\,\times$`Population2010`. The intercept is not zero and, indeed, the fitted intercept is significantly different from zero. Therefore, **there is no proportionality** in the apportionment. Recall that the fitted slope, despite being very small (why?), is also significantly different from zero. The $R^2$ is slightly smaller than in the `US` dataset, but definitely very high. Two conclusions stem from this analysis:
+The fitted line is `Seats2011` $=7.91+1.078\,\times10^{-6}\,\times$`Population2010`. The intercept is not zero and, indeed, the fitted intercept is significantly different from zero. Therefore, **there is no proportionality** in the apportionment. Recall that the fitted slope, despite being very small (why?), is also significantly different from zero. The $R^2$ is slightly smaller than in the `US` dataset, but definitely very high. Two conclusions stem from this analysis:
 
 - The US House of Representatives is a proportional chamber whereas the EU parliament is definitely not, but is close to perfect linearity (completes Q1).
 
@@ -299,7 +321,9 @@ summary(appCamComNoGer2011)
 
 We see that the Cambridge Compromise has a larger $R^2$ and a lower intercept than the official allocation of seats. This means that it favors a more proportional allocation, which is fairer in the sense that the deviations from the linear trend are smaller (Q3). We conclude the case study by illustrating both fits.
 
-```{r, echo = FALSE, results = 'hide', out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = '`Seats2011` vs `Population2010` in the `EU` dataset, Germany excluded.', cache = TRUE}
+(ref:seats2011btitle) `Seats2011` vs `Population2010` in the `EU` dataset, Germany excluded.
+
+```{r, seats2011btitle, echo = FALSE, results = 'hide', out.width = '70%', fig.asp = 1, fig.align = 'center', fig.pos = 'h!', fig.cap = '(ref:seats2011btitle)', cache = TRUE}
 scatterplot(Seats2011 ~ Population2010, reg.line = lm, smooth = FALSE, spread = FALSE,
             id.method = 'mahal', id.n = 25, id.cex = 0.75, boxplots = FALSE, span = 0.5,
             ellipse = FALSE, levels = c(.5, .9),
@@ -307,7 +331,9 @@ scatterplot(Seats2011 ~ Population2010, reg.line = lm, smooth = FALSE, spread = 
             pch = c(16), cex = 0.75, data = EU, subset = -1)
 ```
 
-```{r, echo = FALSE, results = 'hide', out.width = '90%', fig.asp = 1, fig.align = 'center', fig.cap = '`CamCom2011` vs `Population2010` in the `EU` dataset, Germany excluded.', cache = TRUE}
+(ref:seats2011ctitle) `CamCom2011` vs `Population2010` in the `EU` dataset, Germany excluded.
+
+```{r, seats2011ctitle, echo = FALSE, results = 'hide', out.width = '70%', fig.asp = 1, fig.align = 'center', fig.pos = 'h!', fig.cap = '(ref:seats2011ctitle)', cache = TRUE}
 scatterplot(CamCom2011 ~ Population2010, reg.line = lm, smooth = FALSE, spread = FALSE,
             id.method = 'mahal', id.n = 25, id.cex = 0.75, boxplots = FALSE, span = 0.5,
             ellipse = FALSE, levels = c(.5, .9),
@@ -716,7 +742,7 @@ Figure \@ref(fig:leastsquares) illustrates the influence of the distance employe
 
 (ref:leastsquarestitle) The effect of the kind of distance in the error criterion. The choices of intercept and slope that minimize the sum of squared distances for a kind of distance are not the optimal for a different kind of distance. Application also available [here](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/least-squares/).
 
-```{r, leastsquares, echo = FALSE, fig.cap = '(ref:leastsquarestitle)', screenshot.alt = "images/screenshots/least-squares.png", dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+```{r, leastsquares, echo = FALSE, fig.cap = '(ref:leastsquarestitle)', screenshot.alt = "images/screenshots/least-squares.png", dev = 'png', cache = TRUE, fig.align = 'center', fig.pos = 'h!', out.width = '90%'}
 knitr::include_app('https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/least-squares/', height = '900px')
 ```
 
@@ -785,17 +811,17 @@ mod$coefficients
 ```{block, type = 'rmdexercise'}
 Adapt the code conveniently for doing the same checking with
 
-- $X=$`ReadingMean` and $Y=$`MathMean` from the `pisa` dataset.
-- $X=$`logGDPp` and $Y=$`MathMean`.
-- $X=$`Population2010` and $Y=$`Seats2013.2023` from the `US` dataset.
-- $X=$`Population2010` and $Y=$`Seats2011` from the `EU` dataset.
+- $X=$ `ReadingMean` and $Y=$ `MathMean` from the `pisa` dataset.
+- $X=$ `logGDPp` and $Y=$ `MathMean`.
+- $X=$ `Population2010` and $Y=$ `Seats2013.2023` from the `US` dataset.
+- $X=$ `Population2010` and $Y=$ `Seats2011` from the `EU` dataset.
 ```
 
 ## Assumptions of the model {#simplin-assumps}
 
 Why do we need assumptions? To make **inference** on the model parameters. In other words, to infer properties about the *unknown* population coefficients $\beta_0$ and $\beta_1$ from the sample $(X_1,Y_1),\ldots,(X_n,Y_n)$.
 
-```{r, linearmodel, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The key concepts of the simple linear model. The yellow band denotes where the $95\\%$ of the data is, according to the model.', cache = TRUE}
+```{r, linearmodel, echo = FALSE, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.cap = 'The key concepts of the simple linear model. The yellow band denotes where the $95\\%$ of the data is, according to the model.', cache = TRUE}
 knitr::include_graphics("images/R/linearmodel.png")
 ```
 
@@ -820,11 +846,11 @@ Recall:
 
 Figures \@ref(fig:linearmodelgood) and \@ref(fig:linearmodelbad) represent situations where the assumptions of the model are respected and violated, respectively. For the moment, we will focus on building the intuition for checking the assumptions visually. In Chapter \@ref(multlin) we will see more sophisticated methods for checking the assumptions. We will see also what are the possible fixes to the failure of assumptions.
 
-```{r, linearmodelgood, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Perfectly valid simple linear models (all the assumptions are verified).', cache = TRUE}
+```{r, linearmodelgood, echo = FALSE, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.cap = 'Perfectly valid simple linear models (all the assumptions are verified).', cache = TRUE}
 knitr::include_graphics("images/R/linearmodelgood.png")
 ```
 
-```{r, linearmodelbad, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'Problematic simple linear models (a single assumption does not hold).', cache = TRUE}
+```{r, linearmodelbad, echo = FALSE, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.cap = 'Problematic simple linear models (a single assumption does not hold).', cache = TRUE}
 knitr::include_graphics("images/R/linearmodelbad.png")
 ```
 
@@ -869,7 +895,7 @@ Some important remarks on \@ref(eq:norm1) and \@ref(eq:se1) are
 
 (ref:randomcoefstitle) Illustration of the randomness of the fitted coefficients $(\hat\beta_0,\hat\beta_1)$ and the influence of $n$, $\sigma^2$ and $s_x^2$. The sample predictors $x_1,\ldots,x_n$ are fixed and new responses $Y_1,\ldots,Y_n$ are generated each time from a linear model $Y=\beta_0+\beta_1X+\varepsilon$. Application also available [here](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/lm-random/).
 
-```{r, randomcoefs, echo = FALSE, fig.cap = '(ref:randomcoefstitle)', screenshot.alt = "images/screenshots/lm-random.png", dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+```{r, randomcoefs, echo = FALSE, fig.cap = '(ref:randomcoefstitle)', screenshot.alt = "images/screenshots/lm-random.png", dev = 'png', cache = TRUE, fig.align = 'center', fig.pos = 'h!', out.width = '90%'}
 knitr::include_app('https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/lm-random/', height = '1000px')
 ```
 
@@ -901,7 +927,9 @@ Due to \@ref(eq:norm3) and \@ref(eq:se2), we can have the $100(1-\alpha)\%$ Conf
 \end{align}
 where $t_{n-2;\alpha/2}$ is the *$\alpha/2$-upper quantile of the $t_{n-2}$* (see Figure \@ref(fig:ttest)). Usually, $\alpha=0.10,0.05,0.01$ are considered.
 
-```{r, ttest, echo = FALSE, out.width = '90%', fig.align = 'center', fig.cap = 'The Student\'s $t$ distribution for the $t$-statistics associated to null intercept and slope, for the `y1 ~ x1` regression of the `assumptions` dataset.', cache = TRUE}
+(ref:ttesttitle) The Student's $t$ distribution for the $t$-statistics associated to null intercept and slope, for the `y1 ~ x1` regression of the `assumptions` dataset.
+
+```{r, ttest, echo = FALSE, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.cap = '(ref:ttesttitle)', cache = TRUE}
 knitr::include_graphics("images/R/ttest.png")
 ```
 
@@ -913,7 +941,7 @@ This *random* CI *contains the unknown coefficient $\beta_j$ with a probability 
 
 (ref:cititle) Illustration of the randomness of the CI for $\beta_0$ at $100(1-\alpha)\%$ confidence. The plot shows 100 random CIs for $\beta_0$, computed from 100 random datasets generated by the same linear model, with intercept $\beta_0$. The illustration for $\beta_1$ is completely analogous. Application also available [here](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/ci-random/).
 
-```{r, ci, echo = FALSE, fig.cap = '(ref:cititle)', screenshot.alt = "images/screenshots/ci-random.png", dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+```{r, ci, echo = FALSE, fig.cap = '(ref:cititle)', screenshot.alt = "images/screenshots/ci-random.png", dev = 'png', cache = TRUE, fig.align = 'center', fig.pos = 'h!', out.width = '90%'}
 knitr::include_app('https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/ci-random/', height = '900px')
 ```
 
@@ -1092,7 +1120,7 @@ Figure \@ref(fig:cipred) helps visualizing these concepts interactively.
 
 (ref:cipredtitle) Illustration of the CIs for the conditional mean and response. Note how the length of the CIs is influenced by $x$, specially for the conditional mean. Application also available [here](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/ci-prediction/).
 
-```{r, cipred, echo = FALSE, fig.cap = '(ref:cipredtitle)', screenshot.alt = "images/screenshots/ci-prediction.png", dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+```{r, cipred, echo = FALSE, fig.cap = '(ref:cipredtitle)', screenshot.alt = "images/screenshots/ci-prediction.png", dev = 'png', cache = TRUE, fig.align = 'center', fig.pos = 'h!', out.width = '90%'}
 knitr::include_app('https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/ci-prediction/', height = '1000px')
 ```
 
@@ -1201,17 +1229,17 @@ The ANOVA decomposition is
 \end{align}
 or, equivalently (dividing by $n$ in \@ref(eq:anova)),
 \begin{align*}
-\underbrace{s_y^2}_{\text{Variance of $Y_i$'s}} = \underbrace{s_{\hat y}^2}_{\text{Variance of $\hat Y_i$'s}} + \underbrace{(n-2)/n\times\hat\sigma^2}_{\text{Variance of $\hat\varepsilon_i$'s}}.
+\underbrace{s_y^2}_{\text{Variance of }Y_i's} = \underbrace{s_{\hat y}^2}_{\text{Variance of }\hat Y_i's} + \underbrace{(n-2)/n\times\hat\sigma^2}_{\text{Variance of }\hat\varepsilon_i's}.
 \end{align*}
 The graphical interpretation of \@ref(eq:anova) is shown in Figures \@ref(fig:anova) and \@ref(fig:anovaillus).
 
-```{r, anova, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'Visualization of the ANOVA decomposition. SST measures the variation of $Y_1,\\ldots,Y_n$ with respect to $\\bar Y$. SST measures the variation with respect to the conditional means, $\\hat \\beta_0+\\hat\\beta_1X_i$. SSE collects the variation of the residuals.', fig.show = 'hold'}
+```{r, anova, echo = FALSE, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.cap = 'Visualization of the ANOVA decomposition. SST measures the variation of $Y_1,\\ldots,Y_n$ with respect to $\\bar Y$. SST measures the variation with respect to the conditional means, $\\hat \\beta_0+\\hat\\beta_1X_i$. SSE collects the variation of the residuals.', fig.show = 'hold'}
 knitr::include_graphics("images/R/anova.png")
 ```
 
 (ref:anovaillustitle) Illustration of the ANOVA decomposition and its dependence on $\sigma^2$ and $\hat\sigma^2$. Application also available [here](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/anova/).
 
-```{r, anovaillus, echo = FALSE, fig.cap = '(ref:anovaillustitle)', screenshot.alt = "images/screenshots/anova.png", dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+```{r, anovaillus, echo = FALSE, fig.cap = '(ref:anovaillustitle)', screenshot.alt = "images/screenshots/anova.png", dev = 'png', cache = TRUE, fig.align = 'center', fig.pos = 'h!', out.width = '90%'}
 knitr::include_app('https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/anova/', height = '800px')
 ```
 
@@ -1348,7 +1376,7 @@ The trick is to work with the transformed predictor ($X^2$, $\log(X)$, ...), ins
   2. $\tilde X_i=\log(X_i)$, $i=1,\ldots,n$.
   3. $\tilde X_i=X_i^3-\log(|X_i|) + 2^{X_i}$, $i=1,\ldots,n$.
 
-```{r, nonlineartransf, echo = FALSE, warning = FALSE, results = 'hide', out.width = '45%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Some common nonlinear transformations and their negative counterparts. Recall the domain of definition of each transformation.', cache = TRUE}
+```{r, nonlineartransf, echo = FALSE, warning = FALSE, results = 'hide', out.width = '45%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.pos = 'h!', fig.cap = 'Some common nonlinear transformations and their negative counterparts. Recall the domain of definition of each transformation.', cache = TRUE}
 x <- seq(-2, 5, l = 200)
 plot(x, x, xlab = "x", ylab = "y", type = "l", col = 1, lwd = 2)
 lines(x, x^2, col = 2, lwd = 2)
@@ -1357,7 +1385,9 @@ lines(x, sqrt(x), col = 4, lwd = 2)
 lines(x, exp(x), col = 5, lwd = 2)
 lines(x, exp(-x), col = 6, lwd = 2)
 lines(x, log(x), col = 7, lwd = 2)
-legend("bottomright", legend = expression(y == x, y == x^2, y == x^3, y == sqrt(x), y == exp(x), y == exp(-x), y == log(x)), lwd = 2, col = 1:7)
+legend("bottomright", legend = expression(y == x, y == x^2, y == x^3, y == sqrt(x),
+                                          y == exp(x), y == exp(-x), y == log(x)),
+       lwd = 2, col = 1:7)
 plot(x, -x, xlab = "x", ylab = "y", type = "l", col = 1, lwd = 2)
 lines(x, -x^2, col = 2, lwd = 2)
 lines(x, -x^3, col = 3, lwd = 2)
@@ -1365,14 +1395,16 @@ lines(x, -sqrt(x), col = 4, lwd = 2)
 lines(x, -exp(x), col = 5, lwd = 2)
 lines(x, -exp(-x), col = 6, lwd = 2)
 lines(x, -log(x), col = 7, lwd = 2)
-legend("topright", legend = expression(y == -x, y == -x^2, y == -x^3, y == -sqrt(x), y == -exp(-x), y == -exp(x), y == -log(x)), lwd = 2, col = 1:7)
+legend("topright", legend = expression(y == -x, y == -x^2, y == -x^3, y == -sqrt(x),
+                                       y == -exp(-x), y == -exp(x), y == -log(x)),
+       lwd = 2, col = 1:7)
 ```
 
 An example of this simple but powerful trick is given as follows. The left panel of Figure \@ref(fig:quadratic) shows the scatterplot for some data `y` and  `x`, together with its fitted regression line. Clearly, the data does not follow a linear pattern, but a nonlinear one. In order to identify which one might be, we compare it against the set of mathematical functions displayed in Figure \@ref(fig:nonlineartransf). We see that the shape of the point cloud is similar to $y=x^2$. Hence, `y` might be better explained by the *square* of `x`, `x^2`, rather than by `x`. Indeed, if we plot `y` against `x^2` in the right panel of Figure \@ref(fig:quadratic), we can see that the fit of the regression line is much better.
 
 In conclusion, with a simple trick we have increased drastically the explanation of the response. However, there is a catch: knowing which transformation is required in order to linearise the relation between response and the predictor is a kind of art which requires some good eye. This is partially alleviated by the extension of this technique to deal with *polynomials* rather than *monomials*, as we will see in Chapter \@ref(multlin). For the moment, we will consider only the transformations displayed in Figure \@ref(fig:nonlineartransf). Figure \@ref(fig:transf) shows different transformations linearizing nonlinear data patterns.
 
-```{r, quadratic, echo = FALSE, out.width = '45%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'Left: quadratic pattern when plotting $Y$ against $X$. Right: linearized pattern when plotting $Y$ against $X^2$.', cache = TRUE}
+```{r, quadratic, echo = FALSE, out.width = '45%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.pos = 'h!', fig.cap = 'Left: quadratic pattern when plotting $Y$ against $X$. Right: linearized pattern when plotting $Y$ against $X^2$.', cache = TRUE}
 set.seed(345607)
 x <- round(seq(-2, 5, l = 50), 1)
 y <- round(0.5 * x^2 + rnorm(50), 1)
@@ -1392,7 +1424,7 @@ As a rule of thumb, use Figure \@ref(fig:nonlineartransf) with the transformatio
 
 (ref:transftitle) Illustration of the choice of the nonlinear transformation. Application also available [here](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/non-linear/).
 
-```{r, transf, echo = FALSE, fig.cap = '(ref:transftitle)', screenshot.alt = "images/screenshots/non-linear.png", dev = 'png', cache = TRUE, fig.align = 'center', out.width = '90%'}
+```{r, transf, echo = FALSE, fig.cap = '(ref:transftitle)', screenshot.alt = "images/screenshots/non-linear.png", dev = 'png', cache = TRUE, fig.align = 'center', fig.pos = 'h!', out.width = '90%'}
 knitr::include_app('https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/non-linear/', height = '550px')
 ```
 
@@ -1694,9 +1726,11 @@ The dataset `gpus.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS
 
 ### Case study: *Growth in a time of debt* {#simplin-exercises-growth}
 
-In the aftermath of the 2007-2008 financial crisis, the paper *Growth in a time of debt* [@Reinhart2010a], from Carmen M. Reinhart and Kenneth Rogoff (both at Harvard), provided an important economical support for pro-austerity policies. The paper claimed that for levels of external debt in excess of 90% of the GDP, the GDP growth of a country was dramatically different than for lower levels of external debt. Therefore, it concludes the existence of a *magical threshold* -- 90% -- for which the level of external debt must be kept below in order to have a growing economy. Figure \@ref(fig:reinhart), extracted from @Reinhart2010a, illustrates the main finding.
+In the aftermath of the 2007--2008 financial crisis, the paper *Growth in a time of debt* [@Reinhart2010a], from Carmen M. Reinhart and Kenneth Rogoff (both at Harvard), provided an important economical support for pro-austerity policies. The paper claimed that for levels of external debt in excess of 90% of the GDP, the GDP growth of a country was dramatically different than for lower levels of external debt. Therefore, it concludes the existence of a *magical threshold* -- 90% -- for which the level of external debt must be kept below in order to have a growing economy. Figure \@ref(fig:reinhart), extracted from @Reinhart2010a, illustrates the main finding.
 
-```{r, reinhart, echo = FALSE, out.width = '70%', fig.align = 'center', fig.cap = 'The *magical threshold* of $90\\%$ external debt.', cache = TRUE}
+(ref:reinharttitle) The *magical threshold* of $90\%$ external debt.
+
+```{r, reinhart, echo = FALSE, out.width = '45%', fig.align = 'center', fig.pos = 'h!', fig.cap = '(ref:reinharttitle)', cache = TRUE}
 knitr::include_graphics("images/figures/reinhart.png")
 ```
 
@@ -1706,7 +1740,7 @@ You can read the full story at [BBC](http://www.bbc.com/news/magazine-22223190),
 [The New York Times](http://www.nytimes.com/2013/04/19/opinion/krugman-the-excel-depression.html) and
 [The Economist](http://www.economist.com/news/finance-and-economics/21576362-seminal-analysis-relationship-between-debt-and-growth-comes-under). Also, the video in Figure \@ref(fig:video) contains a quick summary of the story by Nobel Prize laureate Paul Krugman.
 
-```{r, video, echo = FALSE, fig.align = 'center', fig.cap = 'CNN interview to Paul Krugman (key point from 1:16 to 1:40), broadcasted in 2013.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE}
+```{r, video, echo = FALSE, fig.align = 'center', fig.pos = 'h!', fig.cap = 'CNN interview to Paul Krugman (key point from 1:16 to 1:40), broadcasted in 2013.', screenshot.opts = list(delay = 15), dev = 'png', cache = TRUE}
 knitr::include_url("https://www.youtube.com/embed/3xj338ACri8")
 ```
 

@@ -11,7 +11,7 @@ We will see the basics of the most well-known partition method, namely *$k$-mean
 
 The $k$-means clustering looks for **$k$ clusters in the data such that they are as compact as possible and as separated as possible**. In clustering terminology, the clusters minimize the *with-in cluster variation* with respect to the cluster centroid while they maximize the *between cluster variation* among clusters. The distance used for measuring proximity is the usual **Euclidean distance** between points. As a consequence, this clustering method tend to yield spherical or rounded clusters and is not adequate for categorical variables.
 
-```{r, kmeans, echo = FALSE, results = 'hide', out.width = '90%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'The $k$-means partitions for a two-dimensional dataset with $k=1,2,3,4$. Centers of each cluster are displayed with an asterisk.', cache = TRUE}
+```{r, kmeans, echo = FALSE, results = 'hide', out.width = '70%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.pos = 'h!', fig.cap = 'The $k$-means partitions for a two-dimensional dataset with $k=1,2,3,4$. Centers of each cluster are displayed with an asterisk.', cache = TRUE}
 # Data with 3 clusters
 set.seed(23456789)
 n <- 20
@@ -38,7 +38,7 @@ rownames(laliga) <- laliga$Team
 laliga$Team <- NULL
 ```
 
-```{r, collapse = TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1, cache = TRUE}
+```{r, collapse = TRUE, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.asp = 1, cache = TRUE}
 # We consider only a smaller dataset (Points and Yellow.cards)
 head(laliga, 2)
 pointsCards <-  laliga[, c(1, 17)]
@@ -96,7 +96,7 @@ So far, we have only taken the information of two variables for performing clust
 
 By default, `kmeans` **does not standardize variables, which will affect the clustering result**. As a consequence, the clustering of a dataset will be different if one variable is expressed in millions or in tenths. If you want to avoid this distortion, you can use `scale` to automatically center and standardize a data frame (the result will be a matrix, so you need to transform it to a data frame again).
 
-```{r, collapse = TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1, cache = TRUE}
+```{r, collapse = TRUE, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.asp = 1, cache = TRUE}
 # Work with standardized data (and remove Matches)
 laligaStd <- data.frame(scale(laliga[, -2]))
 
@@ -123,10 +123,11 @@ biplot(pca)
 plot(pca$scores[, 1:2], col = kme$cluster)
 text(x = pca$scores[, 1:2], labels = rownames(pca$scores), pos = 3, col = kme$cluster)
 
-# Recall: this is a visualization with PC1 and PC2 of the clustering done with all the variables,
-# not just PC1 and PC2
+# Recall: this is a visualization with PC1 and PC2 of the clustering done with
+# all the variables, not just PC1 and PC2
 
-# Clustering with only the first two PCs - different and less accurate result, but still insightful
+# Clustering with only the first two PCs - different and less accurate result,
+# but still insightful
 set.seed(345678)
 kme2 <- kmeans(pca$scores[, 1:2], centers = 3, nstart = 20)
 plot(pca$scores[, 1:2], col = kme2$cluster)
@@ -134,7 +135,7 @@ text(x = pca$scores[, 1:2], labels = rownames(pca$scores), pos = 3, col = kme2$c
 ```
 
 $k$-means can also be performed through the help of `R Commander`. To do so, go to `'Statistics' -> 'Dimensional Analysis' -> 'Clustering' -> 'k-means cluster analysis...'`. If you do this for the `USArrests` dataset after rescaling it, select to `'Assign clusters to the data set'` and name the `'Assignment variable'` as `'KMeans'`, you should get something like this:
-```{r, collapse = TRUE, cache = TRUE}
+```{r, collapse = TRUE, cache = TRUE, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.asp = 1}
 # Load data and scale it
 data(USArrests)
 USArrests <- as.data.frame(scale(USArrests))
@@ -162,11 +163,11 @@ USArrests$KMeans <- assignCluster(model.matrix(~-1 + Assault + Murder + Rape + U
 remove(.cluster)
 ```
 
-```{block, type="rmdcaution"}
+```{block, type = 'rmdcaution'}
 How many clusters $k$ do we need in practice? There is not a single answer: the advice is to try several and compare. Inspecting the `'between_SS / total_SS'` for a good trade-off between the number of clusters and the percentage of total variation explained usually gives a good starting point for deciding on $k$.
 ```
 
-```{block, type='rmdexercise'}
+```{block, type = 'rmdexercise'}
 For the `iris` dataset, do sequentially:
 
 1. Apply `scale` to the dataset and save it as `irisStd`. Note: the fifth variable is a factor, so you must skip it.
@@ -181,7 +182,7 @@ For the `iris` dataset, do sequentially:
 
 ## Agglomerative hierarchical clustering {#cluster-hierarchical}
 
-```{r, trees, echo = FALSE, results = 'hide', out.width = '90%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.cap = 'The hierarchical clustering for a two-dimensional dataset with complete, single and average linkages.', cache = TRUE}
+```{r, trees, echo = FALSE, results = 'hide', out.width = '70%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.pos = 'h!', fig.cap = 'The hierarchical clustering for a two-dimensional dataset with complete, single and average linkages.', cache = TRUE}
 # Data with 3 clusters
 set.seed(23456789)
 n <- 10
@@ -220,7 +221,7 @@ between the observations in cluster A and cluster B.
 Hierarchical clustering is quite sensible to the kind of dissimilarity employed and the kind of *linkage* used. In addition, the hierarchical property might force the clusters to unnatural behaviors. Particularly, *single* linkage may result in extended, chained clusters in which a single observation is added at a new level. As a consequence, *complete* and *average* are usually recommended in practice.
 
 Let's illustrate how to perform hierarchical clustering in `laligaStd`.
-```{r, collapse = TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1, warning = FALSE, cache = TRUE}
+```{r, collapse = TRUE, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.asp = 1, warning = FALSE, cache = TRUE}
 # Compute dissimilarity matrix - in this case Euclidean distance
 d <- dist(laligaStd)
 
@@ -236,7 +237,8 @@ plot(treeAve)
 treeSingle <- hclust(d, method = "single")
 plot(treeSingle) # Chaining
 
-# Set the number of clusters after inspecting visually the dendogram for "long" groups of hanging leaves
+# Set the number of clusters after inspecting visually the dendrogram for "long"
+# groups of hanging leaves
 # These are the cluster assignments
 cutree(treeComp, k = 2) # (Barcelona, Real Madrid) and (rest)
 cutree(treeComp, k = 3) # (Barcelona, Real Madrid), (Atlético Madrid) and (rest)
@@ -259,7 +261,7 @@ plot(pca$scores[, 1:2], col = cluster)
 text(x = pca$scores[, 1:2], labels = rownames(pca$scores), pos = 3, col = cluster)
 ```
 If categorical variables are present, replace `dist` by `daisy` from the `cluster` package (you need to do first `library(cluster)`). For example, let's cluster the `iris` dataset.
-```{r, collapse = TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1, warning = FALSE, cache = TRUE}
+```{r, collapse = TRUE, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.asp = 1, warning = FALSE, cache = TRUE}
 # Load data
 data(iris)
 
@@ -268,8 +270,8 @@ head(iris)
 
 # Compute dissimilarity matrix using the Gower dissimilarity measure
 # This dissimilarity is able to handle both numerical and categorical variables
-# daisy automatically detects whether there are factors present in the data and applies Gower
-# (otherwise it applies the Euclidean distance)
+# daisy automatically detects whether there are factors present in the data and
+# applies Gower (otherwise it applies the Euclidean distance)
 library(cluster)
 d <- daisy(iris)
 tree <- hclust(d)
@@ -282,7 +284,7 @@ cutree(tree, k = 3)
 table(iris$Species, cutree(tree, k = 3))
 ```
 
-```{block, type = "rmdcaution"}
+```{block, type = 'rmdcaution'}
 Performing hierarchical clustering in practice depends on several decisions that may have big consequences on the final output:
 
   - What kind of dissimilarity and linkage should be employed? Not a single answer: try several and compare.
@@ -293,12 +295,13 @@ Despite the general advice, there is not a single and best solution for the prev
 
 Hierarchical clustering can also be performed through the help of `R Commander`. To do so, go to `'Statistics' -> 'Dimensional Analysis' -> 'Clustering' -> 'Hierar...'`. If you do this for the `USArrests` dataset after rescaling, you should get something like this:
 ```{r, collapse = TRUE, cache = TRUE}
-HClust.1 <- hclust(dist(model.matrix(~-1 + Assault+Murder+Rape+UrbanPop, USArrests)) ,
-  method= "complete")
-plot(HClust.1, main= "Cluster Dendrogram for Solution HClust.1", xlab=
-  "Observation Number in Data Set USArrests", sub="Method=complete; Distance=euclidian")
+HClust.1 <- hclust(dist(model.matrix(~-1 + Assault + Murder + Rape + UrbanPop,
+                                     USArrests)), method = "complete")
+plot(HClust.1, main = "Cluster Dendrogram for Solution HClust.1",
+     xlab = "Observation Number in Data Set USArrests",
+     sub = "Method=complete; Distance=euclidian")
 ```
 
-```{block, type="rmdexercise"}
-Import the `eurojob`  ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/eurojob.txt)) dataset and standardize it properly. Perform a hierarchical clustering analysis for the three kind of linkages seen.
+```{block, type = 'rmdexercise'}
+Import the `eurojob` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/eurojob.txt)) dataset and standardize it properly. Perform a hierarchical clustering analysis for the three kind of linkages seen.
 ```

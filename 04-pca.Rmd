@@ -22,14 +22,16 @@ The dataset `eurojob` ([download](https://raw.githubusercontent.com/egarpor/SSS2
 - Social and personal services (`Soc`)
 - Transport and communications (`Tra`)
 
+(ref:eurotabletitle) The `eurojob` dataset.
+
 If the dataset is imported into `R` and the case names are set as `Country` (important in order to have only numerical variables), then the data should look like this:
-```{r, eurotable, echo = FALSE, out.width = '90%', fig.align = 'center', cache = TRUE}
+```{r, eurotable, echo = FALSE, out.width = '90%', fig.align = 'center', fig.pos = 'h!', cache = TRUE}
 eurojob <- read.table(file = "datasets/eurojob.txt", header = TRUE)
 knitr::kable(
   eurojob,
   booktabs = TRUE,
   longtable = TRUE,
-  caption = 'The `eurojob` dataset.'
+  caption = '(ref:eurotabletitle)'
 )
 row.names(eurojob) <- eurojob$Country
 eurojob$Country <- NULL
@@ -37,7 +39,7 @@ eurojob$Country <- NULL
 
 So far, we know how to compute summaries for *each variable*, and how to quantify and visualize relations between variables with the correlation matrix and the scatterplot matrix. But even for a moderate number of variables like this, their results are hard to process.
 
-```{r, collapse= TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1, cache = TRUE}
+```{r, collapse= TRUE, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.asp = 1, cache = TRUE}
 # Summary of the data - marginal
 summary(eurojob)
 
@@ -65,7 +67,7 @@ We definitely need a way of visualizing and quantifying the relations between va
 Hence, PCA rearranges our variables in an information-equivalent, but more convenient, layout where the variables are **sorted according to the amount of information they are able to explain**. From this position, the next step is clear: **stick only with a limited number of PCs such that they explain most of the information** (e.g., 70\% of the total variance) and do *dimension reduction*. The effectiveness of PCA in practice varies from the structure present in the dataset. For example, in the case of highly dependent data, it could explain more than the 90\% of variability of a dataset with tens of variables with just two PCs.
 
 Let's see how to compute a full PCA in `R`.
-```{r, collapse = TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1, cache = TRUE}
+```{r, collapse = TRUE, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.asp = 1, cache = TRUE}
 # The main function - use cor = TRUE to avoid scale distortions
 pca <- princomp(eurojob, cor = TRUE)
 
@@ -122,12 +124,12 @@ Based on the weights of the variables on the PCs, we can extract the following i
 - PC1 is roughly a linear combination of `Agr`, with *negative* weight, and (`Man`, `Pow`, `Con`, `Ser`, `Soc`, `Tra`), with *positive* weights. So it can be interpreted as an *indicator* of the kind of economy of the country: agricultural (negative values) or industrial (positive values).
 - PC2 has *negative* weights on (`Min`, `Man`, `Pow`, `Tra`) and *positive* weights in (`Ser`, `Fin`, `Soc`). It can be interpreted as the contrast between relatively large or small service sectors. So it tends to be negative in communist countries and positive in capitalist countries.
 
-```{block, type="rmdtip"}
+```{block, type = 'rmdtip'}
 The interpretation of the PCs involves inspecting the weights and interpreting the linear combination of the original variables, which might be separating between two clear characteristics of the data
 ```
 
 To conclude, let's see how we can represent our original data into a plot called *biplot* that summarizes all the analysis for two PCs.
-```{r, out.width = '90%', fig.align = 'center', fig.asp = 1, cache = TRUE}
+```{r, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.asp = 1, cache = TRUE}
 # Biplot - plot together the scores for PC1 and PC2 and the
 # variables expressed in terms of PC1 and PC2
 biplot(pca)
@@ -151,7 +153,7 @@ In addition to these three heuristics, in practice we might apply a *justified b
 5. $l$'s such that they yield **interpretable PCs**. Interpreting PCs is not so straightforward as interpreting the original variables. Furthermore, it becomes more difficult the larger the index of the PC is, since it explains less information of the data.
 
 Let's see these heuristics in practice with the `USArrests` dataset (arrest statistics and population of US states).
-```{r, collapse = TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1, cache = TRUE}
+```{r, collapse = TRUE, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.asp = 1, cache = TRUE}
 # Load data
 data(USArrests)
 
@@ -176,7 +178,7 @@ The selections of $l$ for this PCA, based on the previous heuristics, are:
 Therefore, we can conclude that *$l=2$ PCs is a good compromise* for representing the `USArrests` dataset.
 
 Let's see what happens for the `USJudgeRatings` dataset (lawyers' ratings of US Superior Court judges).
-```{r, collapse = TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1, cache = TRUE}
+```{r, collapse = TRUE, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.asp = 1, cache = TRUE}
 # Load data
 data(USJudgeRatings)
 
@@ -201,7 +203,7 @@ The selections of $l$ for this PCA, based on the previous heuristics, are:
 Based on the previous criteria, we can conclude that *$l=1$ PC is a reasonable compromise* for representing the `USJudgeRatings` dataset.
 
 We analyse now a slightly more complicated dataset. It contains the standings and team statistics for La Liga 2015/2016:
-```{r, laliga, echo = FALSE, out.width = '90%', fig.align = 'center', message = FALSE, warning = FALSE, cache = TRUE}
+```{r, laliga, echo = FALSE, out.width = '90%', fig.align = 'center', fig.pos = 'h!', message = FALSE, warning = FALSE, cache = TRUE}
 library(RcmdrMisc)
 laliga <- readXL("datasets/la-liga-2015-2016.xlsx")
 rownames(laliga) <- laliga$Team
@@ -214,7 +216,7 @@ knitr::kable(
 )
 ```
 
-```{r, collapse = TRUE, out.width = '70%', fig.align = 'center', fig.asp = 1, cache = TRUE}
+```{r, collapse = TRUE, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.asp = 1, cache = TRUE}
 # PCA - we remove the second variable, matches played, since it is constant
 pcaLaliga <- princomp(laliga[, -2], cor = TRUE)
 summary(pcaLaliga)
@@ -262,7 +264,7 @@ The biplot also provides the direct relation between variables, at sight of thei
 The **approximation to the correlation by means of the arrow angles is as good as the percentage of variance explained** by $\text{PC}_1$ and $\text{PC}_2$.
 
 Let see an in-depth illustration of the previous concepts for `pcaUSArrests`:
-```{r, out.width = '90%', fig.align = 'center', fig.asp = 1, cache = TRUE}
+```{r, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.asp = 1, cache = TRUE}
 # Weights and biplot
 pcaUSArrests$loadings
 biplot(pcaUSArrests)
@@ -284,7 +286,7 @@ We can extract the following conclusions regarding the arrows and PCs:
 Therefore, the biplot shows that states like Florida, South Carolina and California have high crime rate, whereas states like North Dakota or Vermont have low crime rate. California, in addition to have a high crime rate has a large urban population, whereas South Carolina has a low urban population. With the biplot, we can visualize the differences between states according to the crime rate and urban population in a simple way.
 
 Let's see now the biplot for the `USJudgeRatings`, which has a clear interpretation:
-```{r, out.width = '90%', fig.align = 'center', fig.asp = 1, cache = TRUE}
+```{r, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.asp = 1, cache = TRUE}
 # Weights and biplot
 pcaUSJudgeRatings$loadings
 biplot(pcaUSJudgeRatings, cex = 0.75)
@@ -292,7 +294,7 @@ biplot(pcaUSJudgeRatings, cex = 0.75)
 The $\text{PC}_1$ gives a *lawyer indicator of how badly the judge conducts a trial*. The variable `CONT`, which measures the number of contacts between judge and lawyer, is almost uncorrelated with the rest of variables and is captured by $\text{PC}_2$ (hence the rates of the lawyers are not affected by the number of contacts with the judge). We can identify the high-rated and low-rated judges in the left and right of the plot, respectively.
 
 Let's see an application of the biplot in a La Liga 2015/2016, a dataset with more variables and a harder interpretation of PCs.
-```{r, out.width = '90%', fig.align = 'center', fig.asp = 1, cache = TRUE}
+```{r, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.asp = 1, cache = TRUE}
 # Weights and biplot
 pcaLaliga$loadings
 biplot(pcaLaliga, cex = 0.75)
@@ -305,7 +307,7 @@ Some interesting highlights:
 - $\text{PC}_3$ does not have a clear interpretation.
 
 If you are wondering about the 3D representation of the biplot, it can be computed through:
-```{r, webgl = TRUE, cache = TRUE}
+```{r, webgl = knitr:::is_html_output(), cache = TRUE, results = 'hide', eval = knitr:::is_html_output()}
 # Install this package with install.packages("pca3d")
 library(pca3d)
 pca3d(pcaLaliga, show.labels = TRUE, biplot = TRUE)
