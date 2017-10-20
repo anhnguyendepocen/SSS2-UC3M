@@ -37,7 +37,9 @@ We definitely need a way of **summarizing this amount of information**!
 We are going to do the following. First, import the data into `R Commander` and do a basic manipulation of it. Second, fit a linear model and interpret its output. Finally, visualize the fitted line and the data.
 
 (ref:viewtitle) Correct importation of the `pisa` dataset.
+
 (ref:scatter1title) Scatterplot window, `'Data'` panel.
+
 (ref:scatter2title) Scatterplot window, `'Options'` panel. Remember to tick the `'Least-squares line'` box in order to display the fitted regression line.
 
 1. **Import the data into `R Commander`**.
@@ -181,6 +183,7 @@ We know that there exist qualitative dissimilarities between both chambers, but 
 Let's begin by reading the data:
 
 (ref:UStitle) Correct importation of the `US` dataset.
+
 (ref:EUtitle) The `EU` dataset with `Country` set as the case names.
 
 1. The `US_apportionment.xlsx` file ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/US_apportionment.xlsx)) contains the 50 US states entitled to representation. The variables are `State`, `Population2010` (from the last census) and `Seats2013–2023`. This is an Excel file that we can read using `'Data' -> 'Import data' -> 'from Excel file...'`. A window will pop-up, asking for the right options. We set them as in Figure \@ref(fig:excel), since we want the variable `State` to be the case names. After clicking in `'View dataset'`, the data should look like Figure \@ref(fig:US).

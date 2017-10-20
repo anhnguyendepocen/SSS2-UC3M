@@ -478,6 +478,7 @@ knitr::include_app('https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/as
 To conclude this section, let's see how to make a 3D scatterplot with the regression plane, in order to evaluate visually how good the fit of the model is. We will do it with the `iris` dataset, that can be imported in `R` simply by running `data(iris)`. In `R Commander` go to `'Graphs' -> '3D Graphs' -> '3D scatterplot...'`. A window like Figures \@ref(fig:scatter3d1) and \@ref(fig:scatter3d2) will pop-up. The options are similar to the ones for `'Graphs' -> 'Scatterplot...'`.
 
 (ref:scatter3d1title) 3D scatterplot window, `'Data'` panel.
+
 (ref:scatter3d2title) 3D scatterplot window, `'Options'` panel. Remember to tick the `'Linear least-squares fit'` box in order to display the fitted regression plane.
 
 ```{r, scatter3d1, echo = FALSE, out.width = '45%', fig.align = 'center', fig.pos = 'h!', fig.cap = '(ref:scatter3d1title)', cache = TRUE}
