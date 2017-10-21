@@ -23,6 +23,10 @@ apple-touch-icon-size: 120
 favicon: "favicon.ico"
 -->
 
+```{block2, type = 'rmdcaution'}
+The **animations** of these notes will not be displayed the first time they are browsed^[The reason is because they are hosted at `https` websites with auto-signed SSL certificates.]. See for example Figure \@ref(fig:leastsquares). **To see them**, click on the caption's link *"Application also available [here](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/least-squares/)"*. You will get a warning from your browser saying that *"Your connection is not private"*. Click in *"Advanced"* and **allow an exception** in your browser (I guarantee you I will not do anything evil!). The next time the animation will show up correctly within the notes.
+```
+
 Welcome to the lab notes for *Statistics for Social Sciences II: Multivariate Techniques*. Along these notes we will see how to effectively implement the statistical methods presented in the lectures. The exposition we will follow is based on learning by analyzing datasets and **real-case studies**, always with the help of **statistical software**. While doing so, we will illustrate the key insights of some multivariate techniques and the adequate use of advanced statistical software.
 
 Be advised that these notes are *neither an exhaustive, rigorous nor comprehensive treatment* of the broad statistical branch know as *Multivariate Analysis*. They are just a helpful resource to implement the specific topics covered in this limited course.
@@ -246,6 +250,6 @@ The following great reference books have been used extensively for preparing the
 - @Pena2002 (linear regression, logistic regression, PCA, clustering),
 - @Bartholomew2008 (PCA).
 
-The icons used in the notes were designed by [madebyoliver](http://www.flaticon.com/authors/madebyoliver), [freepik](http://www.flaticon.com/authors/freepik) and [roundicons](http://www.flaticon.com/authors/roundicons) from [Flaticon](http://www.flaticon.com/).
+The icons used in the notes were designed by [madebyoliver](http://www.flaticon.com/authors/madebyoliver), [freepik](http://www.flaticon.com/authors/freepik), and [roundicons](http://www.flaticon.com/authors/roundicons) from [Flaticon](http://www.flaticon.com/).
 
 All material in these notes is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
