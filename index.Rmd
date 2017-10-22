@@ -252,4 +252,6 @@ The following great reference books have been used extensively for preparing the
 
 The icons used in the notes were designed by [madebyoliver](http://www.flaticon.com/authors/madebyoliver), [freepik](http://www.flaticon.com/authors/freepik), and [roundicons](http://www.flaticon.com/authors/roundicons) from [Flaticon](http://www.flaticon.com/).
 
+In addition, these notes are possible due to the existence of these incredible pieces of software: @R-bookdown, @R-knitr, @R-rmarkdown, and @R-base.
+
 All material in these notes is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).

@@ -51,7 +51,7 @@ Here is a broad view of the syllabus:
 5. [Principal component analysis](https://bookdown.org/egarpor/SSS2-UC3M/pca.html)
 	1. [Examples and applications](https://bookdown.org/egarpor/SSS2-UC3M/pca-examps.html)
 6. [Cluster analysis](https://bookdown.org/egarpor/SSS2-UC3M/cluster.html)
-	1. [$k$-means clustering](https://bookdown.org/egarpor/SSS2-UC3M/cluster-kmeans.html)
+	1. [k-means clustering](https://bookdown.org/egarpor/SSS2-UC3M/cluster-kmeans.html)
 	2. [Agglomerative hierarchical clustering](https://bookdown.org/egarpor/SSS2-UC3M/cluster-hierarchical.html)
 7. Appendix A: [Glossary of important `R` commands](https://bookdown.org/egarpor/SSS2-UC3M/appendix-Rglossary.html)
 8. Appendix B: [Use of qualitative predictors in regression](https://bookdown.org/egarpor/SSS2-UC3M/appendix-qualpred.html)
