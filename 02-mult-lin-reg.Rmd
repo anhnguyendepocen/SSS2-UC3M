@@ -522,11 +522,11 @@ where $\mathcal{N}_{m}$ is the $m$-dimensional Normal, this is, the extension of
     - *Predictor sparsity $(\mathbf{X}^T\mathbf{X})^{-1}$*. The more *sparse* the predictor is (small $|(\mathbf{X}^T\mathbf{X})^{-1}|$), the more precise $\hat{\boldsymbol{\beta}}$ is.
 
 
-The problem with \@ref(eq:normp) is that *$\sigma^2$ is unknown* in practice, so we need to estimate $\sigma^2$ from the data. We do so by computing a rescaled sample variance of the fitted residuals $\hat\varepsilon_1,\ldots,\hat\varepsilon_n$:
+The problem with \@ref(eq:normp) is that *$\sigma^2$ is unknown* in practice, so we need to estimate $\sigma^2$ from the data. We do so by computing a rescaled sample variance of the residuals $\hat\varepsilon_1,\ldots,\hat\varepsilon_n$:
 \begin{align*}
 \hat\sigma^2=\frac{\sum_{i=1}^n\hat\varepsilon_i^2}{n-k-1}.
 \end{align*}
-Note the $n-k-1$ in the denominator. Now $n-k-1$ are the *degrees of freedom*, the number of data points minus the number of already fitted parameters ($k$ slopes and $1$ intercept). As in simple linear regression, *the mean of the fitted residuals $\hat\varepsilon_1,\ldots,\hat\varepsilon_n$ is zero*.
+Note the $n-k-1$ in the denominator. Now $n-k-1$ are the *degrees of freedom*, the number of data points minus the number of already fitted parameters ($k$ slopes and $1$ intercept). As in simple linear regression, *the mean of the residuals $\hat\varepsilon_1,\ldots,\hat\varepsilon_n$ is zero*.
 
 If we use the estimate $\hat\sigma^2$ instead of $\sigma^2$, we get more useful distributions, this time for the *individual* $\beta_j$'s:
 \begin{align}
@@ -872,7 +872,7 @@ As we saw, these are equivalent forms for $R^2$:
 R^2&=\frac{\text{SSR}}{\text{SST}}=\frac{\text{SST}-\text{SSE}}{\text{SST}}=1-\frac{\text{SSE}}{\text{SST}}\nonumber\\
 &=1-\frac{\hat\sigma^2}{\text{SST}}\times(n-k-1).(\#eq:R2)
 \end{align}
-The SSE on the numerator always decreases as more predictors are added to the model, even if these are no significant. As a consequence, the **$R^2$ always increases with $k$**. Why is so? Intuitively, because the complexity -- hence the flexibility -- of the model augments when we use more predictors to explain $Y$. Mathematically, because when $k$ approaches $n-1$ and $\hat\sigma^2$, then the second term in \@ref(eq:R2) is reduced and as a consequence $R^2$ grows.
+The SSE on the numerator always decreases as more predictors are added to the model, even if these are no significant. As a consequence, the **$R^2$ always increases with $k$**. Why is so? Intuitively, because the complexity -- hence the flexibility -- of the model augments when we use more predictors to explain $Y$. Mathematically, because when $k$ approaches $n-1$ the second term in \@ref(eq:R2) is reduced and, as a consequence, $R^2$ grows.
 
 The *adjusted $R^2$* is an important quantity specifically designed to cover this $R^2$'s flaw, which is ubiquitous in multiple linear regression. The purpose is to have a better tool for **comparing models without systematically favoring complexer models**. This alternative coefficient is defined as
 \begin{align}

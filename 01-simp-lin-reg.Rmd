@@ -428,7 +428,7 @@ The following table contains a handy cheat sheet of equivalences between `R` cod
 | `data <- data.frame(x = x, y = y)` | Sample $(X_1,Y_1),\ldots,(X_n,Y_n)$    |
 | `model <- lm(y ~ x, data = data)` | Fitted linear model |
 | `model$coefficients` | Fitted coefficients $\hat\beta_0,\hat\beta_1$ |
-| `model$residuals` | Fitted residuals $\hat\varepsilon_1,\ldots,\hat\varepsilon_n$ |
+| `model$residuals` | Residuals $\hat\varepsilon_1,\ldots,\hat\varepsilon_n$ |
 | `model$fitted.values` | Fitted values $\hat Y_1,\ldots,\hat Y_n$ |
 | `model$df.residual` | Degrees of freedom $n-2$ |
 | `summaryModel <- summary(model)` | Summary of the fitted linear model |
@@ -902,11 +902,11 @@ Some important remarks on \@ref(eq:norm1) and \@ref(eq:se1) are
 knitr::include_app('https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/lm-random/', height = '1000px')
 ```
 
-The problem with \@ref(eq:norm1) and \@ref(eq:se1) is that *$\sigma^2$ is unknown* in practice, so we need to estimate $\sigma^2$ from the data. We do so by computing the *sample variance of the fitted residuals* $\hat\varepsilon_1,\ldots,\hat\varepsilon_n$. First note that *the fitted residuals have zero mean*. This can be easily seen by replacing $\hat\beta_0=\bar Y-\hat\beta_1\bar X$:
+The problem with \@ref(eq:norm1) and \@ref(eq:se1) is that *$\sigma^2$ is unknown* in practice, so we need to estimate $\sigma^2$ from the data. We do so by computing the *sample variance of the residuals* $\hat\varepsilon_1,\ldots,\hat\varepsilon_n$. First note that *the residuals have zero mean*. This can be easily seen by replacing $\hat\beta_0=\bar Y-\hat\beta_1\bar X$:
 \begin{align}
 \bar\varepsilon =\frac{1}{n}\sum_{i=1}^n(Y_i-\hat\beta_0-\hat\beta_1X_i)=\frac{1}{n}\sum_{i=1}^n(Y_i-\bar Y+\hat\beta_1\bar X-\hat\beta_1X_i)=0.
 \end{align}
-Due to this, we can and we can do it by computing a *rescaled* sample variance of the fitted residuals:
+Due to this, we can and we can do it by computing a *rescaled* sample variance of the residuals:
 \begin{align*}
 \hat\sigma^2=\frac{\sum_{i=1}^n\hat\varepsilon_i^2}{n-2}.
 \end{align*}
@@ -1114,7 +1114,7 @@ Some important remarks on \@ref(eq:ci1) are:
 
 - **Variance**. The variance that determines the length of the CI is $\frac{\hat\sigma^2}{n}\left(1+\frac{(x-\bar x)^2}{s_x^2}\right)$. Its interpretation is very similar to the one given for $\hat\beta_0$ and $\hat\beta_1$ in Section \@ref(simplin-inference):
 
-    - *Sample size $n$*. As the sample size grows, the length of the CI decreases, since theestimates $\hat\beta_0$ and $\hat\beta_1$ become more precise.
+    - *Sample size $n$*. As the sample size grows, the length of the CI decreases, since the estimates $\hat\beta_0$ and $\hat\beta_1$ become more precise.
     - *Error variance $\sigma^2$*. The more disperse $Y$ is, the less precise $\hat\beta_0$ and $\hat\beta_1$ are, hence the more variance on estimating $\beta_0+\beta_1x$.
     - *Predictor variance $s_x^2$*. If the predictor is spread out (large $s_x^2$), then it is easier to "anchor" the regression line. This helps on reducing the variance, but up to a **certain limit**: there is a variance component purely dependent on the error!
     - *Centrality $(x-\bar x)^2$*. The more extreme $x$ is, the wider the CI becomes. This is due to the "leverage" of the slope estimate $\hat\beta_1$: a small deviation from the true $\beta_1$ is magnified when $x$ is far away from $\bar x$, hence the more variability in these points. The minimum is achieved with $x=\bar x$, but it does not correspond to zero variance.

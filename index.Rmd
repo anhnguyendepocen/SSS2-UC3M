@@ -222,7 +222,7 @@ This is a handy list with a small description and download link for all the rele
 
 - `hap.txt` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/hap.txt)). Contains data for 20 advanced economies in the time period 1946–2009, measured for 31 variables. Among those, the variable `dRGDP` represents the real GDP growth (as a percentage) and `debtgdp` represents the percentage of public debt with respect to the GDP.
 
-- `wine.csv` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/wine.csv)). The dataset is formed by the auction `Price` of 27 red Bordeaux vintages, four vintage descriptors (`WinterRain`, `AGST`, `HarvestRain`, `Age`) and the population of France in the year of the vintage, `FrancePop`.
+- `wine.csv` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/wine.csv)). The dataset is formed by the auction `Price` of 27 red Bordeaux vintages, five vintage descriptors (`WinterRain`, `AGST`, `HarvestRain`, `Age`, `Year`) and the population of France in the year of the vintage, `FrancePop`.
 
 - `Boston.xlsx` ([download](https://raw.githubusercontent.com/egarpor/SSS2-UC3M/master/datasets/Boston.xlsx)). The dataset contains 14 variables describing 506 suburbs in Boston. Among those variables, `medv` is the median house value, `rm` is the average number of rooms per house and `crim` is the per capita crime rate. The full description is available in `?Boston`.
 
