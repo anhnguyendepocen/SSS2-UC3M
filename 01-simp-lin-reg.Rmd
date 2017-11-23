@@ -739,7 +739,7 @@ As a consequence of $\hat\beta_1=r_{xy}\frac{s_y}{s_x}$, $\hat\beta_1$ has aways
 There are some important points hidden behind the election of RSS as the error criterion for obtaining $(\hat\beta_0,\hat\beta_1)$:
 
 - *Why the vertical distances and not horizontal or perpendicular?* Because we want to minimize the error in the *prediction* of $Y$! Note that the treatment of the variables is *not symmetrical*^[In Chapter \@ref(pca) we will consider perpendicular distances.].
-- *Why the squares in the distances and not the absolute value?* Due to mathematical convenience. Squares are nice to differentiate and are closely related with the Normal distribution.
+- *Why the squares in the distances and not the absolute value?* Due to mathematical convenience. Squares are nice to differentiate and are closely related with the normal distribution.
 
 Figure \@ref(fig:leastsquares) illustrates the influence of the distance employed in the sum of squares. Try to minimize the sum of squares for the different datasets. Is the best choice of intercept and slope independent of the type of distance?  
 
@@ -833,7 +833,7 @@ The assumptions of the linear model are:
 i. **Linearity**: $\mathbb{E}[Y|X=x]=\beta_0+\beta_1x$.
 ii. **Homoscedasticity**: $\mathbb{V}\text{ar}[\varepsilon_i]=\sigma^2$, with $\sigma^2$ constant for $i=1,\ldots,n$.
 iii. **Normality**: $\varepsilon_i\sim\mathcal{N}(0,\sigma^2)$ for $i=1,\ldots,n$.
-iv. **Independence of the errors**: $\varepsilon_1,\ldots,\varepsilon_n$ are independent (or uncorrelated, $\mathbb{E}[\varepsilon_i\varepsilon_j]=0$, $i\neq j$, since they are assumed to be Normal).
+iv. **Independence of the errors**: $\varepsilon_1,\ldots,\varepsilon_n$ are independent (or uncorrelated, $\mathbb{E}[\varepsilon_i\varepsilon_j]=0$, $i\neq j$, since they are assumed to be normal).
 
 A good one-line summary of the linear model is (independence is assumed)
 \begin{align*}

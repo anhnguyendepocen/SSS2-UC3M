@@ -141,7 +141,7 @@ compareCoefs(modWine1, modWine2)
 ```
 Note how **the coefficients for `modWine2` have smaller errors than `modWine1`**.
 
-As a conclusion, `modWine2` is a model that explains the $82.75\%$ of the variability in a non-redundant way and with all their coefficients significant. Therefore, we have a formula for effectively explaining and predicting the quality of a vintage (answers Q1).
+As a conclusion, `modWine2` is a model that explains the $82.75\%$ of the variability in a non-redundant way and with all its coefficients significant. Therefore, we have a formula for effectively explaining and predicting the quality of a vintage (answers Q1).
 
 The interpretation of `modWine2` agrees with well-known facts in viticulture that make perfect sense (Q2):
 
@@ -431,7 +431,7 @@ data <- data.frame(x1 = x1, x2 = x2, y = y)
 ```
 
 ```{block, type = 'rmdexercise'}
-With the above `data`, cheek how the fitted coefficients change for `y ~ x1`, `y ~ x2` and `y ~ x1 + x2`.
+With the above `data`, check how the fitted coefficients change for `y ~ x1`, `y ~ x2` and `y ~ x1 + x2`.
 ```
 
 ## Assumptions of the model {#multlin-assumps}
@@ -447,7 +447,7 @@ The assumptions of the multiple linear model are an extension of the simple line
 i. **Linearity**: $\mathbb{E}[Y|X_1=x_1,\ldots,X_k=x_k]=\beta_0+\beta_1x_1+\ldots+\beta_kx_k$.
 ii. **Homoscedasticity**: $\mathbb{V}\text{ar}(\varepsilon_i)=\sigma^2$, with $\sigma^2$ constant for $i=1,\ldots,n$.
 iii. **Normality**: $\varepsilon_i\sim\mathcal{N}(0,\sigma^2)$ for $i=1,\ldots,n$.
-iv. **Independence of the errors**: $\varepsilon_1,\ldots,\varepsilon_n$ are independent (or uncorrelated, $\mathbb{E}[\varepsilon_i\varepsilon_j]=0$, $i\neq j$, since they are assumed to be Normal).
+iv. **Independence of the errors**: $\varepsilon_1,\ldots,\varepsilon_n$ are independent (or uncorrelated, $\mathbb{E}[\varepsilon_i\varepsilon_j]=0$, $i\neq j$, since they are assumed to be normal).
 
 A good one-line summary of the linear model is the following (independence is assumed)
 \begin{align}
@@ -512,7 +512,7 @@ The distribution of $\hat{\boldsymbol{\beta}}$ is:
 \hat{\boldsymbol{\beta}}\sim\mathcal{N}_{k+1}\left(\boldsymbol{\beta},\sigma^2(\mathbf{X}^T\mathbf{X})^{-1}\right)
 (\#eq:normp)
 \end{align}
-where $\mathcal{N}_{m}$ is the $m$-dimensional Normal, this is, the extension of the usual Normal distribution to deal with $m$ random variables^[With $m=1$, the density of a $\mathcal{N}_{m}$ corresponds to a bell-shaped *curve* With $m=2$, the density is a *surface* similar to a bell.]. The interpretation of \@ref(eq:normp) is not so easy as in the simple linear case. Here are some broad remarks:
+where $\mathcal{N}_{m}$ is the $m$-dimensional normal, this is, the extension of the usual normal distribution to deal with $m$ random variables^[With $m=1$, the density of a $\mathcal{N}_{m}$ corresponds to a bell-shaped *curve* With $m=2$, the density is a *surface* similar to a bell.]. The interpretation of \@ref(eq:normp) is not so easy as in the simple linear case. Here are some broad remarks:
 
 - **Bias**. The estimates are unbiased.
 - **Variance**. Depending on:
@@ -646,7 +646,7 @@ weather <- data.frame(WinterRain = 500, HarvestRain = 123,
 # Prediction of the mean at 95% - the defaults
 predict(modelW, newdata = weather)
 
-# Prediction of the with 95% confidence interval (the default)
+# Prediction of the mean with 95% confidence interval (the default)
 # CI: (lwr, upr)
 predict(modelW, newdata = weather, interval = "confidence")
 predict(modelW, newdata = weather, interval = "confidence", level = 0.95)
@@ -660,7 +660,7 @@ predict(modelW, newdata = weather, interval = "confidence", level = 0.99)
 # Prediction of the mean at 95% - the defaults
 predict(modelW, newdata = weather)
 
-# Prediction of the with 95% confidence interval (the default)
+# Prediction of the response with 95% confidence interval (the default)
 # CI: (lwr, upr)
 predict(modelW, newdata = weather, interval = "prediction")
 predict(modelW, newdata = weather, interval = "prediction", level = 0.95)
@@ -675,13 +675,13 @@ weather2 <- data.frame(WinterRain = c(500, 200), HarvestRain = c(123, 200),
 predict(modelW, newdata = weather2, interval = "prediction")
 ```
 
-```{block, type = 'rmdexercise'}
+```{block2, type = 'rmdexercise'}
 For the `wine` dataset, do the following:
 
 - Regress `WinterRain` on `HarvestRain` and `AGST`. Name the fitted model `modExercise`.
 - Compute the estimate for the conditional mean of `WinterRain` for `HarvestRain`$=123.0$ and `AGST`$=16.15$. What is the CI at $\alpha=0.01$?
 - Compute the estimate for the conditional response for `HarvestRain`$=125.0$ and `AGST`$=15$. What is the CI at $\alpha=0.10$?
-- Check that `modExercise$fitted.values` is the same as `predict(modExercise, newdata = data.frame(WinterRain = wine$HarvestRain, AGST = wine$AGST))`. Why is so?
+- Check that `modExercise$fitted.values` is the same as `predict(modExercise, newdata = data.frame(HarvestRain = wine$HarvestRain, AGST = wine$AGST))`. Why is so?
 ```
 
 ```{block, type = 'rmdinsight'}
@@ -824,7 +824,7 @@ The *coefficient of determination* $R^2$ is defined as in simple linear regressi
 \begin{align*}
 R^2=\frac{\text{SSR}}{\text{SST}}=\frac{\text{SSR}}{\text{SSR}+\text{SSE}}=\frac{\text{SSR}}{\text{SSR}+(n-k-1)\hat\sigma^2}.
 \end{align*}
-$R^2$ measures the **proportion of variation** of the response variable $Y$ that is **explained** by the predictor $X$ through the regression. Intuitively, $R^2$ measures the **tightness of the data cloud around the regression plane**. Check in Figure \@ref(fig:anovaillus3D) how changing the value of $\sigma^2$ (not $\hat\sigma^2$, but $\hat\sigma^2$ is obviously dependent on $\sigma^2$) affects the $R^2$. Also, as we saw in Section \@ref(simplin-aovfit), $R^2=r^2_{y\hat y}$, that is, *the square of the sample correlation coefficient between $Y_1,\ldots,Y_n$ and $\hat Y_1,\ldots,\hat Y_n$ is $R^2$*.
+$R^2$ measures the **proportion of variation** of the response variable $Y$ that is **explained** by the predictors $X_1,\ldots,X_k$ through the regression. Intuitively, $R^2$ measures the **tightness of the data cloud around the regression plane**. Check in Figure \@ref(fig:anovaillus3D) how changing the value of $\sigma^2$ (not $\hat\sigma^2$, but $\hat\sigma^2$ is obviously dependent on $\sigma^2$) affects the $R^2$. Also, as we saw in Section \@ref(simplin-aovfit), $R^2=r^2_{y\hat y}$, that is, *the square of the sample correlation coefficient between $Y_1,\ldots,Y_n$ and $\hat Y_1,\ldots,\hat Y_n$ is $R^2$*.
 
 Trusting blindly the $R^2$ can lead to catastrophic conclusions in model selection. Here is a counterexample of a multiple regression where the $R^2$ is apparently large but the assumptions discussed in Section \@ref(multlin-assumps) are clearly not satisfied.
 
@@ -885,7 +885,7 @@ The different behavior between $R^2$ and $R^2_\text{Adj}$ can be visualized by a
 \[
 Y_i=\beta_0+\beta_1X_{i1}+\beta_2X_{i2}+\varepsilon_i,\quad \varepsilon_i\sim\mathcal{N}(0,1).
 \]
-Tho this data, we add $196$ *garbage* predictors that are completely independent from $Y$. Therefore, we end up with $k=198$ predictors. Now we compute the $R^2(j)$ and $R^2_\text{Adj}(j)$ for the models
+To this data, we add $196$ *garbage* predictors that are completely independent from $Y$. Therefore, we end up with $k=198$ predictors. Now we compute the $R^2(j)$ and $R^2_\text{Adj}(j)$ for the models
 \[
 Y=\beta_0+\beta_1X_{1}+\ldots+\beta_jX_{j}+\varepsilon,
 \]
@@ -939,7 +939,7 @@ Construct more predictors (`x3`, `x4`, ...) by sampling 100 points from a normal
 
 ## Model selection {#multlin-modsel}
 
-In Section \@ref(multlin-examps-wine) we briefly saw that **the inclusion of more predictors is not for free**: there is a price to pay in terms more variability on the coefficients. Indeed, there is a **maximum number of predictors $k$** that can be considered in a linear model for a sample size $n$: **$k\leq n-2$**. Or equivalently, there is a **minimum sample size $n$** required for fitting a model with $k$ predictors: **$n\geq k + 2$**.
+In Section \@ref(multlin-examps-wine) we briefly saw that **the inclusion of more predictors is not for free**: there is a price to pay in terms of more variability on the coefficients. Indeed, there is a **maximum number of predictors $k$** that can be considered in a linear model for a sample size $n$: **$k\leq n-2$**. Or equivalently, there is a **minimum sample size $n$** required for fitting a model with $k$ predictors: **$n\geq k + 2$**.
 
 The interpretation of this fact is simple if we think on the geometry for $k=1$ and $k=2$:
 
@@ -948,7 +948,7 @@ The interpretation of this fact is simple if we think on the geometry for $k=1$ 
 
 Another interpretation is the following:
 
-> The fitting of a linear model with $k$ predictors involves the estimation the $k+2$ parameters $(\boldsymbol{\beta},\sigma^2)$ from $n$ data points. The closer $k+2$ and $n$ are, the more variable the estimates $(\hat{\boldsymbol{\beta}},\hat\sigma^2)$ will be, since less information is available for computing each one. In the limit case $n=k+2$, each sample point determines a parameter estimate.
+> The fitting of a linear model with $k$ predictors involves the estimation the $k+2$ parameters $(\boldsymbol{\beta},\sigma^2)$ from $n$ data points. The closer $k+2$ and $n$ are, the more variable the estimates $(\hat{\boldsymbol{\beta}},\hat\sigma^2)$ will be, since less information is available for estimating each one. In the limit case $n=k+2$, each sample point determines a parameter estimate.
 
 The *degrees of freedom* $n-k-1$ quantify the increasing on the variability of $(\hat{\boldsymbol{\beta}},\hat\sigma^2)$ when $n-k-1$ decreases. For example:
 
@@ -973,7 +973,7 @@ legend("topright", lwd = 2, col = rainbow(3),
 
 Now that we have added more light into the problem of having an excess of predictors, we turn the focus into **selecting the most adequate predictors for a multiple regression model**. This is a challenging task without a unique solution, and what is worse, without a method that is guaranteed to work in all the cases. However, there is a well-established procedure that usually gives good results: the *stepwise regression*. Its principle is to compare multiple linear regression models with different predictors (and, of course, with the same responses).
 
-Before introducing the method, we need to understand what is an **information criterion**. An information criterion balances the fitness of a model with the number of predictors employed. Hence, it determines objectively the best model as the one that *minimizes the information criterion*. Tho common criteria are the *Bayesian Information Criterion* (BIC) and the *Akaike Information Criterion* (AIC). Both are based on a **balance between the model fitness and its complexity**:
+Before introducing the method, we need to understand what is an **information criterion**. An information criterion balances the fitness of a model with the number of predictors employed. Hence, it determines objectively the best model as the one that *minimizes the information criterion*. Two common criteria are the *Bayesian Information Criterion* (BIC) and the *Akaike Information Criterion* (AIC). Both are based on a **balance between the model fitness and its complexity**:
 \begin{align}
 \text{BIC}(\text{model}) = \underbrace{-2\log\text{lik(model)}}_{\text{Model fitness}} + \underbrace{\text{npar(model)}\times\log n}_{\text{Complexity}}, (\#eq:bic)
 \end{align}
@@ -1022,14 +1022,14 @@ The model selected by `stepwise` is a good starting point for further additions 
 When applying `stepwise` for BIC/AIC, different final models might be selected depending on the choice of `direction`. This is the interpretation:
 
 - `"backward"`: starts from the full model, *removes* predictors sequentially.
-- `"forward"`: starts a simple model, *adds* predictors sequentially.
+- `"forward"`: starts from the simplest model, *adds* predictors sequentially.
 - `"backward/forward"` (default) and `"forward/backward"`: combination of the above.
 
 The **advice** is to try several of these methods and retain the one with minimum BIC/AIC. Set `trace = 0` to omit lengthy outputs of information of the search procedure.
 ```
 
 ```{block, type = 'rmdcaution'}
-`stepwise` assumes no `NA`'s (missing values) are present in the data. It is advised to remove the missing values in the data before since their presence might lead to errors. To do so, employ `data = na.omit(dataset)` in the call to `lm` (if your dataset is `dataset`).
+`stepwise` assumes that no `NA`'s (missing values) are present in the data. It is advised to remove the missing values in the data before since their presence might lead to errors. To do so, employ `data = na.omit(dataset)` in the call to `lm` (if your dataset is `dataset`).
 ```
 
 We conclude highlighting a caveat on the use of the BIC and AIC: they are constructed assuming that the sample size $n$ is much larger than the number of parameters in the model ($k+2$). Therefore, they will work reasonably well if $n>>k+2$, but if this is not true they may favor unrealistic complex models. An illustration of this phenomena is Figure \@ref(fig:bic), which is the BIC/AIC version of Figure \@ref(fig:R2) for the experiment done in Section \@ref(multlin-aovfit). The BIC and AIC curves tend to have local minimums close to $k=2$ and then increase. But when $k+2$ gets close to $n$, they quickly drop down. Note also how the BIC penalizes more the complexity than the AIC, which is more flat.

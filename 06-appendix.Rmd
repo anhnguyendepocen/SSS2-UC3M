@@ -156,7 +156,7 @@ D=\left\{\begin{array}{ll}1,&\text{if }C=b,\\0,& \text{if }C=a.\end{array}\right
 \]
 $D$ now is a *dummy variable*: it **codifies with zeros and ones the two possible levels of the categorical variable**. An example of $C$ could be *gender*, which has levels *male* and *female*. The dummy variable associated is $D=0$ if the gender is male and $D=1$ if the gender is female.
 
-The advantage of this *dummification* is its interpretability in regression models. Since level *a* corresponds to $0$, it can be seen as the *reference level* to which level *b* is compared. This is the key point in dummification: set one level as the reference and codify the rest as departures from them with ones.
+The advantage of this *dummification* is its interpretability in regression models. Since level *a* corresponds to $0$, it can be seen as the *reference level* to which level *b* is compared. This is the key point in dummification: set one level as the reference and codify the rest as departures from it with ones.
 
 The previous interpretation translates easily to regression models. Assume that the dummy variable $D$ is available together with other predictors $X_1,\ldots,X_k$. Then:
 
