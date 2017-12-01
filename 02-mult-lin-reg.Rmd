@@ -682,6 +682,7 @@ For the `wine` dataset, do the following:
 - Compute the estimate for the conditional mean of `WinterRain` for `HarvestRain`$=123.0$ and `AGST`$=16.15$. What is the CI at $\alpha=0.01$?
 - Compute the estimate for the conditional response for `HarvestRain`$=125.0$ and `AGST`$=15$. What is the CI at $\alpha=0.10$?
 - Check that `modExercise$fitted.values` is the same as `predict(modExercise, newdata = data.frame(HarvestRain = wine$HarvestRain, AGST = wine$AGST))`. Why is so?
+
 ```
 
 ```{block, type = 'rmdinsight'}
@@ -1054,7 +1055,7 @@ We will focus only in three plots:
     plot(mod, 1)
     ```
 
-    **Under linearity, we expect the red line** (a nonlinear fit of the mean of the residuals) **to be almost flat**. This which means that the trend of $Y_1,\ldots,Y_n$ is linear with respect to the predictors. Heteroskedasticity can be detected also in the form of irregular vertical dispersion around the red line. The dependence between residuals can be detected (harder) in the form of non randomly spread residuals.
+    **Under linearity, we expect the red line** (a nonlinear fit of the mean of the residuals) **to be almost flat**. This means that the trend of $Y_1,\ldots,Y_n$ is linear with respect to the predictors. Heteroskedasticity can be detected also in the form of irregular vertical dispersion around the red line. The dependence between residuals can be detected (harder) in the form of non randomly spread residuals.
 
 2. **QQ-plot**. Checks the **normality**:
 
@@ -1096,7 +1097,7 @@ Load the dataset `assumptions3D.RData`([download](https://raw.githubusercontent.
 
 A common problem that arises in multiple linear regression is **multicollinearity**. This is the situation when two or more predictors are highly linearly related between them. Multicollinearitiy has important effects on the fit of the model:
 
-- It **reduces the precision of the estimates**. As a consequence, sings of fitted coefficients may be reversed and valuable predictors may appear as non significant.
+- It **reduces the precision of the estimates**. As a consequence, signs of fitted coefficients may be reversed and valuable predictors may appear as non significant.
 - It is **difficult to determine how each of the highly related predictors affects the response**, since one masks the other. This may result in numerical instabilities.
 
 <!--
@@ -1109,7 +1110,7 @@ cor(wine)
 ```
 Here we can see what we already knew from Section \@ref(multlin-examps-wine), that `Age` and `Year` are perfectly linearly related and that `Age` and `FrancePop` are highly linearly related.
 
-However, is not enough to inspect remove pair by pair correlations in order to get rid of multicollinearity. Here is a counterexample:
+However, is not enough to inspect pair by pair correlations in order to get rid of multicollinearity. Here is a counterexample:
 ```{r, collapse = TRUE, cache = TRUE}
 # Create predictors with multicollinearity: x4 depends on the rest
 set.seed(45678)
@@ -1132,8 +1133,8 @@ A better approach is to compute the **Variance Inflation Factor** (VIF) of each 
 \]
 where $R^2_{X_j|X_{-j}}$ is the $R^2$ from a regression of $X_j$ into the remaining predictors. The next rule of thumb gives direct insight into which predictors are multicollinear:
 
-- VIF close to 1: absence of multicollinearity.
-- **VIF larger than 5 or 10: problematic amount of multicollinearity**. Advised to remove the predictor with largest VIF.
+> - VIF close to 1: absence of multicollinearity.
+> - **VIF larger than 5 or 10: problematic amount of multicollinearity**. Advised to remove the predictor with largest VIF.
 
 VIF is called by `vif` and takes as argument a linear model (In `R Commander`: `'Models' -> 'Numerical diagnostics' -> 'Variance-inflation factors'`). We continue with the previous example.
 ```{r, collapse = TRUE, cache = TRUE}
