@@ -1579,7 +1579,7 @@ Import the `iris` dataset, either from [`iris.txt`](https://raw.githubuserconten
 - Set the `'Graph title'` to "iris matrix scatterplot".
 - Identify the 5 most outlier points `'Automatically'`.
 - Modify the *code* to identify 15 points.
-- Compute the regression line for the plot in the third row and the fourth column and create the scatterplot for it.
+- Compute the regression line for the plot in the fourth row and the second column and create the scatterplot for it.
 - Redo the scatterplot by selecting the option `'Plot by groups...'` and then selecting `'Species'`.
 ```
 
