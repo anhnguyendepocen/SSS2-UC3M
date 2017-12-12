@@ -293,7 +293,7 @@ biplot(pcaUSJudgeRatings, cex = 0.75)
 ```
 The $\text{PC}_1$ gives a *lawyer indicator of how badly the judge conducts a trial*. The variable `CONT`, which measures the number of contacts between judge and lawyer, is almost uncorrelated with the rest of variables and is captured by $\text{PC}_2$ (hence the rates of the lawyers are not affected by the number of contacts with the judge). We can identify the high-rated and low-rated judges in the left and right of the plot, respectively.
 
-Let's see an application of the biplot in a La Liga 2015/2016, a dataset with more variables and a harder interpretation of PCs.
+Let's see an application of the biplot in La Liga 2015/2016, a dataset with more variables and a harder interpretation of PCs.
 ```{r, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.asp = 1, cache = TRUE}
 # Weights and biplot
 pcaLaliga$loadings
