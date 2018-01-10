@@ -531,7 +531,7 @@ A Bernoulli variable $Y$ is completely determined by the probability $p$. **So d
 
 In particular, recall that $\mathbb{P}[Y=1]=\mathbb{E}[Y]=p$.
 
-This is something relatively uncommon (or a $\mathcal{N}(\mu,\sigma^2)$, $\mu$ determines the mean and $\sigma^2$ the variance) that has important consequences for the logistic model: we do not need a $\sigma^2$.
+This is something relatively uncommon (on a $\mathcal{N}(\mu,\sigma^2)$, $\mu$ determines the mean and $\sigma^2$ the variance) that has important consequences for the logistic model: we do not need a $\sigma^2$.
 ```
 
 ```{block, type = 'rmdexercise'}
@@ -562,7 +562,9 @@ F(z)=\mathrm{logistic}(z)=\frac{e^z}{1+e^z}=\frac{1}{1+e^{-z}}.
 \]
 - **Probit**. Consider the *normal* distribution function, this is, $F=\Phi$.
 
-```{r, logitprobit, echo = FALSE, results = 'hide', out.width = '70%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.pos = 'h!', fig.cap = 'Different transformations mapping the response of a simple linear regression $z=\\beta_0+\\beta_1x$ to $[0,1]$.', cache = TRUE}
+(ref:logitprobittitle) Different transformations mapping the response of a simple linear regression $z=\beta_0+\beta_1x$ to $[0,1]$.
+
+```{r, logitprobit, echo = FALSE, results = 'hide', out.width = '70%', fig.show = 'hold', fig.asp = 1, fig.align = 'center', fig.pos = 'h!', fig.cap = '(ref:logitprobittitle)', cache = TRUE}
 # Regression
 x <- seq(-3, 3, l = 200)
 z <- 2 * x

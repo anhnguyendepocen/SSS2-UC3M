@@ -1035,9 +1035,12 @@ The **advice** is to try several of these methods and retain the one with minimu
 
 We conclude highlighting a caveat on the use of the BIC and AIC: they are constructed assuming that the sample size $n$ is much larger than the number of parameters in the model ($k+2$). Therefore, they will work reasonably well if $n>>k+2$, but if this is not true they may favor unrealistic complex models. An illustration of this phenomena is Figure \@ref(fig:bic), which is the BIC/AIC version of Figure \@ref(fig:R2) for the experiment done in Section \@ref(multlin-aovfit). The BIC and AIC curves tend to have local minimums close to $k=2$ and then increase. But when $k+2$ gets close to $n$, they quickly drop down. Note also how the BIC penalizes more the complexity than the AIC, which is more flat.
 
-```{r, bic, echo = FALSE, out.width = '70%', fig.align = 'center', fig.pos = 'h!', fig.cap = 'Comparison of BIC and AIC for $n=200$ and $k$ ranging from $1$ to $198$. $M=100$ datasets were simulated with **only the first two** predictors being significant. The thicker curves are the mean of each color\'s curves.', fig.show = 'hold', cache = TRUE}
+(ref:bictitle) Comparison of BIC and AIC for $n=200$ and $k$ ranging from $1$ to $198$. $M=100$ datasets were simulated with **only the first two** predictors being significant. The thicker curves are the mean of each color's curves.
+
+```{r, bic, echo = FALSE, out.width = '70%', fig.pos = 'h!', fig.cap = '(ref:bictitle)', fig.show = 'hold', cache = TRUE}
 knitr::include_graphics("images/R/BICandAIC.png")
 ```
+
 
 ## Model diagnostics and multicollinearity {#multlin-diagnostics}
 
