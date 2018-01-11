@@ -274,7 +274,7 @@ for $j=1,\ldots,J-1$ and (for the last level $J$)
 \begin{align}
 p_J(\mathbf{x})=\mathbb{P}[Y=J|X_1=x_1,\ldots,X_k=x_k]=\frac{1}{1+\sum_{l=1}^{J-1}e^{\beta_{0l}+\beta_{1l}X_1+\ldots+\beta_{kl}X_k}}. (\#eq:multinom-2)
 \end{align}
-Note that \@ref(eq:multinom-1) and \@ref(eq:multinom-2) implies that $\sum_{j=1}^J p_j(\mathbf{x})=1$ and that there are $(J-1)\times(k+1)$ coefficients ($(J-1)$ intercepts and $(J-1)\times k$ slopes). Also, \@ref(eq:multinom-2) reveals that the last level, $J$, is given a different treatment. This is because it is the *reference level* (it could be a different one, but is tradition to choose the last one).
+Note that \@ref(eq:multinom-1) and \@ref(eq:multinom-2) imply that $\sum_{j=1}^J p_j(\mathbf{x})=1$ and that there are $(J-1)\times(k+1)$ coefficients ($(J-1)$ intercepts and $(J-1)\times k$ slopes). Also, \@ref(eq:multinom-2) reveals that the last level, $J$, is given a different treatment. This is because it is the *reference level* (it could be a different one, but is tradition to choose the last one).
 
 The multinomial logistic model has an interesting interpretation in terms of logistic regressions. Taking the quotient between \@ref(eq:multinom-1) and \@ref(eq:multinom-2) gives
 \begin{align}
@@ -284,7 +284,7 @@ for $j=1,\ldots,J-1$. Therefore, applying a logarithm to both sides we have:
 \begin{align}
 \log\frac{p_j(\mathbf{x})}{p_J(\mathbf{x})}=\beta_{0j}+\beta_{1j}X_1+\ldots+\beta_{kj}X_k.(\#eq:multinom-3)
 \end{align}
-This equation is indeed very similar to \@ref(eq:eq-odds-log2). If $J=2$, is the same up to a change in the codes for the levels: the logistic regression giving the probability of $Y=1$ versus $Y=2$. On the LHS of \@ref(eq:multinom-3) we have the log of the ratio of two probabilities and on the RHS a linear combination of the predictors. **If the probabilities on the LHS were complementary** (if they add one), then we would have a **log-odds and hence a logistic regression** for $Y$. This is not the situation, but is close: instead of odds and log-odds, we have *ratios* and *log-ratios* of non complementary probabilities. Also, it gives a good insight on what the multinomial logistic regression is: **a set of $J-1$ independent "logistic regressions" for the probability of $Y=j$ versus the probability of the reference $Y=J$**.
+This equation is indeed very similar to \@ref(eq:eq-odds-log2). If $J=2$, it is the same up to a change in the codes for the levels: the logistic regression giving the probability of $Y=1$ versus $Y=2$. On the LHS of \@ref(eq:multinom-3) we have the logarithm of the ratio of two probabilities and on the RHS a linear combination of the predictors. **If the probabilities on the LHS were complementary** (if they added up to one), then we would have a **log-odds and hence a logistic regression** for $Y$. This is not the situation, but it is close: instead of odds and log-odds, we have *ratios* and *log-ratios* of non complementary probabilities. Also, it gives a good insight on what the multinomial logistic regression is: **a set of $J-1$ independent "logistic regressions" for the probability of $Y=j$ versus the probability of the reference $Y=J$**.
 
 Equation \@ref(eq:multinom-4) gives also interpretation on the coefficients of the model since
 \[
@@ -329,7 +329,7 @@ exp(coef(mod2))
 # - both age and statusquo increase the probability of voting Y, A or U
 #   with respect to voting N -> conservativeness increases with ages
 # - both age and statusquo increase more the probability of voting Y and U
-#   than A -> elderly and status quo supporters more decided to participate
+#   than A -> elderly and status quo supporters are more decided to participate
 # - a PS level of education increases the probability of voting N. Same for
 #   a S level of education, but more prone to A
 

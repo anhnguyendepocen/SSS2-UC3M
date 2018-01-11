@@ -466,7 +466,7 @@ exp(coef(nasa)) # Exponentiated coefficients ("odds ratios")
 ```
 The summary of the logistic model is notably different from the linear regression, as the methodology behind is quite different. Nevertheless, we have tests for the significance of each coefficient. Here we obtain that `temp` is significantly different from zero, at least at a level $\alpha=0.05$. Therefore we can conclude that **the temperature is indeed affecting the probability of an incident with the O-rings** (answers Q1).
 
-The precise interpretation of the coefficients will be given in the next section. For now, the coefficient of `temp`, $\hat\beta_1$, can be regarded the "correlation between the temperature and the probability of having at least one incident". These correlation, as evidenced by the sign of $\hat\beta_1$, is negative. Let's plot the fitted logistic curve to see that indeed the probability of incident and temperature are negatively correlated:
+The precise interpretation of the coefficients will be given in the next section. For now, the coefficient of `temp`, $\hat\beta_1$, can be regarded the "correlation between the temperature and the probability of having at least one incident". This correlation, as evidenced by the sign of $\hat\beta_1$, is negative. Let's plot the fitted logistic curve to see that indeed the probability of incident and temperature are negatively correlated:
 ```{r, collapse = TRUE, cache = TRUE}
 # Plot data
 plot(challenger$temp, challenger$fail.field, xlim = c(-1, 30), xlab = "Temperature",
@@ -805,7 +805,7 @@ p(\mathbf{X}_1)(1-p(\mathbf{X}_1)) & & &\\
 \]
 In the case of the multiple linear regression, $I(\hat{\boldsymbol{\beta}})^{-1}=\sigma^2(\mathbf{X}^T\mathbf{X})^{-1}$ (see \@ref(eq:normp)), so the presence of $\mathbf{V}$ here is revealing the heteroskedasticity of the model.
 
-The interpretation of \@ref(eq:mle1) and \@ref(eq:mle2) give some useful insights on what concepts affect the quality of the estimation:
+The interpretation of \@ref(eq:mle1) and \@ref(eq:mle2) gives some useful insights on what concepts affect the quality of the estimation:
 
 - **Bias**. The estimates are *asymptotically* unbiased.
 - **Variance**. It depends on:
@@ -818,7 +818,7 @@ The interpretation of \@ref(eq:mle1) and \@ref(eq:mle2) give some useful insight
 **The precision of $\hat{\boldsymbol{\beta}}$ is affected by the value of $\boldsymbol{\beta}$**, which is hidden inside $\mathbf{V}$. This contrasts sharply with the linear model, where the precision of the least squares estimator was not affected by the value of the unknown coefficients (see \@ref(eq:normp)). The reason is partially due to the **heteroskedasticity** of logistic regression, which implies a dependence of the variance of $Y$ in the logistic curve, hence in $\boldsymbol{\beta}$.
 ```
 
-(ref:lograndomcoefstitle) Illustration of the randomness of the fitted coefficients $(\hat\beta_0,\hat\beta_1)$ and the influence of $n$, $(\beta_0,\beta_1)$ and $s_x^2$. The sample predictors $x_1,\ldots,x_n$ are fixed and new responses $Y_1,\ldots,Y_n$ are generated each time from a logistic model $Y\sim\mathrm{Ber}(p(X))$. Application also available [here](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/log-random/).
+(ref:lograndomcoefstitle) Illustration of the randomness of the fitted coefficients $(\hat\beta_0,\hat\beta_1)$ and the influence of $n$, $(\beta_0,\beta_1)$ and $s_x^2$. The sample predictors $x_1,\ldots,x_n$ are fixed and new responses $Y_1,\ldots,Y_n$ are generated each time from a logistic model $Y|X=x\sim\mathrm{Ber}(p(X))$. Application also available [here](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/log-random/).
 
 ```{r, lograndomcoefs, echo = FALSE, fig.cap = '(ref:lograndomcoefstitle)', screenshot.alt = "images/screenshots/log-random.png", dev = 'png', cache = TRUE, fig.align = 'center', fig.pos = 'h!', out.width = '90%'}
 knitr::include_app('https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/log-random/', height = '1000px')
@@ -882,7 +882,7 @@ The distributions in \@ref(eq:mle3) also allow to conduct a formal hypothesis te
 \begin{align*}
 H_0:\beta_j=0
 \end{align*}
-for $j=0,\ldots,k$. The test of $H_0:\beta_j=0$ with $1\leq j\leq k$ is specially interesting, since it allows to answer whether *the variable $X_j$ has a significant effect on $\mathbb{P}[Y=1]$*. The statistic used for testing for significance is the Wald statistic
+for $j=0,\ldots,k$. The test of $H_0:\beta_j=0$ with $1\leq j\leq k$ is especially interesting, since it allows to answer whether *the variable $X_j$ has a significant effect on $\mathbb{P}[Y=1]$*. The statistic used for testing for significance is the Wald statistic
 \begin{align*}
 \frac{\hat\beta_j-0}{\hat{\mathrm{SE}}(\hat\beta_j)},
 \end{align*}
@@ -942,7 +942,7 @@ Let's focus then on how to make predictions and compute CIs in practice with `pr
 - The argument `type`. `type = "link"`, gives the predictions in the log-odds, this is, returns $\log\frac{\hat p(x_1,\ldots,x_k)}{1-\hat p(x_1,\ldots,x_k)}$. `type = "response"` gives the predictions in the probability space $[0,1]$, this is, returns $\hat p(x_1,\ldots,x_k)$.
 - There is no `interval` argument for using `predict` for `glm`. That means that there is no easy way of computing CIs for prediction.
 
-Since it is a bit cumbersome to compute by yourself the CIs, we can code the function `predictCIsLogistic` so that it compute them automatically for you, see below.
+Since it is a bit cumbersome to compute by yourself the CIs, we can code the function `predictCIsLogistic` so that it computes them automatically for you, see below.
 ```{r, collapse = TRUE, cache = TRUE}
 # Data for which we want a prediction
 # Important! You have to name the column with the predictor name!
