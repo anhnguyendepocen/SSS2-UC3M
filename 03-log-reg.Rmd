@@ -723,7 +723,7 @@ mod$coefficients
 ```{block2, type = 'rmdexercise'}
 For the regressions `y ~ x2` and `y ~ x3`, do the following:
 
-- Check that $\boldsymbol{\beta}$ is indeed maximizing the likelihood as compared with Figure \@ref(fig:maximumlikelihood).
+- Check that the true $\boldsymbol{\beta}$ is close to maximizing the likelihood computed in Figure \@ref(fig:maximumlikelihood).
 - Plot the fitted logistic curve and compare it with the one in Figure \@ref(fig:maximumlikelihood).
 
 ```
@@ -786,12 +786,12 @@ There is an important difference between the inference results for the linear mo
 
 The distribution of $\hat{\boldsymbol{\beta}}$ is given by the asymptotic theory of MLE:
 \begin{align}
-\hat{\boldsymbol{\beta}}\sim\mathcal{N}_{k+1}\left(\boldsymbol{\beta},I(\hat{\boldsymbol{\beta}})^{-1}\right)
+\hat{\boldsymbol{\beta}}\sim\mathcal{N}_{k+1}\left(\boldsymbol{\beta},I(\boldsymbol{\beta})^{-1}\right)
 (\#eq:mle1)
 \end{align}
 where $\sim$ must be understood as *approximately distributed as [...] when $n\to\infty$* for the rest of this chapter. $I(\boldsymbol{\beta})$ is known as the *Fisher information matrix*, and receives that name because *it measures the information available in the sample for estimating $\boldsymbol{\beta}$*. Therefore, the *larger* the matrix is, the more precise is the estimation of $\boldsymbol{\beta}$, because that results in smaller variances in \@ref(eq:mle1). The inverse of the Fisher information matrix is
 \begin{align}
-I(\hat{\boldsymbol{\beta}})^{-1}=(\mathbf{X}^T\mathbf{V}\mathbf{X})^{-1},
+I(\boldsymbol{\beta})^{-1}=(\mathbf{X}^T\mathbf{V}\mathbf{X})^{-1},
 (\#eq:mle2)
 \end{align}
 where $\mathbf{V}$ is a diagonal matrix containing the *different* variances for each $Y_i$ (remember that $p(\mathbf{x})=1/(1+e^{-(\beta_0+\beta_1x_1+\ldots+\beta_kx_k)})$):
@@ -803,7 +803,7 @@ p(\mathbf{X}_1)(1-p(\mathbf{X}_1)) & & &\\
 & & & p(\mathbf{X}_n)(1-p(\mathbf{X}_n))
 \end{pmatrix}
 \]
-In the case of the multiple linear regression, $I(\hat{\boldsymbol{\beta}})^{-1}=\sigma^2(\mathbf{X}^T\mathbf{X})^{-1}$ (see \@ref(eq:normp)), so the presence of $\mathbf{V}$ here is revealing the heteroskedasticity of the model.
+In the case of the multiple linear regression, $I(\boldsymbol{\beta})^{-1}=\sigma^2(\mathbf{X}^T\mathbf{X})^{-1}$ (see \@ref(eq:normp)), so the presence of $\mathbf{V}$ here is revealing the heteroskedasticity of the model.
 
 The interpretation of \@ref(eq:mle1) and \@ref(eq:mle2) gives some useful insights on what concepts affect the quality of the estimation:
 
@@ -1038,7 +1038,7 @@ A benchmark for evaluating the magnitude of the deviance is the **null deviance*
 \[
 D_0=-2\log\text{lik}(\hat{\beta}_0),
 \]
-which is the **deviance of the worst model, the one fitted without any predictor, and the perfect model**:
+which is the **deviance of the worst model, the one fitted without any predictor, to the perfect model**:
 \[
 Y|(X_1=x_1,\ldots,X_k=x_k)\sim \mathrm{Ber}(\mathrm{logistic}(\beta_0)).
 \]
@@ -1048,12 +1048,12 @@ The null deviance serves for comparing how much the model has improved by adding
 \begin{align}
 R^2=1-\frac{D}{D_0}=1-\frac{\text{deviance(fitted logistic, saturated model)}}{\text{deviance(null model, saturated model)}}.(\#eq:log-r2)
 \end{align}
-This global measure of fit is *similar* indeed shares some important properties with the  determination coefficient in linear regression:
+This global measure of fit shares some important properties with the  determination coefficient in linear regression:
 
 1. It is a quantity between $0$ and $1$.
 2. If the fit is perfect, then $D=0$ and $R^2=1$. If the predictors do not add anything to the regression, then $D=D_0$ and $R^2=0$.
 
-```{block, type = 'rmdinsight'}
+```{block, type = 'rmdcaution'}
 In logistic regression, $R^2$ does not have the same interpretation as in linear regression:
 
 - Is **not the percentage of variance explained by the logistic model**, but rather a ratio indicating how close is the fit to being perfect or the worst.
@@ -1135,7 +1135,7 @@ The same discussion we did in Section \@ref(multlin-modsel) is applicable to log
 
 1. The **deviance** of the model (reciprocally the likelihood and the $R^2$) **always decreases** (increase) with the inclusion of more predictors -- no matter whether they are significant or not.
 2. The **excess of predictors** in the model is paid by a larger variability in the estimation of the model which results in less precise prediction.
-3. **Multicollinearity** may hide significant variables, change the sign of them and result in an increase of the variability of the estimation at the expense of little improvement in .
+3. **Multicollinearity** may hide significant variables, change the sign of them and result in an increase of the variability of the estimation.
 
 The use of information criteria, `stepwise` and `vif` allow to efficiently fight back these issues. Let's review them quickly from the perspective of logistic regression.
 
@@ -1186,12 +1186,12 @@ r2Log(modBIC)
 
 Finally, **multicollinearity can also be present in logistic regression**. Despite the nonlinear logistic curve, the predictors are combined linearly in \@ref(eq:eq-log). Due to this, if two or more predictors are highly correlated between them, the fit of the model will be compromised since the individual linear effect of each predictor is hard to disentangle from the rest of correlated predictors.
 
-In addition to inspecting the correlation matrix and look for high correlations, a powerful tool to detect multicollinearity is the *generalized* Variance Inflation Factor (gVIF) of each coefficient $\hat\beta_j$. This is a *measure of how much the variability in the estimation has increased due to the addition of the predictor $X_j$*. The next rule of thumb gives direct insight into which predictors are multicollinear:
+In addition to inspecting the correlation matrix and look for high correlations, a powerful tool to detect multicollinearity is the VIF of each coefficient $\hat\beta_j$. The situation is exactly the same as in linear regression, since VIF looks only into the linear relations of the predictors. Therefore, the rule of thumb gives is the same as in Section \@ref(multlin-diagnostics):
 
-- gVIF close to 1: absence of multicollinearity.
-- **gVIF larger than 5 or 10: problematic amount of multicollinearity**. Advised to remove the predictor with largest gVIF.
+- VIF close to 1: absence of multicollinearity.
+- **VIF larger than 5 or 10: problematic amount of multicollinearity**. Advised to remove the predictor with largest VIF.
 
-Here is an example illustrating the use of gVIF, through `vif`, in practice. It also shows also how the simple inspection of the covariance matrix is not enough for detecting collinearity in tricky situations.
+Here is an example illustrating the use of VIF, through `vif`, in practice. It also shows also how the simple inspection of the covariance matrix is not enough for detecting collinearity in tricky situations.
 ```{r, collapse = TRUE, cache = TRUE}
 # Create predictors with multicollinearity: x4 depends on the rest
 set.seed(45678)
