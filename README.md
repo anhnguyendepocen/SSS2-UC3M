@@ -56,7 +56,7 @@ Here is a broad view of the syllabus:
 7.  Appendix A: [Glossary of important `R` commands](https://bookdown.org/egarpor/SSS2-UC3M/appendix-Rglossary.html)
 8.  Appendix B: [Use of qualitative predictors in regression](https://bookdown.org/egarpor/SSS2-UC3M/appendix-qualpred.html)
 9.  Appendix C: [Multinomial logistic regression](https://bookdown.org/egarpor/SSS2-UC3M/appendix-multinomialreg.html)
-10.  Appendix D: [Reporting with `R` and `R Commander`](https://bookdown.org/egarpor/SSS2-UC3M/reporting-with-r-and-r-commander.html)
+10.  Appendix D: [Reporting with `R` and `R Commander`](https://bookdown.org/egarpor/SSS2-UC3M/appendix-reporting.html)
 11.  Appendix E: [Group project](https://bookdown.org/egarpor/SSS2-UC3M/appendix-project.html)
 
 ## List of animations

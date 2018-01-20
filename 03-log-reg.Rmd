@@ -1147,16 +1147,16 @@ First, remember that the BIC/AIC information criteria are based on a **balance b
 where $\text{lik}(\hat{\boldsymbol{\beta}})$ is the *likelihood of the model*. The AIC replaces $\log n$ by $2$, hence penalizing less model complexity. The BIC and AIC can be computed in `R` through the functions `BIC` and `AIC`, and we can check manually that they match with its definition.
 ```{r, collapse = TRUE, cache = TRUE}
 # Models
-nasa <- glm(fail.field ~ temp, family = "binomial", data = challenger)
+nasa1 <- glm(fail.field ~ temp, family = "binomial", data = challenger)
 nasa2 <- glm(fail.field ~ temp + pres.field, family = "binomial",
              data = challenger)
 
 # nasa
-summary1 <- summary(nasa)
+summary1 <- summary(nasa1)
 summary1
-BIC(nasa)
+BIC(nasa1)
 summary1$deviance + 2 * log(dim(challenger)[1])
-AIC(nasa)
+AIC(nasa1)
 summary1$deviance + 2 * 2
 
 # nasa2
