@@ -1,6 +1,6 @@
 Package: SSS2UC3M
 Title: SSS2-UC3M
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: person("Eduardo", "García-Portugués", role = c("aut", "cre"), email = "edgarcia@est-econ.uc3m.es")
 Description: Lab notes for Statistics for Social Sciences II: Multivariate Techniques
 Depends:
